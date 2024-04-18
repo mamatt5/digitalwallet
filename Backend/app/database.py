@@ -1,10 +1,11 @@
 from sqlmodel import Session, SQLModel, create_engine
+
 from models.account import Account
 from models.merchant import Merchant
 from models.user import User
 
 DATABASE_URL = "sqlite:///database.db"
-engine = create_engine(DATABASE_URL)
+engine = create_engine(DATABASE_URL, echo=True)
 
 
 def init_db():

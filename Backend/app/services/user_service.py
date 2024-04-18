@@ -1,12 +1,13 @@
-from models.user import User
-from models.account import Account
-from schemas.user_schema import UserRequest
 from sqlmodel import Session
+
+from models.account import Account, AccountType
+from models.user import User
+from schemas.user_schema import UserRequest
 
 
 def create_user(db: Session, user: UserRequest):
     account_data = user.account.dict()
-    account_data["account_type"] = "user"
+    account_data["account_type"] = AccountType.USER
     account = Account(**account_data)
     db.add(account)
     db.commit()

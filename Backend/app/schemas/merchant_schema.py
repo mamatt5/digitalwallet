@@ -1,5 +1,6 @@
-from schemas.account_schema import AccountRequest, AccountResponse
 from pydantic import BaseModel
+
+from schemas.account_schema import AccountRequest, AccountResponse
 
 
 class MerchantBase(BaseModel):
@@ -12,7 +13,6 @@ class MerchantRequest(MerchantBase):
 
 
 class MerchantResponse(MerchantBase):
-    account_id: int
     account: AccountResponse
 
     class Config:
