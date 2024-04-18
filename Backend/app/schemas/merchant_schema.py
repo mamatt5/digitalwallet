@@ -7,9 +7,13 @@ class MerchantBase(BaseModel):
     ABN: str
 
 
-class MerchantRequest(MerchantBase, AccountRequest):
-    pass
+class MerchantRequest(MerchantBase):
+    account: AccountRequest
 
 
-class MerchantResponse(MerchantBase, AccountResponse):
-    pass
+class MerchantResponse(MerchantBase):
+    account_id: int
+    account: AccountResponse
+
+    class Config:
+        from_attributes = True

@@ -7,9 +7,13 @@ class UserBase(BaseModel):
     last_name: str
 
 
-class UserRequest(UserBase, AccountRequest):
-    pass
+class UserRequest(UserBase):
+    account: AccountRequest
 
 
-class UserResponse(UserBase, AccountResponse):
-    pass
+class UserResponse(UserBase):
+    account_id: int
+    account: AccountResponse
+
+    class Config:
+        from_attributes = True

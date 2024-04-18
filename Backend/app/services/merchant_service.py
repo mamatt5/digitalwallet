@@ -1,10 +1,18 @@
 from models.merchant import Merchant
+from models.account import Account
 from schemas.merchant_schema import MerchantRequest
 from sqlmodel import Session
 
 
 def create_merchant(db: Session, merchant: MerchantRequest):
-    new_merchant = Merchant(**merchant.dict())
+    account_data = merchant.account.dict()
+    account_data["account_type"] = "merchant"
+    account = Account(**account_data)
+    db.add(account)
+    db.commit()
+    db.refresh(account)
+
+    new_merchant = Merchant(**merchant.dict(exclude={"account"}), account=account)
     db.add(new_merchant)
     db.commit()
     db.refresh(new_merchant)
