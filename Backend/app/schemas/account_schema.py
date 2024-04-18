@@ -1,14 +1,15 @@
 from pydantic import BaseModel, EmailStr
 
-
-class AccountRequest(BaseModel):
+class AccountBase(BaseModel):
     email: EmailStr
     password: str
+    account_type: str
 
+class AccountRequest(AccountBase):
+    pass
 
 class AccountResponse(BaseModel):
     account_id: int
-    email: EmailStr
 
     class Config:
-        orm_mode = True
+        from_attributes = True
