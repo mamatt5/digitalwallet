@@ -6,6 +6,7 @@ from sqlmodel import Session
 from models.account import Account, AccountType
 from models.merchant import Merchant
 from models.user import User
+from services.auth_service import hash_password
 
 fake = Faker()
 
@@ -25,7 +26,7 @@ def generate_dummy_data(num_records: int) -> list[Union[Merchant, User]]:
         account_type = AccountType.MERCHANT if fake.boolean() else AccountType.USER
         account_data = {
             "email": fake.email(),
-            "password": fake.password(),
+            "password": hash_password(fake.password()),
             "account_type": account_type,
         }
         account = Account(**account_data)
