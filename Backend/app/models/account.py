@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import TYPE_CHECKING, Optional, Union
+from typing import TYPE_CHECKING, Optional
 
 from sqlmodel import Field, Relationship, SQLModel
 
@@ -11,6 +11,7 @@ if TYPE_CHECKING:
 class AccountType(str, Enum):
     MERCHANT = "merchant"
     USER = "user"
+
 
 class Account(SQLModel, table=True):
     account_id: Optional[int] = Field(default=None, primary_key=True)

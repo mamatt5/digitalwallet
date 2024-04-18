@@ -1,8 +1,7 @@
-from sqlmodel import Session
-
 from models.account import Account, AccountType
 from models.merchant import Merchant
 from schemas.merchant_schema import MerchantRequest
+from sqlmodel import Session
 
 
 def create_merchant(db: Session, merchant: MerchantRequest):

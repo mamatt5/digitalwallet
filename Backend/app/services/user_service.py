@@ -1,8 +1,7 @@
-from sqlmodel import Session
-
 from models.account import Account, AccountType
 from models.user import User
 from schemas.user_schema import UserRequest
+from sqlmodel import Session
 
 
 def create_user(db: Session, user: UserRequest):

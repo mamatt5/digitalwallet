@@ -1,19 +1,18 @@
-from pydantic import BaseModel
-
+from pydantic import BaseModel, Field
 from schemas.account_schema import AccountRequest, AccountResponse
 
 
 class MerchantBase(BaseModel):
-    company_name: str
-    ABN: str
+    company_name: str = Field(..., description="Merchants company name")
+    ABN: str = Field(..., description="Merchants ABN")
 
 
 class MerchantRequest(MerchantBase):
-    account: AccountRequest
+    account: AccountRequest = Field(..., description="Merchants account information")
 
 
 class MerchantResponse(MerchantBase):
-    account: AccountResponse
+    account: AccountResponse = Field(..., description="Merchants account information")
 
     class Config:
         from_attributes = True

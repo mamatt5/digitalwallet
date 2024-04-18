@@ -1,8 +1,7 @@
 from typing import Optional
 
-from sqlmodel import Field, Relationship, SQLModel
-
 from models.account import Account
+from sqlmodel import Field, Relationship, SQLModel
 
 
 class User(SQLModel, table=True):
