@@ -1,6 +1,9 @@
-from models.account import Account
-from sqlmodel import Field, SQLModel, Relationship
 from typing import Optional
+
+from sqlmodel import Field, Relationship, SQLModel
+
+from models.account import Account
+
 
 class Merchant(SQLModel, table=True):
     account_id: Optional[int] = Field(default=None, primary_key=True, foreign_key="account.account_id")

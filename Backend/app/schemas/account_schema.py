@@ -1,9 +1,9 @@
 from pydantic import BaseModel, EmailStr
+from models.account import AccountType
 
 class AccountBase(BaseModel):
     email: EmailStr
     password: str
-    account_type: str
 
 class AccountRequest(AccountBase):
     pass

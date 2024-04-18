@@ -1,5 +1,6 @@
-from schemas.account_schema import AccountRequest, AccountResponse
 from pydantic import BaseModel
+
+from schemas.account_schema import AccountRequest, AccountResponse
 
 
 class UserBase(BaseModel):
@@ -12,7 +13,6 @@ class UserRequest(UserBase):
 
 
 class UserResponse(UserBase):
-    account_id: int
     account: AccountResponse
 
     class Config:
