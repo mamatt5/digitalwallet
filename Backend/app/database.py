@@ -5,7 +5,7 @@ from models.merchant import Merchant
 from models.user import User
 
 DATABASE_URL = "sqlite:///database.db"
-engine = create_engine(DATABASE_URL, echo=True)
+engine = create_engine(DATABASE_URL)
 
 
 def init_db():
