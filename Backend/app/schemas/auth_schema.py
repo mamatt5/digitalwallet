@@ -20,6 +20,6 @@ class RegisterRequest(BaseModel):
     
     
 class AuthResponse(BaseModel):
-    account: AccountResponse
-    merchant: Optional[MerchantResponse] = None
-    user: Optional[UserResponse] = None
+    account: AccountResponse = Field(..., description="The authenticated/registered account")
+    merchant: Optional[MerchantResponse] = Field(None, description="The merchant information for the account (if created)")
+    user: Optional[UserResponse] = Field(None, description="The user information for the account (if created)")
