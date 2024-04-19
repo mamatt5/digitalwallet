@@ -26,6 +26,6 @@ def register_route(register_request: RegisterRequest, db: Session = Depends(get_
 
     - Request Body: `RegisterRequest`
     - Returns: `AuthResponse`
-    - Raises: `HTTPException` email is already registered or required fields are missing
+    - Raises: `HTTPException` email or phone number is already registered
     """
     return register(db, register_request)

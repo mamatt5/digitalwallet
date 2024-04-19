@@ -56,7 +56,7 @@ def insert_dummy_data(session: Session, data: List[Account]) -> None:
     Inserts a list of dummy Account objects into the database.
 
     Args:
-        session: The SQLAlchemy session object.
+        session: The SQLModel session object.
         data: A list of Account objects to insert.
     """
 
