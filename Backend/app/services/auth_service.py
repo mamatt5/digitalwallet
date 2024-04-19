@@ -95,7 +95,7 @@ def register(db: Session, register_request: RegisterRequest):
 
     if db.query(Account).filter(Account.phone_number == register_request.phone_number).first():
         raise HTTPException(status_code=400, detail="Phone number already registered")
-
+    
     account_data = register_request.dict()
     account_data["password"] = hash_password(register_request.password)
     account = Account(**account_data)
