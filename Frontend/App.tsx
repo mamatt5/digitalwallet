@@ -3,7 +3,8 @@ import {NavigationContainer} from '@react-navigation/native'
 import {createStackNavigator} from '@react-navigation/stack'
 import LoginScreen from './pages/Login/LoginScreen'
 import RegisterScreen from './pages/Register/RegisterScreen'
-import ForgotPasswordScreen from './pages/ForgotPasswordScreen/ForgotPasswordScreen';
+import ForgotPasswordScreen from './pages/ForgotPassword/ForgotPasswordScreen';
+import QRScanScreen from './pages/QRScan/QRScanScreen';
 
 
 const { Navigator, Screen } = createStackNavigator();
@@ -15,6 +16,7 @@ const App = () => {
         <Screen name='Login' component={LoginScreen}></Screen>
         <Screen name='Register' component={RegisterScreen}></Screen>
         <Screen name='ForgotPassword' component={ForgotPasswordScreen}></Screen>
+        <Screen name='QRScan' component={QRScanScreen}></Screen>
       </Navigator>
     </NavigationContainer>
   );
