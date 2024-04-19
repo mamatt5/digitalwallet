@@ -10,7 +10,7 @@ router = APIRouter(prefix="/users", tags=["Users"])
 @router.post("/", response_model=UserResponse)
 def create_user_route(user: UserRequest, db: Session = Depends(get_db_session)):
     """
-    Create User Endpoint
+    **Create User Endpoint**
     - Request Body: `UserRequest`
     - Returns: `UserResponse`
     """
@@ -20,7 +20,7 @@ def create_user_route(user: UserRequest, db: Session = Depends(get_db_session)):
 @router.get("/", response_model=list[UserResponse])
 def get_all_users_route(db: Session = Depends(get_db_session)):
     """
-    Get All Users Endpoint
+    **Get All Users Endpoint**
     - Returns: List of `UserResponse`
     """
     return get_all_users(db)

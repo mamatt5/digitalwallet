@@ -10,24 +10,22 @@ router = APIRouter(prefix="/auth", tags=["Authentication"])
 @router.post("/login", response_model=AuthResponse)
 def login_route(login_request: LoginRequest, db: Session = Depends(get_db_session)):
     """
-    Login/Authenticate Endpoint
+    **Login/Authenticate Endpoint**
 
     - Request Body: `LoginRequest`
     - Returns: `AuthResponse`
-    - Raises: `HTTPException` if email or password is invalid
+    - Raises: `HTTPException` email or password is invalid
     """
     return login(db, login_request)
 
 
 @router.post("/register", response_model=AuthResponse)
-def register_route(
-    register_request: RegisterRequest, db: Session = Depends(get_db_session)
-):
+def register_route(register_request: RegisterRequest, db: Session = Depends(get_db_session)):
     """
-    Register Endpoint
+    **Register Endpoint**
 
     - Request Body: `RegisterRequest`
     - Returns: `AuthResponse`
-    - Raises: `HTTPException` if the email is already registered or required fields are missing
+    - Raises: `HTTPException` email is already registered or required fields are missing
     """
     return register(db, register_request)

@@ -1,12 +1,11 @@
 from typing import List, Union
 
 from faker import Faker
-from sqlmodel import Session
-
 from models.account import Account, AccountType
 from models.merchant import Merchant
 from models.user import User
 from services.auth_service import hash_password
+from sqlmodel import Session
 
 fake = Faker()
 
@@ -27,6 +26,7 @@ def generate_dummy_data(num_records: int) -> list[Union[Merchant, User]]:
         account_data = {
             "email": fake.email(),
             "password": hash_password(fake.password()),
+            "phone_number": fake.phone_number(),
             "account_type": account_type,
         }
         account = Account(**account_data)
