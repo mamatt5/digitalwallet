@@ -1,0 +1,6 @@
+fastapi
+sqlmodel
+uvicorn
+faker
+passlib
+bcrypt
