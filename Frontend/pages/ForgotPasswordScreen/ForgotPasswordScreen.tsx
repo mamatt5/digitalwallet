@@ -2,17 +2,15 @@ import React from "react";
 import { SafeAreaView, ScrollView, View, Text, Image } from "react-native";
 import { Button } from "react-native-paper";
 import DynamicTextInput from "../../components/DynamicTextInput/DynamicTextInput";
-import { NavigationContainerRef, useNavigationContainerRef } from "@react-navigation/native";
 
-const LoginScreen = ({navigation}) => {
-  const navigationRef = useNavigationContainerRef
+const ForgotPasswordScreen = ({navigation}) => {
 
   return (
     <SafeAreaView style={{ backgroundColor: '#0f003f', height: 2000}}>
         <ScrollView>
           <View style={{ display: 'flex', alignItems: 'center', justifyContent:"center"}}>
-            <Text style={{ color: '#ffffff', fontSize: 40, margin: 30 }}>
-              {'Login'}
+            <Text style={{ color: '#ffffff', fontSize: 30, margin: 30 }}>
+              {'Forgot Password'}
             </Text>
             <DynamicTextInput placeholder="EMAIL" />
             <DynamicTextInput placeholder="PASSWORD" />
@@ -23,11 +21,8 @@ const LoginScreen = ({navigation}) => {
                   </Text>
                 </Button>
             </View>
-            <Text onPress={() => navigation.navigate('ForgotPassword')} style={{ color:'#ffffff', marginTop: 20}}>
-              Forgot Password
-            </Text>
-            <Text onPress={() => navigation.navigate('Register')} style={{ color:'#ffffff', marginTop: 20}}>
-              Sign Up
+            <Text onPress={() => navigation.navigate('Login')} style={{ color:'#ffffff', marginTop: 20}}>
+              Log In
             </Text>
           </View>
         </ScrollView>
@@ -35,4 +30,4 @@ const LoginScreen = ({navigation}) => {
   );
 }
 
-export default LoginScreen;
+export default ForgotPasswordScreen;
