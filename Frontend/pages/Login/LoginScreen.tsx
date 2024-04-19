@@ -2,11 +2,8 @@ import React from "react";
 import { SafeAreaView, ScrollView, View, Text, Image } from "react-native";
 import { Button } from "react-native-paper";
 import DynamicTextInput from "../../components/DynamicTextInput/DynamicTextInput";
-import { NavigationContainerRef, useNavigationContainerRef } from "@react-navigation/native";
 
 const LoginScreen = ({navigation}) => {
-  const navigationRef = useNavigationContainerRef
-
   return (
     <SafeAreaView style={{ backgroundColor: '#0f003f', height: 2000}}>
         <ScrollView>
@@ -23,11 +20,14 @@ const LoginScreen = ({navigation}) => {
                   </Text>
                 </Button>
             </View>
-            <Text onPress={() => navigation.navigate('QRScan')} style={{ color:'#ffffff', marginTop: 20}}>
+            <Text onPress={() => navigation.navigate('ForgotPassword')} style={{ color:'#ffffff', marginTop: 20}}>
               Forgot Password
             </Text>
             <Text onPress={() => navigation.navigate('Register')} style={{ color:'#ffffff', marginTop: 20}}>
               Sign Up
+            </Text>
+            <Text onPress={() => navigation.navigate('QRScan')} style={{ color:'#ffffff', marginTop: 20}}>
+              QR Scanner Test
             </Text>
           </View>
         </ScrollView>

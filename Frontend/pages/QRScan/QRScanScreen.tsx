@@ -1,6 +1,6 @@
 import { Camera } from "expo-camera";
 import React, { useEffect, useState } from "react";
-import { Button, StyleSheet, Text, View } from "react-native";
+import { Button, SafeAreaView, StyleSheet, Text, View } from "react-native";
 
 const QRScanScreen = ({ navigation }) => {
     const [hasPermission, setHasPermission] = useState(null);
@@ -39,25 +39,29 @@ const QRScanScreen = ({ navigation }) => {
     }
     
     return (
-        <View style={styles.container}>
-        <View style={styles.cameraContainer}>
-            <Camera
-            onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-            style={styles.camera}
-            />
-        </View>
-        {scanned && (
-            <View>
-            <Text>{text}</Text>
-            <View style={{ width: "50%", alignSelf: "center" }}>
-                <Button
-                title={"Tap to Scan Again"}
-                onPress={() => setScanned(false)}
-                />
+        <SafeAreaView style={{ backgroundColor: '#0f003f', height: 2000}}>
+            <View style={styles.container}>
+                
+            <Text style={{ color: '#ffffff', fontSize: 20, margin: 30 }}>Please Scan your Card</Text>
+                <View style={styles.cameraContainer}>
+                    <Camera
+                    onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+                    style={styles.camera}
+                    />
+                </View>
+                {scanned && (
+                    <View>
+                    <Text>{text}</Text>
+                    <View style={{ width: "50%", alignSelf: "center" }}>
+                        <Button
+                        title={"Tap to Scan Again"}
+                        onPress={() => setScanned(false)}
+                        />
+                    </View>
+                    </View>
+                )}
             </View>
-            </View>
-        )}
-        </View>
+        </SafeAreaView>
     );
     };
 
@@ -65,19 +69,17 @@ export default QRScanScreen;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    flexDirection: "column",
+    display: 'flex',
     justifyContent: "center",
     alignItems: "center",
   },
   cameraContainer: {
-    height: 200,
-    width: 200,
     overflow: "hidden",
-    borderRadius: 30,
-    backgroundColor: "tomato",
+    borderColor: '#00a28e',
+    borderWidth: 10,
   },
   camera: {
-    flex: 1,
+    height: 200,
+    width: 200,
   },
 });
