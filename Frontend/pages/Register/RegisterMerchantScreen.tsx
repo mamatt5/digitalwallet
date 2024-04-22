@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
-import { View, Text, SafeAreaView, ScrollView } from "react-native";
+import { View, Text, SafeAreaView, ScrollView, Alert } from "react-native";
 import { Button } from "react-native-paper";
 import DynamicTextInput from '../../components/DynamicTextInput/DynamicTextInput';
 import { registerUser } from "../../api/api";
 import { registerMerchant } from "../../api/api";
-import Snackbar from "react-native-snackbar";
+
+// import Snackbar from "react-native-snackbar";
 
 
 const RegisterMerchantScreen = ({navigation}) => {
@@ -30,14 +31,27 @@ const RegisterMerchantScreen = ({navigation}) => {
         
         // creates merchant 
         try {
-            await registerMerchant(email, password, phoneNumber, "merchant", companyName, abn);
-            Snackbar.show({
-                text: 'Merchant Created',
-                duration: Snackbar.LENGTH_SHORT,
-              });
-            navigation.navigate("Login");
+            
+
+      
+            // Alert.alert(password)
+            // Alert.alert(phoneNumber)
+            // Alert.alert(companyName)
+            // Alert.alert(email)
+
+            await registerMerchant(email, password, phoneNumber, "merchant", companyName, abn)
+
+            // registerMerchant(email, password, phoneNumber, "merchant", companyName, abn).then().catch(e => Alert.alert(e.response.data))
+            // Snackbar.show({
+            //     text: 'Merchant Created',
+            //     duration: Snackbar.LENGTH_SHORT,
+            //   });
+
+            // Alert.alert("good")
+            // navigation.navigate("Login");
           } catch (error) {
             console.error("Registration error:", error);
+        
           }
 
 

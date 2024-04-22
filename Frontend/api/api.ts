@@ -1,6 +1,7 @@
 import axios from 'axios';
+import { Alert } from 'react-native';
 
-const API_BASE_URL = 'http://49.255.42.198:8000';
+const API_BASE_URL = 'http://203.219.65.185:8001';
 
 
 export const loginUser = async (email: string, password: string) => {
@@ -21,7 +22,10 @@ export const registerAccount = async (
   password: string,
   phoneNumber: string,
   accountType: string
+  
 ) => {
+
+  
   try {
     const response = await axios.post(`${API_BASE_URL}/auth/register`, {
       email,
@@ -47,16 +51,40 @@ export const registerMerchant = async (
 ) => {
 
   try {
-    const response = await axios.post(`${API_BASE_URL}/merchants`, {
-      email,
-      password,
-      phone_number: phoneNumber,
-      account_type: accountType.toLowerCase(),
-      company_name: companyName,
-      abn
-    });
 
-    return response.data;
+    
+    // const response = await axios.post(`${API_BASE_URL}/merchants`, {
+    //   email,
+    //   password,
+    //   phone_number: phoneNumber,
+    //   account_type: accountType.toLowerCase(),
+    //   company_name: companyName,
+    //   ABN: abn
+    // });
+
+    // const response = await axios.post(`${API_BASE_URL}/merchants`, {
+    //   account: account,
+    //   company_name: companyName,
+    //   ABN: abn
+    // });
+
+    axios.post(`${API_BASE_URL}/merchants`, {
+      account: {
+  
+        email: email,
+        password: password,
+        phone_number: phoneNumber,
+        account_type: accountType,
+      },
+      company_name: companyName,
+      ABN: abn
+    }).catch(function (error) {
+      Alert.alert(error)
+    })
+
+   
+
+    // return response.data;
   } catch (error) {
     console.error('Merchant Registration error:', error);
     throw error;

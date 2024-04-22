@@ -4,7 +4,7 @@ import { Button } from "react-native-paper";
 import {Picker} from '@react-native-picker/picker';
 import DynamicTextInput from "../../components/DynamicTextInput/DynamicTextInput";
 import { registerUser } from "../../api/api";
-import Snackbar from "react-native-snackbar";
+// import Snackbar from "react-native-snackbar"; 
 
 const RegisterUserScreen = ({navigation}) => {
   const [email, setEmail] = useState("");
@@ -17,10 +17,10 @@ const RegisterUserScreen = ({navigation}) => {
   const handleRegistration = async () => {
     try {
       await registerUser(email, password, phoneNumber, accountType, firstName, lastName);
-      Snackbar.show({
-        text: 'User Created',
-        duration: Snackbar.LENGTH_SHORT,
-      });
+      // Snackbar.show({
+      //   text: 'User Created',
+      //   duration: Snackbar.LENGTH_SHORT,
+      // });
       navigation.navigate("Login");
     } catch (error) {
       console.error("Registration error:", error);
