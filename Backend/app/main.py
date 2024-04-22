@@ -2,29 +2,39 @@ from database import get_db_session, init_db
 from dataloader import generate_dummy_data, insert_dummy_data
 from fastapi import FastAPI
 from routes import auth_route, merchant_route, user_route
-
-# Creates a FastAPI instance
-app = FastAPI()
+from contextlib import asynccontextmanager
 
 
-@app.on_event("startup")
-def on_startup():
+@asynccontextmanager
+async def lifespan(app: FastAPI):
     """
-    Startup event handler
+    Manages the applications lifecycle
 
-    This function is called when the application starts up
-    It initialises the database and generates and inserts dummy data
+    On startup:
+    - Initializes the database
+    - Generates dummy data into the database
+
+    On shutdown:
+    - Handles resource cleanup, closes database connection
     """
     
-    # Initialise the database tables
+    # Startup: Initialise the database and generate dummy data
     init_db()
 
-    # Generate and insert dummy data
     num_records = 10
     dummy_data = generate_dummy_data(num_records)
     with next(get_db_session()) as session:
         insert_dummy_data(session, dummy_data)
+    
+    # Yield to application execution
+    yield
 
+    # Shutdown
+    pass
+
+
+# Creates a FastAPI instance
+app = FastAPI(lifespan=lifespan)
 
 # Include the routes/endpoints for the app
 app.include_router(user_route.router)
