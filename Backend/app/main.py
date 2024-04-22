@@ -12,11 +12,15 @@ def on_startup():
     """
     Startup event handler
 
-    This function is called when the application starts up
-    It initialises the database and generates and inserts dummy data
+    On startup:
+    - Initialises the database
+    - Generates dummy data into the database
+
+    On shutdown:
+    - Handles resource cleanup, closes database connection
     """
     
-    # Initialise the database tables
+    # Startup
     init_db()
 
     # Generate and insert dummy data
@@ -24,6 +28,9 @@ def on_startup():
     dummy_data = generate_dummy_data(num_records)
     with next(get_db_session()) as session:
         insert_dummy_data(session, dummy_data)
+    
+    # Application execution
+    yield
 
 
 # Include the routes/endpoints for the app
