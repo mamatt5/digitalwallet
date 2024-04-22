@@ -7,6 +7,7 @@ from sqlmodel import Session
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
 
+# need to use form_data: OAuth2PasswordRequestForm = Depends()?
 @router.post("/login", response_model=AuthResponse)
 def login_route(login_request: LoginRequest, db: Session = Depends(get_db_session)):
     """
@@ -19,6 +20,7 @@ def login_route(login_request: LoginRequest, db: Session = Depends(get_db_sessio
     return login(db, login_request)
 
 
+# this doesnt need access token right? So what does register return an auth response?
 @router.post("/register", response_model=AuthResponse)
 def register_route(register_request: RegisterRequest, db: Session = Depends(get_db_session)):
     """

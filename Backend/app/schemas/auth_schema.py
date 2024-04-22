@@ -6,6 +6,11 @@ from schemas.account_schema import AccountResponse
 from schemas.merchant_schema import MerchantResponse
 from schemas.user_schema import UserResponse
 
+class Token(BaseModel):
+    access_token: str = Field(..., description="Access token")
+    token_type: str = Field(..., description="Token type")
+    expires_in: int = Field(..., description="Expiration time of the access token in seconds")
+    refresh_token: str = Field(..., description="Refresh token")
 
 class LoginRequest(BaseModel):
     email: EmailStr = Field(description="Account email")
@@ -20,6 +25,4 @@ class RegisterRequest(BaseModel):
     
     
 class AuthResponse(BaseModel):
-    account: AccountResponse = Field(..., description="The authenticated/registered account")
-    merchant: Optional[MerchantResponse] = Field(None, description="The merchant information for the account (if created)")
-    user: Optional[UserResponse] = Field(None, description="The user information for the account (if created)")
+    token: Token = Field(..., description="Access token details")

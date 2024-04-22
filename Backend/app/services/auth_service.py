@@ -6,70 +6,12 @@ from passlib.context import CryptContext
 from schemas.auth_schema import AuthResponse, LoginRequest, RegisterRequest
 from sqlmodel import Session
 
-# CryptContext instance for password hashing
-password_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-
-def verify_password(plain_password, hashed_password):
-    """
-    Verify if the plain password matches the hashed password
-
-    Args:
-        plain_password (str): The plain password to verify
-        hashed_password (str): The hashed password to compare
-
-    Returns:
-        bool: True or False if the passwords match
-    """
-    return password_context.verify(plain_password, hashed_password)
-
-
-def hash_password(password):
-    """
-    Hash the password using hashing scheme (Bcrypt)
-
-    Args:
-        password (str): The plain password
-
-    Returns:
-        str: The hashed password
-    """
-    return password_context.hash(password)
-
 
 def login(db: Session, login_request: LoginRequest):
-    """
-    Authenticate a user on login request
-
-    Args:
-        db (Session): Database session
-        login_request (LoginRequest): The login request containing the users credentials
-
-    Returns:
-        AuthResponse: The authentication response containing the account data
-
-    Raises:
-        HTTPException: If email or password is invalid
-    
-    Status Codes:
-        - 200 OK: The user was successfully authenticated.
-        - 401 Unauthorized: The provided email or password is invalid
-    """
-    account = db.query(Account).filter(Account.email == login_request.email).first()
-    if not account or not verify_password(login_request.password, account.password):
-        raise HTTPException(status_code=401, detail="Invalid email or password")
-    
-    response_data = {"account": account}
-    if account.account_type == AccountType.MERCHANT:
-        merchant = db.query(Merchant).filter(Merchant.account_id == account.account_id).first()
-        if merchant:
-            response_data["merchant"] = merchant
-    elif account.account_type == AccountType.USER:
-        user = db.query(User).filter(User.account_id == account.account_id).first()
-        if user:
-            response_data["user"] = user
-        
-    return AuthResponse(**response_data)
+    account = authenticate_account(db, login_request.username, login_request.password)
+    access_token = create_access_token(account) # need sub as well?
+    token = Token(access_token=access_token, token_type="bearer")
+    return AuthResponse(token=token, account=account)
 
 
 def register(db: Session, register_request: RegisterRequest):
