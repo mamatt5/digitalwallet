@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://192.168.1.110:8000';
+const API_BASE_URL = 'http://49.255.42.198:8000';
 
 
 export const loginUser = async (email: string, password: string) => {
@@ -31,7 +31,7 @@ export const registerAccount = async (
     });
     return response.data;
   } catch (error) {
-    console.error('Registration error:', error);
+    console.error('Account Registration error:', error);
     throw error;
   }
 };
@@ -52,13 +52,13 @@ export const registerMerchant = async (
       password,
       phone_number: phoneNumber,
       account_type: accountType.toLowerCase(),
-      companyName,
+      company_name: companyName,
       abn
     });
 
     return response.data;
   } catch (error) {
-    console.error('Registration error:', error);
+    console.error('Merchant Registration error:', error);
     throw error;
   }
 };
@@ -79,13 +79,14 @@ export const registerUser = async (
       password,
       phone_number: phoneNumber,
       account_type: accountType.toLowerCase(),
+      
       first_name: firstName,
       last_name: lastName
     });
 
     return response.data;
   } catch (error) {
-    console.error('Registration error:', error);
+    console.error('User Registration error:', error);
     throw error;
   }
 };

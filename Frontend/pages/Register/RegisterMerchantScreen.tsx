@@ -4,8 +4,10 @@ import { Button } from "react-native-paper";
 import DynamicTextInput from '../../components/DynamicTextInput/DynamicTextInput';
 import { registerUser } from "../../api/api";
 import { registerMerchant } from "../../api/api";
+import Snackbar from "react-native-snackbar";
 
-const RegisterMerchantScreen = () => {
+
+const RegisterMerchantScreen = ({navigation}) => {
 
     // details of a merchant
     // can add more
@@ -29,6 +31,11 @@ const RegisterMerchantScreen = () => {
         // creates merchant 
         try {
             await registerMerchant(email, password, phoneNumber, "merchant", companyName, abn);
+            Snackbar.show({
+                text: 'Merchant Created',
+                duration: Snackbar.LENGTH_SHORT,
+              });
+            navigation.navigate("Login");
           } catch (error) {
             console.error("Registration error:", error);
           }
