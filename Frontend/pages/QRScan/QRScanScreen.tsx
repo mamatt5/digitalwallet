@@ -1,7 +1,7 @@
 import { Camera } from "expo-camera";
 import React, { useEffect, useState } from "react";
 import { Button, SafeAreaView, StyleSheet, Text, View } from "react-native";
-import { URLSafeSerializer } from 'itsdangerous'; 
+#import { URLSafeSerializer } from 'itsdangerous'; 
 
 const QRScanScreen = ({ navigation }) => {
     const [hasPermission, setHasPermission] = useState(null);
@@ -23,20 +23,20 @@ const QRScanScreen = ({ navigation }) => {
         setScanned(true);
         setText(`QR code with type ${type} and data ${data} has been scanned!`);
 
-        //NEW 
+        // //NEW
 
-        const secretKey = "your_very_secret_key"; // Replace with your actual secret key
-        const serializer = new URLSafeSerializer(secretKey);
+        // const secretKey = "your_very_secret_key"; // Replace with your actual secret key
+        // const serializer = new URLSafeSerializer(secretKey);
 
-        // Retrieve data from scanned QR code (replace with your actual logic)
-        let signedData: string; // Example: Replace with code that retrieves the signed data
+        // // Retrieve data from scanned QR code (replace with your actual logic)
+        // let signedData: string; // Example: Replace with code that retrieves the signed data
 
-        try {
-        const data = serializer.loads(signedData);
-        console.log("Data verified and decoded:", data);
-        } catch (error) {
-        console.error("Error: Invalid QR code or tampering detected!");
-        }
+        // try {
+        // const data = serializer.loads(signedData);
+        // console.log("Data verified and decoded:", data);
+        // } catch (error) {
+        // console.error("Error: Invalid QR code or tampering detected!");
+        // }
     };
     
     if (hasPermission === null) {
