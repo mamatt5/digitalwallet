@@ -1,7 +1,7 @@
 import { Camera } from "expo-camera";
 import React, { useEffect, useState } from "react";
 import { Button, SafeAreaView, StyleSheet, Text, View } from "react-native";
-#import { URLSafeSerializer } from 'itsdangerous'; 
+//import { URLSafeSerializer } from 'itsdangerous'; 
 
 const QRScanScreen = ({ navigation }) => {
     const [hasPermission, setHasPermission] = useState(null);
