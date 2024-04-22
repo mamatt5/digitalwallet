@@ -4,3 +4,5 @@ uvicorn
 faker
 passlib
 bcrypt
+qrcode
+itsdangerous
