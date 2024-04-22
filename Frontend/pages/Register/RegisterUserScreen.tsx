@@ -9,11 +9,13 @@ const RegisterUserScreen = ({navigation}) => {
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [accountType, setAccountType] = useState("user");
 
   const handleRegistration = async () => {
     try {
-      await registerUser(email, password, phoneNumber, accountType);
+      await registerUser(email, password, phoneNumber, accountType, firstName, lastName);
       navigation.navigate("Login");
     } catch (error) {
       console.error("Registration error:", error);
@@ -31,6 +33,8 @@ const RegisterUserScreen = ({navigation}) => {
             <DynamicTextInput placeholder="EMAIL" onChangeText={setEmail} value={email} />
             <DynamicTextInput placeholder="MOBILE NUMBER" onChangeText={setPhoneNumber} value={phoneNumber} />
             <DynamicTextInput placeholder="PASSWORD" onChangeText={setPassword} value={password} secureTextEntry />
+            <DynamicTextInput placeholder="FIRSTNAME" onChangeText={setFirstName} value={firstName} />
+            <DynamicTextInput placeholder="LASTNAME" onChangeText={setLastName} value={lastName} />
             {/* <Picker
                 selectedValue={accountType}
                 onValueChange={(itemValue, itemIndex) => setAccountType(itemValue)}

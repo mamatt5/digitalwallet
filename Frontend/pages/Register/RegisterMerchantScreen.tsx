@@ -2,16 +2,38 @@ import React, { useState } from 'react'
 import { View, Text, SafeAreaView, ScrollView } from "react-native";
 import { Button } from "react-native-paper";
 import DynamicTextInput from '../../components/DynamicTextInput/DynamicTextInput';
+import { registerUser } from "../../api/api";
+import { registerMerchant } from "../../api/api";
 
 const RegisterMerchantScreen = () => {
 
     // details of a merchant
     // can add more
-    const [name, setName] = useState("");
+    const [companyName, setCompanyName] = useState("");
     const [abn, setAbn] = useState("");
+    const [email, setEmail] = useState("");
+    const [phoneNumber, setPhoneNumber] = useState("");
+    const [password, setPassword] = useState("");
 
     const createMerchant = async () => {
         // api call to create merchant goes here
+
+        // creates account first
+        // try {
+        //     await registerUser(email, password, phoneNumber, "merchant");
+        //   } catch (error) {
+        //     console.error("Registration error:", error);
+        //   }
+
+        
+        // creates merchant 
+        try {
+            await registerMerchant(email, password, phoneNumber, "merchant", companyName, abn);
+          } catch (error) {
+            console.error("Registration error:", error);
+          }
+
+
       };
 
       
@@ -24,8 +46,11 @@ const RegisterMerchantScreen = () => {
                     </Text>
                     
                     
-                    <DynamicTextInput placeholder="NAME" onChangeText={setName} value={name} />
+                    <DynamicTextInput placeholder="COMPANY NAME" onChangeText={setCompanyName} value={companyName} />
                     <DynamicTextInput placeholder="ABN" onChangeText={setAbn} value={abn} />
+                    <DynamicTextInput placeholder="EMAIL" onChangeText={setEmail} value={email} />
+                    <DynamicTextInput placeholder="MOBILE NUMBER" onChangeText={setPhoneNumber} value={phoneNumber} />
+                    <DynamicTextInput placeholder="PASSWORD" onChangeText={setPassword} value={password} secureTextEntry />
 
                     <View style={{ margin:20, width:200}}>
                         <Button buttonColor="#ffffff" textColor="#000000" onPress={createMerchant}>
