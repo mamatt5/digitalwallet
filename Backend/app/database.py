@@ -1,7 +1,7 @@
+from config import DATABASE_URL
 from sqlmodel import Session, SQLModel, create_engine
 
 # Create a database engine using SQLite
-DATABASE_URL = "sqlite:///database.db"
 engine = create_engine(DATABASE_URL)
 
 
