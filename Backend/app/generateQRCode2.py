@@ -1,3 +1,5 @@
+#has expiring time but needs front end to call api to generate and get
+
 from flask import Flask, request, jsonify
 from itsdangerous import URLSafeSerializer
 import qrcode
