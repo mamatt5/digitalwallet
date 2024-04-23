@@ -50,7 +50,7 @@ exclude = [
 ]
 line-length = 120
 select = ["ALL"]
-ignore = ["D", "FA102", "FA100"]
+ignore = ["D", "FA102", "FA100", "S101"]
 
 [tool.ruff.lint]
 

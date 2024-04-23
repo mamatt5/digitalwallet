@@ -1,10 +1,10 @@
 from typing import Generator
 
-from config import DATABASE_URL
+from config import DEV_DATABASE_URL
 from sqlmodel import Session, SQLModel, create_engine
 
 # Create a database engine using SQLite
-engine = create_engine(DATABASE_URL)
+engine = create_engine(DEV_DATABASE_URL)
 
 
 def init_db() -> None:

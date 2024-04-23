@@ -98,7 +98,7 @@ def get_current_account(
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[JWT_ALGORITHM])
         token_data = TokenData(**payload)
-        account = db.exec(Account).filter(Account.email == token_data.email).first()
+        account = db.query(Account).filter(Account.email == token_data.email).first()
         if account is None or token_data.exp < datetime.now(tz=timezone.utc):
             raise credentials_exception
     except JWTError as err:

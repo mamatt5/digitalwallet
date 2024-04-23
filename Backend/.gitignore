@@ -7,3 +7,9 @@ __pycache__/
 *.db
 
 .env
+
+# Test logs directory
+tests/test_logs/
+
+# VSCode directory
+../.vscode/
