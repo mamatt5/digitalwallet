@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Annotated
 
 from config import (
@@ -24,7 +24,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/token")
 password_context = CryptContext(schemes=[PASSWORD_HASH_ALGORITHM], deprecated="auto")
 
 
-def verify_password(plain_password, hashed_password):
+def verify_password(plain_password: str, hashed_password: str) -> bool:
     """
     Verify if the plain password matches the hashed password
 
@@ -38,7 +38,7 @@ def verify_password(plain_password, hashed_password):
     return password_context.verify(plain_password, hashed_password)
 
 
-def hash_password(password):
+def hash_password(password: str) -> str:
     """
     Hash the password using hashing scheme (Bcrypt)
 
@@ -63,16 +63,18 @@ def create_access_token(email: EmailStr, expires_delta: timedelta | None = None)
         str: The encoded access token
     """
     to_encode = {"sub": email}
-    if expires_delta:
-        expire = datetime.utcnow() + expires_delta
-    else:
-        expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    expire = (
+        datetime.now(tz=timezone.utc) + expires_delta
+        if expires_delta
+        else datetime.now(tz=timezone.utc) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    )
     to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=JWT_ALGORITHM)
-    return encoded_jwt
+    return jwt.encode(to_encode, SECRET_KEY, algorithm=JWT_ALGORITHM)
 
 
-def get_current_account(token: Annotated[str, Depends(oauth2_scheme)], db: Annotated[Session, Depends(get_db_session)]) -> Account:
+def get_current_account(
+    token: Annotated[str, Depends(oauth2_scheme)], db: Annotated[Session, Depends(get_db_session)],
+) -> Account:
     """
     Gets the current account from access token
 
@@ -86,19 +88,19 @@ def get_current_account(token: Annotated[str, Depends(oauth2_scheme)], db: Annot
     Raises:
         HTTPException: If the token is invalid or the account is not found
     """
-    
+
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
         headers={"WWW-Authenticate": "Bearer"},
     )
-    
+
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[JWT_ALGORITHM])
         token_data = TokenData(**payload)
-        account = db.query(Account).filter(Account.email == token_data.email).first()
-        if account is None or token_data.exp < datetime.utcnow():
+        account = db.exec(Account).filter(Account.email == token_data.email).first()
+        if account is None or token_data.exp < datetime.now(tz=timezone.utc):
             raise credentials_exception
-    except JWTError:
-        raise credentials_exception
+    except JWTError as err:
+        raise credentials_exception from err
     return account

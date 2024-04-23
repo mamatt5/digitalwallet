@@ -21,7 +21,7 @@ def authenticate_account(db: Session, email: str, password: str) -> Account:
     Raises:
         HTTPException: If the email or password is invalid
     """
-    account = db.query(Account).filter(Account.email == email).first()
+    account = db.exec(Account).filter(Account.email == email).first()
     if not account or not verify_password(password, account.password):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid email or password")
     return account
@@ -59,10 +59,10 @@ def register(db: Session, register_request: RegisterRequest) -> AuthResponse:
         HTTPException: If the email or phone number is already registered
     """
 
-    if db.query(Account).filter(Account.email == register_request.email).first():
+    if db.exec(Account).filter(Account.email == register_request.email).first():
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email already registered")
 
-    if db.query(Account).filter(Account.phone_number == register_request.phone_number).first():
+    if db.exec(Account).filter(Account.phone_number == register_request.phone_number).first():
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Phone number already registered")
 
     account_data = register_request.dict()

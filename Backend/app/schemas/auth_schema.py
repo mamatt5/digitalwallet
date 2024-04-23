@@ -20,8 +20,8 @@ class RegisterRequest(BaseModel):
     password: str = Field(..., description="Account password")
     phone_number: str = Field(..., description="Account phone number")
     account_type: AccountType = Field(..., description="Account type (merchant or user)")
-    
-    
+
+
 class AuthResponse(BaseModel):
     token: Token = Field(..., description="Access token details")
     account: AccountResponse = Field(..., description="Account details")

@@ -7,13 +7,13 @@ from schemas.auth_schema import AuthResponse, RegisterRequest
 from services.auth_service import login, register
 from sqlmodel import Session
 
-
 router = APIRouter(prefix="/auth", tags=["Authentication"])
+
 
 @router.post("/login", response_model=AuthResponse)
 def login_route(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
-    db: Annotated[Session, Depends(get_db_session)]
+    db: Annotated[Session, Depends(get_db_session)],
 ) -> AuthResponse:
     """
     **Login/Authenticate Endpoint**

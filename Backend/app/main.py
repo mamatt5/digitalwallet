@@ -1,12 +1,14 @@
 from contextlib import asynccontextmanager
-from fastapi import FastAPI
+from typing import AsyncGenerator
+
 from database import get_db_session, init_db
 from dataloader import generate_dummy_data, insert_dummy_data
-from routes import auth_route, merchant_route, user_route
+from fastapi import FastAPI
+from routes import auth_route
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI):
+async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     """
     Startup event handler
 
@@ -30,12 +32,10 @@ async def lifespan(app: FastAPI):
     yield
 
     # Shutdown
-    pass
+
 
 # Creates a FastAPI instance
 app = FastAPI(lifespan=lifespan)
 
 # Include the routes/endpoints for the app
-app.include_router(user_route.router)
-app.include_router(merchant_route.router)
 app.include_router(auth_route.router)

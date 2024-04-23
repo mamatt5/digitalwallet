@@ -1,3 +1,5 @@
+from typing import Generator
+
 from config import DATABASE_URL
 from sqlmodel import Session, SQLModel, create_engine
 
@@ -5,7 +7,7 @@ from sqlmodel import Session, SQLModel, create_engine
 engine = create_engine(DATABASE_URL)
 
 
-def init_db():
+def init_db() -> None:
     """
     Initialise the database
 
@@ -14,7 +16,7 @@ def init_db():
     SQLModel.metadata.create_all(engine)
 
 
-def get_db_session():
+def get_db_session() -> Generator[Session, None, None]:
     """
     Get a database session
 

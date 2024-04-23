@@ -1,5 +1,5 @@
 from models.account import AccountType
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
 
 class AccountBase(BaseModel):
@@ -16,5 +16,4 @@ class AccountRequest(AccountBase):
 class AccountResponse(AccountBase):
     account_id: int = Field(..., description="Account ID")
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
