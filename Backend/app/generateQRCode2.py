@@ -56,5 +56,7 @@ def get_qr_data():
 
   return jsonify({'data': serializer.loads(qr_info['data'])})
 
+
+# Development only
 if __name__ == '__main__':
   app.run(debug=True)
