@@ -1,12 +1,14 @@
 import { Camera } from "expo-camera";
 import React, { useEffect, useState } from "react";
 import { Button, SafeAreaView, StyleSheet, Text, View } from "react-native";
-//import { URLSafeSerializer } from 'itsdangerous'; 
+import axios from 'axios';
+import { URLSafeSerializer } from 'itsdangerous'; 
 
 const QRScanScreen = ({ navigation }) => {
     const [hasPermission, setHasPermission] = useState(null);
     const [scanned, setScanned] = useState(false);
     const [text, setText] = useState("Not yet scanned");
+    const [qrCodeData, setQrCodeData] = useState(null);
     
     const askForCameraPermission = () => {
         (async () => {
@@ -23,20 +25,48 @@ const QRScanScreen = ({ navigation }) => {
         setScanned(true);
         setText(`QR code with type ${type} and data ${data} has been scanned!`);
 
-        //cannot install itsdangerous in office pc
+        
+        // const qrdata = getQRData;
+        // setText(`Merchant: ${qrdata.merchant}, ABN: ${qrdata.ABN}, price: ${qrdata.price} `)
+        
+        // Cannot install itsdangerous in office pc 
+        // This can only decode nonexpiring qrcode
 
-        // const secretKey = "iyhaykicyhmqdqxygyqyklklsyseslqbggggzyzdysbqdddsy"; 
-        // const serializer = new URLSafeSerializer(secretKey);
+        const secretKey = "iyhaykicyhmqdqxygyqyklklsyseslqbggggzyzdysbqdddsy"; 
+        const serializer = new URLSafeSerializer(secretKey);
 
-        // let signedData: string; 
+        let signedData: string; 
 
-        // try {
-        // const data = serializer.loads(signedData);
-        // console.log("Data verified and decoded:", data);
-        // } catch (error) {
-        // console.error("Error: Invalid QR code or tampering detected!");
-        // }
+        try {
+            const data = serializer.loads(signedData);
+            console.log("Data verified and decoded:", data);
+        } catch (error) {
+            console.error("Error: Invalid QR code or tampering detected!");
+        }
     };
+
+    // const getQRData = () => {
+    //     (async ()=> {
+    //         try {
+    //             const response = await axios.post('http://203.219.65.185:8001/get_qr_data')
+    //             setQrCodeData(response.data);
+    //             return response.data;
+    //         }catch (err){
+    //             console.error('Failed to get QR Code', err);
+    //             throw err;
+    //         }
+    //     })
+    // }
+
+    // Press button to generate QR code
+    // That calls API to generate, provide with data: merchant, ABN, price + expire time 
+    // We display the QR code
+
+    // We scan QR code
+    // Unlock code with secret key (if expired do not show info, display err msg)
+    // User confirms payment 
+    // Call API to execute the payment 
+     
     
     if (hasPermission === null) {
         return <Text>Requesting for camera permission</Text>;
