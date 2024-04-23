@@ -8,18 +8,22 @@ from datetime import datetime
 
 app = Flask(__name__)
 
-secret_key = "your_very_secret_key"
+secret_key = "iyhaykicyhmqdqxygyqyklklsyseslqbggggzyzdysbqdddsy"
 serializer = URLSafeSerializer(secret_key)
-qr_data = {}  # Dictionary to store data and expiration time for each QR code
+
+# Dictionary to store data and expiration time for each QR code
+qr_data = {}  
 
 @app.route('/generate_qr', methods=['POST'])
 def generate_qr():
-  data = request.get_json()  # Get data from request body
-  expiration_time = data.get('expiration_time')  # Extract expiration time from data
+  # Get data from request body
+  data = request.get_json()  
+  # Extract expiration time from data
+  expiration_time = data.get('expiration_time')  
   if not expiration_time:
     return jsonify({'error': 'Missing expiration time in request'}), 400
 
-  # Convert expiration time string to datetime object (adjust format if needed)
+  # Convert expiration time string to datetime object
   expiration_time_obj = datetime.strptime(expiration_time, '%Y-%m-%dT%H:%M:%SZ')
 
   encoded_data = serializer.dumps(data)
@@ -29,7 +33,8 @@ def generate_qr():
   img = qr.make_image(fill_color="black", back_color="white")
   img.save("qrcode2.png")
 
-  qr_data[data['id']] = {'data': encoded_data, 'expiration': expiration_time_obj}  # Store data with ID
+  # Store data with ID
+  qr_data[data['id']] = {'data': encoded_data, 'expiration': expiration_time_obj}  
   return jsonify({'message': 'QR code generated successfully'})
 
 @app.route('/get_qr_data', methods=['POST'])
@@ -43,7 +48,8 @@ def get_qr_data():
     return jsonify({'error': 'QR code not found'}), 404
 
   qr_info = qr_data[qr_id]
-  current_time = datetime.utcnow()  # Get current time
+  # Get current time to check if expired
+  current_time = datetime.utcnow() 
 
   if current_time > qr_info['expiration']:
     return jsonify({'error': 'QR code expired'}), 400

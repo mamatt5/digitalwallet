@@ -23,13 +23,12 @@ const QRScanScreen = ({ navigation }) => {
         setScanned(true);
         setText(`QR code with type ${type} and data ${data} has been scanned!`);
 
-        // //NEW
+        //cannot install itsdangerous in office pc
 
-        // const secretKey = "your_very_secret_key"; // Replace with your actual secret key
+        // const secretKey = "iyhaykicyhmqdqxygyqyklklsyseslqbggggzyzdysbqdddsy"; 
         // const serializer = new URLSafeSerializer(secretKey);
 
-        // // Retrieve data from scanned QR code (replace with your actual logic)
-        // let signedData: string; // Example: Replace with code that retrieves the signed data
+        // let signedData: string; 
 
         // try {
         // const data = serializer.loads(signedData);
