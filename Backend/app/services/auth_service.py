@@ -4,74 +4,79 @@ from models.account import Account
 from schemas.auth_schema import AuthResponse, RegisterRequest, Token
 from security import create_access_token, hash_password, verify_password
 from sqlmodel import Session
+from repositories.account_repository import AccountRepository
+from fastapi import Depends
 
 
-def authenticate_account(db: Session, email: str, password: str) -> Account:
-    """
-    Authenticate an account
+class AuthService:
 
-    Args:
-        db (Session): Database session
-        email (str): Email of the account
-        password (str): Password of the account
+    def __init__(self, account_repository: AccountRepository = Depends(AccountRepository)):
+        self.account_repository = account_repository
 
-    Returns:
-        Account: The authenticated account
+    def authenticate_account(self, email: str, password: str) -> Account | None:
+        """
+        Authenticate an account
 
-    Raises:
-        HTTPException: If the email or password is invalid
-    """
-    account = db.query(Account).filter(Account.email == email).first()
-    if not account or not verify_password(password, account.password):
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid email or password")
-    return account
+        Args:
+            email (str): Account email
+            password (str): Account password
 
-
-def login(db: Session, form_data: OAuth2PasswordRequestForm) -> AuthResponse:
-    """
-    Login an account
-
-    Args:
-        db (Session): Database session
-        form_data (OAuth2PasswordRequestForm): The login form data
-
-    Returns:
-        AuthResponse: The authentication response containing the token and account
-    """
-    account = authenticate_account(db, form_data.username, form_data.password)
-    access_token = create_access_token(account.email)
-    token = Token(access_token=access_token, token_type="bearer")
-    return AuthResponse(token=token, account=account)
+        Returns:
+            Account | None: The authenticated account if credentials are valid
+        """
+        account = self.account_repository.get_by_email(email)
+        if account and verify_password(password, account.password):
+            return account
+        return None
 
 
-def register(db: Session, register_request: RegisterRequest) -> AuthResponse:
-    """
-    Register a new user on register request
+    def login(self, form_data: OAuth2PasswordRequestForm) -> AuthResponse:
+        """
+        Login an account
 
-    Args:
-        db (Session): Database session
-        register_request (RegisterRequest): The registration request containing the users information
+        Args:
+            form_data (OAuth2PasswordRequestForm): The login form data containing the email and password
 
-    Returns:
-        AuthResponse: The authentication response containing the token and account
+        Returns:
+            AuthResponse: The authentication response containing the token and account
 
-    Raises:
-        HTTPException: If the email or phone number is already registered
-    """
+        Raises:
+            HTTPException(400): If the email or password is invalid
+        """
 
-    if db.query(Account).filter(Account.email == register_request.email).first():
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email already registered")
+        account = self.authenticate_account(form_data.username, form_data.password)
+        if not account:
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid email or password")
 
-    if db.query(Account).filter(Account.phone_number == register_request.phone_number).first():
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Phone number already registered")
+        access_token = create_access_token(account.email)
+        token = Token(access_token=access_token, token_type="bearer")
+        return AuthResponse(token=token, account=account)
 
-    account_data = register_request.model_dump()
-    account_data["password"] = hash_password(register_request.password)
-    account = Account(**account_data)
-    db.add(account)
-    db.commit()
-    db.refresh(account)
 
-    access_token = create_access_token(account.email)
-    token = Token(access_token=access_token, token_type="bearer")
-    return AuthResponse(token=token, account=account)
+    def register(self, register_request: RegisterRequest) -> AuthResponse:
+        """
+        Register a new account
+
+        Args:
+            register_request (RegisterRequest): The registration request containing the users information
+
+        Returns:
+            AuthResponse: The authentication response containing the token and newly created account
+
+        Raises:
+            HTTPException(400): If the email or phone number is already registered
+        """
+        if self.account_repository.get_by_email(register_request.email):
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email already registered")
+
+        if self.account_repository.get_by_phone_number(register_request.phone_number):
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Phone number already registered")
+
+        account_data = register_request.model_dump()
+        account_data["password"] = hash_password(register_request.password)
+        account = Account(**account_data)
+        account = self.account_repository.create(account)
+
+        access_token = create_access_token(account.email)
+        token = Token(access_token=access_token, token_type="bearer")
+        return AuthResponse(token=token, account=account)

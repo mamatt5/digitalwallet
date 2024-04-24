@@ -16,7 +16,7 @@ def init_db() -> None:
     SQLModel.metadata.create_all(engine)
 
 
-def get_db_session() -> Generator[Session, None, None]:
+def get_db_session():
     """
     Get a database session
 
