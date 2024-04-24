@@ -43,9 +43,6 @@ const LoginScreen = ({navigation}) => {
             <Text onPress={() => navigation.navigate('QRScan')} style={{ color:'#ffffff', marginTop: 20}}>
               QR Scanner Test
             </Text>
-            <Text onPress={() => navigation.navigate('Cards')} style={{ color:'#ffffff', marginTop: 20}}>
-              Cards Test
-            </Text>
           </View>
         </ScrollView>
     </SafeAreaView>

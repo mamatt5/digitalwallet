@@ -42,7 +42,7 @@ const QRScanScreen = ({ navigation }) => {
         <SafeAreaView style={{ backgroundColor: '#0f003f', height: 2000}}>
             <View style={styles.container}>
                 
-            <Text style={{ color: '#ffffff', fontSize: 20, margin: 30 }}>Please Scan your Card</Text>
+            <Text style={{ color: '#ffffff', fontSize: 20, margin: 30 }}>Please scan QR code</Text>
                 <View style={styles.cameraContainer}>
                     <Camera
                     onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}

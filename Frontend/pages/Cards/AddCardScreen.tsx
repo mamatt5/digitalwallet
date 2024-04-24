@@ -18,9 +18,17 @@ const AddCardScreen = ({navigation}) => {
         <View>
           <View style={{ margin: 20, width: 200 }}>
             <Text style={{ color: '#ffffff', fontSize: 20, margin: 10 }}>Card number:</Text>
-            <TextInput style={{ backgroundColor: '#ffffff', padding: 10, borderRadius: 5 }} onChangeText={setCardNumber} value={cardNumber} />
+            <TextInput style={{ backgroundColor: '#ffffff', padding: 10, borderRadius: 5 }} 
+              onChangeText={setCardNumber} 
+              value={cardNumber} 
+              maxLength={16}
+              keyboardType='numeric'/>
+
+
             <Text style={{ color: '#ffffff', fontSize: 20, margin: 10 }}>Expiry date:</Text>
-            <TextInput style={{ backgroundColor: '#ffffff', padding: 10, borderRadius: 5 }} onChangeText={setExpiryDate} value={expiryDate} />
+            <TextInput style={{ backgroundColor: '#ffffff', padding: 10, borderRadius: 5 }} 
+              onChangeText={setExpiryDate} 
+              value={expiryDate} />
             
             <View  style={{marginTop: 20}}>
                 <Button title={"Add card"} onPress={() => navigation.navigate('Cards')}></Button>
