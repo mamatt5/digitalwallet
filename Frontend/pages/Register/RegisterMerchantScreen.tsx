@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
-import { View, Text, SafeAreaView, ScrollView, Alert } from "react-native";
+import { View, Text, SafeAreaView, ScrollView, Alert, KeyboardAvoidingView } from "react-native";
 import { Button } from "react-native-paper";
 import DynamicTextInput from '../../components/DynamicTextInput/DynamicTextInput';
 import { registerAccount } from "../../api/api";
 
 // import Snackbar from "react-native-snackbar";
+
+
 
 
 const RegisterMerchantScreen = ({navigation}) => {
@@ -44,6 +46,7 @@ const RegisterMerchantScreen = ({navigation}) => {
       
     return (
         <SafeAreaView style={{ backgroundColor: '#0f003f', height: 2000}}>
+            <KeyboardAvoidingView behavior="padding" style={{flex:1}}>
             <ScrollView>
                 <View style={{ display: 'flex', alignItems: 'center', justifyContent:"center"}}>
                     <Text style={{ color: '#ffffff', fontSize: 40, margin: 30 }}>
@@ -67,7 +70,7 @@ const RegisterMerchantScreen = ({navigation}) => {
 
                 </ View>  
             </ScrollView>
-        
+            </KeyboardAvoidingView>
         
         </SafeAreaView>
     )
