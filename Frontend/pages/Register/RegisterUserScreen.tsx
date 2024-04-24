@@ -3,7 +3,8 @@ import { SafeAreaView, ScrollView, View, Text } from "react-native";
 import { Button } from "react-native-paper";
 import {Picker} from '@react-native-picker/picker';
 import DynamicTextInput from "../../components/DynamicTextInput/DynamicTextInput";
-import { registerUser } from "../../api/api";
+import { registerAccount } from "../../api/api";
+import { Alert } from "react-native";
 // import Snackbar from "react-native-snackbar"; 
 
 const RegisterUserScreen = ({navigation}) => {
@@ -16,11 +17,12 @@ const RegisterUserScreen = ({navigation}) => {
 
   const handleRegistration = async () => {
     try {
-      await registerUser(email, password, phoneNumber, accountType, firstName, lastName);
+      await registerAccount(email, password, phoneNumber, "user", null, null, firstName, lastName)
       // Snackbar.show({
       //   text: 'User Created',
       //   duration: Snackbar.LENGTH_SHORT,
       // });
+      Alert.alert("good")
       navigation.navigate("Login");
     } catch (error) {
       console.error("Registration error:", error);

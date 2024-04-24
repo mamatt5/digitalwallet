@@ -18,6 +18,12 @@ class RegisterRequest(BaseModel):
     phone_number: str = Field(..., description="Account phone number")
     account_type: AccountType = Field(..., description="Account type (merchant or user)")
     
+    first_name: str = Field(..., description="User First Name")
+    last_name: str = Field(..., description="User last Name")
+
+    ABN: str = Field(..., description="ABN")
+    company_name: str = Field(..., description="Company Name")
+
     
 class AuthResponse(BaseModel):
     account: AccountResponse = Field(..., description="The authenticated/registered account")
