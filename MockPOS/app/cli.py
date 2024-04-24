@@ -1,9 +1,41 @@
 import asyncio
+import readline
 
 import server
 from colorama import Fore, Style, init
 
 init()
+
+
+def tab_completer(text, state):
+    commands = {
+        "list": [],
+        "push": list(server.active_connections.keys()),
+        "quit": [],
+    }
+
+    command_line = readline.get_line_buffer()
+    parts = command_line.split()
+
+    if len(parts) == 0:
+        options = list(commands.keys())
+    elif len(parts) == 1:
+        options = [cmd for cmd in commands if cmd.startswith(text)]
+    elif len(parts) == 2:
+        cmd = parts[0]
+        if cmd in commands:
+            options = [opt for opt in commands[cmd] if opt.startswith(text)]
+    else:
+        options = []
+            
+            
+    if state < len(options):
+        return options[state]
+    return None
+
+
+readline.set_completer(tab_completer)
+readline.parse_and_bind("tab: complete")
 
 
 def command_line_interface():
@@ -49,6 +81,7 @@ def command_line_interface():
 
 def start_cli():
     command_line_interface()
+
 
 if __name__ == "__main__":
     start_cli()

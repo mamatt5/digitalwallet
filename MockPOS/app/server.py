@@ -24,7 +24,6 @@ def generate_client_alias():
 
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
-    global client_counter
     await websocket.accept()
     client_id = str(uuid.uuid4())
     client_alias = generate_client_alias()
@@ -52,7 +51,7 @@ async def push_data(client_alias: str):
             status_code=status.HTTP_404_NOT_FOUND, detail="Client not found"
         )
 
-    _, websocket = active_connections[client_alias]
+    client_id, websocket = active_connections[client_alias]
 
     transaction_data = {
         "merchant_id": generate_random_string(8),
@@ -60,7 +59,10 @@ async def push_data(client_alias: str):
         "description": f"Mock transaction {generate_random_string(4)}",
     }
 
-    await websocket.send_json(transaction_data)
+    if websocket.application_state in ["CONNECTED", "CONNECTING"]:
+        await websocket.send_json(transaction_data)
+    else:
+        raise WebSocketDisconnect("Client has disconnected")
 
     return {"message": "Data pushed successfully"}
 
