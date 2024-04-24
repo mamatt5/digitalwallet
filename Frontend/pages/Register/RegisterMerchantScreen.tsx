@@ -33,7 +33,7 @@ const RegisterMerchantScreen = ({navigation}) => {
         // creates merchant 
         try {
 
-            await registerAccount(email, password, phoneNumber, "merchant", companyName, abn, null, null)
+            await registerAccount(email, password, phoneNumber, "merchant", companyName, abn, "", "")
             navigation.navigate("Login");
           } catch (error) {
             console.error("Registration error:", error);

@@ -18,6 +18,7 @@ class AuthService:
     user_repository: UserRepository = Depends(UserRepository)):
         self.account_repository = account_repository
         self.merchant_repository = merchant_repository
+        self.user_repository = user_repository
 
     def authenticate_account(self, email: str, password: str) -> Account | None:
         """

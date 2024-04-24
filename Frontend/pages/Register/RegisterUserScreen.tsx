@@ -16,7 +16,7 @@ const RegisterUserScreen = ({navigation}) => {
 
   const handleRegistration = async () => {
     try {
-      await registerAccount(email, password, phoneNumber, "user", null, null, firstName, lastName)
+      await registerAccount(email, password, phoneNumber, "user", "", "", firstName, lastName)
       // Snackbar.show({
       //   text: 'User Created',
       //   duration: Snackbar.LENGTH_SHORT,
