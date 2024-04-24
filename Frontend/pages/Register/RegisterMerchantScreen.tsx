@@ -30,24 +30,8 @@ const RegisterMerchantScreen = ({navigation}) => {
         Alert.alert("good")
         // creates merchant 
         try {
-            
-
-            
-      
-            // Alert.alert(password) 
-            // Alert.alert(phoneNumber)
-            // Alert.alert(companyName)
-            // Alert.alert(email)
 
             await registerAccount(email, password, phoneNumber, "merchant", companyName, abn, null, null)
-
-            // registerMerchant(email, password, phoneNumber, "merchant", companyName, abn).then().catch(e => Alert.alert(e.response.data))
-            // Snackbar.show({
-            //     text: 'Merchant Created',
-            //     duration: Snackbar.LENGTH_SHORT,
-            //   });
-
-            Alert.alert("good")
             navigation.navigate("Login");
           } catch (error) {
             console.error("Registration error:", error);

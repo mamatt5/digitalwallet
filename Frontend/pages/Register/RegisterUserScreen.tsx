@@ -22,7 +22,6 @@ const RegisterUserScreen = ({navigation}) => {
       //   text: 'User Created',
       //   duration: Snackbar.LENGTH_SHORT,
       // });
-      Alert.alert("good")
       navigation.navigate("Login");
     } catch (error) {
       console.error("Registration error:", error);
