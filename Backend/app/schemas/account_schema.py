@@ -20,4 +20,3 @@ class AccountResponse(AccountBase):
     account_type: AccountType = Field(..., description="Account type")
 
     model_config = ConfigDict(from_attributes=True)
-    

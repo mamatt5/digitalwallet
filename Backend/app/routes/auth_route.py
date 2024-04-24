@@ -1,17 +1,15 @@
-from typing import Annotated
-
-from database import get_db_session
 from fastapi import APIRouter, Depends
 from fastapi.security import OAuth2PasswordRequestForm
 from schemas.auth_schema import AuthResponse, RegisterRequest
-from sqlmodel import Session
 from services.auth_service import AuthService
-
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
+
 @router.post("/login", response_model=AuthResponse)
-def login_route(form_data: OAuth2PasswordRequestForm = Depends(), auth_service: AuthService = Depends(AuthService)) -> AuthResponse:
+def login_route(
+    form_data: OAuth2PasswordRequestForm = Depends(), auth_service: AuthService = Depends(AuthService)
+) -> AuthResponse:
     """
     **Login/Authenticate Endpoint**
 

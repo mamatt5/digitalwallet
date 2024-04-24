@@ -1,5 +1,3 @@
-from typing import Generator
-
 from config import DEV_DATABASE_URL
 from sqlmodel import Session, SQLModel, create_engine
 
