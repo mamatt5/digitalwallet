@@ -8,6 +8,7 @@ import QRScanScreen from './pages/QRScan/QRScanScreen';
 import AccountScreen from './pages/Account/AccountScreen';
 import RegisterOptionScreen from './pages/Register/RegisterOptionScreen';
 import RegisterMerchantScreen from './pages/Register/RegisterMerchantScreen';
+import AddCardScreen from './pages/Cards/AddCardScreen';
 
 
 const { Navigator, Screen } = createStackNavigator();
@@ -23,6 +24,7 @@ const App = () => {
         <Screen name='Account' component={AccountScreen}></Screen>
         <Screen name='RegisterOption' component={RegisterOptionScreen}></Screen>
         <Screen name='RegisterMerchant' component={RegisterMerchantScreen}></Screen>
+        <Screen name='AddCard' component={AddCardScreen}></Screen>
       </Navigator>
     </NavigationContainer>
   );
