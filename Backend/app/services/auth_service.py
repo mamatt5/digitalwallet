@@ -1,10 +1,12 @@
+import select
 from fastapi import HTTPException
 from models.account import Account, AccountType
 from models.merchant import Merchant
 from models.user import User
 from passlib.context import CryptContext
 from schemas.auth_schema import AuthResponse, LoginRequest, RegisterRequest
-from sqlmodel import Session
+from sqlmodel import Session, select
+
 
 # CryptContext instance for password hashing
 password_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -90,17 +92,36 @@ def register(db: Session, register_request: RegisterRequest):
         - 200 OK: The user was successfully registered
         - 400 Bad Request: The provided email or phone number is already registered
     """
-    if db.query(Account).filter(Account.email == register_request.email).first():
+    
+    if db.exec(select(Account).where(Account.email == register_request.email)).first():
         raise HTTPException(status_code=400, detail="Email already registered")
 
-    if db.query(Account).filter(Account.phone_number == register_request.phone_number).first():
+    if db.exec(select(Account).where(Account.phone_number == register_request.phone_number)).first():
         raise HTTPException(status_code=400, detail="Phone number already registered")
-    
-    account_data = register_request.dict()
+
+    account_data = register_request.model_dump()
     account_data["password"] = hash_password(register_request.password)
     account = Account(**account_data)
     db.add(account)
     db.commit()
     db.refresh(account)
+
+
+    if register_request.account_type == "merchant":
+        
+        merchant = Merchant(**account_data)
+        merchant.account_id = account.account_id
+        db.add(merchant)
+        db.commit()
+        db.refresh(merchant)
+
+    elif register_request.account_type == "user":
+ 
+        user = User(**account_data)
+        user.account_id = account.account_id
+        db.add(user)
+        db.commit()
+        db.refresh(user)
+    
 
     return AuthResponse(account=account)

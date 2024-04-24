@@ -37,7 +37,7 @@ const LoginScreen = ({navigation}) => {
             <Text onPress={() => navigation.navigate('ForgotPassword')} style={{ color:'#ffffff', marginTop: 20}}>
               Forgot Password
             </Text>
-            <Text onPress={() => navigation.navigate('Register')} style={{ color:'#ffffff', marginTop: 20}}>
+            <Text onPress={() => navigation.navigate('RegisterOption')} style={{ color:'#ffffff', marginTop: 20}}>
               Sign Up
             </Text>
             <Text onPress={() => navigation.navigate('QRScan')} style={{ color:'#ffffff', marginTop: 20}}>

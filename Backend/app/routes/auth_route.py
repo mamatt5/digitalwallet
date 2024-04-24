@@ -28,4 +28,6 @@ def register_route(register_request: RegisterRequest, db: Session = Depends(get_
     - Returns: `AuthResponse`
     - Raises: `HTTPException` email or phone number is already registered
     """
+    
+  
     return register(db, register_request)

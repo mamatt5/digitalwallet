@@ -14,6 +14,7 @@ def create_merchant_route(merchant: MerchantRequest, db: Session = Depends(get_d
     - Request Body: `MerchantRequest`
     - Returns: `MerchantResponse`
     """
+    
     return create_merchant(db, merchant)
 
 
