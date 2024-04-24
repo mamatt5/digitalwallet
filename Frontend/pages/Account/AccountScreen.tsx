@@ -6,7 +6,7 @@ import DebitCard from '../Cards/DebitCard';
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 const AccountScreen = ({ navigation, route }) => {
-  const cards = [
+  let cards = [
     { id: '1', number: '1234 5678 9000 0001', expiry: '12/23' },
     { id: '2', number: '1234 5678 9000 0002', expiry: '01/24' },
     { id: '3', number: '1234 5678 9000 0003', expiry: '01/24' },
@@ -22,7 +22,7 @@ const AccountScreen = ({ navigation, route }) => {
     if (item.id === 'add') {
       return (
         <View style={{ backgroundColor: "#ffffff", width: 300, height: 200, borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <TouchableOpacity onPress={() => navigation.navigate("AddCard")}>
+          <TouchableOpacity onPress={() => navigation.navigate("AddCard", { account })}>
             <Text style={{ fontWeight: "bold" }}>+ Add card</Text>
           </TouchableOpacity>
         </View>
