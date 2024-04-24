@@ -4,7 +4,6 @@ from schemas.auth_schema import AuthResponse, LoginRequest, RegisterRequest
 from services.auth_service import login, register
 from sqlmodel import Session
 
-import logging
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
 
@@ -29,8 +28,6 @@ def register_route(register_request: RegisterRequest, db: Session = Depends(get_
     - Returns: `AuthResponse`
     - Raises: `HTTPException` email or phone number is already registered
     """
-    logging.basicConfig(level=logging.INFO, filename="py_log.log",filemode="w")
-    logging.warning("in route")
     
   
     return register(db, register_request)
