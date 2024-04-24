@@ -20,7 +20,7 @@ const QRScanScreen = ({ navigation }) => {
     
     const handleBarCodeScanned = ({ type, data }) => {
         setScanned(true);
-        setText(`QR code with type ${type} and data ${data} has been scanned!`);
+        setText(`Scanned QR Code Details:\n\nType: ${type}\n\nData: ${data}`);
     };
     
     if (hasPermission === null) {
@@ -42,7 +42,7 @@ const QRScanScreen = ({ navigation }) => {
         <SafeAreaView style={{ backgroundColor: '#0f003f', height: 2000}}>
             <View style={styles.container}>
                 
-            <Text style={{ color: '#ffffff', fontSize: 20, margin: 30 }}>Please Scan your Card</Text>
+            <Text style={{ color: '#ffffff', fontSize: 20, margin: 30 }}>Please scan QR code</Text>
                 <View style={styles.cameraContainer}>
                     <Camera
                     onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
@@ -51,7 +51,7 @@ const QRScanScreen = ({ navigation }) => {
                 </View>
                 {scanned && (
                     <View>
-                    <Text>{text}</Text>
+                    <Text style={{ color: '#ffffff', fontSize: 20, margin: 30 }}>{text}</Text>
                     <View style={{ width: "50%", alignSelf: "center" }}>
                         <Button
                         title={"Tap to Scan Again"}

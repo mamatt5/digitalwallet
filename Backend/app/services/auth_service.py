@@ -1,17 +1,23 @@
 from fastapi import HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
-from models.account import Account
+from models.account import Account, AccountType
+from models.merchant import Merchant
+from models.user import User
 from schemas.auth_schema import AuthResponse, RegisterRequest, Token
 from security import create_access_token, hash_password, verify_password
 from sqlmodel import Session
 from repositories.account_repository import AccountRepository
+from repositories.merchant_repository import MerchantRepository
+from repositories.user_repository import UserRepository
 from fastapi import Depends
-
 
 class AuthService:
 
-    def __init__(self, account_repository: AccountRepository = Depends(AccountRepository)):
+    def __init__(self, account_repository: AccountRepository = Depends(AccountRepository),
+    merchant_repository: MerchantRepository = Depends(MerchantRepository),
+    user_repository: UserRepository = Depends(UserRepository)):
         self.account_repository = account_repository
+        self.merchant_repository = merchant_repository
 
     def authenticate_account(self, email: str, password: str) -> Account | None:
         """
@@ -79,4 +85,23 @@ class AuthService:
 
         access_token = create_access_token(account.email)
         token = Token(access_token=access_token, token_type="bearer")
+
+
+        if register_request.account_type == AccountType.MERCHANT:
+            
+            merchant = Merchant(**account_data)
+            merchant.account_id = account.account_id
+            self.merchant_repository.create(merchant)
+
+        elif register_request.account_type == AccountType.USER:
+    
+            user = User(**account_data)
+            user.account_id = account.account_id
+            self.user_repository.create(user)
+
         return AuthResponse(token=token, account=account)
+
+
+
+
+    

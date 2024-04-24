@@ -5,7 +5,7 @@ from sqlmodel import Session, delete, select, update
 
 from database import get_db_session
 from models.user import User
-from repositories.base_repository import RepositoryBasese
+from repositories.base_repository import RepositoryBase
 
 class UserRepository(RepositoryBase[User]):
 

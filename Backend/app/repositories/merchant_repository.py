@@ -1,7 +1,9 @@
-from typing import List
+from typing import Annotated, List
+
+from fastapi import Depends
 
 from sqlmodel import Session, select, update, delete
-
+from database import get_db_session
 from models.merchant import Merchant
 from repositories.base_repository import RepositoryBase
 

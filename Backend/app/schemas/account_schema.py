@@ -15,5 +15,9 @@ class AccountRequest(AccountBase):
 
 class AccountResponse(AccountBase):
     account_id: int = Field(..., description="Account ID")
+    email: EmailStr = Field(..., description="Account email")
+    phone_number: str = Field(..., description="Account phone number")
+    account_type: AccountType = Field(..., description="Account type")
 
     model_config = ConfigDict(from_attributes=True)
+    

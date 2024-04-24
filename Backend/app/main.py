@@ -4,12 +4,13 @@ from database import get_db_session, init_db
 from dataloader import generate_dummy_data, insert_dummy_data
 from fastapi import FastAPI
 from routes import auth_route, test_protected_route
+from contextlib import asynccontextmanager
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """
-    Startup event handler
+    Manages the applications lifecycle
 
     On startup:
     - Initialises the database
@@ -18,8 +19,8 @@ async def lifespan(app: FastAPI):
     On shutdown:
     - Handles resource cleanup, closes database connection
     """
-
-    # Startup
+    
+    # Startup: Initialise the database and generate dummy data
     init_db()
 
     num_records = 10
@@ -32,6 +33,7 @@ async def lifespan(app: FastAPI):
 
     # Shutdown
     pass
+
 
 # Creates a FastAPI instance
 app = FastAPI(lifespan=lifespan)

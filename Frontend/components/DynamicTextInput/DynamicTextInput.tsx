@@ -3,6 +3,9 @@ import { TextInput, StyleSheet } from "react-native";
 
 type PlaceholderProps = {
   placeholder: string;
+  value: string;
+  onChangeText: (text: string) => void;
+  secureTextEntry?: boolean;
 };
 
 
@@ -21,8 +24,15 @@ const styles = StyleSheet.create({
 
 const DynamicTextInput = (props: PlaceholderProps) => { 
   return (
-    <TextInput style={styles["text-box-container"]} placeholderTextColor='#ffffff' placeholder={props.placeholder}></TextInput>
-  )
+    <TextInput
+      style={styles["text-box-container"]}
+      placeholderTextColor="#ffffff"
+      placeholder={props.placeholder}
+      value={props.value}
+      onChangeText={props.onChangeText}
+      secureTextEntry={props.secureTextEntry}
+    />
+  );
 };
 
 export default DynamicTextInput;
