@@ -9,7 +9,7 @@ import AccountScreen from './pages/Account/AccountScreen';
 import RegisterOptionScreen from './pages/Register/RegisterOptionScreen';
 import RegisterMerchantScreen from './pages/Register/RegisterMerchantScreen';
 import AddCardScreen from './pages/Cards/AddCardScreen';
-
+import QRGenerateScreen from './pages/QRGenerate/QRGenerateScreen';
 
 const { Navigator, Screen } = createStackNavigator();
 
@@ -21,6 +21,7 @@ const App = () => {
         <Screen name='RegisterUser' component={RegisterUserScreen}></Screen>
         <Screen name='ForgotPassword' component={ForgotPasswordScreen}></Screen>
         <Screen name='QRScan' component={QRScanScreen}></Screen>
+        <Screen name='QRGenerate' component={QRGenerateScreen}></Screen>
         <Screen name='Account' component={AccountScreen}></Screen>
         <Screen name='RegisterOption' component={RegisterOptionScreen}></Screen>
         <Screen name='RegisterMerchant' component={RegisterMerchantScreen}></Screen>
