@@ -1,74 +1,57 @@
 import asyncio
-import random
-import string
-import uuid
+from typing import Dict
 
-import uvicorn
-from colorama import Fore, Style, init
-from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect, status
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from pydantic import BaseModel
 
-init()
 app = FastAPI()
-active_connections = {}
-client_counter = 0
+client_alias_map: Dict[str, WebSocket] = {}
 
 
-def generate_random_string(length):
-    return "".join(random.choices(string.ascii_letters + string.digits, k=length))
+class TransactionData(BaseModel):
+    merchant_id: str
+    transaction_id: str
+    items: list
+    total_amount: float
 
 
 def generate_client_alias():
-    client_counter = len(active_connections)
-    return f"client{client_counter}"
+    client_alias = f"client{len(client_alias_map)}"
+    return client_alias
 
-
-@app.websocket("/ws")
-async def websocket_endpoint(websocket: WebSocket):
+@app.websocket("/ws/interface")
+async def interface_websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
-    client_id = str(uuid.uuid4())
-    client_alias = generate_client_alias()
-    active_connections[client_alias] = (client_id, websocket)
-    print(
-        Fore.GREEN
-        + f"Client {client_alias} connected with ID: {client_id}"
-        + Style.RESET_ALL
-    )
     try:
         while True:
-            await asyncio.sleep(0.2)
+            await asyncio.sleep(1.0)
+            active_clients = list(client_alias_map.keys())
+            print(f"Sending active clients: {active_clients}")
+            await websocket.send_json({"active_clients": active_clients})
     except WebSocketDisconnect:
-        del active_connections[client_alias]
-        print(Fore.RED + f"Client {client_id} disconnected" + Style.RESET_ALL)
+        pass
+
+@app.websocket("/ws/client")
+async def client_websocket_endpoint(websocket: WebSocket):
+    await websocket.accept()
+    client_alias = generate_client_alias()
+    client_alias_map[client_alias] = websocket
+    try:
+        while True:
+            data = await websocket.receive_json()
+            if "transaction_data" in data:
+                transaction_data = data["transaction_data"]
+                target_client_alias = data["client_alias"]
+                print(f"Received transaction data from interface for client: {target_client_alias}")
+                print(f"Transaction data: {transaction_data}")
+                if target_client_alias in client_alias_map:
+                    target_websocket = client_alias_map[target_client_alias]
+                    await target_websocket.send_json(transaction_data)
+                    print(f"Sent transaction data to client: {target_client_alias}")
+                else:
+                    print(f"Client {target_client_alias} not found in client_alias_map")
+    except WebSocketDisconnect:
+        del client_alias_map[client_alias]
     except Exception as e:
-        print(Fore.RED + f"WebSocket error: {str(e)}" + Style.RESET_ALL)
+        print(f"Exception occurred in client_websocket_endpoint: {e}")
         await websocket.close()
-
-
-@app.post("/push-data/{client_alias}")
-async def push_data(client_alias: str):
-    if client_alias not in active_connections:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Client not found"
-        )
-
-    client_id, websocket = active_connections[client_alias]
-
-    transaction_data = {
-        "merchant_id": generate_random_string(8),
-        "transaction_amount": round(random.uniform(1, 100), 2),
-        "description": f"Mock transaction {generate_random_string(4)}",
-    }
-
-    if websocket.application_state in ["CONNECTED", "CONNECTING"]:
-        await websocket.send_json(transaction_data)
-    else:
-        raise WebSocketDisconnect("Client has disconnected")
-
-    return {"message": "Data pushed successfully"}
-
-
-def start_server():
-    uvicorn.run("server:app", host="0.0.0.0", port=8000)
-
-if __name__ == "__main__":
-    start_server()
