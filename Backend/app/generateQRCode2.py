@@ -1,12 +1,12 @@
 #has expiring time but needs front end to call api to generate and get
 
-from flask import Flask, request, jsonify
+from fastapi import FastAPI, Body, HTTPException
 from itsdangerous import URLSafeSerializer
 import qrcode
 import json
 from datetime import datetime
 
-app = Flask(__name__)
+app = FastAPI
 
 secret_key = "iyhaykicyhmqdqxygyqyklklsyseslqbggggzyzdysbqdddsy"
 serializer = URLSafeSerializer(secret_key)
@@ -14,17 +14,26 @@ serializer = URLSafeSerializer(secret_key)
 # Dictionary to store data and expiration time for each QR code
 qr_data = {}  
 
-@app.route('/generate_qr', methods=['POST'])
-def generate_qr():
-  # Get data from request body
-  data = request.get_json()  
+@app.post("/generate_qr")
+async def generate_qr(): ##   generate_qr(data: dict = Body(...))
   # Extract expiration time from data
   expiration_time = data.get('expiration_time')  
   if not expiration_time:
-    return jsonify({'error': 'Missing expiration time in request'}), 400
+    raise HTTPException(status_code=400, detail="Missing expiration time in request")
+  try:
+    # Convert expiration time string to datetime object
+    expiration_time_obj = datetime.strptime(expiration_time, "%Y-%m-%dT%H:%M:%SZ")
+  except ValueError:
+    raise HTTPException(
+      status_code=400, detail="Invalid expiration time format. Use YYYY-MM-DDTHH:MM:SSZ"
+    )
 
-  # Convert expiration time string to datetime object
-  expiration_time_obj = datetime.strptime(expiration_time, '%Y-%m-%dT%H:%M:%SZ')
+  ######################### OVERWRITING DATA FOR TEST
+  data = {
+    "merchant": "ShopA",
+    "ABN": 123,
+    "price": 40
+  }
 
   encoded_data = serializer.dumps(data)
   qr = qrcode.QRCode(version=1, box_size=10, border=5)
@@ -34,27 +43,26 @@ def generate_qr():
   img.save("qrcode2.png")
 
   # Store data with ID
-  qr_data[data['id']] = {'data': encoded_data, 'expiration': expiration_time_obj}  
-  return jsonify({'message': 'QR code generated successfully'})
+  qr_id = len(qr_data) + 1  # Generate unique ID
+  qr_data[qr_id] = {"data": encoded_data, "expiration": expiration_time_obj}
 
-@app.route('/get_qr_data', methods=['POST'])
-def get_qr_data():
-  data = request.get_json()
-  qr_id = data.get('id')
-  if not qr_id:
-    return jsonify({'error': 'Missing QR code ID in request'}), 400
+  return {"message": "QR code generated successfully", "id": qr_id}
 
-  if qr_id not in qr_data:
-    return jsonify({'error': 'QR code not found'}), 404
+@app.post("/get_qr_data")
+async def get_qr_data(qr_id: int = Body(...)):
+    """
+    Retrieves data associated with a QR code if it exists and is not expired.
+    """
+    if qr_id not in qr_data:
+        raise HTTPException(status_code=404, detail="QR code not found")
 
-  qr_info = qr_data[qr_id]
-  # Get current time to check if expired
-  current_time = datetime.utcnow() 
+    qr_info = qr_data[qr_id]
+    current_time = datetime.utcnow()
 
-  if current_time > qr_info['expiration']:
-    return jsonify({'error': 'QR code expired'}), 400
+    if current_time > qr_info["expiration"]:
+        raise HTTPException(status_code=400, detail="QR code expired")
 
-  return jsonify({'data': serializer.loads(qr_info['data'])})
+    return {"data": serializer.loads(qr_info["data"])}
 
 
 # Development only

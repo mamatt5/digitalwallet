@@ -29,6 +29,9 @@ const LoginScreen = ({navigation}) => {
             <Text onPress={() => navigation.navigate('QRScan')} style={{ color:'#ffffff', marginTop: 20}}>
               QR Scanner Test
             </Text>
+            <Text onPress={() => navigation.navigate('GenerateQR')} style={{ color:'#ffffff', marginTop: 20}}>
+              Generate QR
+            </Text>
           </View>
         </ScrollView>
     </SafeAreaView>

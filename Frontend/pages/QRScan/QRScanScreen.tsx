@@ -2,13 +2,13 @@ import { Camera } from "expo-camera";
 import React, { useEffect, useState } from "react";
 import { Button, SafeAreaView, StyleSheet, Text, View } from "react-native";
 import axios from 'axios';
-import { URLSafeSerializer } from 'itsdangerous'; 
+//import { URLSafeSerializer } from 'itsdangerous'; 
 
 const QRScanScreen = ({ navigation }) => {
     const [hasPermission, setHasPermission] = useState(null);
     const [scanned, setScanned] = useState(false);
     const [text, setText] = useState("Not yet scanned");
-    const [qrCodeData, setQrCodeData] = useState(null);
+    //const [qrCodeData, setQrCodeData] = useState(null);
     
     const askForCameraPermission = () => {
         (async () => {
@@ -32,17 +32,18 @@ const QRScanScreen = ({ navigation }) => {
         // Cannot install itsdangerous in office pc 
         // This can only decode nonexpiring qrcode
 
-        const secretKey = "iyhaykicyhmqdqxygyqyklklsyseslqbggggzyzdysbqdddsy"; 
-        const serializer = new URLSafeSerializer(secretKey);
+        ////////////////////
+        // const secretKey = "iyhaykicyhmqdqxygyqyklklsyseslqbggggzyzdysbqdddsy"; 
+        // const serializer = new URLSafeSerializer(secretKey);
 
-        let signedData: string; 
+        // let signedData: string; 
 
-        try {
-            const data = serializer.loads(signedData);
-            console.log("Data verified and decoded:", data);
-        } catch (error) {
-            console.error("Error: Invalid QR code or tampering detected!");
-        }
+        // try {
+        //     const data = serializer.loads(signedData);
+        //     console.log("Data verified and decoded:", data);
+        // } catch (error) {
+        //     console.error("Error: Invalid QR code or tampering detected!");
+        // }
     };
 
     // const getQRData = () => {
