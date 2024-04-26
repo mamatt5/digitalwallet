@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
       margin: 10, 
       paddingLeft: 10, 
       color: 'rgba(255, 255, 255, 0.8)', // Text color with opacity
-      borderColor: 'red', // Border color
+      borderColor: "red", // Border color
       borderWidth: 1, // Border width
     }
   });

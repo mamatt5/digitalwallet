@@ -3,8 +3,9 @@ import { View, Text, SafeAreaView, ScrollView, Alert, KeyboardAvoidingView } fro
 import { Button } from "react-native-paper";
 import DynamicTextInput from '../../components/DynamicTextInput/DynamicTextInput';
 import { registerAccount } from "../../api/api";
+import { MaterialIcons } from '@expo/vector-icons';
+import { StyleSheet } from 'react-native';
 
-// import Snackbar from "react-native-snackbar";
 
 
 
@@ -19,6 +20,8 @@ const RegisterMerchantScreen = ({navigation}) => {
     const [phoneNumber, setPhoneNumber] = useState("");
     const [password, setPassword] = useState("");
 
+    const [companyNameError, setCompanyNameError] = useState(false);
+    const [passwordError, setPasswordError] = useState(false);
     const [abnError, setAbnError] = useState(false);
     const [emailError, setEmailError] = useState(false);
     const [mobileError, setMobileError] = useState(false);
@@ -26,10 +29,15 @@ const RegisterMerchantScreen = ({navigation}) => {
 
     const createMerchant = async () => {
         // setPhoneNumber("0000000000")
-        // setAbn("99 s99 999 999")
+        // setAbn("99 999 999 999")
 
-        setAbnError(!/^\d{2}\s?\d{3}\s?\d{3}\s?\d{3}$/.test(abn));
-        setMobileError(!/^\d{10}$/.test(phoneNumber));
+        // regex for valid abn
+        // if abn is empty return 
+        setCompanyNameError(companyName === '')
+        setAbnError(abn === '' || !/^\d{2}\s?\d{3}\s?\d{3}\s?\d{3}$/.test(abn));
+        setEmailError(email === '' || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email));
+        setMobileError(phoneNumber === '' || !/^\d{10}$/.test(phoneNumber));
+        setPasswordError(password === '')
 
 
         // try {
@@ -54,12 +62,31 @@ const RegisterMerchantScreen = ({navigation}) => {
                     {'Register Merchant'}
                     </Text>
                     
+                    <View style={styles.container}>
+                        <View>
+                            <DynamicTextInput
+                            placeholder="COMPANY NAME"
+                            onChangeText={setCompanyName}
+                            value={companyName}
+                            error={companyNameError}
+                            />
+                        </View>
+                        {companyNameError && (
+                            <MaterialIcons
+                            name="error-outline"
+                            onPress={() => alert("Please enter a valid company name")}
+                            color="red"
+                            style={styles.errorIcon}
+                            size = {25}
+                            />
+                        )}
+                        </View>
                     
-                    <DynamicTextInput placeholder="COMPANY NAME" onChangeText={setCompanyName} value={companyName} error={false} />
+                    
                     <DynamicTextInput placeholder="ABN" onChangeText={setAbn} value={abn} error={abnError}/>
-                    <DynamicTextInput placeholder="EMAIL" onChangeText={setEmail} value={email} error={false}/>
+                    <DynamicTextInput placeholder="EMAIL" onChangeText={setEmail} value={email} error={emailError}/>
                     <DynamicTextInput placeholder="MOBILE NUMBER" onChangeText={setPhoneNumber} value={phoneNumber} error={mobileError}/>
-                    <DynamicTextInput placeholder="PASSWORD" onChangeText={setPassword} value={password} secureTextEntry error={false}/>
+                    <DynamicTextInput placeholder="PASSWORD" onChangeText={setPassword} value={password} secureTextEntry error={passwordError}/>
 
                     <View style={{ margin:20, width:200}}>
                         <Button buttonColor="#ffffff" textColor="#000000" onPress={createMerchant}>
@@ -77,5 +104,19 @@ const RegisterMerchantScreen = ({navigation}) => {
     )
 }
 
+const styles = StyleSheet.create({
+    container: {
+      flexDirection: 'row', // Arrange children horizontally
+      alignItems: 'center', // Align items vertically
+      position: 'relative', // Required for absolute positioning
+    },
+    inputContainer: {
+      flex: 1, // Take up remaining space
+    },
+    errorIcon: {
+      position: 'absolute', // Position the icon absolutely
+      right: -20, // Adjust the position as needed
+    },
+  });
 
 export default RegisterMerchantScreen;
