@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { View, Text, FlatList, ActivityIndicator } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 
-const QRGenerateScreen = () => {
+const QRGenerateScreenMerchant = () => {
     const [transactionData, setTransactionData] = useState(null);
   
     useEffect(() => {
@@ -62,4 +62,4 @@ const QRGenerateScreen = () => {
     );
   };
   
-  export default QRGenerateScreen;
+  export default QRGenerateScreenMerchant;
