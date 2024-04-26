@@ -11,7 +11,6 @@ if TYPE_CHECKING:
 
 class AccountType(str, Enum):
     """Enum for the type of account"""
-
     MERCHANT = "merchant"
     USER = "user"
 
@@ -28,8 +27,7 @@ class Account(SQLModel, table=True):
         merchant (Optional[Merchant]): The merchant associated with the account [One-to-One]
         user (Optional[User]): The user associated with the account [One-to-One]
     """
-
-    account_id: int | None = Field(default=None, primary_key=True)
+    account_id: Optional[int] = Field(default=None, primary_key=True)
     email: str = Field(index=True, unique=True)
     password: str
     phone_number: str = Field(index=True, unique=True)

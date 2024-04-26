@@ -19,26 +19,27 @@ const RegisterMerchantScreen = ({navigation}) => {
     const [phoneNumber, setPhoneNumber] = useState("");
     const [password, setPassword] = useState("");
 
-    const createMerchant = async () => {
-        // api call to create merchant goes here
+    const [abnError, setAbnError] = useState(false);
+    const [emailError, setEmailError] = useState(false);
+    const [mobileError, setMobileError] = useState(false);
+    
 
-        // creates account first
+    const createMerchant = async () => {
+        // setPhoneNumber("0000000000")
+        // setAbn("99 s99 999 999")
+
+        setAbnError(!/^\d{2}\s?\d{3}\s?\d{3}\s?\d{3}$/.test(abn));
+        setMobileError(!/^\d{10}$/.test(phoneNumber));
+
+
         // try {
-        //     await registerUser(email, password, phoneNumber, "merchant");
+
+        //     await registerAccount(email, password, phoneNumber, "merchant", companyName, abn, "", "")
+        //     navigation.navigate("Login");
         //   } catch (error) {
         //     console.error("Registration error:", error);
-        //   }
-
-        Alert.alert("good")
-        // creates merchant 
-        try {
-
-            await registerAccount(email, password, phoneNumber, "merchant", companyName, abn, "", "")
-            navigation.navigate("Login");
-          } catch (error) {
-            console.error("Registration error:", error);
         
-          }
+        //   }
 
 
       };
@@ -54,11 +55,11 @@ const RegisterMerchantScreen = ({navigation}) => {
                     </Text>
                     
                     
-                    <DynamicTextInput placeholder="COMPANY NAME" onChangeText={setCompanyName} value={companyName} />
-                    <DynamicTextInput placeholder="ABN" onChangeText={setAbn} value={abn} />
-                    <DynamicTextInput placeholder="EMAIL" onChangeText={setEmail} value={email} />
-                    <DynamicTextInput placeholder="MOBILE NUMBER" onChangeText={setPhoneNumber} value={phoneNumber} />
-                    <DynamicTextInput placeholder="PASSWORD" onChangeText={setPassword} value={password} secureTextEntry />
+                    <DynamicTextInput placeholder="COMPANY NAME" onChangeText={setCompanyName} value={companyName} error={false} />
+                    <DynamicTextInput placeholder="ABN" onChangeText={setAbn} value={abn} error={abnError}/>
+                    <DynamicTextInput placeholder="EMAIL" onChangeText={setEmail} value={email} error={false}/>
+                    <DynamicTextInput placeholder="MOBILE NUMBER" onChangeText={setPhoneNumber} value={phoneNumber} error={mobileError}/>
+                    <DynamicTextInput placeholder="PASSWORD" onChangeText={setPassword} value={password} secureTextEntry error={false}/>
 
                     <View style={{ margin:20, width:200}}>
                         <Button buttonColor="#ffffff" textColor="#000000" onPress={createMerchant}>
