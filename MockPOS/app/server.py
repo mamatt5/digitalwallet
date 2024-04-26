@@ -53,22 +53,53 @@ async def push_data(client_alias: str):
 
     client_id, websocket = active_connections[client_alias]
 
-    transaction_data = {
-        "merchant_id": generate_random_string(8),
-        "transaction_amount": round(random.uniform(1, 100), 2),
-        "description": f"Mock transaction {generate_random_string(4)}",
-    }
+    transaction_data = generate_fake_transaction()
 
-    if websocket.application_state in ["CONNECTED", "CONNECTING"]:
+    try:
         await websocket.send_json(transaction_data)
-    else:
-        raise WebSocketDisconnect("Client has disconnected")
+    except WebSocketDisconnect:
+        del active_connections[client_alias]
+        return {"message": f"Client {client_alias} disconnected. Data could not be pushed."}
+    except Exception as e:
+        return {"message": f"Error sending data: {str(e)}"}
 
     return {"message": "Data pushed successfully"}
 
 
+def random_id(digits=8):
+    return "".join(random.choices(string.digits, k=digits))
+
+
+def random_string(length=6):
+    return "".join(random.choices(string.ascii_uppercase + string.digits, k=length))
+
+
+def generate_fake_transaction():
+    merchant_id = random_id()
+    transaction_id = random_id()
+
+    num_items = random.randint(1, 5)
+
+    items = []
+    for _ in range(num_items):
+        item_name = random_string()
+        item_price = round(random.uniform(1.00, 20.00), 2)
+        items.append({"name": item_name, "price": item_price})
+
+    total_amount = sum(item["price"] for item in items)
+
+    transaction_data = {
+        "merchant_id": merchant_id,
+        "transaction_id": transaction_id,
+        "items": items,
+        "total_amount": round(total_amount, 2),
+    }
+    return transaction_data
+
+
 def start_server():
     uvicorn.run("server:app", host="0.0.0.0", port=8000)
+
 
 if __name__ == "__main__":
     start_server()
