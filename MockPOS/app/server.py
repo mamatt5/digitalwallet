@@ -1,57 +1,59 @@
-import asyncio
 from typing import Dict
 
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
-from pydantic import BaseModel
 
 app = FastAPI()
-client_alias_map: Dict[str, WebSocket] = {}
 
 
-class TransactionData(BaseModel):
-    merchant_id: str
-    transaction_id: str
-    items: list
-    total_amount: float
+class ConnectionManager:
+    def __init__(self):
+        self.active_connections: Dict[str, WebSocket] = {}
+
+    async def connect(self, client_id: str, websocket: WebSocket):
+        await websocket.accept()
+        self.active_connections[client_id] = websocket
+        print(self.active_connections)
+
+    def disconnect(self, client_id: str):
+        del self.active_connections[client_id]
+
+    async def send_to_connection(self, data: dict, client_id: str):
+        websocket = self.active_connections.get(client_id)
+        if websocket:
+            await websocket.send_json(data)
+
+    async def broadcast(self, data: dict):
+        for websocket in self.active_connections.values():
+            await websocket.send_json(data)
 
 
-def generate_client_alias():
-    client_alias = f"client{len(client_alias_map)}"
-    return client_alias
+manager = ConnectionManager()
+
+
+@app.websocket("/ws/clients/{client_id}")
+async def client_websocket_endpoint(websocket: WebSocket, client_id: str):
+    await manager.connect(client_id, websocket)
+    try:
+        while True:
+            data = await websocket.receive_json()
+    except WebSocketDisconnect:
+        manager.disconnect(client_id)
+
 
 @app.websocket("/ws/interface")
 async def interface_websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
     try:
         while True:
-            await asyncio.sleep(1.0)
-            active_clients = list(client_alias_map.keys())
-            print(f"Sending active clients: {active_clients}")
-            await websocket.send_json({"active_clients": active_clients})
+            data = await websocket.receive_json()
+            if data["type"] == "broadcast":
+                await manager.broadcast(data["data"])
+            elif data["type"] == "send_to_connection":
+                await manager.send_to_connection(data["data"], data["client_id"])
     except WebSocketDisconnect:
         pass
 
-@app.websocket("/ws/client")
-async def client_websocket_endpoint(websocket: WebSocket):
-    await websocket.accept()
-    client_alias = generate_client_alias()
-    client_alias_map[client_alias] = websocket
-    try:
-        while True:
-            data = await websocket.receive_json()
-            if "transaction_data" in data:
-                transaction_data = data["transaction_data"]
-                target_client_alias = data["client_alias"]
-                print(f"Received transaction data from interface for client: {target_client_alias}")
-                print(f"Transaction data: {transaction_data}")
-                if target_client_alias in client_alias_map:
-                    target_websocket = client_alias_map[target_client_alias]
-                    await target_websocket.send_json(transaction_data)
-                    print(f"Sent transaction data to client: {target_client_alias}")
-                else:
-                    print(f"Client {target_client_alias} not found in client_alias_map")
-    except WebSocketDisconnect:
-        del client_alias_map[client_alias]
-    except Exception as e:
-        print(f"Exception occurred in client_websocket_endpoint: {e}")
-        await websocket.close()
+
+@app.get("/active-clients")
+async def get_active_clients():
+    return {"clients": list(manager.active_connections.keys())}
