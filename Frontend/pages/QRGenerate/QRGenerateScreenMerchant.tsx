@@ -2,14 +2,17 @@ import { useEffect, useState } from 'react';
 import { View, Text, FlatList, ActivityIndicator } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 
-const QRGenerateScreen = () => {
+const QRGenerateScreenMerchant = () => {
     const [transactionData, setTransactionData] = useState(null);
   
     useEffect(() => {
       const ws = new WebSocket('ws://192.168.1.110:8000/ws/clients/happy');
       
+      ws.onopen = () => console.log("WebSocket connected");
+      ws.onclose = (event) => console.log("WebSocket closed", event);
+      ws.onerror = (error) => console.error("WebSocket error", error);
+      
       ws.onmessage = (event) => {
-        console.log(event.data)
         const data = JSON.parse(event.data);
         setTransactionData(data);
       };
@@ -18,12 +21,11 @@ const QRGenerateScreen = () => {
         ws.close();
       };
     }, []);
-
+  
     const qrData = transactionData
     ? JSON.stringify(transactionData)
     : ""; 
 
-  
     return (
       <View style={{ padding: 16, backgroundColor: '#f0f0f0', flex: 1 }}>
         <Text style={{ fontSize: 24, fontWeight: 'bold',  textAlign: 'center', marginBottom: 16 }}>QR Code Test</Text>
@@ -59,4 +61,4 @@ const QRGenerateScreen = () => {
 
   };
   
-  export default QRGenerateScreen;
+  export default QRGenerateScreenMerchant;
