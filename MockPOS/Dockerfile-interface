@@ -1,13 +1,7 @@
-# For more information, please refer to https://aka.ms/vscode-docker-python
-FROM python:slim-bookworm
+# Use the bookworm-slim image with Node.js
+FROM node:bookworm-slim
 
-# Keeps Python from generating .pyc files in the container
-ENV PYTHONDONTWRITEBYTECODE=1
-
-# Turns off buffering for easier container logging
-ENV PYTHONUNBUFFERED=1
-
-# Install SSH, curl, and other essentials
+# Install SSH, curl, etc
 RUN apt-get update && apt-get install -y \
     openssh-server \
     curl \
@@ -15,17 +9,23 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Set the working directory to /interface
+
+# Set the working directory to interface
 WORKDIR /interface
 
-# Copy the application code
-COPY interface/interface.py /interface/interface.py
+# Copy the package.json and package-lock.json to install Node.js dependencies
+COPY interface/package.json /interface/
+COPY interface/package-lock.json /interface/
 
-# Copy the requirements file
-COPY interface/requirements.txt /interface/requirements.txt
+# Copy the startup script
+COPY interface/docker-start.sh /interface/
 
-# Install dependencies with pip
-RUN pip install -r requirements.txt
+# Install Node.js dependencies
+RUN npm install
+
+# Build the project 
+COPY interface/source /interface/source
+RUN npm run build
 
 # Create necessary directories and set permissions for SSH
 RUN mkdir /var/run/sshd && \
@@ -44,5 +44,5 @@ RUN echo 'root:password' | chpasswd
 # Expose port 22 for SSH
 EXPOSE 22
 
-# Start SSH service as root user
-CMD ["/usr/sbin/sshd", "-D"]
+# Command to start SSH and run the built application
+CMD ["/bin/bash", "/interface/docker-start.sh"]
