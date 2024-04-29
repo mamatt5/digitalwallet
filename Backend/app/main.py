@@ -2,6 +2,7 @@ from database import get_db_session, init_db
 from dataloader import generate_dummy_data, insert_dummy_data
 from fastapi import FastAPI
 from routes import auth_route, merchant_route, user_route
+import generateQRCode2
 
 # Creates a FastAPI instance
 app = FastAPI()
@@ -30,3 +31,4 @@ def on_startup():
 app.include_router(user_route.router)
 app.include_router(merchant_route.router)
 app.include_router(auth_route.router)
+app.include_router(generateQRCode2.router)

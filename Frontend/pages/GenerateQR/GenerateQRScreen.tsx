@@ -3,7 +3,6 @@ import { SafeAreaView, ScrollView, View, Text, Image } from "react-native";
 import { Button } from "react-native-paper";
 import DynamicTextInput from "../../components/DynamicTextInput/DynamicTextInput";
 //import qrcode from '../../../Backend/app/qrcode.png';
-import { fetch } from 'react-native-fetch';
 import QRCode from 'react-qr-code';
 
 const GenerateQRScreen = ({navigation}) => {
@@ -12,7 +11,7 @@ const GenerateQRScreen = ({navigation}) => {
 
   const generateQRCode = async () => {
     try {
-      const response = await fetch('http://192.168.1.111:8081/generate_qr'); //Endpoint 
+      const response = await fetch('http://192.168.1.111:8000/generate_qr'); //Endpoint 
       const data = await response.json();
       setQrCodeData(data.data); //data.qrCodeData
       setShowImage(true);

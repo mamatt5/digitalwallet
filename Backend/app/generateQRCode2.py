@@ -1,12 +1,12 @@
 #has expiring time but needs front end to call api to generate and get
 
-from fastapi import FastAPI, Body, HTTPException
+from fastapi import FastAPI, Body, HTTPException, APIRouter
 from itsdangerous import URLSafeSerializer
 import qrcode
 import json
 from datetime import datetime
 
-app = FastAPI
+router = APIRouter()
 
 secret_key = "iyhaykicyhmqdqxygyqyklklsyseslqbggggzyzdysbqdddsy"
 serializer = URLSafeSerializer(secret_key)
@@ -14,8 +14,8 @@ serializer = URLSafeSerializer(secret_key)
 # Dictionary to store data and expiration time for each QR code
 qr_data = {}  
 
-@app.post("/generate_qr")
-async def generate_qr(): ##   generate_qr(data: dict = Body(...))
+@router.get("/generate_qr")
+async def generate_qr(data: dict = Body(...)): ##   generate_qr(data: dict = Body(...))
   # Extract expiration time from data
   expiration_time = data.get('expiration_time')  
   if not expiration_time:
@@ -48,7 +48,7 @@ async def generate_qr(): ##   generate_qr(data: dict = Body(...))
 
   return {"message": "QR code generated successfully", "id": qr_id}
 
-@app.post("/get_qr_data")
+@router.get("/get_qr_data")
 async def get_qr_data(qr_id: int = Body(...)):
     """
     Retrieves data associated with a QR code if it exists and is not expired.
@@ -64,7 +64,3 @@ async def get_qr_data(qr_id: int = Body(...)):
 
     return {"data": serializer.loads(qr_info["data"])}
 
-
-# Development only
-if __name__ == '__main__':
-  app.run(debug=True)
