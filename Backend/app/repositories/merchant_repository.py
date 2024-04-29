@@ -19,7 +19,7 @@ class MerchantRepository(RepositoryBase[Merchant]):
         return merchant
 
     def update(self, merchant: Merchant) -> Merchant:
-        statement = update(Merchant).where(Merchant.account_id == merchant.account_id).values(**merchant.dict())
+        statement = update(Merchant).where(Merchant.account_id == merchant.account_id).values(**merchant.model_dump())
         self.session.exec(statement)
         self.session.commit()
         self.session.refresh(merchant)

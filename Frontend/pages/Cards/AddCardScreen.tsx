@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Alert, Button, SafeAreaView, Text, TextInput, View } from "react-native";
+import { Button, SafeAreaView, Text, TextInput, View } from "react-native";
+import { addCard } from "../../api/api";
 
 const AddCardScreen = ({ navigation, route }) => {
-  const { account } = route.params;
+  const { account, fetchCards } = route.params;
   const [cardNumber, setCardNumber] = useState("");
   const [expiryMonth, setExpiryMonth] = useState("");
   const [expiryYear, setExpiryYear] = useState("");
@@ -22,20 +23,16 @@ const AddCardScreen = ({ navigation, route }) => {
     }
   }, [expiryMonth, expiryYear]);
 
-  const scanCard = () => {};
-
   const handleAddCard = () => {
-    Alert.alert("Card added",
-    `Card number: ${cardNumber}\nExpiry date: ${expiryDate}`,
-  [
-    {
-      text: "OK",
-      onPress: () => {navigation.setParams({ account }); navigation.goBack();}
-    },
-  
-  ]);
+    addCard(cardNumber, expiryDate)
+      .then(() => {
+        fetchCards();
+        navigation.navigate("Account", { account });
+      })
+      .catch((error) => {
+        console.error("Add Card error:", error);
+      });
   };
-
 
   return (
     <SafeAreaView style={{ backgroundColor: "#0f003f", flex: 1 }}>
@@ -102,10 +99,6 @@ const AddCardScreen = ({ navigation, route }) => {
                 title={"Add card"}
                 onPress={() => handleAddCard()}
               ></Button>
-            </View>
-
-            <View style={{ marginTop: 20 }}>
-              <Button title={"Scan card"} onPress={scanCard}></Button>
             </View>
           </View>
         </View>

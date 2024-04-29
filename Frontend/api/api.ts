@@ -55,6 +55,29 @@ export const registerAccount = async (
     });
 };
 
+export const getCards = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/cards/getcards`);
+    return response.data;
+  } catch (error) {
+    console.error('Get Cards error:', error);
+    throw error;
+  }
+}
+
+export const addCard = async (cardNumber: string, expiryDate: string) => {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/cards/addcard`, {
+      card_number: cardNumber,
+      card_expiry: expiryDate,
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Add Card error:', error);
+    throw error;
+  }
+}
+
 //   // return response.data;
 // } catch (error) {
 //   console.error('Merchant Registration error:', error);

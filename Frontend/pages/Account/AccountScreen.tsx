@@ -1,37 +1,46 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView, View, Text, Dimensions } from "react-native";
 import { Button } from "react-native-paper";
 import Carousel from 'react-native-snap-carousel';
 import DebitCard from '../Cards/DebitCard';
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { getCards } from "../../api/api";
 
 const AccountScreen = ({ navigation, route }) => {
-  let cards = [
-    { id: '1', number: '1234 5678 9000 0001', expiry: '12/23' },
-    { id: '2', number: '1234 5678 9000 0002', expiry: '01/24' },
-    { id: '3', number: '1234 5678 9000 0003', expiry: '01/24' },
-    { id: '4', number: '1234 5678 9000 0004', expiry: '01/24' },
-    { id: 'add' },
-  ];
 
+  const [cards, setCards] = useState([]);
   const { account } = route.params;
 
   const [activeIndex, setActiveIndex] = useState(0);
 
+  const fetchCards = async () => {
+    try {
+      const response = await getCards();
+      response.push({ id: 'add' });
+      setCards(response);
+    } catch (error) {
+      console.error("Get Cards error:", error);
+    }
+  }
+  
   const _renderItem = ({item, index}) => {
     if (item.id === 'add') {
       return (
         <View style={{ backgroundColor: "#ffffff", width: 300, height: 200, borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <TouchableOpacity onPress={() => navigation.navigate("AddCard", { account })}>
+          <TouchableOpacity onPress={() => navigation.navigate("AddCard", { account, fetchCards })}>
             <Text style={{ fontWeight: "bold" }}>+ Add card</Text>
           </TouchableOpacity>
         </View>
       );
     }
     return (
-      <DebitCard number={item.number} expiry={item.expiry} />
+      <DebitCard number={item.card_number} expiry={item.card_expiry} />
     );
   }
+
+  useEffect(() => {
+    fetchCards();
+  }, []);
 
   return (
     <SafeAreaView style={{ backgroundColor: "#0f003f", height: 2000 }}>
