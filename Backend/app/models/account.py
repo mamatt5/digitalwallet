@@ -3,6 +3,8 @@ from typing import TYPE_CHECKING, Optional
 
 from sqlmodel import Field, Relationship, SQLModel
 
+from models.wallet import Wallet
+
 # Avoids circular imports
 if TYPE_CHECKING:
     from models.merchant import Merchant
@@ -36,3 +38,4 @@ class Account(SQLModel, table=True):
     account_type: AccountType = Field(index=True)
     merchant: Optional["Merchant"] = Relationship(back_populates="account", sa_relationship_kwargs={"uselist": False})
     user: Optional["User"] = Relationship(back_populates="account", sa_relationship_kwargs={"uselist": False})
+    wallet: Wallet | None = Relationship(back_populates="account")
