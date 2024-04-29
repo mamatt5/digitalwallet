@@ -1,15 +1,18 @@
-from typing import Optional
+from datetime import datetime
 
 from models.account import AccountType
 from pydantic import BaseModel, EmailStr, Field
 from schemas.account_schema import AccountResponse
-from schemas.merchant_schema import MerchantResponse
-from schemas.user_schema import UserResponse
 
 
-class LoginRequest(BaseModel):
-    email: EmailStr = Field(description="Account email")
-    password: str = Field(description="Account password")
+class Token(BaseModel):
+    access_token: str = Field(..., description="Access token")
+    token_type: str = Field(..., description="Token type")
+
+
+class TokenData(BaseModel):
+    email: EmailStr = Field(..., description="Accounts email address")
+    exp: datetime = Field(..., description="Token expiration timestamp")
 
 
 class RegisterRequest(BaseModel):
@@ -17,9 +20,14 @@ class RegisterRequest(BaseModel):
     password: str = Field(..., description="Account password")
     phone_number: str = Field(..., description="Account phone number")
     account_type: AccountType = Field(..., description="Account type (merchant or user)")
-    
-    
+
+    first_name: str = Field(..., description="User First Name")
+    last_name: str = Field(..., description="User last Name")
+
+    ABN: str = Field(..., description="ABN")
+    company_name: str = Field(..., description="Company Name")
+
+
 class AuthResponse(BaseModel):
-    account: AccountResponse = Field(..., description="The authenticated/registered account")
-    merchant: Optional[MerchantResponse] = Field(None, description="The merchant information for the account (if created)")
-    user: Optional[UserResponse] = Field(None, description="The user information for the account (if created)")
+    token: Token = Field(..., description="Access token details")
+    account: AccountResponse = Field(..., description="Account details")

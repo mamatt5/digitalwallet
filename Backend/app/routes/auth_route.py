@@ -1,31 +1,30 @@
-from database import get_db_session
 from fastapi import APIRouter, Depends
-from schemas.auth_schema import AuthResponse, LoginRequest, RegisterRequest
-from services.auth_service import login, register
-from sqlmodel import Session
+from fastapi.security import OAuth2PasswordRequestForm
+from schemas.auth_schema import AuthResponse, RegisterRequest
+from services.auth_service import AuthService
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
 
 @router.post("/login", response_model=AuthResponse)
-def login_route(login_request: LoginRequest, db: Session = Depends(get_db_session)):
+def login_route(
+    form_data: OAuth2PasswordRequestForm = Depends(), auth_service: AuthService = Depends(AuthService)
+) -> AuthResponse:
     """
     **Login/Authenticate Endpoint**
 
-    - Request Body: `LoginRequest`
-    - Returns: `AuthResponse`
-    - Raises: `HTTPException` email or password is invalid
+    - Authenticate a user and return an access token and account info
+    - Raises HTTPException (401) for invalid email or password
     """
-    return login(db, login_request)
+    return auth_service.login(form_data)
 
 
 @router.post("/register", response_model=AuthResponse)
-def register_route(register_request: RegisterRequest, db: Session = Depends(get_db_session)):
+def register_route(register_request: RegisterRequest, auth_service: AuthService = Depends(AuthService)) -> AuthResponse:
     """
     **Register Endpoint**
 
-    - Request Body: `RegisterRequest`
-    - Returns: `AuthResponse`
-    - Raises: `HTTPException` email or phone number is already registered
+    - Register a new user account and return an access token and account info
+    - Raises HTTPException (400) if email or phone number is already registered
     """
-    return register(db, register_request)
+    return auth_service.register(register_request)

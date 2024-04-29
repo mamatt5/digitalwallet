@@ -1,11 +1,11 @@
+from config import DEV_DATABASE_URL
 from sqlmodel import Session, SQLModel, create_engine
 
 # Create a database engine using SQLite
-DATABASE_URL = "sqlite:///database.db"
-engine = create_engine(DATABASE_URL)
+engine = create_engine(DEV_DATABASE_URL)
 
 
-def init_db():
+def init_db() -> None:
     """
     Initialise the database
 

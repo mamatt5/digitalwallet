@@ -5,3 +5,8 @@ __pycache__/
 
 # Database files
 *.db
+
+.env
+
+# Test logs directory
+tests/test_logs/

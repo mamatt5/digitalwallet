@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  app-server:
+    build:
+      context: .
+      dockerfile: Dockerfile-app
+    ports:
+      - 8000:8000
+    networks:
+      - app-network
+
+  app-interface:
+      build:
+        context: .
+        dockerfile: Dockerfile-interface
+      ports:
+        - "2222:22"
+      depends_on:
+        - app-server
+      networks:
+        - app-network
+
+networks:
+  app-network:
+    driver: bridge

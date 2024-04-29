@@ -1,5 +1,3 @@
-from typing import Optional
-
 from models.account import Account
 from sqlmodel import Field, Relationship, SQLModel
 
@@ -14,7 +12,8 @@ class Merchant(SQLModel, table=True):
         ABN (str): The Australian Business Number (ABN) of the merchant
         account (Optional[Account]): The account associated with the merchant [One-to-One]
     """
-    account_id: Optional[int] = Field(default=None, primary_key=True, foreign_key="account.account_id")
-    company_name: str = Field()
-    ABN: str = Field()
-    account: Optional[Account] = Relationship(back_populates="merchant")
+
+    account_id: int | None = Field(default=None, primary_key=True, foreign_key="account.account_id")
+    company_name: str
+    ABN: str
+    account: Account | None = Relationship(back_populates="merchant")
