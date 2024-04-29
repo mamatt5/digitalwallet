@@ -64,3 +64,6 @@ async def get_qr_data(qr_id: int = Body(...)):
 
     return {"data": serializer.loads(qr_info["data"])}
 
+@router.post("/validate_qr")
+async def validate_qr(qrCodeData):
+  return qrCodeData
