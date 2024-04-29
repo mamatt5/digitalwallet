@@ -1,17 +1,18 @@
-import axios from "axios";
-import { Alert } from "react-native";
+import axios from 'axios';
+import { Alert } from 'react-native';
 
-const API_BASE_URL = "http://192.168.202.195:8000";
+const API_BASE_URL = `http://${process.env.LOCAL_IP}:8000`;
+const WS_BASE_URL = `ws://${process.env.LOCAL_IP}:8000`;
 
 export const loginUser = async (email: string, password: string) => {
   try {
     const requestData = new URLSearchParams({
-      grant_type: "",
+      grant_type: '',
       username: email,
       password,
-      client_id: "",
-      client_secret: "",
-      scope: "",
+      client_id: '',
+      client_secret: '',
+      scope: '',
     });
 
     const response = await axios.post(`${API_BASE_URL}/auth/login`, requestData.toString(), {
@@ -36,7 +37,7 @@ export const registerAccount = async (
   abn: string,
 
   firstName: string,
-  lastName: string
+  lastName: string,
 ) => {
   axios
     .post(`${API_BASE_URL}/auth/register`, {
@@ -44,48 +45,40 @@ export const registerAccount = async (
       ABN: abn,
       first_name: firstName,
       last_name: lastName,
-      email: email,
-      password: password,
+      email,
+      password,
       phone_number: phoneNumber,
       account_type: accountType,
     })
-    .then(() => Alert.alert(" yay"))
-    .catch(function (error) {
+    .then(() => Alert.alert(' yay'))
+    .catch((error) => {
       Alert.alert(error);
     });
 };
 
-//   // return response.data;
-// } catch (error) {
-//   console.error('Merchant Registration error:', error);
-//   throw error;
-//   }
-// };
+export const validateQRCodeData = async (data) => {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/validate_qr`, data);
+    return response.data;
+  } catch (error) {
+    console.error('Error validating QR code data:', error);
+    throw error;
+  }
+};
 
-// export const registerUser = async (
-//   email: string,
-//   password: string,
-//   phoneNumber: string,
-//   accountType: string,
+export const connectToWebSocket = (relativeUrl: string, onMessage: (data: any) => void) => {
+  const ws = new WebSocket(`${WS_BASE_URL}${relativeUrl}`);
 
-//   firstName: string,
-//   lastName: string
-// ) => {
+  ws.onopen = () => console.log('WebSocket connected');
+  ws.onclose = (event) => console.log('WebSocket closed', event);
+  ws.onerror = (error) => console.error('WebSocket error', error);
 
-//   try {
-//     const response = await axios.post(`${API_BASE_URL}/users`, {
-//       email,
-//       password,
-//       phone_number: phoneNumber,
-//       account_type: accountType.toLowerCase(),
+  ws.onmessage = (event) => {
+    const data = JSON.parse(event.data);
+    onMessage(data);
+  };
 
-//       first_name: firstName,
-//       last_name: lastName
-//     });
-
-//     return response.data;
-//   } catch (error) {
-//     console.error('User Registration error:', error);
-//     throw error;
-//   }
-// };
+  return () => {
+    ws.close();
+  };
+};

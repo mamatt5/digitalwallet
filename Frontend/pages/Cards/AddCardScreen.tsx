@@ -1,12 +1,14 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Alert, Button, SafeAreaView, Text, TextInput, View } from "react-native";
+import React, { useEffect, useRef, useState } from 'react';
+import {
+  Alert, Button, SafeAreaView, Text, TextInput, View,
+} from 'react-native';
 
-const AddCardScreen = ({ navigation, route }) => {
+function AddCardScreen({ navigation, route }) {
   const { account } = route.params;
-  const [cardNumber, setCardNumber] = useState("");
-  const [expiryMonth, setExpiryMonth] = useState("");
-  const [expiryYear, setExpiryYear] = useState("");
-  const [expiryDate, setExpiryDate] = useState("");
+  const [cardNumber, setCardNumber] = useState('');
+  const [expiryMonth, setExpiryMonth] = useState('');
+  const [expiryYear, setExpiryYear] = useState('');
+  const [expiryDate, setExpiryDate] = useState('');
 
   const expiryYearRef = useRef(null);
 
@@ -25,33 +27,34 @@ const AddCardScreen = ({ navigation, route }) => {
   const scanCard = () => {};
 
   const handleAddCard = () => {
-    Alert.alert("Card added",
-    `Card number: ${cardNumber}\nExpiry date: ${expiryDate}`,
-  [
-    {
-      text: "OK",
-      onPress: () => {navigation.setParams({ account }); navigation.goBack();}
-    },
-  
-  ]);
+    Alert.alert(
+      'Card added',
+      `Card number: ${cardNumber}\nExpiry date: ${expiryDate}`,
+      [
+        {
+          text: 'OK',
+          onPress: () => { navigation.setParams({ account }); navigation.goBack(); },
+        },
+
+      ],
+    );
   };
 
-
   return (
-    <SafeAreaView style={{ backgroundColor: "#0f003f", flex: 1 }}>
-      <View style={{ alignSelf: "center" }}>
-        <Text style={{ color: "#ffffff", fontSize: 40, margin: 30 }}>
-          {"Enter card details"}
+    <SafeAreaView style={{ backgroundColor: '#0f003f', flex: 1 }}>
+      <View style={{ alignSelf: 'center' }}>
+        <Text style={{ color: '#ffffff', fontSize: 40, margin: 30 }}>
+          Enter card details
         </Text>
 
         <View>
           <View style={{ margin: 20, width: 200 }}>
-            <Text style={{ color: "#ffffff", fontSize: 20, margin: 10 }}>
+            <Text style={{ color: '#ffffff', fontSize: 20, margin: 10 }}>
               Card number:
             </Text>
             <TextInput
               style={{
-                backgroundColor: "#ffffff",
+                backgroundColor: '#ffffff',
                 padding: 10,
                 borderRadius: 5,
               }}
@@ -62,13 +65,13 @@ const AddCardScreen = ({ navigation, route }) => {
               keyboardType="numeric"
             />
 
-            <Text style={{ color: "#ffffff", fontSize: 20, margin: 10 }}>
+            <Text style={{ color: '#ffffff', fontSize: 20, margin: 10 }}>
               Expiry date:
             </Text>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <TextInput
                 style={{
-                  backgroundColor: "#ffffff",
+                  backgroundColor: '#ffffff',
                   padding: 10,
                   borderRadius: 5,
                   width: 50,
@@ -79,11 +82,11 @@ const AddCardScreen = ({ navigation, route }) => {
                 keyboardType="numeric"
                 maxLength={2}
               />
-              <Text style={{ marginHorizontal: 10, color: "#ffffff" }}>/</Text>
+              <Text style={{ marginHorizontal: 10, color: '#ffffff' }}>/</Text>
               <TextInput
                 ref={expiryYearRef}
                 style={{
-                  backgroundColor: "#ffffff",
+                  backgroundColor: '#ffffff',
                   padding: 10,
                   borderRadius: 5,
                   width: 50,
@@ -99,19 +102,19 @@ const AddCardScreen = ({ navigation, route }) => {
             {/* Modify logic later on when there is card object and access to database */}
             <View style={{ marginTop: 20 }}>
               <Button
-                title={"Add card"}
+                title="Add card"
                 onPress={() => handleAddCard()}
-              ></Button>
+              />
             </View>
 
             <View style={{ marginTop: 20 }}>
-              <Button title={"Scan card"} onPress={scanCard}></Button>
+              <Button title="Scan card" onPress={scanCard} />
             </View>
           </View>
         </View>
       </View>
     </SafeAreaView>
   );
-};
+}
 
 export default AddCardScreen;

@@ -5,6 +5,7 @@ from itsdangerous import URLSafeSerializer
 import qrcode
 import json
 from datetime import datetime
+from pydantic import BaseModel
 
 router = APIRouter()
 
@@ -32,7 +33,7 @@ async def generate_qr(data: dict = Body(...)): ##   generate_qr(data: dict = Bod
   data = {
     "merchant": "ShopA",
     "ABN": 123,
-    "price": 40
+    "price": 40,
   }
 
   encoded_data = serializer.dumps(data)
@@ -64,6 +65,11 @@ async def get_qr_data(qr_id: int = Body(...)):
 
     return {"data": serializer.loads(qr_info["data"])}
 
+class QRCodeData(BaseModel):
+    merchant: str
+    ABN: int
+    price: float
+
 @router.post("/validate_qr")
-async def validate_qr(qrCodeData):
-  return qrCodeData
+async def validate_qr(qr_code_data: QRCodeData):
+  return qr_code_data

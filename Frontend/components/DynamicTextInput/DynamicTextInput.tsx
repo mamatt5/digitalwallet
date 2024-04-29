@@ -1,31 +1,32 @@
-import React from "react";
-import { TextInput, StyleSheet } from "react-native";
+/* eslint-disable react/require-default-props */
+/* eslint-disable react/destructuring-assignment */
+import React from 'react';
+import { TextInput, StyleSheet } from 'react-native';
 
 type PlaceholderProps = {
   placeholder: string;
   value: string;
-  onChangeText: (text: string) => void;
+  onChangeText?: (text: string) => void;
   secureTextEntry?: boolean;
 };
 
-
 const styles = StyleSheet.create({
-    'text-box-container': {
-        display: "flex", 
-        backgroundColor: "#696087",
-        color: "#ffffff",
-        width: 250, 
-        height: 45, 
-        borderRadius: 15, 
-        margin: 10, 
-        paddingLeft: 10, 
-    },
-  });
+  'text-box-container': {
+    display: 'flex',
+    backgroundColor: '#696087',
+    color: '#ffffff',
+    width: 250,
+    height: 45,
+    borderRadius: 15,
+    margin: 10,
+    paddingLeft: 10,
+  },
+});
 
-const DynamicTextInput = (props: PlaceholderProps) => { 
+function DynamicTextInput(props: PlaceholderProps) {
   return (
     <TextInput
-      style={styles["text-box-container"]}
+      style={styles['text-box-container']}
       placeholderTextColor="#ffffff"
       placeholder={props.placeholder}
       value={props.value}
@@ -33,6 +34,6 @@ const DynamicTextInput = (props: PlaceholderProps) => {
       secureTextEntry={props.secureTextEntry}
     />
   );
-};
+}
 
 export default DynamicTextInput;
