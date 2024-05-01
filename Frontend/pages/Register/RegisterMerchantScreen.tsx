@@ -34,23 +34,28 @@ const RegisterMerchantScreen = ({navigation}) => {
         // setPhoneNumber("0000000000")
         // setAbn("99 999 999 999")
 
-        // regex for valid abn
-        // if abn is empty return 
+    
         setCompanyNameError(companyName === '')
-        setAbnError(abn === '' || !/^\d{2}\s?\d{3}\s?\d{3}\s?\d{3}$/.test(abn));
         setEmailError(email === '' || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email));
+
+        // 11 digits
+        // can be enter with or without white spaces
+        setAbnError(abn === '' || !/^\d{2}\s?\d{3}\s?\d{3}\s?\d{3}$/.test(abn));
+
+        // needs 10 digits
         setMobileError(phoneNumber === '' || !/^\d{10}$/.test(phoneNumber));
+
+        // needs one number and one capital letter
         setPasswordError(password === '' || !/(?=.*[0-9])(?=.*[A-Z]).+/.test(password))
 
+        try {
 
-        // try {
-
-        //     await registerAccount(email, password, phoneNumber, "merchant", companyName, abn, "", "")
-        //     navigation.navigate("Login");
-        //   } catch (error) {
-        //     console.error("Registration error:", error);
+            await registerAccount(email, password, phoneNumber, "merchant", companyName, abn, "", "")
+            navigation.navigate("Login");
+          } catch (error) {
+            console.error("Registration error:", error);
         
-        //   }
+          }
 
 
       };
@@ -133,7 +138,6 @@ const RegisterMerchantScreen = ({navigation}) => {
                         <View style={styles.container}>
                             <View>
                                 <DynamicTextInput placeholder="PASSWORD" onChangeText={setPassword} value={password} secureTextEntry={hidePass} error={passwordError}/>
-                                
                             </View>
                             <Ionicons
                                 name="eye"
@@ -144,7 +148,7 @@ const RegisterMerchantScreen = ({navigation}) => {
                             {passwordError && (
                                 <MaterialIcons
                                 name="error-outline"
-                                onPress={() => alert("Please enter a valid password")}
+                                onPress={() => alert("Please enter a valid password.\n At least one number and capital letter required")}
                                 color="red"
                                 style={styles.errorIcon}
                                 size = {25}

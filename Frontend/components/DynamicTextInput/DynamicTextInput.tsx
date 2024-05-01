@@ -6,7 +6,7 @@ type PlaceholderProps = {
   value: string;
   onChangeText: (text: string) => void;
   secureTextEntry?: boolean;
-  error: boolean;
+  error?: boolean;
 };
 
 
