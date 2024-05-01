@@ -26,25 +26,30 @@ const RegisterMerchantScreen = ({ navigation }) => {
 
 
     const createMerchant = async () => {
-        // setPhoneNumber("0000000000")
-        // setAbn("99 999 999 999")
 
+        // Values of regex need to be saved as react states(line 20 - 25) are one state behind
 
-        setCompanyNameError(companyName === '')
-        setEmailError(email === '' || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email));
+        const newCompanyNameError = (companyName === '');
+        const newEmailError = email === '' || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
 
         // 11 digits
         // can be enter with or without white spaces
-        setAbnError(abn === '' || !/^\d{2}\s?\d{3}\s?\d{3}\s?\d{3}$/.test(abn));
+        const newAbnError = abn === '' || !/^\d{2}\s?\d{3}\s?\d{3}\s?\d{3}$/.test(abn);
 
         // needs 10 digits
-        setMobileError(phoneNumber === '' || !/^\d{10}$/.test(phoneNumber));
+        const newPhoneNumberError = phoneNumber === '' || !/^\d{10}$/.test(phoneNumber)
 
         // needs one number and one capital letter
-        setPasswordError(password === '' || !/(?=.*[0-9])(?=.*[A-Z]).+/.test(password))
+        const newPasswordError = password === '' || !/(?=.*[0-9])(?=.*[A-Z]).+/.test(password);
+
+        setCompanyNameError(newCompanyNameError)
+        setEmailError(newEmailError);
+        setAbnError(newAbnError);
+        setMobileError(newPhoneNumberError);
+        setPasswordError(newPasswordError);
 
 
-        if (!emailError && !mobileError && !passwordError && !companyNameError && !abnError) {
+        if (!newEmailError && !newPhoneNumberError && !newPasswordError && !newCompanyNameError && !newAbnError) {
 
             try {
                 await registerAccount(email, password, phoneNumber, "merchant", companyName, abn, "", "")

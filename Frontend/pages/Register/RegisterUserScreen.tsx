@@ -20,29 +20,34 @@ const RegisterUserScreen = ({ navigation }) => {
   const [passwordError, setPasswordError] = useState(false);
   const [firstNameError, setFirstNameError] = useState(false);
   const [lastNameError, setLastNameError] = useState(false);
-
   const [hidePass, setHidePass] = useState(true);
-
 
 
   const handleRegistration = async () => {
 
+    // Values of regex need to be saved as react states(line 18 - 23) are one state behind
 
-
-    setEmailError(email === '' || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email));
+ 
+    const newEmailError = email === '' || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
 
     // needs 10 digits
-    setMobileError(phoneNumber === '' || !/^\d{10}$/.test(phoneNumber));
+    const newPhoneNumberError = phoneNumber === '' || !/^\d{10}$/.test(phoneNumber)
 
     // needs one number and one capital letter
-    setPasswordError(password === '' || !/(?=.*[0-9])(?=.*[A-Z]).+/.test(password))
+    const newPasswordError = password === '' || !/(?=.*[0-9])(?=.*[A-Z]).+/.test(password);
 
     // only alpha-numeric and white spaces allowed
-    setFirstNameError(firstName === '' || !/^[a-zA-Z\s]*$/.test(firstName))
-    setLastNameError(lastName === '' || !/^[a-zA-Z\s]*$/.test(firstName))
+    const newFirstNameError = firstName === '' || !/^[a-zA-Z\s]*$/.test(firstName);
+    const newLastNameError = lastName === '' || !/^[a-zA-Z\s]*$/.test(lastName);
 
 
-    if (!emailError && !mobileError && !passwordError && !firstNameError && !lastNameError) {
+    setEmailError(newEmailError);
+    setMobileError(newPhoneNumberError);
+    setPasswordError(newPasswordError)
+    setFirstNameError(newFirstNameError)
+    setLastNameError(newLastNameError)
+
+    if (!newEmailError && !newPhoneNumberError && !newPasswordError && !newFirstNameError && !newLastNameError) {
       try {
         await registerAccount(email, password, phoneNumber, "user", "", "", firstName, lastName)
         navigation.navigate("Login");
