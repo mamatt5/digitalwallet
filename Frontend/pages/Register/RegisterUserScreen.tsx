@@ -42,13 +42,15 @@ const RegisterUserScreen = ({ navigation }) => {
     setLastNameError(lastName === '' || !/^[a-zA-Z\s]*$/.test(firstName))
 
 
+    if (!emailError && !mobileError && !passwordError && !firstNameError && !lastNameError) {
+      try {
+        await registerAccount(email, password, phoneNumber, "user", "", "", firstName, lastName)
+        navigation.navigate("Login");
+      } catch (error) {
+        console.error("Registration error:", error);
+      }
+    }
 
-    // try {
-    //   await registerAccount(email, password, phoneNumber, "user", "", "", firstName, lastName)
-    //   navigation.navigate("Login");
-    // } catch (error) {
-    //   console.error("Registration error:", error);
-    // }
   };
 
 
@@ -146,7 +148,7 @@ const RegisterUserScreen = ({ navigation }) => {
               {firstNameError && (
                 <MaterialIcons
                   name="error-outline"
-                  onPress={() => Alert.alert("Invalid Firstname", "Please enter a valid first name.\n Only letters and white spaces allowed")}
+                  onPress={() => Alert.alert("Invalid Firstname", "Please enter a valid first name.\nOnly letters and white spaces allowed")}
                   color="red"
                   style={styles.errorIcon}
                   size={25}

@@ -43,16 +43,18 @@ const RegisterMerchantScreen = ({ navigation }) => {
         // needs one number and one capital letter
         setPasswordError(password === '' || !/(?=.*[0-9])(?=.*[A-Z]).+/.test(password))
 
-        try {
 
-            await registerAccount(email, password, phoneNumber, "merchant", companyName, abn, "", "")
-            navigation.navigate("Login");
-        } catch (error) {
-            console.error("Registration error:", error);
+        if (!emailError && !mobileError && !passwordError && !companyNameError && !abnError) {
+
+            try {
+                await registerAccount(email, password, phoneNumber, "merchant", companyName, abn, "", "")
+                navigation.navigate("Login");
+            } catch (error) {
+                console.error("Registration error:", error);
+
+            }
 
         }
-
-
     };
 
 
@@ -106,11 +108,11 @@ const RegisterMerchantScreen = ({ navigation }) => {
 
                         <View style={styles.container}>
                             <View>
-                                <DynamicTextInput 
-                                placeholder="EMAIL" 
-                                onChangeText={setEmail}  
-                                value={email} 
-                                error={emailError}/>
+                                <DynamicTextInput
+                                    placeholder="EMAIL"
+                                    onChangeText={setEmail}
+                                    value={email}
+                                    error={emailError} />
                             </View>
                             {emailError && (
                                 <MaterialIcons
@@ -125,11 +127,11 @@ const RegisterMerchantScreen = ({ navigation }) => {
 
                         <View style={styles.container}>
                             <View>
-                                <DynamicTextInput 
-                                placeholder="MOBILE NUMBER" 
-                                onChangeText={setPhoneNumber} 
-                                value={phoneNumber} 
-                                error={mobileError} />
+                                <DynamicTextInput
+                                    placeholder="MOBILE NUMBER"
+                                    onChangeText={setPhoneNumber}
+                                    value={phoneNumber}
+                                    error={mobileError} />
                             </View>
                             {mobileError && (
                                 <MaterialIcons
@@ -144,12 +146,12 @@ const RegisterMerchantScreen = ({ navigation }) => {
 
                         <View style={styles.container}>
                             <View>
-                                <DynamicTextInput 
-                                placeholder="PASSWORD" 
-                                onChangeText={setPassword} 
-                                value={password} 
-                                secureTextEntry={hidePass} 
-                                error={passwordError} />
+                                <DynamicTextInput
+                                    placeholder="PASSWORD"
+                                    onChangeText={setPassword}
+                                    value={password}
+                                    secureTextEntry={hidePass}
+                                    error={passwordError} />
                             </View>
                             <Ionicons
                                 name="eye"
@@ -169,7 +171,7 @@ const RegisterMerchantScreen = ({ navigation }) => {
                             )}
 
                         </View>
-                        
+
                         <View style={{ margin: 20, width: 200 }}>
                             <Button buttonColor="#ffffff" textColor="#000000" onPress={createMerchant}>
                                 <Text style={{ fontWeight: "bold" }}>
