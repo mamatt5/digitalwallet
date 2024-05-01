@@ -13,7 +13,6 @@ const RegisterUserScreen = ({ navigation }) => {
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [accountType, setAccountType] = useState("user");
 
   const [emailError, setEmailError] = useState(false);
   const [mobileError, setMobileError] = useState(false);
@@ -67,8 +66,6 @@ const RegisterUserScreen = ({ navigation }) => {
             <Text style={{ color: '#ffffff', fontSize: 40, margin: 30 }}>
               {'Register User'}
             </Text>
-
-
 
             <View style={styles.container}>
               <View>
@@ -208,9 +205,7 @@ const styles = StyleSheet.create({
     alignItems: 'center', // Align items vertically
     position: 'relative', // Required for absolute positioning
   },
-  inputContainer: {
-    flex: 1, // Take up remaining space
-  },
+
   errorIcon: {
     position: 'absolute', // Position the icon absolutely
     right: -20, // Adjust the position as needed

@@ -199,9 +199,6 @@ const styles = StyleSheet.create({
         alignItems: 'center', // Align items vertically
         position: 'relative', // Required for absolute positioning
     },
-    inputContainer: {
-        flex: 1, // Take up remaining space
-    },
     errorIcon: {
         position: 'absolute', // Position the icon absolutely
         right: -20, // Adjust the position as needed
