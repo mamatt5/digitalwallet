@@ -7,12 +7,7 @@ import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 import { StyleSheet } from 'react-native';
 
 
-
-
-
-
-
-const RegisterMerchantScreen = ({navigation}) => {
+const RegisterMerchantScreen = ({ navigation }) => {
 
     // details of a merchant
     // can add more
@@ -28,13 +23,13 @@ const RegisterMerchantScreen = ({navigation}) => {
     const [emailError, setEmailError] = useState(false);
     const [mobileError, setMobileError] = useState(false);
     const [hidePass, setHidePass] = useState(true);
-    
+
 
     const createMerchant = async () => {
         // setPhoneNumber("0000000000")
         // setAbn("99 999 999 999")
 
-    
+
         setCompanyNameError(companyName === '')
         setEmailError(email === '' || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email));
 
@@ -52,152 +47,164 @@ const RegisterMerchantScreen = ({navigation}) => {
 
             await registerAccount(email, password, phoneNumber, "merchant", companyName, abn, "", "")
             navigation.navigate("Login");
-          } catch (error) {
+        } catch (error) {
             console.error("Registration error:", error);
-        
-          }
+
+        }
 
 
-      };
+    };
 
-      
+
     return (
-        <SafeAreaView style={{ backgroundColor: '#0f003f', height: 2000}}>
-            <KeyboardAvoidingView behavior="padding" style={{flex:1}}>
-            <ScrollView>
-                <View style={{ display: 'flex', alignItems: 'center', justifyContent:"center"}}>
-                    <Text style={{ color: '#ffffff', fontSize: 40, margin: 30 }}>
-                    {'Register Merchant'}
-                    </Text>
-                    
-                    <View style={styles.container}>
-                        <View>
-                            <DynamicTextInput
-                            placeholder="COMPANY NAME"
-                            onChangeText={setCompanyName}
-                            value={companyName}
-                            error={companyNameError}
-                            />
-                        </View>
-                        {companyNameError && (
-                            <MaterialIcons
-                            name="error-outline"
-                            onPress={() => alert("Please enter a valid company name")}
-                            color="red"
-                            style={styles.errorIcon}
-                            size = {25}
-                            />
-                        )}
-                        </View>
+        <SafeAreaView style={{ backgroundColor: '#0f003f', height: 2000 }}>
+            <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
+                <ScrollView>
+                    <View style={{ display: 'flex', alignItems: 'center', justifyContent: "center" }}>
+                        <Text style={{ color: '#ffffff', fontSize: 40, margin: 30 }}>
+                            {'Register Merchant'}
+                        </Text>
 
                         <View style={styles.container}>
-                        <View>
-                            <DynamicTextInput placeholder="ABN" onChangeText={setAbn} value={abn} error={abnError}/>
-                        </View>
-                        {abnError && (
-                            <MaterialIcons
-                            name="error-outline"
-                            onPress={() => alert("Please enter a valid company ABN.\nA valid ABN consists of 11 digits.")}
-                            color="red"
-                            style={styles.errorIcon}
-                            size = {25}
-                            />
-                        )}
-                        </View>
-
-                        <View style={styles.container}>
-                        <View>
-                            <DynamicTextInput placeholder="EMAIL" onChangeText={setEmail} value={email} error={emailError}/>
-                        </View>
-                        {emailError && (
-                            <MaterialIcons
-                            name="error-outline"
-                            onPress={() => alert("Please enter a valid email")}
-                            color="red"
-                            style={styles.errorIcon}
-                            size = {25}
-                            />
-                        )}
-                        </View>
-
-                        <View style={styles.container}>
-                        <View>
-                            <DynamicTextInput placeholder="MOBILE NUMBER" onChangeText={setPhoneNumber} value={phoneNumber} error={mobileError}/>
-                        </View>
-                        {mobileError && (
-                            <MaterialIcons
-                            name="error-outline"
-                            onPress={() => alert("Please enter a valid mobile number")}
-                            color="red"
-                            style={styles.errorIcon}
-                            size = {25}
-                            />
-                        )}
+                            <View>
+                                <DynamicTextInput
+                                    placeholder="COMPANY NAME"
+                                    onChangeText={setCompanyName}
+                                    value={companyName}
+                                    error={companyNameError}
+                                />
+                            </View>
+                            {companyNameError && (
+                                <MaterialIcons
+                                    name="error-outline"
+                                    onPress={() => Alert.alert("Invalid Company Name", "Please enter a valid company name")}
+                                    color="red"
+                                    style={styles.errorIcon}
+                                    size={25}
+                                />
+                            )}
                         </View>
 
                         <View style={styles.container}>
                             <View>
-                                <DynamicTextInput placeholder="PASSWORD" onChangeText={setPassword} value={password} secureTextEntry={hidePass} error={passwordError}/>
+                                <DynamicTextInput
+                                    placeholder="ABN"
+                                    onChangeText={setAbn}
+                                    value={abn}
+                                    error={abnError} />
+                            </View>
+                            {abnError && (
+                                <MaterialIcons
+                                    name="error-outline"
+                                    onPress={() => Alert.alert("Invalid ABN", "Please enter a valid company ABN.\nA valid ABN consists of 11 digits.")}
+                                    color="red"
+                                    style={styles.errorIcon}
+                                    size={25}
+                                />
+                            )}
+                        </View>
+
+                        <View style={styles.container}>
+                            <View>
+                                <DynamicTextInput 
+                                placeholder="EMAIL" 
+                                onChangeText={setEmail}  
+                                value={email} 
+                                error={emailError}/>
+                            </View>
+                            {emailError && (
+                                <MaterialIcons
+                                    name="error-outline"
+                                    onPress={() => Alert.alert("Invalid Email", "Please enter a valid email")}
+                                    color="red"
+                                    style={styles.errorIcon}
+                                    size={25}
+                                />
+                            )}
+                        </View>
+
+                        <View style={styles.container}>
+                            <View>
+                                <DynamicTextInput 
+                                placeholder="MOBILE NUMBER" 
+                                onChangeText={setPhoneNumber} 
+                                value={phoneNumber} 
+                                error={mobileError} />
+                            </View>
+                            {mobileError && (
+                                <MaterialIcons
+                                    name="error-outline"
+                                    onPress={() => Alert.alert("Invalid Mobile Number", "Please enter a valid mobile number")}
+                                    color="red"
+                                    style={styles.errorIcon}
+                                    size={25}
+                                />
+                            )}
+                        </View>
+
+                        <View style={styles.container}>
+                            <View>
+                                <DynamicTextInput 
+                                placeholder="PASSWORD" 
+                                onChangeText={setPassword} 
+                                value={password} 
+                                secureTextEntry={hidePass} 
+                                error={passwordError} />
                             </View>
                             <Ionicons
                                 name="eye"
                                 style={styles.eyeIcon}
-                                size = {25}
-                                onPress={()=>setHidePass(!hidePass)}
-                                />
+                                size={25}
+                                onPress={() => setHidePass(!hidePass)}
+                            />
                             {passwordError && (
                                 <MaterialIcons
-                                name="error-outline"
-                                onPress={() => alert("Please enter a valid password.\n At least one number and capital letter required")}
-                                color="red"
-                                style={styles.errorIcon}
-                                size = {25}
+                                    name="error-outline"
+                                    onPress={() => Alert.alert("Invalid Password", "Please enter a valid password.\nAt least one number and capital letter required")}
+                                    color="red"
+                                    style={styles.errorIcon}
+                                    size={25}
                                 />
 
                             )}
-                            
+
                         </View>
-                    
-                    
                         
-                            
-                    
+                        <View style={{ margin: 20, width: 200 }}>
+                            <Button buttonColor="#ffffff" textColor="#000000" onPress={createMerchant}>
+                                <Text style={{ fontWeight: "bold" }}>
+                                    Register Merchant
+                                </Text>
+                            </Button>
+                        </View>
 
-                    <View style={{ margin:20, width:200}}>
-                        <Button buttonColor="#ffffff" textColor="#000000" onPress={createMerchant}>
-                            <Text style={{fontWeight:"bold"}}>
-                                Register Merchant
-                            </Text>
-                        </Button>
-                    </View>
-
-                </ View>  
-            </ScrollView>
+                    </ View>
+                </ScrollView>
             </KeyboardAvoidingView>
-        
+
         </SafeAreaView>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
-      flexDirection: 'row', // Arrange children horizontally
-      alignItems: 'center', // Align items vertically
-      position: 'relative', // Required for absolute positioning
+        flexDirection: 'row', // Arrange children horizontally
+        alignItems: 'center', // Align items vertically
+        position: 'relative', // Required for absolute positioning
     },
     inputContainer: {
-      flex: 1, // Take up remaining space
+        flex: 1, // Take up remaining space
     },
     errorIcon: {
-      position: 'absolute', // Position the icon absolutely
-      right: -20, // Adjust the position as needed
+        position: 'absolute', // Position the icon absolutely
+        right: -20, // Adjust the position as needed
     },
     eyeIcon: {
-      position: 'absolute', // Position the icon absolutely
-      right: 20, // Adjust the position as needed
-      opacity:0.6,
-  
+        position: 'absolute', // Position the icon absolutely
+        right: 20, // Adjust the position as needed
+        opacity: 0.6,
+
     }
-  });
+});
 
 export default RegisterMerchantScreen;
