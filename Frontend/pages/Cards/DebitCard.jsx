@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ImageBackground, View } from 'react-native';
+import { ImageBackground, View, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Text } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -17,38 +17,73 @@ const DebitCard = ({ number, expiry }) => {
 
     const getCardImage = (number) => {
       switch (number[0]) {
+        case '1':
         case '2':
         case '5':
           return MasterCard;
-        case '3': // should actually be 15 digits
+
+        case '3':
+        case '6':
+        case '8':
           return AmExCard;
+
+
         case '4':
+        case '7':
+        case '9':
           return VisaCard;
+
+
         default:
           return VisaCard;
       }
     };
 
     return (
-      <ImageBackground source={getCardImage(number)} style={{ 
-        padding: 20, 
-        margin: 10, 
-        borderRadius: 10, 
-        width: 300,
-        height: 200, 
-        alignSelf: 'center', 
-      }}>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+      <ImageBackground source={getCardImage(number)} style={styles.card}>
+
+        <View style={styles.cardInfo}>
           <View>
-            <Text style={{ fontSize: 20, marginBottom: 10 }}>{displayNumber}</Text>
-            <Text>Expiry: {expiry}</Text>
+            <Text style={styles.cardNumber}>{displayNumber}</Text>
+            <Text>exp: {expiry}</Text>
           </View>
-          <TouchableOpacity onPress={() => setShowFullNumber(!showFullNumber)}>
-            <Icon name={showFullNumber ? "eye-slash" : "eye"} size={20} color="#000" />
+
+          <TouchableOpacity onPress={() => setShowFullNumber(!showFullNumber)} style={styles.eyeButton}>
+            <Icon name={showFullNumber ? "eye-slash" : "eye"} size={20} color="#fff" />
           </TouchableOpacity>
+
         </View>
       </ImageBackground>
     );
   };
+
+
+  const styles = StyleSheet.create({
+    card: {
+      padding: 20,
+      margin: 10,
+      borderRadius: 10,
+      width: 300,
+      height: 200,
+      alignSelf: 'center',
+    },
+
+    cardInfo: {
+      marginTop: 110,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    },
+
+    cardNumber: {
+      fontSize: 20,
+      color: '#fff',
+      marginBottom: 10,
+    },
+
+    eyeButton: {
+      marginBottom: 30,
+    }
+  })
 
 export default DebitCard

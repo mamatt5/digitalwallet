@@ -5,6 +5,7 @@ import Carousel from 'react-native-snap-carousel';
 import DebitCard from '../Cards/DebitCard';
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { getWalletCards } from "../../api/api";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 const AccountScreen = ({ navigation, route }) => {
 
@@ -16,7 +17,6 @@ const AccountScreen = ({ navigation, route }) => {
   const fetchCards = async () => {
     try {
       const response = await getWalletCards(account.wallet.wallet_id);
-      response.push({ id: 'add' });
       setCards(response);
     } catch (error) {
       console.error("Get Cards error:", error);
@@ -24,15 +24,6 @@ const AccountScreen = ({ navigation, route }) => {
   }
   
   const _renderItem = ({item, index}) => {
-    if (item.id === 'add') {
-      return (
-        <View style={{ backgroundColor: "#ffffff", width: 300, height: 200, borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <TouchableOpacity onPress={() => navigation.navigate("AddCard", { account, fetchCards })}>
-            <Text style={{ fontWeight: "bold" }}>+ Add card</Text>
-          </TouchableOpacity>
-        </View>
-      );
-    }
     return (
       <DebitCard number={item.card_number} expiry={item.card_expiry} />
     );
@@ -63,11 +54,17 @@ const AccountScreen = ({ navigation, route }) => {
           onSnapToItem={index => setActiveIndex(index)}
         />
 
-        <View style={{ margin: 20, width: 200 }}>
+        <View style={{marginTop: 10}}>
+          <TouchableOpacity onPress={() => navigation.navigate("AddCard", { account, fetchCards })}>
+            <Icon name={"plus-square-o"} size={40} color="#fff" />
+          </TouchableOpacity>
+        </View>
+        <View style={{ margin: 20, width: 200, marginTop: 50 }}>
           <Button buttonColor="#ffffff" textColor="#000000" onPress={() => navigation.navigate("QRScan")}>
             <Text style={{ fontWeight: "bold" }}>QR Code Scan</Text>
           </Button>
         </View>
+
       </View>
     </SafeAreaView>
   );

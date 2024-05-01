@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Button, SafeAreaView, Text, TextInput, View } from "react-native";
+import { Button, SafeAreaView, Text, TextInput, View, StyleSheet } from "react-native";
 import { addCard } from "../../api/api";
 
 const AddCardScreen = ({ navigation, route }) => {
@@ -15,14 +15,12 @@ const AddCardScreen = ({ navigation, route }) => {
   useEffect(() => {
     if (expiryMonth.length === 2) {
       expiryYearRef.current.focus();
-    }
-  
-    return () => {
-      if (expiryYear.length === 2) {
-        expiryYearRef.current.blur();
-      }
-    };
-  }, [expiryMonth, expiryYear]);
+    }}, [expiryMonth]);
+
+  useEffect(() => {
+    if (expiryYear.length === 2 && expiryMonth.length === 2) {
+      expiryYearRef.current.blur();
+    }}, [expiryYear, expiryMonth]);
 
   useEffect(() => {
     if (expiryMonth.length === 2 && expiryYear.length === 2) {
@@ -42,23 +40,19 @@ const AddCardScreen = ({ navigation, route }) => {
   };
 
   return (
-    <SafeAreaView style={{ backgroundColor: "#0f003f", flex: 1 }}>
-      <View style={{ alignSelf: "center" }}>
-        <Text style={{ color: "#ffffff", fontSize: 40, margin: 30 }}>
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.centerView}>
+        <Text style={styles.titleText}>
           {"Enter card details"}
         </Text>
 
         <View>
-          <View style={{ margin: 20, width: 200 }}>
-            <Text style={{ color: "#ffffff", fontSize: 20, margin: 10 }}>
+          <View style={styles.cardDetails}>
+            <Text style={styles.labelText}>
               Card number:
             </Text>
             <TextInput
-              style={{
-                backgroundColor: "#ffffff",
-                padding: 10,
-                borderRadius: 5,
-              }}
+              style={styles.input}
               onChangeText={setCardNumber}
               value={cardNumber}
               placeholder="XXXX XXXX XXXX XXXX"
@@ -66,32 +60,22 @@ const AddCardScreen = ({ navigation, route }) => {
               keyboardType="numeric"
             />
 
-            <Text style={{ color: "#ffffff", fontSize: 20, margin: 10 }}>
+            <Text style={styles.labelText}>
               Expiry date:
             </Text>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <View style={styles.row}>
               <TextInput
-                style={{
-                  backgroundColor: "#ffffff",
-                  padding: 10,
-                  borderRadius: 5,
-                  width: 50,
-                }}
+                style={styles.smallInput}
                 onChangeText={setExpiryMonth}
                 value={expiryMonth}
                 placeholder="MM"
                 keyboardType="numeric"
                 maxLength={2}
               />
-              <Text style={{ marginHorizontal: 10, color: "#ffffff" }}>/</Text>
+              <Text style={styles.separator}>/</Text>
               <TextInput
                 ref={expiryYearRef}
-                style={{
-                  backgroundColor: "#ffffff",
-                  padding: 10,
-                  borderRadius: 5,
-                  width: 50,
-                }}
+                style={styles.smallInput}
                 onChangeText={setExpiryYear}
                 value={expiryYear}
                 placeholder="YY"
@@ -101,16 +85,11 @@ const AddCardScreen = ({ navigation, route }) => {
             </View>
 
             <View>
-              <Text style={{ color: "#ffffff", fontSize: 20, margin: 10 }}>
+              <Text style={styles.labelText}>
                 CVV:
               </Text>
               <TextInput
-                style={{
-                  backgroundColor: "#ffffff",
-                  padding: 10,
-                  borderRadius: 5,
-                  width: 50,
-                }}
+                style={styles.smallInput}
                 onChangeText={setCardCVV}
                 value={cardCVV}
                 placeholder="XXX"
@@ -119,7 +98,7 @@ const AddCardScreen = ({ navigation, route }) => {
               />
             </View>
 
-            <View style={{ marginTop: 20 }}>
+            <View style={styles.buttonContainer}>
               <Button
                 title={"Add card"}
                 onPress={() => handleAddCard()}
@@ -131,5 +110,51 @@ const AddCardScreen = ({ navigation, route }) => {
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  safeArea: {
+    backgroundColor: "#0f003f", 
+    flex: 1
+  },
+  centerView: {
+    alignSelf: "center"
+  },
+  titleText: {
+    color: "#ffffff", 
+    fontSize: 40, 
+    margin: 30
+  },
+  cardDetails: {
+    margin: 20, 
+    width: 200
+  },
+  labelText: {
+    color: "#ffffff", 
+    fontSize: 20, 
+    margin: 10
+  },
+  input: {
+    backgroundColor: "#ffffff",
+    padding: 10,
+    borderRadius: 5,
+  },
+  row: {
+    flexDirection: "row", 
+    alignItems: "center"
+  },
+  smallInput: {
+    backgroundColor: "#ffffff",
+    padding: 10,
+    borderRadius: 5,
+    width: 50,
+  },
+  separator: {
+    marginHorizontal: 10, 
+    color: "#ffffff"
+  },
+  buttonContainer: {
+    marginTop: 20
+  }
+});
 
 export default AddCardScreen;
