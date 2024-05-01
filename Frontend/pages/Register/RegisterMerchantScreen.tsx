@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
-import { View, Text, SafeAreaView, ScrollView, Alert, KeyboardAvoidingView } from "react-native";
+import { View, Text, SafeAreaView, ScrollView, Alert, KeyboardAvoidingView, TouchableOpacity } from "react-native";
 import { Button } from "react-native-paper";
 import DynamicTextInput from '../../components/DynamicTextInput/DynamicTextInput';
 import { registerAccount } from "../../api/api";
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 import { StyleSheet } from 'react-native';
+
+
 
 
 
@@ -25,6 +27,7 @@ const RegisterMerchantScreen = ({navigation}) => {
     const [abnError, setAbnError] = useState(false);
     const [emailError, setEmailError] = useState(false);
     const [mobileError, setMobileError] = useState(false);
+    const [hidePass, setHidePass] = useState(true);
     
 
     const createMerchant = async () => {
@@ -37,7 +40,7 @@ const RegisterMerchantScreen = ({navigation}) => {
         setAbnError(abn === '' || !/^\d{2}\s?\d{3}\s?\d{3}\s?\d{3}$/.test(abn));
         setEmailError(email === '' || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email));
         setMobileError(phoneNumber === '' || !/^\d{10}$/.test(phoneNumber));
-        setPasswordError(password === '')
+        setPasswordError(password === '' || !/(?=.*[0-9])(?=.*[A-Z]).+/.test(password))
 
 
         // try {
@@ -81,12 +84,80 @@ const RegisterMerchantScreen = ({navigation}) => {
                             />
                         )}
                         </View>
+
+                        <View style={styles.container}>
+                        <View>
+                            <DynamicTextInput placeholder="ABN" onChangeText={setAbn} value={abn} error={abnError}/>
+                        </View>
+                        {abnError && (
+                            <MaterialIcons
+                            name="error-outline"
+                            onPress={() => alert("Please enter a valid company ABN.\nA valid ABN consists of 11 digits.")}
+                            color="red"
+                            style={styles.errorIcon}
+                            size = {25}
+                            />
+                        )}
+                        </View>
+
+                        <View style={styles.container}>
+                        <View>
+                            <DynamicTextInput placeholder="EMAIL" onChangeText={setEmail} value={email} error={emailError}/>
+                        </View>
+                        {emailError && (
+                            <MaterialIcons
+                            name="error-outline"
+                            onPress={() => alert("Please enter a valid email")}
+                            color="red"
+                            style={styles.errorIcon}
+                            size = {25}
+                            />
+                        )}
+                        </View>
+
+                        <View style={styles.container}>
+                        <View>
+                            <DynamicTextInput placeholder="MOBILE NUMBER" onChangeText={setPhoneNumber} value={phoneNumber} error={mobileError}/>
+                        </View>
+                        {mobileError && (
+                            <MaterialIcons
+                            name="error-outline"
+                            onPress={() => alert("Please enter a valid mobile number")}
+                            color="red"
+                            style={styles.errorIcon}
+                            size = {25}
+                            />
+                        )}
+                        </View>
+
+                        <View style={styles.container}>
+                            <View>
+                                <DynamicTextInput placeholder="PASSWORD" onChangeText={setPassword} value={password} secureTextEntry={hidePass} error={passwordError}/>
+                                
+                            </View>
+                            <Ionicons
+                                name="eye"
+                                style={styles.eyeIcon}
+                                size = {25}
+                                onPress={()=>setHidePass(!hidePass)}
+                                />
+                            {passwordError && (
+                                <MaterialIcons
+                                name="error-outline"
+                                onPress={() => alert("Please enter a valid password")}
+                                color="red"
+                                style={styles.errorIcon}
+                                size = {25}
+                                />
+
+                            )}
+                            
+                        </View>
                     
                     
-                    <DynamicTextInput placeholder="ABN" onChangeText={setAbn} value={abn} error={abnError}/>
-                    <DynamicTextInput placeholder="EMAIL" onChangeText={setEmail} value={email} error={emailError}/>
-                    <DynamicTextInput placeholder="MOBILE NUMBER" onChangeText={setPhoneNumber} value={phoneNumber} error={mobileError}/>
-                    <DynamicTextInput placeholder="PASSWORD" onChangeText={setPassword} value={password} secureTextEntry error={passwordError}/>
+                        
+                            
+                    
 
                     <View style={{ margin:20, width:200}}>
                         <Button buttonColor="#ffffff" textColor="#000000" onPress={createMerchant}>
@@ -117,6 +188,12 @@ const styles = StyleSheet.create({
       position: 'absolute', // Position the icon absolutely
       right: -20, // Adjust the position as needed
     },
+    eyeIcon: {
+      position: 'absolute', // Position the icon absolutely
+      right: 20, // Adjust the position as needed
+      opacity:0.6,
+  
+    }
   });
 
 export default RegisterMerchantScreen;
