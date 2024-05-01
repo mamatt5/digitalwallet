@@ -78,6 +78,26 @@ export const addCard = async (cardNumber: string, expiryDate: string, cardCVV: s
   }
 }
 
+export const getUser = async (account_id: string) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/accounts/getuser/${account_id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Get User error:', error);
+    throw error;
+  }
+}
+
+export const getMerchant = async (account_id: string) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/accounts/getmerchant/${account_id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Get Merchant error:', error);
+    throw error;
+  }
+}
+
 //   // return response.data;
 // } catch (error) {
 //   console.error('Merchant Registration error:', error);

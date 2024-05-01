@@ -43,7 +43,7 @@ const AddCardScreen = ({ navigation, route }) => {
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.centerView}>
         <Text style={styles.titleText}>
-          {"Enter card details"}
+          {"Enter your card details"}
         </Text>
 
         <View>
@@ -97,14 +97,15 @@ const AddCardScreen = ({ navigation, route }) => {
                 maxLength={3}
               />
             </View>
+          </View>
 
-            <View style={styles.buttonContainer}>
+          <View style={styles.buttonContainer}>
               <Button
                 title={"Add card"}
                 onPress={() => handleAddCard()}
               ></Button>
             </View>
-          </View>
+            
         </View>
       </View>
     </SafeAreaView>
@@ -122,7 +123,9 @@ const styles = StyleSheet.create({
   titleText: {
     color: "#ffffff", 
     fontSize: 40, 
-    margin: 30
+    margin: 30,
+    textAlign: "center",
+    fontWeight: "bold"
   },
   cardDetails: {
     margin: 20, 
@@ -153,7 +156,9 @@ const styles = StyleSheet.create({
     color: "#ffffff"
   },
   buttonContainer: {
-    marginTop: 20
+    marginTop: 100,
+    width: 200,
+    alignSelf: "center"
   }
 });
 
