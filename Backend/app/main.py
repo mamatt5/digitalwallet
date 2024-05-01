@@ -24,8 +24,8 @@ async def lifespan(app: FastAPI):
     init_db()
 
     num_records = 10
-    dummy_data = generate_dummy_data(num_records)
     with next(get_db_session()) as session:
+        dummy_data = generate_dummy_data(session, num_records)
         insert_dummy_data(session, dummy_data)
 
     # Application execution

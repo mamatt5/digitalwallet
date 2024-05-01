@@ -1,3 +1,5 @@
+from typing import List
+from schemas.card_schema import CardInfo
 from models.card import Card
 from services.card_service import CardService
 from fastapi import APIRouter, Depends
@@ -17,3 +19,8 @@ def get_cards_route(card_service: CardService = Depends(CardService)) -> list[Ca
 @router.get("/getcard/{card_id}")
 def get_card_route(card_id: int, card_service: CardService = Depends(CardService)) -> Card:
     return card_service.get_card(card_id)
+
+@router.get("/getcardsfromwallet/{wallet_id}", response_model=List[CardInfo])
+def get_cards_from_wallet_route(wallet_id: int, card_service: CardService = Depends(CardService)) -> list[CardInfo]:
+    cards = card_service.get_cards_from_wallet(wallet_id)
+    return [CardInfo(card_number=card.card_number, card_expiry=card.card_expiry) for card in cards]

@@ -1,6 +1,8 @@
 from typing import List, Union
 
 from faker import Faker
+from models.card import Card
+from models.wallet import Wallet
 from models.account import Account, AccountType
 from models.merchant import Merchant
 from models.user import User
@@ -10,16 +12,7 @@ from sqlmodel import Session
 fake = Faker()
 
 
-def generate_dummy_data(num_records: int) -> list[Union[Merchant, User]]:
-    """
-    Generates a list of dummy Account objects with a mix of users and merchants.
-
-    Args:
-        num_records: The number of accounts to generate.
-
-    Returns:
-        A list of dummy Account, Merchant, or User objects.
-    """
+def generate_dummy_data(session: Session, num_records: int) -> list[Union[Merchant, User, Wallet, Card]]:
     data = []
     for _ in range(num_records):
         account_type = AccountType.MERCHANT if fake.boolean() else AccountType.USER
@@ -30,6 +23,20 @@ def generate_dummy_data(num_records: int) -> list[Union[Merchant, User]]:
             "account_type": account_type,
         }
         account = Account(**account_data)
+
+        wallet = Wallet()
+        wallet.account = account
+        account.wallet = wallet
+
+        card_data = {
+            "card_number": fake.credit_card_number(),
+            "card_expiry": fake.credit_card_expire(),
+            "card_cvv": fake.credit_card_security_code(),
+        }
+
+        card = Card(**card_data)
+        card.wallet = wallet
+        wallet.cards.append(card)
 
         if account_type == AccountType.MERCHANT:
             merchant_data = {
@@ -47,6 +54,9 @@ def generate_dummy_data(num_records: int) -> list[Union[Merchant, User]]:
             user = User(**user_data)
             user.account = account
             data.append(user)
+
+        data.append(wallet)
+        data.append(card)
 
     return data
 

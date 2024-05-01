@@ -1,5 +1,6 @@
 from fastapi import HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
+from models.wallet import Wallet
 from models.account import Account, AccountType
 from models.merchant import Merchant
 from models.user import User
@@ -9,16 +10,20 @@ from sqlmodel import Session
 from repositories.account_repository import AccountRepository
 from repositories.merchant_repository import MerchantRepository
 from repositories.user_repository import UserRepository
+from repositories.wallet_repository import WalletRepository
 from fastapi import Depends
 
 class AuthService:
 
     def __init__(self, account_repository: AccountRepository = Depends(AccountRepository),
     merchant_repository: MerchantRepository = Depends(MerchantRepository),
-    user_repository: UserRepository = Depends(UserRepository)):
+    user_repository: UserRepository = Depends(UserRepository),
+    wallet_repository: WalletRepository = Depends(WalletRepository)):
+        
         self.account_repository = account_repository
         self.merchant_repository = merchant_repository
         self.user_repository = user_repository
+        self.wallet_repository = wallet_repository
 
     def authenticate_account(self, email: str, password: str) -> Account | None:
         """
@@ -83,6 +88,11 @@ class AuthService:
         account_data["password"] = hash_password(register_request.password)
         account = Account(**account_data)
         account = self.account_repository.create(account)
+        wallet = Wallet(account_id=account.account_id)
+        wallet = self.wallet_repository.create(wallet)
+        account.wallet = wallet
+        wallet.account = account
+
 
         access_token = create_access_token(account.email)
         token = Token(access_token=access_token, token_type="bearer")

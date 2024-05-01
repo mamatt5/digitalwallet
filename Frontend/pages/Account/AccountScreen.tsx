@@ -4,7 +4,7 @@ import { Button } from "react-native-paper";
 import Carousel from 'react-native-snap-carousel';
 import DebitCard from '../Cards/DebitCard';
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { getCards } from "../../api/api";
+import { getWalletCards } from "../../api/api";
 
 const AccountScreen = ({ navigation, route }) => {
 
@@ -15,7 +15,7 @@ const AccountScreen = ({ navigation, route }) => {
 
   const fetchCards = async () => {
     try {
-      const response = await getCards();
+      const response = await getWalletCards(account.wallet.wallet_id);
       response.push({ id: 'add' });
       setCards(response);
     } catch (error) {
@@ -41,6 +41,9 @@ const AccountScreen = ({ navigation, route }) => {
   useEffect(() => {
     fetchCards();
   }, []);
+
+  useEffect(() => {
+    console.log(cards[activeIndex]);}, [activeIndex, cards]);
 
   return (
     <SafeAreaView style={{ backgroundColor: "#0f003f", height: 2000 }}>

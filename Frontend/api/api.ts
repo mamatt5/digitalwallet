@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Alert } from "react-native";
 
-const API_BASE_URL = "http://192.168.202.195:8000";
+const API_BASE_URL = "http://192.168.86.28:8000";
 
 export const loginUser = async (email: string, password: string) => {
   try {
@@ -31,10 +31,8 @@ export const registerAccount = async (
   password: string,
   phoneNumber: string,
   accountType: string,
-
   companyName: string,
   abn: string,
-
   firstName: string,
   lastName: string
 ) => {
@@ -55,21 +53,23 @@ export const registerAccount = async (
     });
 };
 
-export const getCards = async () => {
+export const getWalletCards = async (wallet_id: string) => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/cards/getcards`);
+    const response = await axios.get(`${API_BASE_URL}/cards/getcardsfromwallet/${wallet_id}`);
     return response.data;
   } catch (error) {
-    console.error('Get Cards error:', error);
+    console.error('Get Wallet Cards error:', error);
     throw error;
   }
 }
 
-export const addCard = async (cardNumber: string, expiryDate: string) => {
+export const addCard = async (cardNumber: string, expiryDate: string, cardCVV: string, walletId: string) => {
   try {
     const response = await axios.post(`${API_BASE_URL}/cards/addcard`, {
       card_number: cardNumber,
       card_expiry: expiryDate,
+      card_cvv: cardCVV,
+      wallet_id: walletId,
     });
     return response.data;
   } catch (error) {

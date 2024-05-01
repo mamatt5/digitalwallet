@@ -3,17 +3,17 @@ from services.wallet_service import WalletService
 from fastapi import APIRouter, Depends
 
 
-router = APIRouter(prefix="/cards", tags=["Cards"])
+router = APIRouter(prefix="/wallets", tags=["Wallets"])
 
 
-@router.post("/addcard")
-def add_card_route(card: Card, card_service: CardService = Depends(CardService)) -> None:
-    card_service.add_card(card)
+@router.post("/addwallet")
+def add_wallet_route(wallet: Wallet, wallet_service: WalletService = Depends(WalletService)) -> None:
+    wallet_service.add_wallet(wallet)
 
-@router.get("/getcards")
-def get_cards_route(card_service: CardService = Depends(CardService)) -> list[Card]:
-    return card_service.get_cards()
+@router.get("/getwallets")
+def get_wallets_route(wallet_service: WalletService = Depends(WalletService)) -> list[Wallet]:
+    return wallet_service.get_wallets()
 
-@router.get("/getcard/{card_id}")
-def get_card_route(card_id: int, card_service: CardService = Depends(CardService)) -> Card:
-    return card_service.get_card(card_id)
+@router.get("/getwallet/{wallet_id}")
+def get_wallet_route(wallet_id: int, wallet_service: WalletService = Depends(WalletService)) -> Wallet:
+    return wallet_service.get_wallet(wallet_id)

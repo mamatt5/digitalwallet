@@ -5,6 +5,7 @@ import { addCard } from "../../api/api";
 const AddCardScreen = ({ navigation, route }) => {
   const { account, fetchCards } = route.params;
   const [cardNumber, setCardNumber] = useState("");
+  const [cardCVV, setCardCVV] = useState("");
   const [expiryMonth, setExpiryMonth] = useState("");
   const [expiryYear, setExpiryYear] = useState("");
   const [expiryDate, setExpiryDate] = useState("");
@@ -15,7 +16,13 @@ const AddCardScreen = ({ navigation, route }) => {
     if (expiryMonth.length === 2) {
       expiryYearRef.current.focus();
     }
-  }, [expiryMonth]);
+  
+    return () => {
+      if (expiryYear.length === 2) {
+        expiryYearRef.current.blur();
+      }
+    };
+  }, [expiryMonth, expiryYear]);
 
   useEffect(() => {
     if (expiryMonth.length === 2 && expiryYear.length === 2) {
@@ -24,7 +31,7 @@ const AddCardScreen = ({ navigation, route }) => {
   }, [expiryMonth, expiryYear]);
 
   const handleAddCard = () => {
-    addCard(cardNumber, expiryDate)
+    addCard(cardNumber, expiryDate, cardCVV, account.wallet.wallet_id)
       .then(() => {
         fetchCards();
         navigation.navigate("Account", { account });
@@ -93,7 +100,25 @@ const AddCardScreen = ({ navigation, route }) => {
               />
             </View>
 
-            {/* Modify logic later on when there is card object and access to database */}
+            <View>
+              <Text style={{ color: "#ffffff", fontSize: 20, margin: 10 }}>
+                CVV:
+              </Text>
+              <TextInput
+                style={{
+                  backgroundColor: "#ffffff",
+                  padding: 10,
+                  borderRadius: 5,
+                  width: 50,
+                }}
+                onChangeText={setCardCVV}
+                value={cardCVV}
+                placeholder="XXX"
+                keyboardType="numeric"
+                maxLength={3}
+              />
+            </View>
+
             <View style={{ marginTop: 20 }}>
               <Button
                 title={"Add card"}

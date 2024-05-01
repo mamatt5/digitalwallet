@@ -15,3 +15,6 @@ class CardService:
     
     def get_cards(self) -> list[Card]:
         return self.card_repository.get_all()
+    
+    def get_cards_from_wallet(self, wallet_id: int) -> list[Card]:
+        return self.card_repository.get_by_wallet(wallet_id)

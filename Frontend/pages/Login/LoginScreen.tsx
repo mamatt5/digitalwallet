@@ -11,6 +11,7 @@ const LoginScreen = ({navigation}) => {
   const handleLogin = async () => {
     try {
       const response = await loginUser(email, password);
+      console.log(response)
       const { account } = response;
       navigation.navigate("Account", { account });
     } catch (error) {
