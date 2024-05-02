@@ -43,17 +43,22 @@ const RegisterUserScreen = ({ navigation }) => {
     setEmailError(newEmailError);
     setMobileError(newPhoneNumberError);
     setPasswordError(newPasswordError)
-    setFirstNameError(newFirstNameError)
+    setFirstNameError(newFirstNameError) 
     setLastNameError(newLastNameError)
 
-    if (!newEmailError && !newPhoneNumberError && !newPasswordError && !newFirstNameError && !newLastNameError) {
-      try {
-        await registerAccount(email, password, phoneNumber, "user", "", "", firstName, lastName)
-        navigation.navigate("Login");
-      } catch (error) {
-        console.error("Registration error:", error);
-      }
-    }
+    // if (!newEmailError && !newPhoneNumberError && !newPasswordError && !newFirstNameError && !newLastNameError) {
+    //   try {
+    //     await registerAccount(email, password, phoneNumber, "user", "", "", firstName, lastName)
+    //     navigation.navigate("Login");
+    //   } catch (error) {
+    //     console.error("Registration error:", error);
+    //   }
+    // } 
+
+    // maybe one of the fields below is a null for some reasome
+
+    registerAccount(email, password, phoneNumber, "user", "", "", firstName, lastName)
+    // .then(navigation.navigate("Login")).catch((error) => console.error("Registration error:", error));
 
   };
 

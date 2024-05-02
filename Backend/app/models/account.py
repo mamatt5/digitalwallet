@@ -7,6 +7,7 @@ from sqlmodel import Field, Relationship, SQLModel
 if TYPE_CHECKING:
     from models.merchant import Merchant
     from models.user import User
+    from models.wallet import Wallet
 
 
 class AccountType(str, Enum):
@@ -34,3 +35,4 @@ class Account(SQLModel, table=True):
     account_type: AccountType = Field(index=True)
     merchant: Optional["Merchant"] = Relationship(back_populates="account", sa_relationship_kwargs={"uselist": False})
     user: Optional["User"] = Relationship(back_populates="account", sa_relationship_kwargs={"uselist": False})
+    wallet: Optional["Wallet"] | None = Relationship(back_populates="account", sa_relationship_kwargs={"uselist": False})

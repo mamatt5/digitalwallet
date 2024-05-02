@@ -6,6 +6,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from schemas.auth_schema import AuthResponse, RegisterRequest
 from sqlmodel import Session
 from services.auth_service import AuthService
+import logging
 
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
@@ -16,7 +17,7 @@ def login_route(form_data: OAuth2PasswordRequestForm = Depends(), auth_service: 
     **Login/Authenticate Endpoint**
 
     - Authenticate a user and return an access token and account info
-    - Raises HTTPException (401) for invalid email or password
+    - Raises HTTPException (401) for invalid email or password 
     """
     return auth_service.login(form_data)
 
@@ -29,4 +30,6 @@ def register_route(register_request: RegisterRequest, auth_service: AuthService 
     - Register a new user account and return an access token and account info
     - Raises HTTPException (400) if email or phone number is already registered
     """
+    logging.basicConfig(level=logging.INFO, filename="py_log.log", filemode="w")
+    logging.warning("bruh")
     return auth_service.register(register_request)

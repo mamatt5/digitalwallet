@@ -1,3 +1,4 @@
+from models.wallet import Wallet
 from models.account import AccountType
 from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
@@ -18,6 +19,7 @@ class AccountResponse(AccountBase):
     email: EmailStr = Field(..., description="Account email")
     phone_number: str = Field(..., description="Account phone number")
     account_type: AccountType = Field(..., description="Account type")
+    wallet: Wallet = Field(..., description="Account wallet")
 
     model_config = ConfigDict(from_attributes=True)
     

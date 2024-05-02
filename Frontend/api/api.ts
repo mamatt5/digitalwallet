@@ -31,29 +31,104 @@ export const registerAccount = async (
   password: string,
   phoneNumber: string,
   accountType: string,
-
   companyName: string,
-  abn: string,
-
+  abn: string,  
   firstName: string,
   lastName: string
 ) => {
-  axios
-    .post(`${API_BASE_URL}/auth/register`, {
-      company_name: companyName,
-      ABN: abn,
-      first_name: firstName,
-      last_name: lastName,
-      email: email,
-      password: password,
-      phone_number: phoneNumber,
-      account_type: accountType,
-    })
-    .then(() => Alert.alert(" yay"))
-    .catch(function (error) {
-      Alert.alert(error);
-    });
+  // code reaches here
+  Alert.alert(" innters")
+  Alert.alert("email", email)
+    Alert.alert("password", password)
+    Alert.alert("phone", phoneNumber)
+    Alert.alert("firstname", firstName)
+    Alert.alert("lastname", lastName)
+
+  // breaking underneath here?
+  // somthing to do with the axios request
+  // maybe parametres arn't correct?
+
+  // axios
+  //   .post(`${API_BASE_URL}/auth/register`, {
+  //     company_name: companyName,
+  //     ABN: abn,
+  //     first_name: firstName,
+  //     last_name: lastName,
+  //     email: email,
+  //     password: password,
+  //     phone_number: phoneNumber,
+  //     account_type: accountType,
+  //   })
+  //   .then(() => Alert.alert(" yay"))
+  //   .catch(function (error) {
+  //     Alert.alert(error);
+  //   });
+
+    try {
+      const response = await axios
+      .post(`${API_BASE_URL}/auth/register`, {
+        company_name: companyName,
+        ABN: abn,
+        first_name: firstName,
+        last_name: lastName,
+        email: email,
+        password: password,
+        phone_number: phoneNumber,
+        account_type: accountType,
+      })
+      return response.data;
+    } catch (error) {
+      console.error('bruhhd:', error);
+      throw error;
+    }
+
+    
 };
+
+export const getWalletCards = async (wallet_id: string) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/cards/getcardsfromwallet/${wallet_id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Get Wallet Cards error:', error);
+    throw error;
+  }
+}
+
+export const addCard = async (cardNumber: string, expiryDate: string, cardCVV: string, walletId: string) => {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/cards/addcard`, {
+      card_number: cardNumber,
+      card_expiry: expiryDate,
+      card_cvv: cardCVV,
+      wallet_id: walletId,
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Add Card error:', error);
+    throw error;
+  }
+}
+
+export const getUser = async (account_id: string) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/accounts/getuser/${account_id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Get User error:', error);
+    throw error;
+  }
+}
+
+export const getMerchant = async (account_id: string) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/accounts/getmerchant/${account_id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Get Merchant error:', error);
+    throw error;
+  }
+}
 
 //   // return response.data;
 // } catch (error) {
