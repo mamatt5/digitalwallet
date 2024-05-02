@@ -2,6 +2,7 @@ from models.wallet import Wallet
 from repositories.wallet_repository import WalletRepository
 from fastapi import Depends
 
+
 class WalletService:
 
     def __init__(self, wallet_repository: WalletRepository = Depends(WalletRepository)):
@@ -12,6 +13,6 @@ class WalletService:
 
     def get_wallet(self, wallet_id: int) -> Wallet:
         return self.wallet_repository.get(wallet_id)
-    
+
     def get_wallets(self) -> list[Wallet]:
         return self.wallet_repository.get_all()
