@@ -50,10 +50,6 @@ const AccountScreen = ({ navigation, route }) => {
     fetchAccountInfo();
   }, []);
 
-  useEffect(() => {
-    console.log(cards[activeIndex]);
-  }, [activeIndex, cards]);
-
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.centerView}>

@@ -1,7 +1,9 @@
 import axios from "axios";
 import { Alert } from "react-native";
+import { LOCAL_IP } from "@env";
 
-const API_BASE_URL = "http://203.219.65.185:8001";
+const API_BASE_URL = `http://${LOCAL_IP}:8000`;
+console.log("API URL: " + API_BASE_URL);
 
 export const loginUser = async (email: string, password: string) => {
   try {
