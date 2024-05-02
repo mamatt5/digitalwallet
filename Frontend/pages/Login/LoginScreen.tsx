@@ -25,6 +25,9 @@ const LoginScreen = ({navigation}) => {
       <Image source={APPlogo} style={styles.APPlogo} />
       <ScrollView>
         <View style={styles.centerView}>
+        <Text style={{ color: '#ffffff', fontSize: 30, margin: 30 }}>
+              {'Log in'}
+            </Text>
           <DynamicTextInput placeholder="EMAIL" onChangeText={setEmail} value={email} />
           <DynamicTextInput placeholder="PASSWORD" onChangeText={setPassword} value={password} secureTextEntry />
           <View style={styles.buttonContainer}>
@@ -47,8 +50,8 @@ const LoginScreen = ({navigation}) => {
 
 const styles = StyleSheet.create({
   APPlogo: {
-    width: 300, 
-    height: 300, 
+    width: 200, 
+    height: 200, 
     marginLeft: 'auto', 
     marginRight: 'auto', 
     marginTop: 50
