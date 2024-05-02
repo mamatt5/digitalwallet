@@ -30,6 +30,4 @@ def register_route(register_request: RegisterRequest, auth_service: AuthService 
     - Register a new user account and return an access token and account info
     - Raises HTTPException (400) if email or phone number is already registered
     """
-    logging.basicConfig(level=logging.INFO, filename="py_log.log", filemode="w")
-    logging.warning("bruh")
     return auth_service.register(register_request)

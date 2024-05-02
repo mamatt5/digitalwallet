@@ -48,18 +48,11 @@ const RegisterMerchantScreen = ({ navigation }) => {
         setMobileError(newPhoneNumberError);
         setPasswordError(newPasswordError);
 
-
         if (!newEmailError && !newPhoneNumberError && !newPasswordError && !newCompanyNameError && !newAbnError) {
-
-            try {
-                await registerAccount(email, password, phoneNumber, "merchant", companyName, abn, "", "")
-                navigation.navigate("Login");
-            } catch (error) {
-                console.error("Registration error:", error);
-
-            }
-
+            registerAccount(email, password, phoneNumber, "merchant", companyName, abn, "", "")
+            .then(navigation.navigate("Login")).catch((error) => console.error("Registration error:", error));
         }
+
     };
 
 

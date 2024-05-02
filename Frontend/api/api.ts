@@ -38,33 +38,6 @@ export const registerAccount = async (
   firstName: string,
   lastName: string
 ) => {
-  // code reaches here
-  Alert.alert(" innters")
-  Alert.alert("email", email)
-    Alert.alert("password", password)
-    Alert.alert("phone", phoneNumber)
-    Alert.alert("firstname", firstName)
-    Alert.alert("lastname", lastName)
-
-  // breaking underneath here?
-  // somthing to do with the axios request
-  // maybe parametres arn't correct?
-
-  // axios
-  //   .post(`${API_BASE_URL}/auth/register`, {
-  //     company_name: companyName,
-  //     ABN: abn,
-  //     first_name: firstName,
-  //     last_name: lastName,
-  //     email: email,
-  //     password: password,
-  //     phone_number: phoneNumber,
-  //     account_type: accountType,
-  //   })
-  //   .then(() => Alert.alert(" yay"))
-  //   .catch(function (error) {
-  //     Alert.alert(error);
-  //   });
 
     try {
       const response = await axios
