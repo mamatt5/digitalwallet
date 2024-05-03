@@ -105,6 +105,17 @@ export const getMerchant = async (account_id: string) => {
   }
 }
 
+export const getAccountFromEmail = async (email: string) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/accounts/getaccount/${email}`);
+    return response.data;
+  } catch (error) {
+    // smothing wrong with the route
+    console.error('Get Merchant error:', error);
+    throw error;
+  }
+}
+
 //   // return response.data;
 // } catch (error) {
 //   console.error('Merchant Registration error:', error);

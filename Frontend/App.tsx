@@ -9,6 +9,7 @@ import AccountScreen from './pages/Account/AccountScreen';
 import RegisterOptionScreen from './pages/Register/RegisterOptionScreen';
 import RegisterMerchantScreen from './pages/Register/RegisterMerchantScreen';
 import AddCardScreen from './pages/Cards/AddCardScreen';
+import { ResetPasswordScreen } from './pages/ForgotPassword/ResetPasswordScreen';
 
 
 const { Navigator, Screen } = createStackNavigator();
@@ -25,6 +26,7 @@ const App = () => {
         <Screen name='RegisterOption' component={RegisterOptionScreen}></Screen>
         <Screen name='RegisterMerchant' component={RegisterMerchantScreen}></Screen>
         <Screen name='AddCard' component={AddCardScreen}></Screen>
+        <Screen name='ResetPassword' component={ResetPasswordScreen}></Screen>
       </Navigator>
     </NavigationContainer>
   );
