@@ -14,11 +14,18 @@ const LoginScreen = ({navigation}) => {
       const response = await loginUser(email, password);
       console.log(response)
       const { account } = response;
-      navigation.navigate("Account", { account });
+      console.log("Account data:", account);
+      if (account) {
+        navigation.navigate("Main", { account });
+      } else {
+        console.error("Account object is missing in response");
+      }
+      navigation.navigate("Main", { account });
     } catch (error) {
       console.error("Login error:", error);
     }
   };
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -47,8 +54,8 @@ const LoginScreen = ({navigation}) => {
 
 const styles = StyleSheet.create({
   APPlogo: {
-    width: 300, 
-    height: 300, 
+    width: 150, 
+    height: 150, 
     marginLeft: 'auto', 
     marginRight: 'auto', 
     marginTop: 50
