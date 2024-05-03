@@ -4,11 +4,12 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Text } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import VisaCard from '../../assets/VisaCard.png';
-import MasterCard from '../../assets/MasterCard.png';
-import AmExCard from '../../assets/AmExCard.png';
+import VisaCard from '../assets/VisaCard.png';
+import MasterCard from '../assets/MasterCard.png';
+import AmExCard from '../assets/AmExCard.png';
 
-const DebitCard = ({ number, expiry }) => {
+const DebitCard = ({ card }) => {
+    const { card_number: number, card_expiry: expiry } = card;
     const [showFullNumber, setShowFullNumber] = useState(false);
 
     const displayNumber = showFullNumber ? 

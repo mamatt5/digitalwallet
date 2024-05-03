@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { SafeAreaView, View, Text, Dimensions, StyleSheet } from "react-native";
 import { Button } from "react-native-paper";
 import Carousel from "react-native-snap-carousel";
-import DebitCard from "../Cards/DebitCard";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import DebitCard from "../../components/DebitCard";
+import Transaction from "../../components/Transaction";
+import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { getWalletCards, getMerchant, getUser } from "../../api/api";
 import Icon from "react-native-vector-icons/FontAwesome";
 
@@ -13,6 +14,52 @@ const AccountScreen = ({ navigation, route }) => {
   const [loggedAccount, setLoggedAccount] = useState("");
 
   const [activeIndex, setActiveIndex] = useState(0);
+
+  // change to axios call when transaction objects are done
+  let transactions = [
+    {
+      transaction_ID: 1,
+      vendor_name: "McDonalds",
+      transaction_date: "2021-04-01",
+      amount: "$1000",
+    },
+    {
+      transaction_ID: 2,
+      vendor_name: "Hungry Jacks",
+      transaction_date: "2021-04-01",
+      amount: "$1000",
+    },
+    {
+      transaction_ID: 3,
+      vendor_name: "Wendy's",
+      transaction_date: "2021-04-01",
+      amount: "$1000",
+    },
+    {
+      transaction_ID: 4,
+      vendor_name: "Jollibee",
+      transaction_date: "2021-04-01",
+      amount: "$1000",
+    },
+    {
+      transaction_ID: 5,
+      vendor_name: "Carl's Jr.",
+      transaction_date: "2021-04-01",
+      amount: "$1000",
+    },
+    {
+      transaction_ID: 6,
+      vendor_name: "KFC",
+      transaction_date: "2021-04-01",
+      amount: "$1000",
+    },
+    {
+      transaction_ID: 7,
+      vendor_name: "Burger King",
+      transaction_date: "2021-04-01",
+      amount: "$1000",
+    },
+  ];
 
   const fetchAccountInfo = async () => {
     if (account.account_type === "user") {
@@ -42,7 +89,7 @@ const AccountScreen = ({ navigation, route }) => {
   };
 
   const _renderItem = ({ item, index }) => {
-    return <DebitCard number={item.card_number} expiry={item.card_expiry} />;
+    return <DebitCard card={item} />;
   };
 
   useEffect(() => {
@@ -58,7 +105,6 @@ const AccountScreen = ({ navigation, route }) => {
           <View style={styles.noCardContainer}>
             <Text style={styles.noCardText}>No card found</Text>
           </View>
-          
         ) : (
           <Carousel
             layout={"default"}
@@ -67,6 +113,7 @@ const AccountScreen = ({ navigation, route }) => {
             itemWidth={300}
             renderItem={_renderItem}
             onSnapToItem={(index) => setActiveIndex(index)}
+            loop={true}
           />
         )}
 
@@ -89,6 +136,20 @@ const AccountScreen = ({ navigation, route }) => {
           </Button>
         </View>
       </View>
+
+      <View style={styles.transactionContainer}>
+        <View>
+          <Text style={styles.titleText}> Transactions </Text>
+        </View>
+
+        <ScrollView style={styles.transactions}>
+          {transactions.map((transaction, index) => (
+            <View key={index}>
+              <Transaction transaction={transaction} />
+            </View>
+          ))}
+        </ScrollView>
+      </View>
     </SafeAreaView>
   );
 };
@@ -96,7 +157,7 @@ const AccountScreen = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#0f003f",
-    height: 2000,
+    flex: 1,
   },
   centerView: {
     display: "flex",
@@ -107,7 +168,7 @@ const styles = StyleSheet.create({
     color: "#ffffff",
     fontSize: 24,
     fontWeight: "bold",
-    marginVertical: 30,
+    marginVertical: 10,
   },
   infoText: {
     color: "#ffffff",
@@ -123,21 +184,27 @@ const styles = StyleSheet.create({
   buttonContainer: {
     margin: 20,
     width: 200,
-    marginTop: 50,
+    marginTop: 10,
   },
   noCardContainer: {
     borderWidth: 2,
-    borderColor: '#fff',
-    borderStyle: 'dashed',
+    borderColor: "#fff",
+    borderStyle: "dashed",
     borderRadius: 10,
     height: 150,
     width: 250,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   noCardText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 18,
+  },
+  transactions: {
+    flex: 1,
+  },
+  transactionContainer: {
+    flex: 1,
   },
 });
 
