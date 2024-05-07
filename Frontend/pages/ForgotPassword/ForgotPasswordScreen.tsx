@@ -21,6 +21,9 @@ const ForgotPasswordScreen = ({ navigation }) => {
       setEmailError(false);
       Alert.alert("in")
 
+      // API works
+      // atm frontend aint working so can't test it
+      // not sure if this works
       const resp = getAccountFromEmail(email)
       if (resp) {
         navigation.navigate("ResetPassword")

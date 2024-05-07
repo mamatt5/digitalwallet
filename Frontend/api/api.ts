@@ -110,8 +110,6 @@ export const getAccountFromEmail = async (email: string) => {
     const response = await axios.get(`${API_BASE_URL}/accounts/getaccount/${email}`);
     return response.data
   } catch (error) {
-    // throwing error when account isn't found
-    // which is find but have to deal with the error somehow
     console.error('Get Account From Email error:', error);
     throw error;
   }
