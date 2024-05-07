@@ -53,7 +53,7 @@ export const registerAccount = async (
       })
       return response.data;
     } catch (error) {
-      console.error('bruhhd:', error);
+      console.error('Registration Error:', error);
       throw error;
     }
 
@@ -108,10 +108,11 @@ export const getMerchant = async (account_id: string) => {
 export const getAccountFromEmail = async (email: string) => {
   try {
     const response = await axios.get(`${API_BASE_URL}/accounts/getaccount/${email}`);
-    return response.data;
+    return response.data
   } catch (error) {
-    // smothing wrong with the route
-    console.error('Get Merchant error:', error);
+    // throwing error when account isn't found
+    // which is find but have to deal with the error somehow
+    console.error('Get Account From Email error:', error);
     throw error;
   }
 }

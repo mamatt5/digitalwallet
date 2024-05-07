@@ -13,19 +13,20 @@ const ForgotPasswordScreen = ({ navigation }) => {
 
   const sendVerification = async () => {
     const newEmailError = email === '' || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
-
+    
     if (newEmailError) {
       Alert.alert("nig")
       setEmailError(newEmailError);
     } else {
       setEmailError(false);
       Alert.alert("in")
-      getAccountFromEmail(email)
-      .then(() => Alert.alert("found"))
-      .catch(error => {
-        Alert.alert("Error during Axios request:");
-        setEmailError(false); // Set email error state
-      });
+
+      const resp = getAccountFromEmail(email)
+      if (resp) {
+        navigation.navigate("ResetPassword")
+      }
+      
+      
       
     }
 
