@@ -22,8 +22,7 @@ def get_account_with_email_route(email: str, account_service: AccountService = D
 
 @router.patch("/updatepassword/{email}")
 def update_accout_password(email: str, password: str, account_service: AccountService = Depends(AccountService)) -> Account:
-    
     logging.basicConfig(level=logging.INFO, filename="py_log.log",filemode="w")
-    logging.warning("update pass") 
-    
+    logging.warning("update pass")
+    # return account_service.update_account_password(email, password)
 
