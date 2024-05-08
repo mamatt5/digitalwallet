@@ -36,10 +36,11 @@ echo Starting backend server
 cd app
 where uvicorn
 if %errorlevel% equ 0 (
-    start "Backend Server" cmd /k "uvicorn main:app --reload"
+    start "Backend Server" cmd /k "uvicorn main:app --reload --host 0.0.0.0"
 ) else (
-    start "Backend Server" cmd /k "python -m uvicorn main:app --reload"
+    start "Backend Server" cmd /k "python -m uvicorn main:app --reload --host 0.0.0.0"
 )
+
 
 
 REM ### FRONTEND ###

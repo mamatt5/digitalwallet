@@ -15,18 +15,16 @@ const ForgotPasswordScreen = ({ navigation }) => {
     const newEmailError = email === '' || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
     
     if (newEmailError) {
-      Alert.alert("nig")
       setEmailError(newEmailError);
     } else {
       setEmailError(false);
-      Alert.alert("in")
 
       // API works
       // atm frontend aint working so can't test it
       // not sure if this works
       const resp = getAccountFromEmail(email)
       if (resp) {
-        navigation.navigate("ResetPassword")
+        navigation.navigate("ResetPassword", {email: email})
       }
       
       

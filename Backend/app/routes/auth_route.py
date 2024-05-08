@@ -22,7 +22,7 @@ def login_route(form_data: OAuth2PasswordRequestForm = Depends(), auth_service: 
     return auth_service.login(form_data)
 
 
-@router.post("/register", response_model=AuthResponse)
+@router.patch("/register", response_model=AuthResponse)
 def register_route(register_request: RegisterRequest, auth_service: AuthService = Depends(AuthService)) -> AuthResponse:
     """
     **Register Endpoint**

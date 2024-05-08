@@ -9,7 +9,7 @@ import AccountScreen from './pages/Account/AccountScreen';
 import RegisterOptionScreen from './pages/Register/RegisterOptionScreen';
 import RegisterMerchantScreen from './pages/Register/RegisterMerchantScreen';
 import AddCardScreen from './pages/Cards/AddCardScreen';
-import { ResetPasswordScreen } from './pages/ForgotPassword/ResetPasswordScreen';
+import ResetPasswordScreen from './pages/ForgotPassword/ResetPasswordScreen';
 
 
 const { Navigator, Screen } = createStackNavigator();

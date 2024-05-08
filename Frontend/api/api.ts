@@ -115,6 +115,16 @@ export const getAccountFromEmail = async (email: string) => {
   }
 }
 
+export const updatePassword = async (email: string, password: string) => { 
+  try {
+    const response = await axios.patch(`${API_BASE_URL}/accounts/updatepassword/${email}`, { password: password });
+    return response.data
+  } catch (error) {
+    console.error('Update Password error:', error);
+    throw error;
+  }
+}
+
 //   // return response.data;
 // } catch (error) {
 //   console.error('Merchant Registration error:', error);

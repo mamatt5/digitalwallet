@@ -25,4 +25,7 @@ class AccountService:
     
     def get_account_with_email(self, email: str) -> Account:
         return self.account_repository.get_by_email(email)
+    
+    def update_account_password(self, email: str, password: str) -> Account:
+        return self.account_repository.update_password(email, password)
         
