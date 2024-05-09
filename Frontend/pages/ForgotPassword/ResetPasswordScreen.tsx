@@ -18,11 +18,14 @@ const ResetPasswordScreen = ({ route, navigation }) => {
   
 
   const email = route.params?.email
+  const code = route.params?.code
 
   const resetPassword = async () => {
     Alert.alert("inners")
     const resp = updatePassword(email, password)
+    
   }
+
 
   return (
     <ScrollView>

@@ -5,14 +5,28 @@ import DynamicTextInput from "../../components/DynamicTextInput/DynamicTextInput
 import { useState } from "react";
 import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 import { getAccountFromEmail } from "../../api/api";
+import email from 'react-native-email';
 import APPlogo from "../../assets/APPlogo.png";
+import { sendEmail } from "../../api/sendEmail";
+import random from 'random-string-generator'
+
 
 const ForgotPasswordScreen = ({ navigation }) => {
-  const [email, setEmail] = useState("")
+  const [emailAddress, setEmailAddress] = useState("")
   const [emailError, setEmailError] = useState(false);
 
+  const handleEmail = async(address: string, body: string, subject: string) => {
+
+    // sendEmail doesn't work atm the moment
+    // look inside sendEmail.ts for more information
+    // sendEmail(address, "s", "s")
+  
+  }
+
+
+
   const sendVerification = async () => {
-    const newEmailError = email === '' || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
+    const newEmailError = emailAddress === '' || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(emailAddress);
     
     if (newEmailError) {
       setEmailError(newEmailError);
@@ -22,9 +36,17 @@ const ForgotPasswordScreen = ({ navigation }) => {
       // API works
       // atm frontend aint working so can't test it
       // not sure if this works
-      const resp = getAccountFromEmail(email)
+      const resp = getAccountFromEmail(emailAddress)
+  
+      
+
       if (resp) {
-        navigation.navigate("ResetPassword", {email: email})
+        // meant to send verification code (not working atm)
+        const code = random(6)
+        console.log(code)
+        handleEmail("jahwmgrfsfavvkmvml@cazlp.com", "s", "s")
+        navigation.navigate("ResetPassword", {email: emailAddress, code: code})
+
       }
       
       
@@ -51,8 +73,8 @@ const ForgotPasswordScreen = ({ navigation }) => {
             <View>
               <DynamicTextInput
                 placeholder="EMAIL"
-                onChangeText={setEmail}
-                value={email}
+                onChangeText={setEmailAddress}
+                value={emailAddress}
                 error={emailError} />
             </View>
             {emailError && (
