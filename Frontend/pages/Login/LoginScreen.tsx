@@ -20,7 +20,6 @@ const LoginScreen = ({navigation}) => {
       } else {
         console.error("Account object is missing in response");
       }
-      navigation.navigate("Main", { account });
     } catch (error) {
       console.error("Login error:", error);
     }

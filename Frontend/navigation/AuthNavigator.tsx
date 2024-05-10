@@ -5,17 +5,24 @@ import ForgotPasswordScreen from '../pages/ForgotPassword/ForgotPasswordScreen';
 import RegisterOptionScreen from '../pages/Register/RegisterOptionScreen';
 import RegisterMerchantScreen from '../pages/Register/RegisterMerchantScreen';
 
-const Stack = createStackNavigator();
+const AuthStack = createStackNavigator();
 
 const AuthNavigator = () => {
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="RegisterUser" component={RegisterUserScreen} />
-      <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
-      <Stack.Screen name="RegisterOption" component={RegisterOptionScreen} />
-      <Stack.Screen name="RegisterMerchant" component={RegisterMerchantScreen} />
-    </Stack.Navigator>
+    <AuthStack.Navigator
+    screenOptions={{
+        headerTitle: " ",
+        headerStyle: {
+            backgroundColor: '#0f003f',
+          },
+        headerTintColor: '#fff',
+      }}>
+      <AuthStack.Screen name="Login" component={LoginScreen} />
+      <AuthStack.Screen name="RegisterUser" component={RegisterUserScreen} />
+      <AuthStack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
+      <AuthStack.Screen name="RegisterOption" component={RegisterOptionScreen} />
+      <AuthStack.Screen name="RegisterMerchant" component={RegisterMerchantScreen} />
+    </AuthStack.Navigator>
   );
 };
 

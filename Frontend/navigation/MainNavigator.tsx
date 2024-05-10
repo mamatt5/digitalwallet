@@ -4,6 +4,7 @@ import QRScanScreen from '../pages/QRScan/QRScanScreen';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import ReceiptScreen from '../pages/Receipt/ReceiptScreen';
 import OverviewScreen from '../pages/Overview/OverviewScreen';
+import AccountNavigator from './AccountNavigator'
 
 const Tab = createBottomTabNavigator();
 
@@ -38,7 +39,7 @@ const MainNavigator = ({route}) => {
         />
         <Tab.Screen
           name="Account"
-          component={AccountScreen}
+          component={AccountNavigator}
           initialParams={{ account: account }}
           options={{
             tabBarLabel: 'Home',
@@ -47,6 +48,7 @@ const MainNavigator = ({route}) => {
             ),
           }}
         />
+        
         <Tab.Screen
           name="Overview"
           component={OverviewScreen}

@@ -126,15 +126,6 @@ const AccountScreen = ({ navigation, route }) => {
             <Icon name={"plus-square-o"} size={40} color="#fff" />
           </TouchableOpacity>
         </View>
-        <View style={styles.buttonContainer}>
-          <Button
-            buttonColor="#ffffff"
-            textColor="#000000"
-            onPress={() => navigation.navigate("QRScan")}
-          >
-            <Text style={styles.boldText}>QR Code Scan</Text>
-          </Button>
-        </View>
       </View>
 
       <View style={styles.transactionContainer}>
