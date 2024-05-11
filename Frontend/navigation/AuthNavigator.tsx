@@ -4,6 +4,7 @@ import RegisterUserScreen from '../pages/Register/RegisterUserScreen';
 import ForgotPasswordScreen from '../pages/ForgotPassword/ForgotPasswordScreen';
 import RegisterOptionScreen from '../pages/Register/RegisterOptionScreen';
 import RegisterMerchantScreen from '../pages/Register/RegisterMerchantScreen';
+import React from 'react';
 
 const AuthStack = createStackNavigator();
 

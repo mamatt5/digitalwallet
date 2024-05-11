@@ -1,10 +1,10 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import AccountScreen from '../pages/Account/AccountScreen';
 import QRScanScreen from '../pages/QRScan/QRScanScreen';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import ReceiptScreen from '../pages/Receipt/ReceiptScreen';
+import ReceiptsScreen from '../pages/Receipts/ReceiptsScreen';
 import OverviewScreen from '../pages/Overview/OverviewScreen';
 import AccountNavigator from './AccountNavigator'
+import React from 'react';
 
 const Tab = createBottomTabNavigator();
 
@@ -60,8 +60,8 @@ const MainNavigator = ({route}) => {
           }}
         />
         <Tab.Screen
-          name="Receipt"
-          component={ReceiptScreen}
+          name="Receipts"
+          component={ReceiptsScreen}
           options={{
             tabBarLabel: 'Receipts',
             tabBarIcon: ({ color, size }) => (
