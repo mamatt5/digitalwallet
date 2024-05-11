@@ -4,6 +4,7 @@ import { Button } from "react-native-paper";
 import DynamicTextInput from "../../components/DynamicTextInput/DynamicTextInput";
 import { loginUser } from "../../api/api";
 import APPlogo from "../../assets/APPlogo.png";
+import TransactionCard from "../../components/TransactionCard/TransactionCard";
 
 const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState("");
@@ -29,7 +30,6 @@ const LoginScreen = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
       <Image source={APPlogo} style={styles.APPlogo} />
-      <ScrollView>
         <View style={styles.centerView}>
           <DynamicTextInput placeholder="EMAIL" onChangeText={setEmail} value={email} />
           <DynamicTextInput placeholder="PASSWORD" onChangeText={setPassword} value={password} secureTextEntry />
@@ -44,10 +44,12 @@ const LoginScreen = ({navigation}) => {
             Forgot Password
           </Text>
           <Text onPress={() => navigation.navigate('RegisterOption')} style={styles.linkText}>
-            Sign Up
+            Sign Ups
+          </Text>
+          <Text onPress={() => navigation.navigate('Receipts')} style={styles.linkText}>
+            Receipts
           </Text>
         </View>
-      </ScrollView>
     </SafeAreaView>
   )};
 
