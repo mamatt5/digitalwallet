@@ -14,7 +14,7 @@ from sqlmodel import Session
 fake = Faker()
 
 
-def generate_dummy_data(session: Session, num_records: int) -> list[Union[Merchant, User, Wallet, Card]]:
+def generate_dummy_data(session: Session, num_records: int) -> list[Union[Merchant, User, Wallet, Card, Transaction]]:
     data = []
     for _ in range(num_records):
         # generate account data
@@ -68,11 +68,13 @@ def generate_dummy_data(session: Session, num_records: int) -> list[Union[Mercha
             "amount": random.randint(1, 10000),
             "category_name": fake.name(),
 
-            "card_id": card.card_id,
-            "sender_wallet_id": wallet.wallet_id,
-            "recipient_wallet_id": wallet.wallet_id,
+            "card_id": random.randint(1, 10000),
+            "sender_wallet_id": random.randint(1, 10000),
+            "recipient_wallet_id": random.randint(1, 10000)
         }
+        transaction = Transaction(**transaction_data)
 
+        # data.append(transaction)
         data.append(wallet)
         data.append(card)
 

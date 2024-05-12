@@ -6,7 +6,7 @@ router = APIRouter(prefix="/transactions", tags=["transaction"])
 
 
 @router.post("/addtransaction")
-def add_wallet_route(transaction: Transaction, transaction_service: TransactionService = Depends(TransactionService)) -> None:
+def add_transaction_route(transaction: Transaction, transaction_service: TransactionService = Depends(TransactionService)) -> None:
     transaction_service.add_transaction(transaction)
 
 
