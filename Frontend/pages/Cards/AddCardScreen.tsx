@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Button, SafeAreaView, Text, TextInput, View, StyleSheet } from "react-native";
+import { Button, SafeAreaView, Text, TextInput, View, StyleSheet, Keyboard, TouchableWithoutFeedback  } from "react-native";
 import { addCard } from "../../api/api";
 
 const AddCardScreen = ({ navigation, route }) => {
@@ -40,75 +40,78 @@ const AddCardScreen = ({ navigation, route }) => {
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <View style={styles.centerView}>
-        <Text style={styles.titleText}>
-          {"Enter your card details"}
-        </Text>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.centerView}>
+          <Text style={styles.titleText}>
+            {"Enter your card details"}
+          </Text>
 
-        <View>
-          <View style={styles.cardDetails}>
-            <Text style={styles.labelText}>
-              Card number:
-            </Text>
-            <TextInput
-              style={styles.input}
-              onChangeText={setCardNumber}
-              value={cardNumber}
-              placeholder="XXXX XXXX XXXX XXXX"
-              maxLength={16}
-              keyboardType="numeric"
-            />
-
-            <Text style={styles.labelText}>
-              Expiry date:
-            </Text>
-            <View style={styles.row}>
-              <TextInput
-                style={styles.smallInput}
-                onChangeText={setExpiryMonth}
-                value={expiryMonth}
-                placeholder="MM"
-                keyboardType="numeric"
-                maxLength={2}
-              />
-              <Text style={styles.separator}>/</Text>
-              <TextInput
-                ref={expiryYearRef}
-                style={styles.smallInput}
-                onChangeText={setExpiryYear}
-                value={expiryYear}
-                placeholder="YY"
-                keyboardType="numeric"
-                maxLength={2}
-              />
-            </View>
-
-            <View>
+          <View>
+            <View style={styles.cardDetails}>
               <Text style={styles.labelText}>
-                CVV:
+                Card number:
               </Text>
               <TextInput
-                style={styles.smallInput}
-                onChangeText={setCardCVV}
-                value={cardCVV}
-                placeholder="XXX"
+                style={styles.input}
+                onChangeText={setCardNumber}
+                value={cardNumber}
+                placeholder="XXXX XXXX XXXX XXXX"
+                maxLength={16}
                 keyboardType="numeric"
-                maxLength={3}
               />
-            </View>
-          </View>
 
-          <View style={styles.buttonContainer}>
-              <Button
-                title={"Add card"}
-                onPress={() => handleAddCard()}
-              ></Button>
+              <Text style={styles.labelText}>
+                Expiry date:
+              </Text>
+              <View style={styles.row}>
+                <TextInput
+                  style={styles.smallInput}
+                  onChangeText={setExpiryMonth}
+                  value={expiryMonth}
+                  placeholder="MM"
+                  keyboardType="numeric"
+                  maxLength={2}
+                />
+                <Text style={styles.separator}>/</Text>
+                <TextInput
+                  ref={expiryYearRef}
+                  style={styles.smallInput}
+                  onChangeText={setExpiryYear}
+                  value={expiryYear}
+                  placeholder="YY"
+                  keyboardType="numeric"
+                  maxLength={2}
+                />
+              </View>
+
+              <View>
+                <Text style={styles.labelText}>
+                  CVV:
+                </Text>
+                <TextInput
+                  style={styles.smallInput}
+                  onChangeText={setCardCVV}
+                  value={cardCVV}
+                  placeholder="XXX"
+                  keyboardType="numeric"
+                  maxLength={3}
+                />
+              </View>
             </View>
-            
+
+            <View style={styles.buttonContainer}>
+                <Button
+                  title={"Add card"}
+                  onPress={() => handleAddCard()}
+                ></Button>
+              </View>
+              
+          </View>
         </View>
-      </View>
-    </SafeAreaView>
+      </SafeAreaView>
+    </TouchableWithoutFeedback>
+    
   );
 };
 
@@ -156,7 +159,6 @@ const styles = StyleSheet.create({
     color: "#ffffff"
   },
   buttonContainer: {
-    marginTop: 100,
     width: 200,
     alignSelf: "center"
   }

@@ -15,11 +15,17 @@ const LoginScreen = ({navigation}) => {
       const response = await loginUser(email, password);
       console.log(response)
       const { account } = response;
-      navigation.navigate("Account", { account });
+      console.log("Account data:", account);
+      if (account) {
+        navigation.navigate("Main", { account });
+      } else {
+        console.error("Account object is missing in response");
+      }
     } catch (error) {
       console.error("Login error:", error);
     }
   };
+
 
   return (
     <SafeAreaView style={styles.container}>

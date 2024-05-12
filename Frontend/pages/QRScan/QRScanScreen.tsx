@@ -1,66 +1,67 @@
-import { Camera } from "expo-camera";
+import { CameraView, useCameraPermissions } from "expo-camera";
 import React, { useEffect, useState } from "react";
 import { Button, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { useIsFocused } from '@react-navigation/native';
 
-const QRScanScreen = ({ navigation }) => {
-    const [hasPermission, setHasPermission] = useState(null);
+const QRScanScreen = () => {
+    const isFocused = useIsFocused();
+    const [permission, requestPermission] = useCameraPermissions();
     const [scanned, setScanned] = useState(false);
     const [text, setText] = useState("Not yet scanned");
     
-    const askForCameraPermission = () => {
-        (async () => {
-        const { status } = await Camera.requestCameraPermissionsAsync();
-        setHasPermission(status === "granted");
-        })();
-    };
-    
-    useEffect(() => {
-        askForCameraPermission();
-    }, []);
-    
-    const handleBarCodeScanned = ({ type, data }) => {
+    const handleBarcodeScanned = ({ type, data }) => {
         setScanned(true);
         setText(`Scanned QR Code Details:\n\nType: ${type}\n\nData: ${data}`);
     };
-    
-    if (hasPermission === null) {
+
+    useEffect(() => {
+        if (!isFocused) {
+            setScanned(false);
+            setText("Not yet scanned");
+        }
+    }, [isFocused]);
+
+    if (!permission) {
         return <Text>Requesting for camera permission</Text>;
     }
-    if (hasPermission === false) {
+
+    if (!permission.granted) {
         return (
-        <View style={styles.container}>
-            <Text>No access to camera</Text>
-            <Button
-            title={"Allow Camera"}
-            onPress={() => askForCameraPermission()}
-            />
-        </View>
+            <View style={styles.container}>
+                <Text>No access to camera</Text>
+                <Button
+                    title={"Allow Camera"}
+                    onPress={requestPermission}
+                />
+            </View>
         );
     }
     
     return (
         <SafeAreaView style={{ backgroundColor: '#0f003f', height: 2000}}>
-            <View style={styles.container}>
-                
-            <Text style={{ color: '#ffffff', fontSize: 20, margin: 30 }}>Please scan QR code</Text>
-                <View style={styles.cameraContainer}>
-                    <Camera
-                    onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-                    style={styles.camera}
-                    />
-                </View>
-                {scanned && (
-                    <View>
-                    <Text style={{ color: '#ffffff', fontSize: 20, margin: 30 }}>{text}</Text>
-                    <View style={{ width: "50%", alignSelf: "center" }}>
-                        <Button
-                        title={"Tap to Scan Again"}
-                        onPress={() => setScanned(false)}
+            {isFocused && (
+                <View style={styles.container}>
+                    
+                <Text style={{ color: '#ffffff', fontSize: 20, margin: 30 }}>Please scan QR code</Text>
+                    <View style={styles.cameraContainer}>
+                        <CameraView
+                            onBarcodeScanned={scanned ? undefined : handleBarcodeScanned}
+                            style={styles.camera}
                         />
                     </View>
-                    </View>
+                    {scanned && (
+                        <View>
+                        <Text style={{ color: '#ffffff', fontSize: 20, margin: 30 }}>{text}</Text>
+                        <View style={{ width: "50%", alignSelf: "center" }}>
+                            <Button
+                            title={"Tap to Scan Again"}
+                            onPress={() => setScanned(false)}
+                            />
+                        </View>
+                        </View>
+                    )}
+                </View>
                 )}
-            </View>
         </SafeAreaView>
     );
     };
