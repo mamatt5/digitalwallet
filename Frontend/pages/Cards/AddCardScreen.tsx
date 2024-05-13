@@ -36,7 +36,7 @@ function AddCardScreen({ navigation, route }) {
     addCard(cardNumber, expiryDate, cardCVV, account.wallet.wallet_id)
       .then(() => {
         fetchCards();
-        navigation.navigate('Account', { account });
+        navigation.navigate('AccountHome', { account });
       })
       .catch((error) => {
         console.error('Add Card error:', error);
