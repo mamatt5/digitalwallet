@@ -1,6 +1,6 @@
-import axios from "axios";
-import { Alert } from "react-native";
-import { LOCAL_IP } from "@env";
+import axios from 'axios';
+import { Alert } from 'react-native';
+import { LOCAL_IP } from '@env';
 
 const API_BASE_URL = `http://${LOCAL_IP}:8000`;
 const WS_BASE_URL = `ws://${LOCAL_IP}:8000`;
@@ -34,11 +34,10 @@ export const registerAccount = async (
   phoneNumber: string,
   accountType: string,
   companyName: string,
-  abn: string,  
+  abn: string,
   firstName: string,
   lastName: string,
 ) => {
-
   axios
     .post(`${API_BASE_URL}/auth/register`, {
       company_name: companyName,
@@ -56,15 +55,15 @@ export const registerAccount = async (
     });
 };
 
-export const getWalletCards = async (wallet_id: string) => {
+export const getWalletCards = async (walletId: string) => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/cards/getcardsfromwallet/${wallet_id}`);
+    const response = await axios.get(`${API_BASE_URL}/cards/getcardsfromwallet/${walletId}`);
     return response.data;
   } catch (error) {
     console.error('Get Wallet Cards error:', error);
     throw error;
   }
-}
+};
 
 export const addCard = async (cardNumber: string, expiryDate: string, cardCVV: string, walletId: string) => {
   try {
@@ -79,27 +78,27 @@ export const addCard = async (cardNumber: string, expiryDate: string, cardCVV: s
     console.error('Add Card error:', error);
     throw error;
   }
-}
+};
 
-export const getUser = async (account_id: string) => {
+export const getUser = async (accountId: string) => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/accounts/getuser/${account_id}`);
+    const response = await axios.get(`${API_BASE_URL}/accounts/getuser/${accountId}`);
     return response.data;
   } catch (error) {
     console.error('Get User error:', error);
     throw error;
   }
-}
+};
 
-export const getMerchant = async (account_id: string) => {
+export const getMerchant = async (accountId: string) => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/accounts/getmerchant/${account_id}`);
+    const response = await axios.get(`${API_BASE_URL}/accounts/getmerchant/${accountId}`);
     return response.data;
   } catch (error) {
     console.error('Get Merchant error:', error);
     throw error;
   }
-}
+};
 
 export const validateQRCodeData = async (data) => {
   try {

@@ -1,18 +1,24 @@
-import { SafeAreaView, View, Text, StyleSheet } from 'react-native';
+import {
+  SafeAreaView, View, Text, StyleSheet,
+  Dimensions,
+} from 'react-native';
+import { PieChart, BarChart } from 'react-native-chart-kit';
 import FilterTab from '../../components/Placeholders/FilterTab';
 import ChartPlaceholder from '../../components/Placeholders/ChartPlaceholder';
-import { PieChart, BarChart } from 'react-native-chart-kit';
-import { Dimensions } from 'react-native';
-
 
 export default function OverviewScreen() {
-
-  const screenWidth = Dimensions.get("window").width;
+  const screenWidth = Dimensions.get('window').width;
 
   const pieChartData = [
-    { name: 'Saving', population: 215, color: '#ff6384', legendFontColor: '#7F7F7F', legendFontSize: 15 },
-    { name: 'Food', population: 280, color: '#36a2eb', legendFontColor: '#7F7F7F', legendFontSize: 15 },
-    { name: 'Bills', population: 150, color: '#4bc0c0', legendFontColor: '#7F7F7F', legendFontSize: 15 },
+    {
+      name: 'Saving', population: 215, color: '#ff6384', legendFontColor: '#7F7F7F', legendFontSize: 15,
+    },
+    {
+      name: 'Food', population: 280, color: '#36a2eb', legendFontColor: '#7F7F7F', legendFontSize: 15,
+    },
+    {
+      name: 'Bills', population: 150, color: '#4bc0c0', legendFontColor: '#7F7F7F', legendFontSize: 15,
+    },
   ];
 
   const barChartData = {
@@ -20,42 +26,41 @@ export default function OverviewScreen() {
     datasets: [
       {
         data: [20, 45, 28, 80, 99],
-      }
-    ]
+      },
+    ],
   };
 
   const chartConfig = {
-    backgroundGradientFrom: "#0f003f",
-    backgroundGradientTo: "#0f003f",
+    backgroundGradientFrom: '#0f003f',
+    backgroundGradientTo: '#0f003f',
     color: (opacity = 1) => `rgba(173, 216, 230, ${opacity})`,
     labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
     strokeWidth: 2,
     barPercentage: 0.5,
-    useShadowColorFromDataset: false
+    useShadowColorFromDataset: false,
   };
 
   const styles = StyleSheet.create({
+    chart: {
+      borderRadius: 16,
+      marginVertical: 8,
+    },
     container: {
-      flex: 1,
       backgroundColor: '#0f003f',
-      padding: 20
+      flex: 1,
+      padding: 20,
     },
     header: {
-      fontSize: 24,
       color: '#ffffff',
-      marginBottom: 20
+      fontSize: 24,
+      marginBottom: 20,
     },
     tabsContainer: {
       flexDirection: 'row',
       justifyContent: 'space-around',
-      marginBottom: 20
+      marginBottom: 20,
     },
-    chart: {
-      marginVertical: 8,
-      borderRadius: 16
-    }
   });
-
 
   return (
     <SafeAreaView style={styles.container}>
@@ -71,9 +76,9 @@ export default function OverviewScreen() {
         width={screenWidth}
         height={200}
         chartConfig={chartConfig}
-        accessor={"population"}
-        backgroundColor={"transparent"}
-        paddingLeft={"10"}
+        accessor="population"
+        backgroundColor="transparent"
+        paddingLeft="10"
         center={[10, 10]}
         absolute
       />
@@ -89,4 +94,4 @@ export default function OverviewScreen() {
       />
     </SafeAreaView>
   );
-};
+}
