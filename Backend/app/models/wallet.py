@@ -3,7 +3,6 @@ from sqlmodel import Field, Relationship, SQLModel
 
 from models.account import Account
 from models.card import Card
-from models.transaction import Transaction
 
 
 class Wallet(SQLModel, table=True):
