@@ -22,4 +22,3 @@ class AccountResponse(AccountBase):
     wallet: Wallet = Field(..., description="Account wallet")
 
     model_config = ConfigDict(from_attributes=True)
-    

@@ -5,9 +5,9 @@ import DynamicTextInput from "../../components/DynamicTextInput/DynamicTextInput
 import { loginUser } from "../../api/api";
 import Genericlogo from "../../assets/Genericlogo.png";
 
-const LoginScreen = ({navigation}) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+function LoginScreen({ navigation }) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleLogin = async () => {
     try {
@@ -21,7 +21,7 @@ const LoginScreen = ({navigation}) => {
         console.error("Account object is missing in response");
       }
     } catch (error) {
-      console.error("Login error:", error);
+      console.error('Login error:', error);
     }
   };
 
@@ -43,10 +43,7 @@ const LoginScreen = ({navigation}) => {
             Forgot Password
           </Text>
           <Text onPress={() => navigation.navigate('RegisterOption')} style={styles.linkText}>
-            Sign Ups
-          </Text>
-          <Text onPress={() => navigation.navigate('Receipts')} style={styles.linkText}>
-            Receipts
+            Sign Up
           </Text>
         </View>
     </SafeAreaView>

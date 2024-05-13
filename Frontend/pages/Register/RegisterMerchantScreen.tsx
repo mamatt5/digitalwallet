@@ -9,8 +9,6 @@ import { StyleSheet } from 'react-native';
 
 const RegisterMerchantScreen = ({ navigation }) => {
 
-    // details of a merchant
-    // can add more
     const [companyName, setCompanyName] = useState("");
     const [abn, setAbn] = useState("");
     const [email, setEmail] = useState("");

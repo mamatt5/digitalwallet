@@ -7,7 +7,7 @@ import { StatusBar } from 'react-native';
 
 const Stack = createStackNavigator();
 
-const App = () => {
+function App() {
   return (
     <>
       <StatusBar barStyle="light-content" backgroundColor="#0f003f" />

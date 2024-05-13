@@ -113,7 +113,7 @@ const AddCardScreen = ({ navigation, route }) => {
     </TouchableWithoutFeedback>
     
   );
-};
+}
 
 const styles = StyleSheet.create({
   safeArea: {

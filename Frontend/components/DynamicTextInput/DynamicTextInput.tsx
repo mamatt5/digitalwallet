@@ -1,14 +1,15 @@
-import React from "react";
-import { TextInput, StyleSheet } from "react-native";
+/* eslint-disable react/require-default-props */
+/* eslint-disable react/destructuring-assignment */
+import React from 'react';
+import { TextInput, StyleSheet } from 'react-native';
 
 type PlaceholderProps = {
   placeholder: string;
   value: string;
-  onChangeText: (text: string) => void;
+  onChangeText?: (text: string) => void;
   secureTextEntry?: boolean;
   error?: boolean;
 };
-
 
 const styles = StyleSheet.create({
     'text-box-container': {
@@ -49,6 +50,6 @@ const DynamicTextInput = (props: PlaceholderProps) => {
       secureTextEntry={props.secureTextEntry}
     />
   );
-};
+}
 
 export default DynamicTextInput;

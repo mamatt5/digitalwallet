@@ -53,14 +53,13 @@ const RegisterUserScreen = ({ navigation }) => {
 
   };
 
-
   return (
     <SafeAreaView style={{ backgroundColor: '#0f003f', height: 2000 }}>
       <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
         <ScrollView>
           <View style={{ display: 'flex', alignItems: 'center', justifyContent: "center" }}>
             <Text style={{ color: '#ffffff', fontSize: 40, margin: 30 }}>
-              {'Register User'}
+              Register User
             </Text>
 
             <View style={styles.container}>

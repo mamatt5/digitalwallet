@@ -71,11 +71,11 @@ export default QRScanScreen;
 const styles = StyleSheet.create({
   container: {
     display: 'flex',
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   cameraContainer: {
-    overflow: "hidden",
+    overflow: 'hidden',
     borderColor: '#00a28e',
     borderWidth: 10,
   },

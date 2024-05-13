@@ -143,7 +143,7 @@ const AccountScreen = ({ navigation, route }) => {
       </View>
     </SafeAreaView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {

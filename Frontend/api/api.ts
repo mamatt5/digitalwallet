@@ -3,17 +3,17 @@ import { Alert } from "react-native";
 import { LOCAL_IP } from "@env";
 
 const API_BASE_URL = `http://${LOCAL_IP}:8000`;
-console.log("API URL: " + API_BASE_URL);
+const WS_BASE_URL = `ws://${LOCAL_IP}:8000`;
 
 export const loginUser = async (email: string, password: string) => {
   try {
     const requestData = new URLSearchParams({
-      grant_type: "",
+      grant_type: '',
       username: email,
       password,
-      client_id: "",
-      client_secret: "",
-      scope: "",
+      client_id: '',
+      client_secret: '',
+      scope: '',
     });
 
     const response = await axios.post(`${API_BASE_URL}/auth/login`, requestData.toString(), {
@@ -36,28 +36,24 @@ export const registerAccount = async (
   companyName: string,
   abn: string,  
   firstName: string,
-  lastName: string
+  lastName: string,
 ) => {
 
-    try {
-      const response = await axios
-      .post(`${API_BASE_URL}/auth/register`, {
-        company_name: companyName,
-        ABN: abn,
-        first_name: firstName,
-        last_name: lastName,
-        email: email,
-        password: password,
-        phone_number: phoneNumber,
-        account_type: accountType,
-      })
-      return response.data;
-    } catch (error) {
-      console.error('bruhhd:', error);
-      throw error;
-    }
-
-    
+  axios
+    .post(`${API_BASE_URL}/auth/register`, {
+      company_name: companyName,
+      ABN: abn,
+      first_name: firstName,
+      last_name: lastName,
+      email,
+      password,
+      phone_number: phoneNumber,
+      account_type: accountType,
+    })
+    .then(() => Alert.alert(' yay'))
+    .catch((error) => {
+      Alert.alert(error);
+    });
 };
 
 export const getWalletCards = async (wallet_id: string) => {
@@ -105,37 +101,29 @@ export const getMerchant = async (account_id: string) => {
   }
 }
 
-//   // return response.data;
-// } catch (error) {
-//   console.error('Merchant Registration error:', error);
-//   throw error;
-//   }
-// };
+export const validateQRCodeData = async (data) => {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/validate_qr`, data);
+    return response.data;
+  } catch (error) {
+    console.error('Error validating QR code data:', error);
+    throw error;
+  }
+};
 
-// export const registerUser = async (
-//   email: string,
-//   password: string,
-//   phoneNumber: string,
-//   accountType: string,
+export const connectToWebSocket = (relativeUrl: string, onMessage: (data: any) => void) => {
+  const ws = new WebSocket(`${WS_BASE_URL}${relativeUrl}`);
 
-//   firstName: string,
-//   lastName: string
-// ) => {
+  ws.onopen = () => console.log('WebSocket connected');
+  ws.onclose = (event) => console.log('WebSocket closed', event);
+  ws.onerror = (error) => console.error('WebSocket error', error);
 
-//   try {
-//     const response = await axios.post(`${API_BASE_URL}/users`, {
-//       email,
-//       password,
-//       phone_number: phoneNumber,
-//       account_type: accountType.toLowerCase(),
+  ws.onmessage = (event) => {
+    const data = JSON.parse(event.data);
+    onMessage(data);
+  };
 
-//       first_name: firstName,
-//       last_name: lastName
-//     });
-
-//     return response.data;
-//   } catch (error) {
-//     console.error('User Registration error:', error);
-//     throw error;
-//   }
-// };
+  return () => {
+    ws.close();
+  };
+};

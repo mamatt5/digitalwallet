@@ -1,15 +1,14 @@
 from typing import Annotated, List
 
-from fastapi import Depends
-
-from sqlmodel import Session, select, update, delete
 from database import get_db_session
+from fastapi import Depends
 from models.merchant import Merchant
 from repositories.base_repository import RepositoryBase
+from sqlmodel import Session, delete, select, update
+
 
 
 class MerchantRepository(RepositoryBase[Merchant]):
-
     def __init__(self, session: Annotated[Session, Depends(get_db_session)]):
         super().__init__(session)
 

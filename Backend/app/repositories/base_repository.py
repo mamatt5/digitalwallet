@@ -1,12 +1,12 @@
 from abc import ABC, abstractmethod
-from typing import Any, List, TypeVar, Generic
+from typing import Any, Generic, List, TypeVar
+
 from sqlmodel import Session
 
 T = TypeVar("T")
 
 
 class RepositoryBase(ABC, Generic[T]):
-
     def __init__(self, session: Session):
         self.session = session
 

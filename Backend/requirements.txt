@@ -2,6 +2,9 @@ fastapi
 sqlmodel
 uvicorn
 faker
+bcrypt
+qrcode
+itsdangerous
 passlib[bcrypt]
 pydantic[email]
 python-multipart
