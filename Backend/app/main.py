@@ -1,10 +1,12 @@
 from contextlib import asynccontextmanager
 
-from database import get_db_session, init_db
-from dataloader import generate_dummy_data, insert_dummy_data
+import generateQRCode2
+from database import init_db
 from fastapi import FastAPI
-from routes import auth_route, test_protected_route, card_route, account_route
-from contextlib import asynccontextmanager
+from routes import account_route, auth_route, card_route, test_protected_route
+
+# Creates a FastAPI instance
+app = FastAPI()
 
 
 @asynccontextmanager
@@ -14,25 +16,16 @@ async def lifespan(app: FastAPI):
 
     On startup:
     - Initialises the database
-    - Generates dummy data into the database
 
     On shutdown:
     - Handles resource cleanup, closes database connection
     """
-    
+
     # Startup: Initialise the database and generate dummy data
     init_db()
 
-    num_records = 10
-    with next(get_db_session()) as session:
-        dummy_data = generate_dummy_data(session, num_records)
-        insert_dummy_data(session, dummy_data)
-
     # Application execution
     yield
-
-    # Shutdown
-    pass
 
 
 # Creates a FastAPI instance
@@ -43,3 +36,4 @@ app.include_router(auth_route.router)
 app.include_router(test_protected_route.router)
 app.include_router(card_route.router)
 app.include_router(account_route.router)
+app.include_router(generateQRCode2.router)

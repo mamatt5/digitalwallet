@@ -1,9 +1,8 @@
-from typing import Generator
-
 from config import DEV_DATABASE_URL
 from sqlmodel import Session, SQLModel, create_engine
 
 # Create a database engine using SQLite
+DEV_DATABASE_URL = "sqlite:///database.db"
 engine = create_engine(DEV_DATABASE_URL)
 
 

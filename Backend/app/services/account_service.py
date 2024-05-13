@@ -7,6 +7,7 @@ from repositories.account_repository import AccountRepository
 
 from fastapi import Depends
 
+
 class AccountService:
 
     def __init__ (self, user_repository: UserRepository = Depends(UserRepository), 
@@ -19,7 +20,7 @@ class AccountService:
 
     def get_user(self, account_id: int) -> User:
         return self.user_repository.get_by_id(account_id)
-    
+
     def get_merchant(self, account_id: int) -> Merchant:
         return self.merchant_repository.get_by_id(account_id)
     

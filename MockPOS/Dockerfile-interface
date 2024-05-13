@@ -1,0 +1,48 @@
+# Use the bookworm-slim image with Node.js
+FROM node:bookworm-slim
+
+# Install SSH, curl, etc
+RUN apt-get update && apt-get install -y \
+    openssh-server \
+    curl \
+    vim \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+
+# Set the working directory to interface
+WORKDIR /interface
+
+# Copy the package.json and package-lock.json to install Node.js dependencies
+COPY interface/package.json /interface/
+COPY interface/package-lock.json /interface/
+
+# Copy the startup script
+COPY interface/docker-start.sh /interface/
+
+# Install Node.js dependencies
+RUN npm install
+
+# Build the project 
+COPY interface/source /interface/source
+RUN npm run build
+
+# Create necessary directories and set permissions for SSH
+RUN mkdir /var/run/sshd && \
+    chmod 0755 /var/run/sshd
+
+# Generate SSH host keys
+RUN ssh-keygen -A
+
+# Configure SSH
+RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config && \
+    sed -i 's/#Port 22/Port 22/' /etc/ssh/sshd_config
+
+# Set root password
+RUN echo 'root:password' | chpasswd
+
+# Expose port 22 for SSH
+EXPOSE 22
+
+# Command to start SSH and run the built application
+CMD ["/bin/bash", "/interface/docker-start.sh"]
