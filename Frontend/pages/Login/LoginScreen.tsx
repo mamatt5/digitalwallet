@@ -3,8 +3,7 @@ import { SafeAreaView, ScrollView, View, Text, StyleSheet, Image } from "react-n
 import { Button } from "react-native-paper";
 import DynamicTextInput from "../../components/DynamicTextInput/DynamicTextInput";
 import { loginUser } from "../../api/api";
-import APPlogo from "../../assets/APPlogo.png";
-import TransactionCard from "../../components/TransactionCard/TransactionCard";
+import Genericlogo from "../../assets/Genericlogo.png";
 
 const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState("");
@@ -29,7 +28,7 @@ const LoginScreen = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Image source={APPlogo} style={styles.APPlogo} />
+      <Image source={Genericlogo} style={styles.APPlogo} />
         <View style={styles.centerView}>
           <DynamicTextInput placeholder="EMAIL" onChangeText={setEmail} value={email} />
           <DynamicTextInput placeholder="PASSWORD" onChangeText={setPassword} value={password} secureTextEntry />
