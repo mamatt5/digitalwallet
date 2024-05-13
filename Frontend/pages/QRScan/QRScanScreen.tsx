@@ -38,11 +38,11 @@ const QRScanScreen = () => {
     }
     
     return (
-        <SafeAreaView style={{ backgroundColor: '#0f003f', height: 2000}}>
+        <SafeAreaView style={styles.screenContiner}>
             {isFocused && (
                 <View style={styles.container}>
                     
-                <Text style={{ color: '#ffffff', fontSize: 20, margin: 30 }}>Please scan QR code</Text>
+                <Text style={styles.headerText}>Please scan QR code</Text>
                     <View style={styles.cameraContainer}>
                         <CameraView
                             onBarcodeScanned={scanned ? undefined : handleBarcodeScanned}
@@ -51,8 +51,8 @@ const QRScanScreen = () => {
                     </View>
                     {scanned && (
                         <View>
-                        <Text style={{ color: '#ffffff', fontSize: 20, margin: 30 }}>{text}</Text>
-                        <View style={{ width: "50%", alignSelf: "center" }}>
+                        <Text style={styles.qrText}>{text}</Text>
+                        <View style={styles.buttonContainer}>
                             <Button
                             title={"Tap to Scan Again"}
                             onPress={() => setScanned(false)}
@@ -83,4 +83,22 @@ const styles = StyleSheet.create({
     height: 200,
     width: 200,
   },
+  screenContiner: {
+    backgroundColor: '#0f003f',
+    height: 2000
+  },
+  headerText: {
+    color: '#ffffff',
+    fontSize: 24,
+    margin: 30
+  },
+  buttonContainer: {
+    width: '50%',
+    alignSelf: 'center',
+  },
+  qrText: {
+    color: '#ffffff',
+    fontSize: 20,
+    margin: 30
+  }
 });
