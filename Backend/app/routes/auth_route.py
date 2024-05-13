@@ -8,11 +8,12 @@ from sqlmodel import Session
 from services.auth_service import AuthService
 import logging
 
-
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
+
 @router.post("/login", response_model=AuthResponse)
-def login_route(form_data: OAuth2PasswordRequestForm = Depends(), auth_service: AuthService = Depends(AuthService)) -> AuthResponse:
+def login_route(form_data: OAuth2PasswordRequestForm = Depends(),
+                auth_service: AuthService = Depends(AuthService)) -> AuthResponse:
     """
     **Login/Authenticate Endpoint**
 

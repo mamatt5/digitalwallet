@@ -12,7 +12,7 @@ class TransactionService:
         transaction = self.transaction_repository.create(transaction)
 
     def get_transaction(self, transaction_id: int) -> Transaction:
-        return self.transaction_repository.get(transaction_id)
+        return self.transaction_repository.get_by_id(transaction_id)
 
     def get_transactions(self) -> list[Transaction]:
         return self.transaction_repository.get_all()

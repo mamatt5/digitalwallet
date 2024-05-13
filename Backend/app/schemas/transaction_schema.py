@@ -9,3 +9,6 @@ class TransactionData(BaseModel):
     date: str = Field(..., description='Date of transaction')
     amount: int = Field(..., description='Amount of transaction')
     category_name: str = Field(..., description='Category of transaction')
+    card: int = Field(..., description='id of the Card used')
+    sender: int = Field(..., description='id number for the Sender')
+    receiver: int = Field(..., description='id number for the Receiver')

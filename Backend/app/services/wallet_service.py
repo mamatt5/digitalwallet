@@ -12,7 +12,7 @@ class WalletService:
         wallet = self.wallet_repository.create(wallet)
 
     def get_wallet(self, wallet_id: int) -> Wallet:
-        return self.wallet_repository.get(wallet_id)
+        return self.wallet_repository.get_by_id(wallet_id)
 
     def get_wallets(self) -> list[Wallet]:
         return self.wallet_repository.get_all()

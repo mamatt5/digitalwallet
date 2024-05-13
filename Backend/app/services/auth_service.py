@@ -13,13 +13,14 @@ from repositories.user_repository import UserRepository
 from repositories.wallet_repository import WalletRepository
 from fastapi import Depends
 
+
 class AuthService:
 
     def __init__(self, account_repository: AccountRepository = Depends(AccountRepository),
-    merchant_repository: MerchantRepository = Depends(MerchantRepository),
-    user_repository: UserRepository = Depends(UserRepository),
-    wallet_repository: WalletRepository = Depends(WalletRepository)):
-        
+                 merchant_repository: MerchantRepository = Depends(MerchantRepository),
+                 user_repository: UserRepository = Depends(UserRepository),
+                 wallet_repository: WalletRepository = Depends(WalletRepository)):
+
         self.account_repository = account_repository
         self.merchant_repository = merchant_repository
         self.user_repository = user_repository
@@ -40,7 +41,6 @@ class AuthService:
         if account and verify_password(password, account.password):
             return account
         return None
-
 
     def login(self, form_data: OAuth2PasswordRequestForm) -> AuthResponse:
         """
@@ -63,7 +63,6 @@ class AuthService:
         access_token = create_access_token(account.email)
         token = Token(access_token=access_token, token_type="bearer")
         return AuthResponse(token=token, account=account)
-
 
     def register(self, register_request: RegisterRequest) -> AuthResponse:
         """
@@ -93,26 +92,19 @@ class AuthService:
         account.wallet = wallet
         wallet.account = account
 
-
         access_token = create_access_token(account.email)
         token = Token(access_token=access_token, token_type="bearer")
 
-
         if register_request.account_type == AccountType.MERCHANT:
-            
+
             merchant = Merchant(**account_data)
             merchant.account_id = account.account_id
             self.merchant_repository.create(merchant)
 
         elif register_request.account_type == AccountType.USER:
-    
+
             user = User(**account_data)
             user.account_id = account.account_id
             self.user_repository.create(user)
 
         return AuthResponse(token=token, account=account)
-
-
-
-
-    

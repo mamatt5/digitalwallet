@@ -11,7 +11,6 @@ from database import get_db_session
 
 class TransactionRepository(RepositoryBase[Transaction]):
 
-
     def __init__(self, session: Annotated[Session, Depends(get_db_session)]):
         super().__init__(session)
 
@@ -22,7 +21,8 @@ class TransactionRepository(RepositoryBase[Transaction]):
         return transaction
 
     def update(self, transaction: Transaction) -> Transaction:
-        statement = update(Transaction).where(Transaction.transaction_id == Transaction.transaction_id).values(**transaction.dict())
+        statement = update(Transaction).where(Transaction.transaction_id == Transaction.transaction_id).values(
+            **transaction.dict())
         self.session.exec(statement)
         self.session.commit()
         self.session.refresh(transaction)
