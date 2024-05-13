@@ -7,6 +7,7 @@ from database import get_db_session
 from models.user import User
 from repositories.base_repository import RepositoryBase
 
+
 class UserRepository(RepositoryBase[User]):
 
     def __init__(self, session: Annotated[Session, Depends(get_db_session)]):

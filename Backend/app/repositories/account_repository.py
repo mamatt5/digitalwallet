@@ -7,8 +7,9 @@ from database import get_db_session
 from models.account import Account
 from repositories.base_repository import RepositoryBase
 
+
 class AccountRepository(RepositoryBase[Account]):
-    
+
     def __init__(self, session: Annotated[Session, Depends(get_db_session)]):
         super().__init__(session)
 
@@ -46,7 +47,7 @@ class AccountRepository(RepositoryBase[Account]):
         statement = select(Account).where(Account.email == email)
         account = self.session.exec(statement).first()
         return account
-    
+
     def get_by_phone_number(self, phone_number: str) -> Account | None:
         statement = select(Account).where(Account.phone_number == phone_number)
         account = self.session.exec(statement).first()

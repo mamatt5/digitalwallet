@@ -11,7 +11,7 @@ class CardService:
         card = self.card_repository.create(card)
 
     def get_card(self, card_id: int) -> Card:
-        return self.card_repository.get(card_id)
+        return self.card_repository.get_by_id(card_id)
     
     def get_cards(self) -> list[Card]:
         return self.card_repository.get_all()
