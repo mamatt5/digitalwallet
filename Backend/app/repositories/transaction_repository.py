@@ -34,12 +34,12 @@ class TransactionRepository(RepositoryBase[Transaction]):
         self.session.commit()
         return result.rowcount > 0
 
-    def get_by_id(self, transaction_id: Any) -> T | None:
+    def get_by_id(self, transaction_id: Any) -> Transaction | None:
         statement = select(Transaction).where(Transaction.transaction_id == transaction_id)
         transaction = self.session.exec(statement).first()
         return transaction
 
-    def get_all(self, skip: int = 0, limit: int = 20) -> List[T]:
+    def get_all(self, skip: int = 0, limit: int = 20) -> List[Transaction]:
         statement = select(Transaction).offset(skip).limit(limit)
         transactions = self.session.exec(statement).all()
         return transactions
