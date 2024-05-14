@@ -46,7 +46,7 @@ function RegisterUserScreen({ navigation }) {
 
     if (!newEmailError && !newPhoneNumberError && !newPasswordError && !newFirstNameError && !newLastNameError) {
       registerAccount(email, password, phoneNumber, 'user', '', '', firstName, lastName)
-        .then(navigation.navigate('Login')).catch((error) => console.error('Registration error1:', error));
+        .then(navigation.navigate('Login')).catch((error) => console.error('Registration error:', error));
     }
   };
 

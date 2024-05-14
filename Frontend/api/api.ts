@@ -54,7 +54,7 @@ export const registerAccount = async (
       })
       return response.data;
     } catch (error) {
-      console.error('Registration Error2:', error);
+      console.error('Registration Error:', error);
       throw error;
     }
 
@@ -118,7 +118,7 @@ export const getAccountFromEmail = async (email: string) => {
 
 export const updatePassword = async (email: string, password: string) => { 
   try {
-    const response = await axios.patch(`${API_BASE_URL}/accounts/updatepassword/${email}`, { password: password });
+    const response = await axios.patch(`${API_BASE_URL}/accounts/updatepassword/${email}`, {password});
     return response.data
   } catch (error) {
     console.error('Update Password error:', error);

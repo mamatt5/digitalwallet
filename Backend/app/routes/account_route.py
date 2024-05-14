@@ -2,7 +2,8 @@ from models.user import User
 from models.merchant import Merchant
 from models.account import Account
 from services.account_service import AccountService
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request
+from security import hash_password
 
 import logging
 
@@ -23,8 +24,10 @@ def get_account_with_email_route(email: str, account_service: AccountService = D
     return account_service.get_account_with_email(email) != None
 
 @router.patch("/updatepassword/{email}")
-def update_accout_password(email: str, password: str, account_service: AccountService = Depends(AccountService)) -> Account:
+async def update_accout_password(email: str, request: Request, account_service: AccountService = Depends(AccountService)) -> bool:
     logging.basicConfig(level=logging.INFO, filename="py_log.log",filemode="w")
-    logging.warning("update pass")
-    # return account_service.update_account_password(email, password)
+    logging.warning("update pass6")
+    body = await request.json()
+    logging.warning(body.get("password")) 
+    return account_service.update_account_password(email, hash_password(body.get("password")))
 

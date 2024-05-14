@@ -23,6 +23,14 @@ class AccountRepository(RepositoryBase[Account]):
         self.session.commit()
         self.session.refresh(account)
         return account
+    
+    def update_password(self, email: str, newPassword: str) -> bool:
+        statement = update(Account).where(Account.email == email).values(password=newPassword)
+        self.session.exec(statement)
+        self.session.commit()
+        return True
+    
+    
 
     def delete(self, account_id: int) -> bool:
         statement = delete(Account).where(Account.account_id == account_id)
