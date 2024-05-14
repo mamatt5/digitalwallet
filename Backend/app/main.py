@@ -3,7 +3,7 @@ from contextlib import asynccontextmanager
 import generateQRCode2
 from database import init_db
 from fastapi import FastAPI
-from routes import account_route, auth_route, card_route, test_protected_route
+from routes import account_route, auth_route, card_route, test_protected_route, transaction_route
 
 # Creates a FastAPI instance
 app = FastAPI()
@@ -37,3 +37,4 @@ app.include_router(test_protected_route.router)
 app.include_router(card_route.router)
 app.include_router(account_route.router)
 app.include_router(generateQRCode2.router)
+app.include_router(transaction_route.router)
