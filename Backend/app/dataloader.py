@@ -1,4 +1,5 @@
 import logging
+import random
 from typing import Dict
 
 from faker import Faker
@@ -46,6 +47,14 @@ def create_card_data() -> Dict:
         "card_number": fake.credit_card_number(),
         "card_expiry": fake.credit_card_expire(),
         "card_cvv": fake.credit_card_security_code(),
+    }
+
+
+def create_transaction_data() -> Dict:
+    logger.info("Creating transaction data")
+    return {
+        "date": fake.date_time_this_year(before_now=True),
+        "amount": random.randint(1, 1000),
     }
 
 
