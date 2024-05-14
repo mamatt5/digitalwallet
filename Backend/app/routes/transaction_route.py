@@ -10,6 +10,6 @@ def add_transaction_route(transaction: Transaction, transaction_service: Transac
     transaction_service.add_transaction(transaction)
 
 
-@router.post('/gettransactions')
+@router.get('/gettransactions')
 def get_transactions(transaction: Transaction, transaction_service: TransactionService = Depends(TransactionService)):
     return TransactionService.add_transaction(transaction)
