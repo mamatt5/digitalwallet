@@ -15,15 +15,24 @@ const ResetPasswordScreen = ({ route, navigation }) => {
 
   const [password, setPassword] = useState("")
   const [passwordError, setPasswordError] = useState(false)
-  
+
 
   const email = route.params?.email
   const code = route.params?.code
 
   const resetPassword = async () => {
-    Alert.alert("inners")
-    const resp = updatePassword(email, password)
-    
+
+    if (verificationCode !== code) {
+      setVerificationCodeError(true)
+    } else {
+      setVerificationCodeError(false)
+    }
+    const newPasswordError = password === '' || !/(?=.*[0-9])(?=.*[A-Z]).+/.test(password);
+    setPasswordError(newPasswordError);
+    if (!newPasswordError && !verificationCodeError) {
+      updatePassword(email, password).then(navigation.navigate('Login')).catch((error) => console.error('Reset Password error:', error));
+    }
+
   }
 
 
@@ -53,7 +62,7 @@ const ResetPasswordScreen = ({ route, navigation }) => {
             {verificationCodeError && (
               <MaterialIcons
                 name="error-outline"
-                onPress={() => Alert.alert("Invalid Email", "Please enter a valid email")}
+                onPress={() => Alert.alert("Invalid Verification Code", "Please try again")}
                 color="red"
                 style={styles.errorIcon}
                 size={25}
@@ -72,7 +81,7 @@ const ResetPasswordScreen = ({ route, navigation }) => {
                 error={passwordError} />
             </View>
 
-            {verificationCodeError && (
+            {passwordError && (
               <MaterialIcons
                 name="error-outline"
                 onPress={() => Alert.alert("Invalid Password", "Please enter a valid Password")}

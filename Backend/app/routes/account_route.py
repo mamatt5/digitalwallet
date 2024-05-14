@@ -25,9 +25,6 @@ def get_account_with_email_route(email: str, account_service: AccountService = D
 
 @router.patch("/updatepassword/{email}")
 async def update_accout_password(email: str, request: Request, account_service: AccountService = Depends(AccountService)) -> bool:
-    logging.basicConfig(level=logging.INFO, filename="py_log.log",filemode="w")
-    logging.warning("update pass6")
     body = await request.json()
-    logging.warning(body.get("password")) 
     return account_service.update_account_password(email, hash_password(body.get("password")))
 

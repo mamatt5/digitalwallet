@@ -1,8 +1,24 @@
 WARNING:root:update pass6
-WARNING:root:1E
+WARNING:root:1W
 WARNING:passlib.handlers.bcrypt:(trapped) error reading bcrypt version
 Traceback (most recent call last):
   File "C:\Users\Jefferson\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
     version = _bcrypt.__about__.__version__
               ^^^^^^^^^^^^^^^^^
 AttributeError: module 'bcrypt' has no attribute '__about__'
+WARNING:root:update pass6
+WARNING:root:1W
+WARNING:root:update pass6
+WARNING:root:1W
+WARNING:root:update pass6
+WARNING:root:1Y
+WARNING:root:update pass6
+WARNING:root:1Y
+WARNING:root:update pass6
+WARNING:root:1Y
+WARNING:root:update pass6
+WARNING:root:1W
+WARNING:root:update pass6
+WARNING:root:
+WARNING:root:update pass6
+WARNING:root:1D

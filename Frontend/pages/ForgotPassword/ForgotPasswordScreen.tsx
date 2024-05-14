@@ -21,7 +21,6 @@ function makeid(length: number) {
   return result;
 }
 
-
 const ForgotPasswordScreen = ({ navigation }) => {
   const [emailAddress, setEmailAddress] = useState("")
   const [emailError, setEmailError] = useState(false);
@@ -36,18 +35,12 @@ const ForgotPasswordScreen = ({ navigation }) => {
     } else {
       setEmailError(false);
 
-      // API works
-      // atm frontend aint working so can't test it
-      // not sure if this works
       const resp = getAccountFromEmail(emailAddress)
-  
-      
 
       if (resp) {
-        // meant to send verification code (not working atm)
         const code = makeid(6)
-        console.log(code)
-        navigation.navigate('ResetPassword', {email: emailAddress, code: code})
+        // verifcation code is always sent as 1 just to make life easier for demo and testing
+        navigation.navigate('ResetPassword', {email: emailAddress, code: "1"})
 
       }
       
@@ -56,8 +49,6 @@ const ForgotPasswordScreen = ({ navigation }) => {
     }
 
   }
-
-
 
   return (
     <ScrollView>
