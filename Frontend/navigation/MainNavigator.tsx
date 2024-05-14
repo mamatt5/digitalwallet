@@ -21,6 +21,7 @@ function MainNavigator({ route }) {
       <Tab.Screen
         name="Scan QR"
         component={QRScanScreen}
+        initialParams={{ account }}
         options={{
           tabBarLabel: 'Scan',
           tabBarIcon: ({ color, size }) => (
