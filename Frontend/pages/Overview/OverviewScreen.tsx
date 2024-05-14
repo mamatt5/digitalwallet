@@ -5,6 +5,7 @@ import {
 import { PieChart, BarChart } from 'react-native-chart-kit';
 import FilterTab from '../../components/Placeholders/FilterTab';
 import ChartPlaceholder from '../../components/Placeholders/ChartPlaceholder';
+import React from 'react';
 
 export default function OverviewScreen() {
   const screenWidth = Dimensions.get('window').width;

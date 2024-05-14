@@ -24,6 +24,7 @@ export const loginUser = async (email: string, password: string) => {
     return response.data;
   } catch (error) {
     console.error('Login error:', error);
+
     throw error;
   }
 };
@@ -38,7 +39,7 @@ export const registerAccount = async (
   firstName: string,
   lastName: string,
 ) => {
-
+    
     try {
       const response = await axios
       .post(`${API_BASE_URL}/auth/register`, {
@@ -53,7 +54,7 @@ export const registerAccount = async (
       })
       return response.data;
     } catch (error) {
-      console.error('Registration Error:', error);
+      console.error('Registration Error2:', error);
       throw error;
     }
 

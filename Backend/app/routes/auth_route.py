@@ -19,7 +19,7 @@ def login_route(
     return auth_service.login(form_data)
 
 
-@router.patch("/register", response_model=AuthResponse)
+@router.post("/register", response_model=AuthResponse)
 def register_route(register_request: RegisterRequest, auth_service: AuthService = Depends(AuthService)) -> AuthResponse:
     """
     **Register Endpoint**

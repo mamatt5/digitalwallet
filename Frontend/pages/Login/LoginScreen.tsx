@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import {
   SafeAreaView, ScrollView, View, Text, StyleSheet, Image,
+  Alert,
 } from 'react-native';
 import { Button } from 'react-native-paper';
 import DynamicTextInput from '../../components/DynamicTextInput/DynamicTextInput';
@@ -12,11 +13,14 @@ function LoginScreen({ navigation }) {
   const [password, setPassword] = useState('');
 
   const handleLogin = async () => {
+    
     try {
+      
       const response = await loginUser(email, password);
       console.log(response);
       const { account } = response;
       console.log('Account data:', account);
+      
       if (account) {
         navigation.navigate('Main', { account });
       } else {
@@ -29,8 +33,7 @@ function LoginScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-<<<<<<< HEAD
-      <Image source={APPlogo} style={styles.APPlogo} />
+      <Image source={Genericlogo} style={styles.APPlogo} />
       <ScrollView>
         <View style={styles.centerView}>
         <Text style={{ color: '#ffffff', fontSize: 30, margin: 30 }}>
@@ -51,33 +54,14 @@ function LoginScreen({ navigation }) {
           <Text onPress={() => navigation.navigate('RegisterOption')} style={styles.linkText}>
             Sign Up
           </Text>
-=======
-      <Image source={Genericlogo} style={styles.APPlogo} />
-      <View style={styles.centerView}>
-        <DynamicTextInput placeholder="EMAIL" onChangeText={setEmail} value={email} />
-        <DynamicTextInput placeholder="PASSWORD" onChangeText={setPassword} value={password} secureTextEntry />
-        <View style={styles.buttonContainer}>
-          <Button buttonColor="#ffffff" textColor="#000000" onPress={handleLogin}>
-            <Text style={{ fontWeight: 'bold' }}>
-              Log In
-            </Text>
-          </Button>
->>>>>>> origin/develop
         </View>
-        <Text onPress={() => navigation.navigate('ForgotPassword')} style={styles.linkText}>
-          Forgot Password
-        </Text>
-        <Text onPress={() => navigation.navigate('RegisterOption')} style={styles.linkText}>
-          Sign Up
-        </Text>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   APPlogo: {
-<<<<<<< HEAD
     width: 200, 
     height: 200, 
     marginLeft: 'auto', 
@@ -97,36 +81,17 @@ const styles = StyleSheet.create({
     color: '#ffffff', 
     fontSize: 40, 
     margin: 30
-=======
-    height: 150,
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    marginTop: 50,
-    width: 150,
->>>>>>> origin/develop
   },
   buttonContainer: {
     margin: 20,
     width: 200,
   },
-  centerView: {
-    alignItems: 'center',
-    display: 'flex',
-    justifyContent: 'center',
-  },
-  container: {
-    backgroundColor: '#0f003f',
-    height: 2000,
-  },
+
   linkText: {
     color: '#ffffff',
     marginTop: 20,
   },
-  titleText: {
-    color: '#ffffff',
-    fontSize: 40,
-    margin: 30,
-  },
+
 });
 
 export default LoginScreen;

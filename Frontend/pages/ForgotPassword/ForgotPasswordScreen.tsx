@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React from "react";
 import { SafeAreaView, ScrollView, View, Text, Image, StyleSheet, Alert } from "react-native";
 import { Button } from "react-native-paper";
@@ -6,23 +5,26 @@ import DynamicTextInput from "../../components/DynamicTextInput/DynamicTextInput
 import { useState } from "react";
 import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 import { getAccountFromEmail } from "../../api/api";
-import email from 'react-native-email';
-import APPlogo from "../../assets/APPlogo.png";
+import Genericlogo from '../../assets/Genericlogo.png';
 import { sendEmail } from "../../api/sendEmail";
-import random from 'random-string-generator'
+
+
+function makeid(length: number) {
+  let result = '';
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const charactersLength = characters.length;
+  let counter = 0;
+  while (counter < length) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    counter += 1;
+  }
+  return result;
+}
 
 
 const ForgotPasswordScreen = ({ navigation }) => {
   const [emailAddress, setEmailAddress] = useState("")
   const [emailError, setEmailError] = useState(false);
-
-  const handleEmail = async(address: string, body: string, subject: string) => {
-
-    // sendEmail doesn't work atm the moment
-    // look inside sendEmail.ts for more information
-    // sendEmail(address, "s", "s")
-  
-  }
 
 
 
@@ -43,10 +45,9 @@ const ForgotPasswordScreen = ({ navigation }) => {
 
       if (resp) {
         // meant to send verification code (not working atm)
-        const code = random(6)
+        const code = makeid(6)
         console.log(code)
-        handleEmail("jahwmgrfsfavvkmvml@cazlp.com", "s", "s")
-        navigation.navigate("ResetPassword", {email: emailAddress, code: code})
+        navigation.navigate('ResetPassword', {email: emailAddress, code: code})
 
       }
       
@@ -56,22 +57,13 @@ const ForgotPasswordScreen = ({ navigation }) => {
 
   }
 
-=======
-import React from 'react';
-import {
-  SafeAreaView, ScrollView, View, Text,
-} from 'react-native';
-import { Button } from 'react-native-paper';
-import DynamicTextInput from '../../components/DynamicTextInput/DynamicTextInput';
->>>>>>> origin/develop
 
-function ForgotPasswordScreen({ navigation }) {
+
   return (
-<<<<<<< HEAD
     <ScrollView>
       <SafeAreaView style={{ backgroundColor: '#0f003f', height: 2000 }}>
 
-        <Image source={APPlogo} style={styles.APPlogo} />
+        <Image source={Genericlogo} style={styles.APPlogo} />
 
         <View style={styles.centerView}>
           <Text style={styles.titleText}>
@@ -158,31 +150,6 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ForgotPasswordScreen;
-=======
-    <SafeAreaView style={{ backgroundColor: '#0f003f', height: 2000 }}>
-      <ScrollView>
-        <View style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <Text style={{ color: '#ffffff', fontSize: 30, margin: 30 }}>
-            Forgot Password
-          </Text>
-          <DynamicTextInput placeholder="EMAIL" value="" />
-          <DynamicTextInput placeholder="PASSWORD" value="" />
-          <View style={{ margin: 20, width: 200 }}>
-            <Button buttonColor="#ffffff" textColor="#000000">
-              <Text style={{ fontWeight: 'bold' }}>
-                Log In
-              </Text>
-            </Button>
-          </View>
-          <Text onPress={() => navigation.navigate('Login')} style={{ color: '#ffffff', marginTop: 20 }}>
-            Log In
-          </Text>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-}
+
 
 export default ForgotPasswordScreen;
->>>>>>> origin/develop
