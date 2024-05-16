@@ -96,7 +96,13 @@ const PaymentScreen = ({ route, navigation }) => {
             </>
           ) : (
             !transactionConfirmed && (
-              <Text style={styles.headerText}> QR Code invalid!</Text>
+              <View style={styles.subheaderContainer}>
+                <Text style={styles.headerText}> QR Code invalid!</Text>
+                <Text style={styles.subheaderText}>Scanned data: </Text>
+                <Text style={styles.subheaderText}>{data}</Text>
+                <Text style={styles.subheaderText}>Parsed data: </Text>
+                <Text style={styles.subheaderText}>{parsedData}</Text>
+              </View>
             )
           )}
 
