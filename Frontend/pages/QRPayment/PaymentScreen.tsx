@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, FlatList, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  StyleSheet,
+} from "react-native";
 import { Button } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/FontAwesome6";
@@ -42,7 +48,7 @@ const PaymentScreen = ({ route, navigation }) => {
   }, [data]);
 
   const handleConfirmPayment = () => {
-    const selectedCardData = cards[selectedCard]
+    const selectedCardData = cards[selectedCard];
     navigation.navigate("PaymentComplete", { parsedData, selectedCardData });
   };
 
@@ -90,7 +96,13 @@ const PaymentScreen = ({ route, navigation }) => {
             </>
           ) : (
             !transactionConfirmed && (
-              <Text style={styles.headerText}> QR Code invalid!</Text>
+              <View style={styles.subheaderContainer}>
+                <Text style={styles.headerText}> QR Code invalid!</Text>
+                <Text style={styles.subheaderText}>Scanned data: </Text>
+                <Text style={styles.subheaderText}>{data}</Text>
+                <Text style={styles.subheaderText}>Parsed data: </Text>
+                <Text style={styles.subheaderText}>{parsedData}</Text>
+              </View>
             )
           )}
 
@@ -104,27 +116,33 @@ const PaymentScreen = ({ route, navigation }) => {
                 <View style={styles.subheaderContainer}>
                   <Text style={styles.subheaderText}>Payment options:</Text>
                   <View style={styles.cardsContainer}>
-                    <FlatList
-                      data={cards}
-                      keyExtractor={(item, index) => index.toString()}
-                      renderItem={({ item, index }) => (
-                        <TouchableOpacity
-                          style={
-                            index === selectedCard ? 
-                                styles.selectedCard :
-                                styles.card
-                          }
-                          onPress={() => setSelectedCard(index)}
-                        >
-                          <View style={styles.cardInfo}>
-                            <SmallDebitCard card={item} />
-                            {index === selectedCard && (
-                              <Icon name="check" size={20} color="white" />
-                            )}
-                          </View>
-                        </TouchableOpacity>
-                      )}
-                    />
+                    {cards.length > 0 ? (
+                      <FlatList
+                        data={cards}
+                        keyExtractor={(item, index) => index.toString()}
+                        renderItem={({ item, index }) => (
+                          <TouchableOpacity
+                            style={
+                              index === selectedCard
+                                ? styles.selectedCard
+                                : styles.card
+                            }
+                            onPress={() => setSelectedCard(index)}
+                          >
+                            <View style={styles.cardInfo}>
+                              <SmallDebitCard card={item} />
+                              {index === selectedCard && (
+                                <Icon name="check" size={20} color="white" />
+                              )}
+                            </View>
+                          </TouchableOpacity>
+                        )}
+                      />
+                    ) : (
+                      <Text style={styles.subheaderText}>
+                        No cards available
+                      </Text>
+                    )}
                   </View>
                 </View>
                 {selectedCard !== -1 && (
@@ -161,7 +179,7 @@ const PaymentScreen = ({ route, navigation }) => {
 
 export default PaymentScreen;
 
-const styles = {
+const styles = StyleSheet.create({
   screenContainer: {
     backgroundColor: "#0f003f",
     height: 2000,
@@ -195,13 +213,13 @@ const styles = {
     color: "#ffffff",
     fontSize: 18,
   },
-//   headerText: {
-//     color: "#ffffff",
-//     fontSize: 24,
-//     margin: 30,
-//     alignContent: "center",
-//     textAlign: "center",
-//   },
+  //   headerText: {
+  //     color: "#ffffff",
+  //     fontSize: 24,
+  //     margin: 30,
+  //     alignContent: "center",
+  //     textAlign: "center",
+  //   },
   buttonContainer: {
     marginTop: 50,
     alignSelf: "center",
@@ -255,4 +273,4 @@ const styles = {
     justifyContent: "space-between",
     alignItems: "center",
   },
-};
+});

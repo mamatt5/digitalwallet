@@ -5,7 +5,7 @@ import QRScanScreen from '../pages/QRScan/QRScanScreen';
 import ReceiptsScreen from '../pages/Receipts/ReceiptsScreen';
 import OverviewScreen from '../pages/Overview/OverviewScreen';
 import AccountNavigator from './AccountNavigator';
-import GenerateQRScreen from '../pages/GenerateQR/GenerateQRUserScreen';
+import GenerateGenericQR from '../pages/GenerateQR/GenerateGenericQR';
 
 const Tab = createBottomTabNavigator();
 
@@ -31,7 +31,8 @@ function MainNavigator({ route }) {
       />
       <Tab.Screen
         name="Generate QR"
-        component={GenerateQRScreen}
+        component={GenerateGenericQR}
+        initialParams={{ account }} 
         options={{
           tabBarLabel: 'Generate',
           tabBarIcon: ({ color, size }) => (

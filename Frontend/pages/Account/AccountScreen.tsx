@@ -101,8 +101,7 @@ function AccountScreen({ navigation, route }) {
     <SafeAreaView style={styles.container}>
       <View style={styles.centerView}>
         <Text style={styles.titleText}>
-          Welcome,
-          {loggedAccount}
+          Welcome, {loggedAccount}
           !
         </Text>
         {cards.length === 0 ? (
@@ -160,6 +159,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     display: 'flex',
     justifyContent: 'center',
+    marginTop: 10,
   },
   container: {
     backgroundColor: '#0f003f',
