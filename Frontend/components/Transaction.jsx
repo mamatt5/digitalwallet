@@ -15,10 +15,10 @@ const Transaction = ({ transaction }) => {
   const fetchAccount = async () => {
     try {
       const account = await getAccount(vendor);
-      console.log(account)
+      
       if (account.account_type === "user") {
         const user = await getUser(vendor);
-        setVendorName(user.first_name + user.last_name);
+        setVendorName(user.first_name + " " + user.last_name);
         
       } else if (account.account_type === "merchant") {
         const merchant = await getMerchant(vendor);

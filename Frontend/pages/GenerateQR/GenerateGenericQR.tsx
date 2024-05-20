@@ -90,7 +90,7 @@ const GenerateGenericQR = ({ route }) => {
             <View style={styles.qrcode}>
               <QRCode
                 value={qrValue}
-                size={300}
+                size={350}
                 color="black"
                 backgroundColor="white"
               />
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
   },
   generateButton: {
     backgroundColor: "#ffffff",
-    marginTop: 20,
+    marginTop: 60,
   },
   qrcode: {
     marginTop: 30,

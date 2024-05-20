@@ -35,7 +35,6 @@ function AddCardScreen({ navigation, route }) {
   const handleAddCard = () => {
     addCard(cardNumber, expiryDate, cardCVV, account.wallet.wallet_id)
       .then(() => {
-        fetchCards();
         navigation.navigate('AccountHome', { account });
       })
       .catch((error) => {

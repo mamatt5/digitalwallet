@@ -12,57 +12,12 @@ import { getWalletCards, getMerchant, getUser, getTransactions } from '../../api
 
 function AccountScreen({ navigation, route }) {
   const [cards, setCards] = useState([]);
-  const [bTransactions, setBTransactions] = useState([]);
+  const [transactions, setTransactions] = useState([]);
   const { account } = route.params;
   const [loggedAccount, setLoggedAccount] = useState('');
+  const [refresh, setRefresh] = useState(false);
 
   const [activeIndex, setActiveIndex] = useState(0);
-
-  // change to axios call when transaction objects are done
-  const transactions = [
-    {
-      transaction_ID: 1,
-      vendor_name: 'McDonalds',
-      transaction_date: '2024-04-25',
-      amount: '$12.50',
-    },
-    {
-      transaction_ID: 2,
-      vendor_name: 'Hungry Jacks',
-      transaction_date: '2024-04-18',
-      amount: '$30.00',
-    },
-    {
-      transaction_ID: 3,
-      vendor_name: "Wendy's",
-      transaction_date: '2024-04-12',
-      amount: '$16.90',
-    },
-    {
-      transaction_ID: 4,
-      vendor_name: 'Jollibee',
-      transaction_date: '2024-04-10',
-      amount: '$23.90',
-    },
-    {
-      transaction_ID: 5,
-      vendor_name: "Carl's Jr.",
-      transaction_date: '2024-04-09',
-      amount: '$11.99',
-    },
-    {
-      transaction_ID: 6,
-      vendor_name: 'KFC',
-      transaction_date: '2024-04-05',
-      amount: '$25.10',
-    },
-    {
-      transaction_ID: 7,
-      vendor_name: 'Burger King',
-      transaction_date: '2021-04-01',
-      amount: '$18.00',
-    },
-  ];
 
   const fetchAccountInfo = async () => {
     if (account.account_type === 'user') {
@@ -94,8 +49,7 @@ function AccountScreen({ navigation, route }) {
   const fetchTransactions = async () => {
     try {
       const response = await getTransactions(cards[activeIndex].card_id);
-      setBTransactions(response);
-      console.log(response);
+      setTransactions(response);
     } catch (error) {
       console.error('Get Transactions error:', error);
     }
@@ -106,13 +60,21 @@ function AccountScreen({ navigation, route }) {
   useEffect(() => {
     fetchCards();
     fetchAccountInfo();
-  }, []);
+  }, [refresh]);
 
   useEffect(() => {
     if (cards.length > 0) {
       fetchTransactions();
     }
-  }, [cards, activeIndex]);
+  }, [cards, activeIndex, refresh]);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      setRefresh(prev => !prev);
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -139,7 +101,7 @@ function AccountScreen({ navigation, route }) {
 
         <View style={styles.iconContainer}>
           <TouchableOpacity
-            onPress={() => navigation.navigate('AddCard', { account, fetchCards })}
+            onPress={() => navigation.navigate('AddCard', { account, refresh })}
           >
             <Icon name="plus-square-o" size={40} color="#fff" />
           </TouchableOpacity>
@@ -152,7 +114,7 @@ function AccountScreen({ navigation, route }) {
         </View>
 
         <ScrollView style={styles.transactions}>
-          {bTransactions.map((transaction, index) => (
+          {transactions.map((transaction, index) => (
             <View key={index}>
               <Transaction transaction={transaction} />
             </View>

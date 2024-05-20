@@ -1,9 +1,7 @@
-import { CameraView, useCameraPermissions } from 'expo-camera';
-import React, { useEffect, useState } from 'react';
-import {
-  Button, SafeAreaView, StyleSheet, Text, View,
-} from 'react-native';
-import { useIsFocused } from '@react-navigation/native';
+import { CameraView, useCameraPermissions } from "expo-camera";
+import React, { useEffect, useState } from "react";
+import { Button, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { useIsFocused } from "@react-navigation/native";
 
 function QRScanScreen({ navigation, route }) {
   const isFocused = useIsFocused();
@@ -15,7 +13,7 @@ function QRScanScreen({ navigation, route }) {
   const handleBarcodeScanned = ({ data }) => {
     // setScanned(true);
     // setText(`Scanned QR Code Details:\n\nType: ${type}\n\nData: ${data}`);
-    navigation.navigate('QRPayment', { data, account });
+    navigation.navigate("QRPayment", { data, account });
   };
 
   // useEffect(() => {
@@ -33,10 +31,9 @@ function QRScanScreen({ navigation, route }) {
     return (
       <View style={styles.container}>
         <Text>No access to camera</Text>
-        <Button
-          title="Allow Camera"
-          onPress={requestPermission}
-        />
+        <View style={styles.buttonContainer}>
+          <Button title="Allow Camera" onPress={requestPermission} />
+        </View>
       </View>
     );
   }
@@ -45,7 +42,6 @@ function QRScanScreen({ navigation, route }) {
     <SafeAreaView style={styles.screenContainer}>
       {isFocused && (
         <View style={styles.container}>
-
           <Text style={styles.headerText}>Scan & Pay</Text>
           <View style={styles.cameraContainer}>
             <CameraView
@@ -71,7 +67,6 @@ function QRScanScreen({ navigation, route }) {
             </View>
           </View>
           )} */}
-
         </View>
       )}
     </SafeAreaView>
@@ -82,37 +77,38 @@ export default QRScanScreen;
 
 const styles = StyleSheet.create({
   buttonContainer: {
-    alignSelf: 'center',
-    width: '50%',
+    alignSelf: "center",
+    width: "50%",
+    marginTop: 70
   },
   camera: {
     height: 300,
     width: 300,
   },
   cameraContainer: {
-    borderColor: '#00a28e',
+    borderColor: "#00a28e",
     borderWidth: 10,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   container: {
-    alignItems: 'center',
-    display: 'flex',
-    justifyContent: 'center',
+    alignItems: "center",
+    display: "flex",
+    justifyContent: "center",
   },
   headerText: {
-    color: '#ffffff',
+    color: "#ffffff",
     fontSize: 24,
     margin: 30,
-    alignContent: 'center',
-    textAlign: 'center',
+    alignContent: "center",
+    textAlign: "center",
   },
   qrText: {
-    color: '#ffffff',
+    color: "#ffffff",
     fontSize: 20,
     margin: 30,
   },
   screenContainer: {
-    backgroundColor: '#0f003f',
+    backgroundColor: "#0f003f",
     height: 2000,
   },
 });
