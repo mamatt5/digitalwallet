@@ -46,7 +46,7 @@ function RegisterMerchantScreen({ navigation }) {
 
     if (!newEmailError && !newPhoneNumberError && !newPasswordError && !newCompanyNameError && !newAbnError) {
       registerAccount(email, password, phoneNumber, 'merchant', companyName, abn, '', '')
-        .then(navigation.navigate('Login')).catch((error) => console.error('Registration error:', error));
+        .then(navigation.navigate('RegisterSucessful')).catch((error) => console.error('Registration error:', error));
     }
   };
 
