@@ -1,10 +1,11 @@
+
 /* eslint-disable react/prop-types */
 import React from 'react';
 
 import { View, Text, SafeAreaView, StyleSheet } from 'react-native';
 import { Button } from 'react-native-paper';
 
-function RegisterSucessfulScreen({ navigation }) {
+function ResetPasswordSuccessfulScreen({ navigation }) {
 
   const goToLogin = () => {
     navigation.navigate('Login');
@@ -18,11 +19,11 @@ function RegisterSucessfulScreen({ navigation }) {
     <SafeAreaView style={{ backgroundColor: '#0f003f', height: 2000 }}>
       <View style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <Text style={{ color: '#ffffff', fontSize: 40, margin: 30 }}>
-          Register Successful
+          Password Reset Successful
         </Text>
 
         <Text onPress={() => navigation.navigate('ForgotPassword')} style={styles.linkText}>
-            You have successfully created an account. Please log in.
+            You have successfully reset your password. Please log in.
         </Text>
 
         <View style={styles.buttonContainer}>
@@ -74,4 +75,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default RegisterSucessfulScreen;
+export default ResetPasswordSuccessfulScreen;

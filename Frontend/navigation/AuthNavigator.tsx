@@ -7,6 +7,7 @@ import RegisterOptionScreen from '../pages/Register/RegisterOptionScreen';
 import RegisterMerchantScreen from '../pages/Register/RegisterMerchantScreen';
 import ResetPasswordScreen from '../pages/ForgotPassword/ResetPasswordScreen';
 import RegisterSucessfulScreen from '../pages/Register/RegisterSucessfulScreen';
+import ResetPasswordSuccessfulScreen from '../pages/ForgotPassword/ResetPasswordSuccessfulScreen'
 
 const AuthStack = createStackNavigator();
 
@@ -28,6 +29,7 @@ function AuthNavigator() {
       <AuthStack.Screen name="RegisterMerchant" component={RegisterMerchantScreen} />
       <AuthStack.Screen name="ResetPassword" component={ResetPasswordScreen} />
       <AuthStack.Screen name="RegisterSucessful" component={RegisterSucessfulScreen} />
+      <AuthStack.Screen name="ResetPasswordSuccessfulScreen" component={ResetPasswordSuccessfulScreen} />
     </AuthStack.Navigator>
   );
 }
