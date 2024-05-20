@@ -9,7 +9,7 @@ import {
 import { Button } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/FontAwesome6";
-import { getWalletCards } from "../../api/api";
+import { getWalletCards, addTransaction } from "../../api/api";
 import SmallDebitCard from "../../components/SmallDebitCard";
 
 const PaymentScreen = ({ route, navigation }) => {
@@ -38,7 +38,7 @@ const PaymentScreen = ({ route, navigation }) => {
     try {
       const parsed = JSON.parse(data);
 
-      if (parsed.merchant && parsed.amount && parsed.date && parsed.time) {
+      if (parsed.merchant && parsed.amount) {
         setIsValidQR(true);
         setParsedData(parsed);
       }
@@ -47,9 +47,29 @@ const PaymentScreen = ({ route, navigation }) => {
     }
   }, [data]);
 
-  const handleConfirmPayment = () => {
+  const saveTransaction = async (transaction) => {
+    try {
+      await addTransaction(transaction);
+    } catch (error) {
+      console.error("Save Transaction error:", error.response.data);
+    }
+  }
+
+  const handleConfirmPayment = async () => {
     const selectedCardData = cards[selectedCard];
-    navigation.navigate("PaymentComplete", { parsedData, selectedCardData });
+    const transaction = {
+      vendor: parsedData.account_id,
+      date: new Date().toLocaleDateString(),
+      time: new Date().toLocaleTimeString(),
+      amount: parsedData.amount,
+      card_id: selectedCardData.card_id,
+      sender: account.wallet.wallet_id,
+      recipient: parsedData.wallet_id };
+
+      console.log(transaction)
+
+    await saveTransaction(transaction);
+    navigation.navigate("PaymentComplete", { parsedData, selectedCardData, date: transaction.date, time: transaction.time });
   };
 
   return (
@@ -67,8 +87,8 @@ const PaymentScreen = ({ route, navigation }) => {
               </View>
               <Text style={styles.merchant}>{parsedData.merchant}</Text>
               <Text style={styles.amount}>${parsedData.amount}</Text>
-              <Text style={styles.date}>Date: {parsedData.date}</Text>
-              <Text style={styles.time}>Time: {parsedData.time}</Text>
+              <Text style={styles.date}>Date: {new Date().toLocaleDateString()}</Text>
+              <Text style={styles.time}>Time: {new Date().toLocaleTimeString()}</Text>
 
               <View style={styles.buttonContainer}>
                 <Button

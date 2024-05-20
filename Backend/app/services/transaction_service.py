@@ -16,3 +16,6 @@ class TransactionService:
 
     def get_transactions(self) -> list[Transaction]:
         return self.transaction_repository.get_all()
+    
+    def get_transaction_by_card_id(self, card_id: int) -> list[Transaction]:
+        return self.transaction_repository.get_by_card_id(card_id)

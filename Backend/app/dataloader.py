@@ -94,3 +94,40 @@ def load_dummy_data(num_records: int):
 if __name__ == "__main__":
     num_records = 10
     load_dummy_data(num_records)
+
+    with TestClient(app) as client:
+        register_request = RegisterRequest(
+            email="beza@example.com",
+            password='password',
+            phone_number=fake.phone_number(),
+            account_type="user",
+            first_name="Beza",
+            last_name="Charles",
+            company_name="",
+            ABN="",
+        )
+        register_account(client, register_request)
+
+        register_request = RegisterRequest(
+            email="robert@example.com",
+            password='password',
+            phone_number=fake.phone_number(),
+            account_type="user",
+            first_name="Robert",
+            last_name="Donald",
+            company_name="",
+            ABN="",
+        )
+        register_account(client, register_request)
+
+        register_request = RegisterRequest(
+            email="company@example.com",
+            password='password',
+            phone_number=fake.phone_number(),
+            account_type="merchant",
+            company_name="Walmart",
+            ABN=fake.msisdn(),
+            first_name="",
+            last_name="",
+        )
+        register_account(client, register_request)

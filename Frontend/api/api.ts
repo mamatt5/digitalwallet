@@ -106,6 +106,16 @@ export const getMerchant = async (accountId: string) => {
   }
 }
 
+export const getAccount = async (accountId: string) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/accounts/getaccount/${accountId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Get Account error:', error);
+    throw error;
+  }
+}
+
 export const getAccountFromEmail = async (email: string) => {
   try {
     const response = await axios.get(`${API_BASE_URL}/accounts/getaccount/${email}`);
@@ -122,6 +132,27 @@ export const updatePassword = async (email: string, password: string) => {
     return response.data
   } catch (error) {
     console.error('Update Password error:', error);
+    throw error;
+  }
+}
+
+export const getTransactions = async (cardId: string) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/transactions/gettransactions/${cardId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Get Transactions error:', error);
+    throw error;
+  }
+}
+
+export const addTransaction = async (transaction) => {
+  try {
+    console.log(transaction)
+    const response = await axios.post(`${API_BASE_URL}/transactions/addtransaction`, transaction);
+    return response.data;
+  } catch (error) {
+    console.error('Add Transaction error:', error.response.data);
     throw error;
   }
 }

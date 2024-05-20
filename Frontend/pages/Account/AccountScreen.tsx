@@ -8,10 +8,11 @@ import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DebitCard from '../../components/DebitCard';
 import Transaction from '../../components/Transaction';
-import { getWalletCards, getMerchant, getUser } from '../../api/api';
+import { getWalletCards, getMerchant, getUser, getTransactions } from '../../api/api';
 
 function AccountScreen({ navigation, route }) {
   const [cards, setCards] = useState([]);
+  const [bTransactions, setBTransactions] = useState([]);
   const { account } = route.params;
   const [loggedAccount, setLoggedAccount] = useState('');
 
@@ -90,12 +91,28 @@ function AccountScreen({ navigation, route }) {
     }
   };
 
+  const fetchTransactions = async () => {
+    try {
+      const response = await getTransactions(cards[activeIndex].card_id);
+      setBTransactions(response);
+      console.log(response);
+    } catch (error) {
+      console.error('Get Transactions error:', error);
+    }
+  }
+
   const _renderItem = ({ item, index }) => <DebitCard card={item} />;
 
   useEffect(() => {
     fetchCards();
     fetchAccountInfo();
   }, []);
+
+  useEffect(() => {
+    if (cards.length > 0) {
+      fetchTransactions();
+    }
+  }, [cards, activeIndex]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -135,7 +152,7 @@ function AccountScreen({ navigation, route }) {
         </View>
 
         <ScrollView style={styles.transactions}>
-          {transactions.map((transaction, index) => (
+          {bTransactions.map((transaction, index) => (
             <View key={index}>
               <Transaction transaction={transaction} />
             </View>

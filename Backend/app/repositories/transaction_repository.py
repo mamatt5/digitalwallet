@@ -43,3 +43,8 @@ class TransactionRepository(RepositoryBase[Transaction]):
         statement = select(Transaction).offset(skip).limit(limit)
         transactions = self.session.exec(statement).all()
         return transactions
+    
+    def get_by_card_id(self, card_id: int) -> List[Transaction]:
+        statement = select(Transaction).where(Transaction.card_id == card_id)
+        transactions = self.session.exec(statement).all()
+        return transactions

@@ -18,6 +18,7 @@ const GenerateGenericQR = ({ route }) => {
   const [isActive, setIsActive] = useState(false);
 
   const [merchant, setMerchant] = useState("");
+  const [walletId, setWalletId] = useState("");
   const [amount, setAmount] = useState("");
 
   const fetchAccountInfo = async () => {
@@ -40,6 +41,7 @@ const GenerateGenericQR = ({ route }) => {
 
   useEffect(() => {
     fetchAccountInfo();
+    setWalletId(account.wallet.wallet_id);
   }, []);
 
   const generateQRCode = () => {
@@ -47,10 +49,10 @@ const GenerateGenericQR = ({ route }) => {
 
     const date = new Date();
     const qrData = {
+      account_id: account.account_id,
+      wallet_id: walletId, // wallet_id of the merchant
       merchant,
       amount: Number(amount),
-      date: date.toLocaleDateString(),
-      time: date.toLocaleTimeString(),
     };
 
     setQrValue(JSON.stringify(qrData));

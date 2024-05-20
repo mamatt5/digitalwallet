@@ -25,4 +25,4 @@ def get_card_route(card_id: int, card_service: CardService = Depends(CardService
 @router.get("/getcardsfromwallet/{wallet_id}", response_model=List[CardInfo])
 def get_cards_from_wallet_route(wallet_id: int, card_service: CardService = Depends(CardService)) -> list[CardInfo]:
     cards = card_service.get_cards_from_wallet(wallet_id)
-    return [CardInfo(card_number=card.card_number, card_expiry=card.card_expiry) for card in cards]
+    return [CardInfo(card_number=card.card_number, card_expiry=card.card_expiry, card_id=card.card_id) for card in cards]
