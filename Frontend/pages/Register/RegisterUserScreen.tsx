@@ -8,6 +8,7 @@ import { Button } from 'react-native-paper';
 import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 import DynamicTextInput from '../../components/DynamicTextInput/DynamicTextInput';
 import { registerAccount } from '../../api/api';
+import { getAccountFromEmail } from '../../api/api';
 
 function RegisterUserScreen({ navigation }) {
   const [email, setEmail] = useState('');
@@ -28,6 +29,7 @@ function RegisterUserScreen({ navigation }) {
 
     const newEmailError = email === '' || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
 
+
     // needs 10 digits
     const newPhoneNumberError = phoneNumber === '' || !/^\d{10}$/.test(phoneNumber);
 
@@ -38,7 +40,22 @@ function RegisterUserScreen({ navigation }) {
     const newFirstNameError = firstName === '' || !/^[a-zA-Z\s]*$/.test(firstName);
     const newLastNameError = lastName === '' || !/^[a-zA-Z\s]*$/.test(lastName);
 
-    setEmailError(newEmailError);
+
+    if (newEmailError) {
+      setEmailError(true);
+    } else {
+      let resp = (await getAccountFromEmail(email)).data
+
+      console.log(resp)
+      if (resp) {
+        setEmailError(true)
+      } else {
+        setEmailError(false)
+      }
+      
+      
+      
+    }
     setMobileError(newPhoneNumberError);
     setPasswordError(newPasswordError);
     setFirstNameError(newFirstNameError);

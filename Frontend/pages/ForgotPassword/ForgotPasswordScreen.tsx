@@ -34,7 +34,7 @@ const ForgotPasswordScreen = ({ navigation }) => {
       setEmailError(newEmailError);
     } else {
       setEmailError(false);
-
+      
       const resp = getAccountFromEmail(emailAddress)
 
       if (resp) {

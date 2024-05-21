@@ -118,8 +118,9 @@ export const getAccount = async (accountId: string) => {
 
 export const getAccountFromEmail = async (email: string) => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/accounts/getaccount/${email}`);
-    return response.data
+    
+    const response = await axios.get(`${API_BASE_URL}/accounts/getaccountfromemail/${email}`);
+    return response
   } catch (error) {
     console.error('Get Account From Email error:', error);
     throw error;
