@@ -9,6 +9,7 @@ import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 import DynamicTextInput from '../../components/DynamicTextInput/DynamicTextInput';
 import { registerAccount } from '../../api/api';
 import { getAccountFromEmail } from '../../api/api';
+import { mobileExist } from '../../api/api';
 
 function RegisterUserScreen({ navigation }) {
   const [email, setEmail] = useState('');
@@ -45,18 +46,25 @@ function RegisterUserScreen({ navigation }) {
       setEmailError(true);
     } else {
       let resp = (await getAccountFromEmail(email)).data
-
-      console.log(resp)
       if (resp) {
         setEmailError(true)
       } else {
         setEmailError(false)
       }
       
-      
-      
     }
-    setMobileError(newPhoneNumberError);
+
+    if (newPhoneNumberError) {
+      setMobileError(true);
+    } else {
+      let resp = (await mobileExist(phoneNumber)).data
+      if (resp) {
+        setMobileError(true)
+      } else {
+        setMobileError(false)
+      }
+    }
+
     setPasswordError(newPasswordError);
     setFirstNameError(newFirstNameError);
     setLastNameError(newLastNameError);

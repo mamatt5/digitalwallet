@@ -127,6 +127,17 @@ export const getAccountFromEmail = async (email: string) => {
   }
 }
 
+export const mobileExist = async (mobileNumber: string) => {
+  try {
+    
+    const response = await axios.get(`${API_BASE_URL}/accounts/getaccountfrommobile/${mobileNumber}`);
+    return response
+  } catch (error) {
+    console.error('Get Mobile error:', error);
+    throw error;
+  }
+}
+
 export const updatePassword = async (email: string, password: string) => { 
   try {
     const response = await axios.patch(`${API_BASE_URL}/accounts/updatepassword/${email}`, {password});

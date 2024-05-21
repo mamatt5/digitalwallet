@@ -27,9 +27,13 @@ class AccountService:
     def get_account_with_email(self, email: str) -> Account:
         return self.account_repository.get_by_email(email)
     
+    def get_account_with_mobile(self, mobileNumber: str) -> Account:
+        return self.account_repository.get_by_phone_number(mobileNumber)
+    
     def get_account_with_id(self, account_id: int) -> Account:
         return self.account_repository.get_by_id(account_id)
     
     def update_account_password(self, email: str, password: str) -> bool:
         return self.account_repository.update_password(email, password)
+    
         
