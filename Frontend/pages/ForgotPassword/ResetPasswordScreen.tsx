@@ -30,7 +30,7 @@ const ResetPasswordScreen = ({ route, navigation }) => {
     const newPasswordError = password === '' || !/(?=.*[0-9])(?=.*[A-Z]).+/.test(password);
     setPasswordError(newPasswordError);
     if (!newPasswordError && !verificationCodeError) {
-      updatePassword(email, password).then(navigation.navigate('Login')).catch((error) => console.error('Reset Password error:', error));
+      updatePassword(email, password).then(navigation.navigate('ResetPasswordSuccessful')).catch((error) => console.error('Reset Password error:', error));
     }
 
   }

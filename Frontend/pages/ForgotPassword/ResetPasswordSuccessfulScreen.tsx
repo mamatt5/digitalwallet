@@ -18,12 +18,15 @@ function ResetPasswordSuccessfulScreen({ navigation }) {
   return (
     <SafeAreaView style={{ backgroundColor: '#0f003f', height: 2000 }}>
       <View style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <Text style={{ color: '#ffffff', fontSize: 40, margin: 30 }}>
-          Password Reset Successful
+     
+
+        <Text style={styles.titleText}>
+            <Text style={[styles.titleText, {textAlign: 'center'}]}>Password Reset</Text>{'\n'}
+            <Text style={[styles.titleText, {textAlign: 'center'}]}>     Successful</Text>
         </Text>
 
-        <Text onPress={() => navigation.navigate('ForgotPassword')} style={styles.linkText}>
-            You have successfully reset your password. Please log in.
+        <Text style={styles.linkText}>
+            You have successfully reset your password.
         </Text>
 
         <View style={styles.buttonContainer}>

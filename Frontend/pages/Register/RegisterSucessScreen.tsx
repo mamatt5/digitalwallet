@@ -4,25 +4,26 @@ import React from 'react';
 import { View, Text, SafeAreaView, StyleSheet } from 'react-native';
 import { Button } from 'react-native-paper';
 
-function RegisterSucessfulScreen({ navigation }) {
+function RegisterSucessScreen({ navigation }) {
 
   const goToLogin = () => {
     navigation.navigate('Login');
   };
 
-  // const registerMerchant = () => {
-  //   navigation.navigate('RegisterMerchant');
-  // };
+
 
   return (
-    <SafeAreaView style={{ backgroundColor: '#0f003f', height: 2000 }}>
-      <View style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <Text style={{ color: '#ffffff', fontSize: 40, margin: 30 }}>
-          Register Successful
+    <SafeAreaView style={styles.container}>
+      <View style={styles.centerView}>
+        
+        <Text style={styles.titleText}>
+            <Text style={[styles.titleText, {textAlign: 'center'}]}>Registration</Text>{'\n'}
+            <Text style={[styles.titleText, {textAlign: 'center'}]}> Successful</Text>
         </Text>
+        
 
         <Text onPress={() => navigation.navigate('ForgotPassword')} style={styles.linkText}>
-            You have successfully created an account. Please log in.
+            You have successfully created an account.
         </Text>
 
         <View style={styles.buttonContainer}>
@@ -59,7 +60,7 @@ const styles = StyleSheet.create({
   titleText: {
     color: '#ffffff', 
     fontSize: 40, 
-    margin: 30
+    margin: 30,
   },
   buttonContainer: {
     margin: 20,
@@ -74,4 +75,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default RegisterSucessfulScreen;
+export default RegisterSucessScreen;
