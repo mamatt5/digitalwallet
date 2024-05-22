@@ -20,7 +20,34 @@ function RegisterMerchantScreen({ navigation }) {
   const [abnError, setAbnError] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [mobileError, setMobileError] = useState(false);
+
   const [hidePass, setHidePass] = useState(true);
+
+  const handleEmailChange = (event) => {
+    setEmail(event)
+    setEmailError(false)
+  }
+
+  const handleMobileChange = (event) => {
+    setPhoneNumber(event)
+    setMobileError(false)
+  }
+
+  const handlePasswordChange = (event) => {
+    setPassword(event)
+    setPasswordError(false)
+  }
+
+  const handleAbnChange = (event) => {
+    setAbn(event)
+    setAbnError(false)
+  }
+
+  const handleCompanyNameChange = (event) => {
+    setCompanyName(event)
+    setCompanyNameError(false)
+  }
+
 
   const createMerchant = async () => {
     // Values of regex need to be saved as react states(line 20 - 25) are one state behind
@@ -63,7 +90,7 @@ function RegisterMerchantScreen({ navigation }) {
               <View>
                 <DynamicTextInput
                   placeholder="COMPANY NAME"
-                  onChangeText={setCompanyName}
+                  onChangeText={(e)=>handleCompanyNameChange(e)}
                   value={companyName}
                   error={companyNameError}
                 />
@@ -83,7 +110,7 @@ function RegisterMerchantScreen({ navigation }) {
               <View>
                 <DynamicTextInput
                   placeholder="ABN"
-                  onChangeText={setAbn}
+                  onChangeText={(e)=>handleAbnChange(e)}
                   value={abn}
                   error={abnError}
                 />
@@ -103,7 +130,7 @@ function RegisterMerchantScreen({ navigation }) {
               <View>
                 <DynamicTextInput
                   placeholder="EMAIL"
-                  onChangeText={setEmail}
+                  onChangeText={(e)=>handleEmailChange(e)}
                   value={email}
                   error={emailError}
                 />
@@ -123,7 +150,7 @@ function RegisterMerchantScreen({ navigation }) {
               <View>
                 <DynamicTextInput
                   placeholder="MOBILE NUMBER"
-                  onChangeText={setPhoneNumber}
+                  onChangeText={(e)=>handleMobileChange(e)}
                   value={phoneNumber}
                   error={mobileError}
                 />
@@ -143,7 +170,7 @@ function RegisterMerchantScreen({ navigation }) {
               <View>
                 <DynamicTextInput
                   placeholder="PASSWORD"
-                  onChangeText={setPassword}
+                  onChangeText={(e)=>handlePasswordChange(e)}
                   value={password}
                   secureTextEntry={hidePass}
                   error={passwordError}

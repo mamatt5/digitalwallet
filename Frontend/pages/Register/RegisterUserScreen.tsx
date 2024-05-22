@@ -23,7 +23,33 @@ function RegisterUserScreen({ navigation }) {
   const [passwordError, setPasswordError] = useState(false);
   const [firstNameError, setFirstNameError] = useState(false);
   const [lastNameError, setLastNameError] = useState(false);
+
   const [hidePass, setHidePass] = useState(true);
+
+  const handleEmailChange = (event) => {
+    setEmail(event)
+    setEmailError(false)
+  }
+
+  const handleMobileChange = (event) => {
+    setPhoneNumber(event)
+    setMobileError(false)
+  }
+
+  const handlePasswordChange = (event) => {
+    setPassword(event)
+    setPasswordError(false)
+  }
+
+  const handleFirstNameChange = (event) => {
+    setFirstName(event)
+    setFirstNameError(false)
+  }
+
+  const handleLastNameChange = (event) => {
+    setLastName(event)
+    setLastNameError(false)
+  }
 
   const handleRegistration = async () => {
     // Values of regex need to be saved as react states(line 18 - 23) are one state behind
@@ -88,7 +114,7 @@ function RegisterUserScreen({ navigation }) {
               <View>
                 <DynamicTextInput
                   placeholder="FIRSTNAME"
-                  onChangeText={setFirstName}
+                  onChangeText={(e)=>handleFirstNameChange(e)}
                   value={firstName}
                   error={firstNameError}
                 />
@@ -110,7 +136,7 @@ function RegisterUserScreen({ navigation }) {
               <View>
                 <DynamicTextInput
                   placeholder="LASTNAME"
-                  onChangeText={setLastName}
+                  onChangeText={(e)=>handleLastNameChange(e)}
                   value={lastName}
                   error={lastNameError}
                 />
@@ -127,13 +153,13 @@ function RegisterUserScreen({ navigation }) {
               )}
 
             </View>
-            
+
 
             <View style={styles.container}>
               <View>
                 <DynamicTextInput
                   placeholder="EMAIL"
-                  onChangeText={setEmail}
+                  onChangeText={(e)=>handleEmailChange(e)}
                   value={email}
                   error={emailError}
                 />
@@ -155,7 +181,7 @@ function RegisterUserScreen({ navigation }) {
               <View>
                 <DynamicTextInput
                   placeholder="MOBILE NUMBER"
-                  onChangeText={setPhoneNumber}
+                  onChangeText={(e)=>handleMobileChange(e)}
                   value={phoneNumber}
                   error={mobileError}
                 />
@@ -177,7 +203,7 @@ function RegisterUserScreen({ navigation }) {
               <View>
                 <DynamicTextInput
                   placeholder="PASSWORD"
-                  onChangeText={setPassword}
+                  onChangeText={(e)=>handlePasswordChange(e)}
                   value={password}
                   secureTextEntry={hidePass}
                   error={passwordError}
