@@ -79,7 +79,7 @@ function RegisterUserScreen({ navigation }) {
     <SafeAreaView style={{ backgroundColor: '#0f003f', height: 2000 }}>
       <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
         <ScrollView>
-          <View style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <View style={styles.centerView}>
             <Text style={{ color: '#ffffff', fontSize: 40, margin: 30 }}>
               Register User
             </Text>
@@ -236,6 +236,15 @@ const styles = StyleSheet.create({
     right: 20, // Adjust the position as needed
     opacity: 0.6,
 
+  },
+  centerView: {
+    display: 'flex', 
+    alignItems: 'center', 
+    justifyContent: "center"
+  },
+  buttonContainer: {
+    margin: 20,
+    width: 200,
   },
 });
 
