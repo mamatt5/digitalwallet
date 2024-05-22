@@ -87,6 +87,51 @@ function RegisterUserScreen({ navigation }) {
             <View style={styles.container}>
               <View>
                 <DynamicTextInput
+                  placeholder="FIRSTNAME"
+                  onChangeText={setFirstName}
+                  value={firstName}
+                  error={firstNameError}
+                />
+              </View>
+
+              {firstNameError && (
+                <MaterialIcons
+                  name="error-outline"
+                  onPress={() => Alert.alert('Invalid Firstname', 'Please enter a valid first name.\nOnly letters and white spaces allowed')}
+                  color="red"
+                  style={styles.errorIcon}
+                  size={25}
+                />
+              )}
+
+            </View>
+
+            <View style={styles.container}>
+              <View>
+                <DynamicTextInput
+                  placeholder="LASTNAME"
+                  onChangeText={setLastName}
+                  value={lastName}
+                  error={lastNameError}
+                />
+              </View>
+
+              {lastNameError && (
+                <MaterialIcons
+                  name="error-outline"
+                  onPress={() => Alert.alert('Invalid Lastname', 'Please enter a valid last name.\nOnly letters and white spaces allowed')}
+                  color="red"
+                  style={styles.errorIcon}
+                  size={25}
+                />
+              )}
+
+            </View>
+            
+
+            <View style={styles.container}>
+              <View>
+                <DynamicTextInput
                   placeholder="EMAIL"
                   onChangeText={setEmail}
                   value={email}
@@ -141,8 +186,9 @@ function RegisterUserScreen({ navigation }) {
               </View>
 
               <Ionicons
-                name="eye"
+                name={hidePass ? "eye" : "eye-off"}
                 style={styles.eyeIcon}
+                color="#fff"
                 size={25}
                 onPress={() => setHidePass(!hidePass)}
               />
@@ -159,49 +205,7 @@ function RegisterUserScreen({ navigation }) {
 
             </View>
 
-            <View style={styles.container}>
-              <View>
-                <DynamicTextInput
-                  placeholder="FIRSTNAME"
-                  onChangeText={setFirstName}
-                  value={firstName}
-                  error={firstNameError}
-                />
-              </View>
-
-              {firstNameError && (
-                <MaterialIcons
-                  name="error-outline"
-                  onPress={() => Alert.alert('Invalid Firstname', 'Please enter a valid first name.\nOnly letters and white spaces allowed')}
-                  color="red"
-                  style={styles.errorIcon}
-                  size={25}
-                />
-              )}
-
-            </View>
-
-            <View style={styles.container}>
-              <View>
-                <DynamicTextInput
-                  placeholder="LASTNAME"
-                  onChangeText={setLastName}
-                  value={lastName}
-                  error={lastNameError}
-                />
-              </View>
-
-              {lastNameError && (
-                <MaterialIcons
-                  name="error-outline"
-                  onPress={() => Alert.alert('Invalid Lastname', 'Please enter a valid last name.\nOnly letters and white spaces allowed')}
-                  color="red"
-                  style={styles.errorIcon}
-                  size={25}
-                />
-              )}
-
-            </View>
+            
 
             <View style={{ margin: 20, width: 200 }}>
               <Button buttonColor="#ffffff" textColor="#000000" onPress={handleRegistration}>

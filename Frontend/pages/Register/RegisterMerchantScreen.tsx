@@ -150,8 +150,9 @@ function RegisterMerchantScreen({ navigation }) {
                 />
               </View>
               <Ionicons
-                name="eye"
+                name={hidePass ? "eye" : "eye-off"}
                 style={styles.eyeIcon}
+                color="#fff"
                 size={25}
                 onPress={() => setHidePass(!hidePass)}
               />

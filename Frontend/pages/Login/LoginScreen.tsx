@@ -7,6 +7,8 @@ import { Button } from 'react-native-paper';
 import DynamicTextInput from '../../components/DynamicTextInput/DynamicTextInput';
 import { loginUser } from '../../api/api';
 import { MaterialIcons, Ionicons } from '@expo/vector-icons';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import Genericlogo from '../../assets/Genericlogo.png';
 
 function LoginScreen({ navigation }) {
@@ -15,6 +17,8 @@ function LoginScreen({ navigation }) {
 
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
+
+  const [showFullPass, setShowFullPass] = useState(false);
 
   const handleEmailChange = (event) => {
     setEmail(event)
@@ -90,12 +94,16 @@ function LoginScreen({ navigation }) {
 
          <View style={styles.container}>
             <View>
-              <DynamicTextInput placeholder="PASSWORD" onChangeText={handlePasswordChange} value={password} error={passwordError} secureTextEntry />
+              <DynamicTextInput placeholder="PASSWORD" onChangeText={handlePasswordChange} value={password} error={passwordError} secureTextEntry={showFullPass} />
             </View>
+            
+            <Ionicons name={showFullPass ? "eye" : "eye-off"} size={25} color="#fff" onPress={() => setShowFullPass(!showFullPass)} style={styles.eyeButton}/>
+         
+
             {passwordError && (
               <MaterialIcons
                 name="error-outline"
-                onPress={() => Alert.alert('Invalid Email', 'Please enter a valid email')}
+                onPress={() => Alert.alert('Invalid password', 'Please enter a valid password')}
                 color="red"
                 style={styles.errorIcon}
                 size={25}
@@ -159,6 +167,11 @@ const styles = StyleSheet.create({
     position: 'absolute', // Position the icon absolutely
     right: -20, // Adjust the position as needed
   },
+  eyeButton: {
+    position: 'absolute', // Position the icon absolutely
+    right: 25, // Adjust the position as needed
+    opacity: 0.6,
+  }
   
 
 });
