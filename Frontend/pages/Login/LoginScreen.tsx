@@ -54,6 +54,9 @@ function LoginScreen({ navigation }) {
           <Text onPress={() => navigation.navigate('RegisterOption')} style={styles.linkText}>
             Sign Up
           </Text>
+          <Text onPress={() => navigation.navigate('Receipts')} style={styles.linkText}>
+            Receipts
+          </Text>
         </View>
       </ScrollView>
     </SafeAreaView>
