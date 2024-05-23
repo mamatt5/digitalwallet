@@ -11,7 +11,8 @@ class Transaction(SQLModel, table=True):
     vendor: int = Field(default=None, foreign_key='account.account_id')
     date: str = Field(default=None)
     time: str = Field(default=None)
-    amount: float = Field(default=0)
+    amount: str = Field(default=None)
+    description: str | None = Field(default=None)
 
     card_id: int = Field(default=None, foreign_key='card.card_id')
     sender: int = Field(default=None, foreign_key='wallet.wallet_id')

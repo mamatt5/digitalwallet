@@ -38,7 +38,7 @@ const PaymentScreen = ({ route, navigation }) => {
     try {
       const parsed = JSON.parse(data);
 
-      if (parsed.merchant && parsed.amount) {
+      if (parsed.merchant && parsed.amount && parsed.wallet_id && parsed.account_id) {
         setIsValidQR(true);
         setParsedData(parsed);
       }
@@ -64,7 +64,8 @@ const PaymentScreen = ({ route, navigation }) => {
       amount: parsedData.amount,
       card_id: selectedCardData.card_id,
       sender: account.wallet.wallet_id,
-      recipient: parsedData.wallet_id };
+      recipient: parsedData.wallet_id,
+      description: parsedData.description, };
 
       console.log(transaction)
 
@@ -87,6 +88,7 @@ const PaymentScreen = ({ route, navigation }) => {
               </View>
               <Text style={styles.merchant}>{parsedData.merchant}</Text>
               <Text style={styles.amount}>${parsedData.amount}</Text>
+              <Text style={styles.description}>{parsedData.description}</Text>
               <Text style={styles.date}>Date: {new Date().toLocaleDateString()}</Text>
               <Text style={styles.time}>Time: {new Date().toLocaleTimeString()}</Text>
 
@@ -120,8 +122,6 @@ const PaymentScreen = ({ route, navigation }) => {
                 <Text style={styles.headerText}> QR Code invalid!</Text>
                 <Text style={styles.subheaderText}>Scanned data: </Text>
                 <Text style={styles.subheaderText}>{data}</Text>
-                <Text style={styles.subheaderText}>Parsed data: </Text>
-                <Text style={styles.subheaderText}>{parsedData}</Text>
               </View>
             )
           )}
@@ -222,8 +222,13 @@ const styles = StyleSheet.create({
   amount: {
     color: "#ffffff",
     fontSize: 40,
-    marginBottom: 30,
+    marginBottom: 25,
     fontWeight: "bold",
+  },
+  description: {
+    color: "#ffffff",
+    fontSize: 24,
+    marginBottom: 10,
   },
   date: {
     color: "#ffffff",
