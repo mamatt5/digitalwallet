@@ -10,6 +10,7 @@ import {
 import QRCode from "react-native-qrcode-svg";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Button } from "react-native-paper";
+import { parse } from "react-native-svg";
 
 const GenerateGenericQR = ({ route }) => {
   const { account } = route.params;
@@ -20,6 +21,7 @@ const GenerateGenericQR = ({ route }) => {
   const [merchant, setMerchant] = useState("");
   const [walletId, setWalletId] = useState("");
   const [amount, setAmount] = useState("");
+  const [description, setDescription] = useState("");
 
   const fetchAccountInfo = async () => {
     if (account.account_type === "user") {
@@ -47,12 +49,15 @@ const GenerateGenericQR = ({ route }) => {
   const generateQRCode = () => {
     if (!amount) return;
 
+    const formattedAmount = parseFloat(amount).toFixed(2);
+
     const date = new Date();
     const qrData = {
       account_id: account.account_id,
       wallet_id: walletId, // wallet_id of the merchant
       merchant,
-      amount: Number(amount),
+      amount: formattedAmount,
+      description,
     };
 
     setQrValue(JSON.stringify(qrData));
@@ -77,6 +82,14 @@ const GenerateGenericQR = ({ route }) => {
                 value={amount}
                 onChangeText={setAmount}
                 keyboardType="numeric"
+                style={styles.input}
+              />
+              <Text style={styles.subheaderText}>Description:</Text>
+              <TextInput
+                placeholder="for groceries"
+                placeholderTextColor={"lightgray"}
+                value={description}
+                onChangeText={setDescription}
                 style={styles.input}
               />
               <TouchableOpacity onPress={generateQRCode}>
