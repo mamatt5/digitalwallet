@@ -95,7 +95,6 @@ function AccountScreen({ navigation, route }) {
             itemWidth={300}
             renderItem={_renderItem}
             onSnapToItem={(index) => setActiveIndex(index)}
-            loop
           />
         )}
 

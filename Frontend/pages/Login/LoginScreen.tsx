@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import {
-  SafeAreaView, ScrollView, View, Text, StyleSheet, Image,
-  Alert,
+  SafeAreaView, ScrollView, View, Text, StyleSheet, Image, Dimensions
 } from 'react-native';
 import { Button } from 'react-native-paper';
 import DynamicTextInput from '../../components/DynamicTextInput/DynamicTextInput';
 import { loginUser } from '../../api/api';
-import Genericlogo from '../../assets/Genericlogo.png';
+// import Genericlogo from '../../assets/Genericlogo.png';
+import APPlogo from '../../assets/APPlogo.png';
 
 function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
@@ -33,12 +33,12 @@ function LoginScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Image source={Genericlogo} style={styles.APPlogo} />
+      <Image source={APPlogo} style={styles.APPlogo} />
       <ScrollView>
         <View style={styles.centerView}>
-        <Text style={{ color: '#ffffff', fontSize: 30, margin: 30 }}>
+        {/* <Text style={{ color: '#ffffff', fontSize: 30, margin: 30 }}>
               {'Log in'}
-            </Text>
+            </Text> */}
           <DynamicTextInput placeholder="EMAIL" onChangeText={setEmail} value={email} />
           <DynamicTextInput placeholder="PASSWORD" onChangeText={setPassword} value={password} secureTextEntry />
           <View style={styles.buttonContainer}>
@@ -60,10 +60,12 @@ function LoginScreen({ navigation }) {
   );
 }
 
+let screenWidth = Dimensions.get('window').width;
+
 const styles = StyleSheet.create({
   APPlogo: {
-    width: 200, 
-    height: 200, 
+    width: screenWidth * 0.5, 
+    height: screenWidth * 0.5, 
     marginLeft: 'auto', 
     marginRight: 'auto', 
     marginTop: 50
