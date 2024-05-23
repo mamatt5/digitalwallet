@@ -85,7 +85,7 @@ function AccountScreen({ navigation, route }) {
         </Text>
         {cards.length === 0 ? (
           <View style={styles.noCardContainer}>
-            <Text style={styles.noCardText}>No card found</Text>
+            <Text style={styles.noCardText}>No cards found</Text>
           </View>
         ) : (
           <Carousel
@@ -95,7 +95,6 @@ function AccountScreen({ navigation, route }) {
             itemWidth={300}
             renderItem={_renderItem}
             onSnapToItem={(index) => setActiveIndex(index)}
-            loop
           />
         )}
 
@@ -114,12 +113,19 @@ function AccountScreen({ navigation, route }) {
         </View>
 
         <ScrollView style={styles.transactions}>
-          {transactions.map((transaction, index) => (
-            <View key={index}>
-              <Transaction transaction={transaction} />
+          {transactions.length === 0 ? (
+            <View style={styles.noTransactionsContainer}>
+              <Text style={styles.noCardText}>No transactions found</Text>
             </View>
-          ))}
+          ) : (
+            transactions.map((transaction, index) => (
+              <View key={index}>
+                <Transaction transaction={transaction} />
+              </View>
+            ))
+          )}
         </ScrollView>
+
       </View>
     </SafeAreaView>
   );
@@ -177,6 +183,10 @@ const styles = StyleSheet.create({
   },
   transactions: {
     flex: 1,
+  },
+  noTransactionsContainer: {
+    alignItems: 'center',
+    marginTop: 20,
   },
 });
 

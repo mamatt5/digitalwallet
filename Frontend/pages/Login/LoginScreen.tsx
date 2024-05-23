@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
-  SafeAreaView, ScrollView, View, Text, StyleSheet, Image,
-  Alert,
+  SafeAreaView, ScrollView, View, Text, StyleSheet, Image, Dimensions
 } from 'react-native';
 import { Button } from 'react-native-paper';
 import DynamicTextInput from '../../components/DynamicTextInput/DynamicTextInput';
@@ -10,6 +9,9 @@ import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Genericlogo from '../../assets/Genericlogo.png';
+// import Genericlogo from '../../assets/Genericlogo.png';
+import APPlogo from '../../assets/APPlogo.png';
+import { Alert } from 'react-native';
 
 function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
@@ -47,10 +49,10 @@ function LoginScreen({ navigation }) {
     if (newEmailError || newPasswordError) {
       return;
     }
-
+ 
     try {
       const response = await loginUser(email, password);
-      console.log(response);
+      console.log("hi");
       const { account } = response;
       console.log('Account data:', account);
 
@@ -68,7 +70,7 @@ function LoginScreen({ navigation }) {
 
   return (
     <SafeAreaView style={{ backgroundColor: '#0f003f', height: 2000 }}>
-      <Image source={Genericlogo} style={styles.APPlogo} />
+      <Image source={APPlogo} style={styles.APPlogo} />
       <ScrollView>
         <View style={styles.centerView}>
           <Text style={{ color: '#ffffff', fontSize: 30, margin: 30 }}>
@@ -131,12 +133,14 @@ function LoginScreen({ navigation }) {
   );
 }
 
+let screenWidth = Dimensions.get('window').width;
+
 const styles = StyleSheet.create({
   APPlogo: {
-    width: 200,
-    height: 200,
-    marginLeft: 'auto',
-    marginRight: 'auto',
+    width: screenWidth * 0.5, 
+    height: screenWidth * 0.5, 
+    marginLeft: 'auto', 
+    marginRight: 'auto', 
     marginTop: 50
   },
   container: {
