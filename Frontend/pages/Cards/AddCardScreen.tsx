@@ -33,18 +33,21 @@ function AddCardScreen({ navigation, route }) {
   }, [expiryMonth, expiryYear]);
 
   const handleExpiryMonth = (value: string) => {
-    if (value.length === 2) {
-      const numValue = parseInt(value, 10);
-      if (numValue >= 1 && numValue <= 12) {
-        const formattedValue = numValue < 10 ? `0${numValue}` : value;
-        setExpiryMonth(formattedValue);
-      }
-    } else {
+    if (parseInt(value, 10) <= 12) {
       setExpiryMonth(value);
+    } else {
+      setExpiryMonth('');
     }
   };
 
   const handleAddCard = () => {
+    
+    if (!cardNumber || !expiryDate || !cardCVV || parseInt(expiryMonth, 10) < 1) {
+      alert('Please enter valid data into the fields.');
+      return;
+    }
+
+
     addCard(cardNumber, expiryDate, cardCVV, account.wallet.wallet_id)
       .then(() => {
         navigation.navigate('AccountHome', { account });
@@ -89,6 +92,11 @@ function AddCardScreen({ navigation, route }) {
                   keyboardType="numeric"
                   maxLength={2}
                   onFocus={() => setExpiryMonth('')}
+                  onBlur={() => {
+                    if (expiryMonth.length === 1 && parseInt(expiryMonth, 10) >= 1) {
+                      setExpiryMonth(`0${expiryMonth}`);
+                    }
+                  }}
                 />
                 <Text style={styles.separator}>/</Text>
                 <TextInput

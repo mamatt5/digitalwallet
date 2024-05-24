@@ -125,9 +125,33 @@ if __name__ == "__main__":
             password='password',
             phone_number=fake.phone_number(),
             account_type="merchant",
+            company_name="Lemonade Stand",
+            ABN=fake.msisdn(),
+            first_name="",
+            last_name="",
+        )
+        register_account(client, register_request)
+
+        register_request = RegisterRequest(
+            email="company@example.com",
+            password='password',
+            phone_number=fake.phone_number(),
+            account_type="merchant",
             company_name="Walmart",
             ABN=fake.msisdn(),
             first_name="",
             last_name="",
+        )
+        register_account(client, register_request)
+
+        register_request = RegisterRequest(
+            email="matthew@example.com",
+            password='password',
+            phone_number=fake.phone_number(),
+            account_type="user",
+            first_name="Matthew",
+            last_name="Chanco",
+            company_name="",
+            ABN="",
         )
         register_account(client, register_request)
