@@ -32,6 +32,18 @@ function AddCardScreen({ navigation, route }) {
     }
   }, [expiryMonth, expiryYear]);
 
+  const handleExpiryMonth = (value: string) => {
+    if (value.length === 2) {
+      const numValue = parseInt(value, 10);
+      if (numValue >= 1 && numValue <= 12) {
+        const formattedValue = numValue < 10 ? `0${numValue}` : value;
+        setExpiryMonth(formattedValue);
+      }
+    } else {
+      setExpiryMonth(value);
+    }
+  };
+
   const handleAddCard = () => {
     addCard(cardNumber, expiryDate, cardCVV, account.wallet.wallet_id)
       .then(() => {
@@ -62,6 +74,7 @@ function AddCardScreen({ navigation, route }) {
                 placeholder="XXXX XXXX XXXX XXXX"
                 maxLength={16}
                 keyboardType="numeric"
+                onFocus={() => setCardNumber('')}
               />
 
               <Text style={styles.labelText}>
@@ -70,11 +83,12 @@ function AddCardScreen({ navigation, route }) {
               <View style={styles.row}>
                 <TextInput
                   style={styles.smallInput}
-                  onChangeText={setExpiryMonth}
+                  onChangeText={handleExpiryMonth}
                   value={expiryMonth}
                   placeholder="MM"
                   keyboardType="numeric"
                   maxLength={2}
+                  onFocus={() => setExpiryMonth('')}
                 />
                 <Text style={styles.separator}>/</Text>
                 <TextInput
@@ -85,6 +99,7 @@ function AddCardScreen({ navigation, route }) {
                   placeholder="YY"
                   keyboardType="numeric"
                   maxLength={2}
+                  onFocus={() => setExpiryYear('')}
                 />
               </View>
 
@@ -99,6 +114,7 @@ function AddCardScreen({ navigation, route }) {
                   placeholder="XXX"
                   keyboardType="numeric"
                   maxLength={3}
+                  onFocus={() => setCardCVV('')}
                 />
               </View>
             </View>
