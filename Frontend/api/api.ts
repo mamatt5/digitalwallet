@@ -70,13 +70,13 @@ export const getWalletCards = async (walletId: string) => {
 
 export const fetchLoyaltyCards = async () => [
   {
-    card_number: '1234567890123451', member_name: 'Test', card_expiry: '12/24',
+    card_number: '1234567890123451', member_name: 'Member Name', card_expiry: '12/24',
   },
   {
-    card_number: '2345678901234563', member_name: 'Test', card_expiry: '11/25',
+    card_number: '2345678901234563', member_name: 'Member Name', card_expiry: '11/25',
   },
   {
-    card_number: '2345678901234564', member_name: 'Test', card_expiry: '11/25',
+    card_number: '2345678901234564', member_name: 'Member Name', card_expiry: '10/23',
   },
 ];
 

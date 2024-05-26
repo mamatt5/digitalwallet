@@ -2,6 +2,7 @@ import React from 'react';
 import {
   View, Text, ImageBackground, StyleSheet,
 } from 'react-native';
+import Barcode from '@kichiyaki/react-native-barcode-generator';
 
 import LoyaltyCardImage1 from '../assets/LoyaltyCard1.jpg';
 import LoyaltyCardImage2 from '../assets/LoyaltyCard2.jpg';
@@ -23,43 +24,63 @@ function LoyaltyCard({ loyaltyCard }) {
   };
 
   return (
-    <ImageBackground source={getImage()} style={styles.card}>
-      <View style={styles.cardContent}>
+    <View style={styles.card}>
+      <ImageBackground source={getImage()} style={styles.backgroundImage} resizeMode="cover">
         <Text style={styles.cardNumber}>{card_number}</Text>
+        <Barcode value={card_number} format="CODE128" width={1.30} maxWidth={300} height={50} style={styles.barcode} />
         <Text style={styles.memberName}>{member_name}</Text>
-        {card_expiry && (
-        <Text style={styles.expiry}>
+        <Text style={styles.expiryDate}>
           Expires:
           {card_expiry}
         </Text>
-        )}
-      </View>
-    </ImageBackground>
+      </ImageBackground>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  card: {
-    height: 200,
-    justifyContent: 'flex-end',
-    margin: 10,
-    padding: 20,
+  backgroundImage: {
+    flex: 1,
+    justifyContent: 'space-between',
+    padding: 15,
   },
-  cardContent: {
-    backgroundColor: 'rgba(255, 255, 255, 0.8)',
-    padding: 10,
+  barcode: {
+    alignSelf: 'center',
+    marginTop: 15,
+  },
+  card: {
+    borderRadius: 10,
+    height: 200,
+    marginVertical: 10,
+    overflow: 'hidden',
+    width: '100%',
   },
   cardNumber: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    color: '#000000',
+    fontSize: 10,
+
+    left: 10,
+    position: 'absolute',
+    top: 5,
   },
-  expiry: {
-    color: 'red',
-    fontSize: 14,
+  contentContainer: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+  },
+  expiryDate: {
+    bottom: 5,
+    color: '#000000',
+    fontSize: 12,
+    position: 'absolute',
+    right: 10,
   },
   memberName: {
-    color: 'navy',
-    fontSize: 16,
+    bottom: 5,
+    color: '#000000',
+    fontSize: 12,
+    left: 10,
+    position: 'absolute',
   },
 });
 
