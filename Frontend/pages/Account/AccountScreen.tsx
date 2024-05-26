@@ -2,21 +2,25 @@ import React, { useEffect, useState } from 'react';
 import {
   SafeAreaView, View, Text, Dimensions, StyleSheet,
 } from 'react-native';
-import { Button } from 'react-native-paper';
 import Carousel from 'react-native-snap-carousel';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DebitCard from '../../components/DebitCard';
+import LoyaltyCard from '../../components/LoyaltyCard';
 import Transaction from '../../components/Transaction';
-import { getWalletCards, getMerchant, getUser, getTransactions } from '../../api/api';
+import {
+  getWalletCards, getMerchant, getUser, getTransactions, fetchLoyaltyCards,
+} from '../../api/api';
+import CardTabs from '../../components/CardFilterTabs/CardTabs';
 
 function AccountScreen({ navigation, route }) {
-  const [cards, setCards] = useState([]);
+  const [bankCards, setBankCards] = useState([]);
+  const [loyaltyCards, setLoyaltyCards] = useState([]);
+  const [activeTabIndex, setActiveTabIndex] = useState(0);
   const [transactions, setTransactions] = useState([]);
   const { account } = route.params;
   const [loggedAccount, setLoggedAccount] = useState('');
   const [refresh, setRefresh] = useState(false);
-
   const [activeIndex, setActiveIndex] = useState(0);
 
   const fetchAccountInfo = async () => {
@@ -39,8 +43,10 @@ function AccountScreen({ navigation, route }) {
 
   const fetchCards = async () => {
     try {
-      const response = await getWalletCards(account.wallet.wallet_id);
-      setCards(response);
+      const bankCards = await getWalletCards(account.wallet.wallet_id);
+      const loyaltyCards = await fetchLoyaltyCards();
+      setBankCards(bankCards);
+      setLoyaltyCards(loyaltyCards);
     } catch (error) {
       console.error('Get Cards error:', error);
     }
@@ -48,14 +54,36 @@ function AccountScreen({ navigation, route }) {
 
   const fetchTransactions = async () => {
     try {
-      const response = await getTransactions(cards[activeIndex].card_id);
+      const response = await getTransactions(bankCards[activeIndex].card_id);
       setTransactions(response);
     } catch (error) {
       console.error('Get Transactions error:', error);
     }
-  }
+  };
 
-  const _renderItem = ({ item, index }) => <DebitCard card={item} />;
+  const _renderItem = ({ item }) => {
+    if (activeTabIndex === 0) {
+      return <DebitCard bankCard={item} />;
+    }
+    return <LoyaltyCard loyaltyCard={item} />;
+  };
+
+  const renderCards = () => {
+    const activeCards = activeTabIndex === 0 ? bankCards : loyaltyCards;
+    if (activeCards.length === 0) {
+      return <View style={styles.noCardContainer}><Text style={styles.noCardText}>No cards found</Text></View>;
+    }
+    return (
+      <Carousel
+        layout="default"
+        data={activeCards}
+        sliderWidth={Dimensions.get('window').width}
+        itemWidth={300}
+        renderItem={_renderItem}
+        onSnapToItem={(index) => setActiveIndex(index)}
+      />
+    );
+  };
 
   useEffect(() => {
     fetchCards();
@@ -63,14 +91,14 @@ function AccountScreen({ navigation, route }) {
   }, [refresh]);
 
   useEffect(() => {
-    if (cards.length > 0) {
+    if (bankCards.length > 0) {
       fetchTransactions();
     }
-  }, [cards, activeIndex, refresh]);
+  }, [bankCards, activeIndex, refresh]);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      setRefresh(prev => !prev);
+      setRefresh((prev) => !prev);
     });
 
     return unsubscribe;
@@ -80,24 +108,13 @@ function AccountScreen({ navigation, route }) {
     <SafeAreaView style={styles.container}>
       <View style={styles.centerView}>
         <Text style={styles.titleText}>
-          Welcome, {loggedAccount}
+          Welcome,
+          {' '}
+          {loggedAccount}
           !
         </Text>
-        {cards.length === 0 ? (
-          <View style={styles.noCardContainer}>
-            <Text style={styles.noCardText}>No cards found</Text>
-          </View>
-        ) : (
-          <Carousel
-            layout="default"
-            data={cards}
-            sliderWidth={Dimensions.get('window').width}
-            itemWidth={300}
-            renderItem={_renderItem}
-            onSnapToItem={(index) => setActiveIndex(index)}
-          />
-        )}
-
+        <CardTabs activeTabIndex={activeTabIndex} setActiveTabIndex={setActiveTabIndex} />
+        {renderCards()}
         <View style={styles.iconContainer}>
           <TouchableOpacity
             onPress={() => navigation.navigate('AddCard', { account, refresh })}
@@ -172,6 +189,10 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
   },
+  noTransactionsContainer: {
+    alignItems: 'center',
+    marginTop: 20,
+  },
   titleText: {
     color: '#ffffff',
     fontSize: 24,
@@ -183,10 +204,6 @@ const styles = StyleSheet.create({
   },
   transactions: {
     flex: 1,
-  },
-  noTransactionsContainer: {
-    alignItems: 'center',
-    marginTop: 20,
   },
 });
 
