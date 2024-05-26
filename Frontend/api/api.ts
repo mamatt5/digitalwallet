@@ -39,26 +39,23 @@ export const registerAccount = async (
   firstName: string,
   lastName: string,
 ) => {
-    
-    try {
-      const response = await axios
+  try {
+    const response = await axios
       .post(`${API_BASE_URL}/auth/register`, {
         company_name: companyName,
         ABN: abn,
         first_name: firstName,
         last_name: lastName,
-        email: email,
-        password: password,
+        email,
+        password,
         phone_number: phoneNumber,
         account_type: accountType,
-      })
-      return response.data;
-    } catch (error) {
-      console.error('Registration Error:', error);
-      throw error;
-    }
-
-    
+      });
+    return response.data;
+  } catch (error) {
+    console.error('Registration Error:', error);
+    throw error;
+  }
 };
 
 export const getWalletCards = async (walletId: string) => {
@@ -70,6 +67,18 @@ export const getWalletCards = async (walletId: string) => {
     throw error;
   }
 };
+
+export const fetchLoyaltyCards = async () => [
+  {
+    card_number: '1234567890123451', member_name: 'Member Name', card_expiry: '12/24',
+  },
+  {
+    card_number: '2345678901234563', member_name: 'Member Name', card_expiry: '11/25',
+  },
+  {
+    card_number: '2345678901234564', member_name: 'Member Name', card_expiry: '10/23',
+  },
+];
 
 export const addCard = async (cardNumber: string, expiryDate: string, cardCVV: string, walletId: string) => {
   try {
@@ -104,7 +113,7 @@ export const getMerchant = async (accountId: string) => {
     console.error('Get Merchant error:', error);
     throw error;
   }
-}
+};
 
 export const getAccount = async (accountId: string) => {
   try {
@@ -114,7 +123,7 @@ export const getAccount = async (accountId: string) => {
     console.error('Get Account error:', error);
     throw error;
   }
-}
+};
 
 export const getAccountFromEmail = async (email: string) => {
   try {
@@ -125,7 +134,7 @@ export const getAccountFromEmail = async (email: string) => {
     console.error('Get Account From Email error:', error);
     throw error;
   }
-}
+};
 
 export const mobileExist = async (mobileNumber: string) => {
   try {
@@ -140,13 +149,13 @@ export const mobileExist = async (mobileNumber: string) => {
 
 export const updatePassword = async (email: string, password: string) => { 
   try {
-    const response = await axios.patch(`${API_BASE_URL}/accounts/updatepassword/${email}`, {password});
-    return response.data
+    const response = await axios.patch(`${API_BASE_URL}/accounts/updatepassword/${email}`, { password });
+    return response.data;
   } catch (error) {
     console.error('Update Password error:', error);
     throw error;
   }
-}
+};
 
 export const getTransactions = async (cardId: string) => {
   try {
@@ -156,20 +165,18 @@ export const getTransactions = async (cardId: string) => {
     console.error('Get Transactions error:', error);
     throw error;
   }
-}
+};
 
 export const addTransaction = async (transaction) => {
   try {
-    console.log(transaction)
+    console.log(transaction);
     const response = await axios.post(`${API_BASE_URL}/transactions/addtransaction`, transaction);
     return response.data;
   } catch (error) {
     console.error('Add Transaction error:', error.response.data);
     throw error;
   }
-}
-
-
+};
 
 //   // return response.data;
 // } catch (error) {
@@ -205,7 +212,6 @@ export const addTransaction = async (transaction) => {
 //     throw error;
 //   }
 // };
-
 
 export const validateQRCodeData = async (data) => {
   try {
