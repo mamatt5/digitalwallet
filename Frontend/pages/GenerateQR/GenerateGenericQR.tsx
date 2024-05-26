@@ -86,7 +86,7 @@ const GenerateGenericQR = ({ route }) => {
               />
               <Text style={styles.subheaderText}>Description:</Text>
               <TextInput
-                placeholder="for groceries"
+                placeholder="Eg: For Groceries"
                 placeholderTextColor={"lightgray"}
                 value={description}
                 onChangeText={setDescription}
@@ -162,6 +162,8 @@ const styles = StyleSheet.create({
   generateButton: {
     backgroundColor: "#ffffff",
     marginTop: 60,
+    width: 200,
+    alignSelf: 'center'
   },
   qrcode: {
     marginTop: 30,

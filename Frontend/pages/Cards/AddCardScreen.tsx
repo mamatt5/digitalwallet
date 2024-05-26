@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
-  Button, SafeAreaView, Text, TextInput, View, StyleSheet, Keyboard, TouchableWithoutFeedback,
+ SafeAreaView, Text, TextInput, View, StyleSheet, Keyboard, TouchableWithoutFeedback,
 } from 'react-native';
+import { Button } from 'react-native-paper';
 import { addCard } from '../../api/api';
 
 function AddCardScreen({ navigation, route }) {
@@ -127,14 +128,14 @@ function AddCardScreen({ navigation, route }) {
               </View>
             </View>
 
-            <View style={styles.buttonContainer}>
-              <Button
-                title="Add card"
-                onPress={() => handleAddCard()}
-              />
-            </View>
+            <Button buttonColor="#ffffff" textColor="#000000" onPress={() => handleAddCard()} style={styles.buttonContainer}>
+              <Text>
+                Add Card
+              </Text>
+            </Button>
 
           </View>
+
         </View>
       </SafeAreaView>
     </TouchableWithoutFeedback>
@@ -145,7 +146,8 @@ function AddCardScreen({ navigation, route }) {
 const styles = StyleSheet.create({
   buttonContainer: {
     alignSelf: 'center',
-    width: 200,
+    width: 150,
+    marginTop: 50
   },
   cardDetails: {
     margin: 20,
