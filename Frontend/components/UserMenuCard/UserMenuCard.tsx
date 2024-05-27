@@ -10,10 +10,14 @@ type props = {
 const styles = StyleSheet.create({
   cardContainer: {
     display: 'flex',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    paddingVertical: 5,
+    borderTopColor: '#FFFFFF',
+    borderTopWidth: 1,
   },
   cardText: {
-    color: 'white'
+    color: 'white',
+    paddingLeft: 10
   }
 });
 

@@ -4,16 +4,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 const styles = StyleSheet.create({
   profileButtonContainer: {
-    alignItems: 'center',
-    alignSelf: 'center',
-    borderColor: 'white',
-    borderRadius: 100,
-    borderWidth: 1,
-    display: 'flex',
-    height: 30,
-    justifyContent: 'center',
-    overflow: 'hidden',
-    width: 30,
   }
 });
 

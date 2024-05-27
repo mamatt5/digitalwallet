@@ -5,7 +5,7 @@ import {View, StyleSheet, Text, Pressable, Modal} from 'react-native';
 import AwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Button } from 'react-native-paper';
-import UserMenuCard from '../UserMenuCard/userMenuCard';
+import UserMenuCard from '../UserMenuCard/UserMenuCard';
 
 const styles = StyleSheet.create({
     modalOverlay: {
@@ -98,7 +98,8 @@ const styles = StyleSheet.create({
     categoryHeader: {
         color: '#ffffff',
         fontSize: 15,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        paddingVertical: 5
     }
 });
 
@@ -155,16 +156,24 @@ function ProfileModal({setModalstate}) {
                 <View style={styles.categoryMargin}>
                     <Text style={styles.categoryHeader}>Account</Text>
                     <UserMenuCard props={{icon: 'pencil', cardText: 'Edit User Details'}}></UserMenuCard>
+                    <UserMenuCard props={{icon: 'lock', cardText: 'Change Password'}}></UserMenuCard>
+                    <UserMenuCard props={{icon: 'notification-clear-all', cardText: 'Notifications'}}></UserMenuCard>
                 </View>
             </View>
             <View style={styles.categoryContainer}>
                 <View style={styles.categoryMargin}>
                     <Text style={styles.categoryHeader}>Payment</Text>
+                    <UserMenuCard props={{icon: 'credit-card', cardText: 'Manage Cards'}}></UserMenuCard>
+                    <UserMenuCard props={{icon: 'receipt', cardText: 'e-Receipt Preferences'}}></UserMenuCard>
                 </View>
             </View>
             <View style={styles.categoryContainer}>
                 <View style={styles.categoryMargin}>
                     <Text style={styles.categoryHeader}>More</Text>
+                    <UserMenuCard props={{icon: 'thought-bubble-outline', cardText: 'FAQ'}}></UserMenuCard>
+                    <UserMenuCard props={{icon: 'thumbs-up-down-outline', cardText: 'Send Feedback'}}></UserMenuCard>
+                    <UserMenuCard props={{icon: 'chat-question-outline', cardText: 'Help and Support'}}></UserMenuCard>
+                    <UserMenuCard props={{icon: 'book', cardText: 'Terms of Use'}}></UserMenuCard>
                 </View>
             </View>
         </View>
