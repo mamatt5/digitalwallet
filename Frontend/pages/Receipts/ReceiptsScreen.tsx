@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import {SafeAreaView, ScrollView, View, Text, StyleSheet, TextInput, Pressable} from 'react-native';
 import TransactionSearch from '../../components/TransactionSearch/TransactionSearch';
-import ProfileButton from '../../components/ProfileHeader/ProfileButton';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import ProfileButton from '../../components/ProfileButton/ProfileButton';
+import AwesomeIcon from 'react-native-vector-icons/FontAwesome';
+import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Button } from 'react-native-paper';
-import { black } from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
-
+import ProfileModal from '../../components/ProfileModal/ProfileModal';
 
 function ReceiptsScreen({ navigation }) {
   // change to axios call when transaction objects are done
@@ -55,29 +55,15 @@ function ReceiptsScreen({ navigation }) {
   ];
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  function handleModal(modalValue) {
+    setIsModalOpen(modalValue);
+  };
+
   return (
-    
     <SafeAreaView style={styles.container}>
         {isModalOpen && (
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalHeader}>
-            <View style={styles.modalHeaderButtonContainer}>
-              <Pressable onPress={() => setIsModalOpen(false)}>
-                <Icon
-                  name="close-circle"
-                  size={35}
-                  color="#ffffff"
-                />
-              </Pressable>
-              <Button onPress={() => navigation.navigate('Login')} style={styles.signOutButton}>
-                Sign out
-              </Button>
-            </View>
-            <View>
-              
-            </View>
-          </View>
-        </View>
+          <ProfileModal setModalstate={handleModal}></ProfileModal>
       )}
 
       <View style={styles.headerContainer}>
@@ -119,33 +105,6 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     fontSize: 40,
   },
-  modalOverlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    display: 'flex',
-    backgroundColor: '#0f003f',
-    alignItems: 'center',
-    justifyContent: 'center',
-    zIndex: 1,
-    width: '100%',
-    height: 2000
-  },
-  modalHeader: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: '#696087',
-    width: '100%',
-    height: 200,
-    zIndex: 2,
-    borderBottomStartRadius: 20,
-    borderBottomEndRadius: 20
-  },
   profileContainer: {
     position: 'absolute',
     right: 0,
@@ -159,21 +118,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     overflow: 'hidden',
     width: 30,
-  },
-  modalHeaderButtonContainer: {
-    marginHorizontal: 15,
-    marginTop: 15,
-    display: 'flex',
-    flexDirection: 'row'
-  },
-  signOutButton: {
-    backgroundColor: "#ffffff",
-    height: 35,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'absolute',
-    right: 0
   }
 });
 

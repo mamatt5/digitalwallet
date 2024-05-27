@@ -21,12 +21,13 @@ function AuthNavigator() {
         headerTintColor: '#fff',
       }}
     >
-      <AuthStack.Screen name="Login" component={ReceiptsScreen} />
+      <AuthStack.Screen name="Login" component={LoginScreen} />
       <AuthStack.Screen name="RegisterUser" component={RegisterUserScreen} />
       <AuthStack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
       <AuthStack.Screen name="RegisterOption" component={RegisterOptionScreen} />
       <AuthStack.Screen name="RegisterMerchant" component={RegisterMerchantScreen} />
       <AuthStack.Screen name="ResetPassword" component={ResetPasswordScreen} />
+      <AuthStack.Screen name="Receipts" component={ReceiptsScreen} />
     </AuthStack.Navigator>
   );
 }
