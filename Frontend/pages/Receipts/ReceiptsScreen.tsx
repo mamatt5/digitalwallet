@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import {
-  SafeAreaView, ScrollView, View, Text, StyleSheet, TextInput,
-} from 'react-native';
-import { Searchbar } from 'react-native-paper';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import {SafeAreaView, ScrollView, View, Text, StyleSheet, TextInput, Pressable} from 'react-native';
 import TransactionSearch from '../../components/TransactionSearch/TransactionSearch';
+import ProfileButton from '../../components/ProfileButton/ProfileButton';
+import AwesomeIcon from 'react-native-vector-icons/FontAwesome';
+import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Button } from 'react-native-paper';
+import ProfileModal from '../../components/ProfileModal/ProfileModal';
 
 function ReceiptsScreen({ navigation }) {
   // change to axios call when transaction objects are done
@@ -53,25 +54,29 @@ function ReceiptsScreen({ navigation }) {
     },
   ];
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  function handleModal(modalValue) {
+    setIsModalOpen(modalValue);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
+        {isModalOpen && (
+          <ProfileModal setModalstate={handleModal}></ProfileModal>
+      )}
+
+      <View style={styles.headerContainer}>
+        <Text style={styles.titleText}>Receipts</Text>
+        <Pressable onPress={() => setIsModalOpen(true)} style={styles.profileContainer}>
+          <ProfileButton></ProfileButton>
+        </Pressable>
+      </View>
       <ScrollView>
-        <View style={styles.headerContainer}>
-          <Text style={styles.titleText}>Receipts</Text>
-          <View style={styles.profileButtonContainer}>
-            <Icon
-              name="user"
-              size={30}
-              color="#ffffff"
-            />
-          </View>
-        </View>
         <View style={styles.bodyContainer}>
           <Text style={styles.searchbarTitle}>Recent Activity</Text>
         </View>
-
         <TransactionSearch />
-
       </ScrollView>
     </SafeAreaView>
   );
@@ -85,14 +90,24 @@ const styles = StyleSheet.create({
     backgroundColor: '#0f003f',
     height: 2000,
   },
+  searchbarTitle: {
+    color: '#ffffff',
+    fontSize: 30,
+  },
   headerContainer: {
     alignContent: 'center',
     display: 'flex',
     flexDirection: 'row',
     marginHorizontal: 30,
     marginVertical: 10,
+  },  
+  titleText: {
+    color: '#ffffff',
+    fontSize: 40,
   },
-  profileButtonContainer: {
+  profileContainer: {
+    position: 'absolute',
+    right: 0,
     alignItems: 'center',
     alignSelf: 'center',
     borderColor: 'white',
@@ -102,18 +117,8 @@ const styles = StyleSheet.create({
     height: 30,
     justifyContent: 'center',
     overflow: 'hidden',
-    position: 'absolute',
-    right: 0,
     width: 30,
-  },
-  searchbarTitle: {
-    color: '#ffffff',
-    fontSize: 30,
-  },
-  titleText: {
-    color: '#ffffff',
-    fontSize: 40,
-  },
+  }
 });
 
 export default ReceiptsScreen;
