@@ -36,12 +36,13 @@ const ForgotPasswordScreen = ({ navigation }) => {
       setEmailError(false);
       
       const resp = getAccountFromEmail(emailAddress)
-
-      if (resp) {
+      if ((await resp).data) {
         const code = makeid(6)
         // verifcation code is always sent as 1 just to make life easier for demo and testing
         navigation.navigate('ResetPassword', {email: emailAddress, code: "1"})
 
+      } else {
+        setEmailError(true)
       }
       
       

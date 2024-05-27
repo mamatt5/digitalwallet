@@ -103,7 +103,8 @@ function RegisterUserScreen({ navigation }) {
 
   return (
     <SafeAreaView style={{ backgroundColor: '#0f003f', height: 2000 }}>
-      <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
+      <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }} keyboardVerticalOffset={120}>
+
         <ScrollView>
           <View style={styles.centerView}>
             <Text style={{ color: '#ffffff', fontSize: 40, margin: 30 }}>

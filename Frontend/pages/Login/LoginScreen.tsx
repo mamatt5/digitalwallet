@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import {
-  SafeAreaView, ScrollView, View, Text, StyleSheet, Image, Dimensions, Animated
+  SafeAreaView, ScrollView, View, Text, StyleSheet, Image, Dimensions, Animated, KeyboardAvoidingView
 } from 'react-native';
 import { Button } from 'react-native-paper';
 import DynamicTextInput from '../../components/DynamicTextInput/DynamicTextInput';
@@ -101,8 +101,11 @@ function LoginScreen({ navigation }) {
   return (
     
     <SafeAreaView  style={{ backgroundColor: '#0f003f', height: 2000 }}>
-      <Image source={APPlogo} style={styles.APPlogo} />
-      <ScrollView>
+      
+      <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }} keyboardVerticalOffset={120}>
+        
+        <ScrollView automaticallyAdjustKeyboardInsets={true}>
+        <Image source={APPlogo} style={styles.APPlogo} /> 
         <View style={styles.centerView}>
           <Text style={{ color: '#ffffff', fontSize: 30, margin: 30 }}>
             {'Log in'}
@@ -160,6 +163,7 @@ function LoginScreen({ navigation }) {
 
         </View>
       </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
    
   );
