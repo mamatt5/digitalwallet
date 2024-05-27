@@ -93,8 +93,9 @@ const GenerateGenericQR = ({ route }) => {
                 style={styles.input}
               />
               <TouchableOpacity onPress={generateQRCode}>
-                <Button style={styles.generateButton}
-                textColor="black">Generate QR Code</Button>
+                <Button style={styles.generateButton} textColor="black">
+                  Generate QR Code
+                </Button>
               </TouchableOpacity>
             </>
           )}
@@ -108,9 +109,19 @@ const GenerateGenericQR = ({ route }) => {
                 backgroundColor="white"
               />
 
-              <Button style={styles.generateButton}
-              textColor="black"
-              onPress={() => setIsActive(false)}>Generate new QR</Button>
+              <View style={styles.qrcode}>
+                <Text style={styles.qrDetails}>
+                  Pay ${parseFloat(amount).toFixed(2)} to {merchant} for "{description}"
+                </Text>
+              </View>
+
+              <Button
+                style={styles.generateButton}
+                textColor="black"
+                onPress={() => setIsActive(false)}
+              >
+                Generate new QR
+              </Button>
             </View>
           )}
         </View>
@@ -161,10 +172,16 @@ const styles = StyleSheet.create({
   },
   generateButton: {
     backgroundColor: "#ffffff",
-    marginTop: 60,
+    marginTop: 40,
   },
   qrcode: {
     marginTop: 30,
     alignItems: "center",
   },
+  qrDetails: {
+    color: "#ffffff",
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "center",
+  }
 });
