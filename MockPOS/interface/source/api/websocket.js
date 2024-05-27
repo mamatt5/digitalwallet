@@ -1,5 +1,6 @@
 import axios from 'axios';
 import WebSocket from 'ws';
+await import('dotenv/config');
 
 let socket = null;
 let reconnectInterval = null;
@@ -7,6 +8,8 @@ let reconnectAttempts = 0;
 const maxReconnectAttempts = 5;
 const initialReconnectDelay = 1000;
 const maxReconnectDelay = 30000;
+
+const BASE_URL = `${process.env.LOCAL_IP}:8001`;
 
 const connectWebSocket = url => {
 	socket = new WebSocket(url);
@@ -52,7 +55,7 @@ const startReconnect = url => {
 };
 
 export const initializeWebSocket = url => {
-	connectWebSocket('ws://192.168.1.110:8000/ws/interface');
+	connectWebSocket(`ws://${BASE_URL}/ws/interface`);
 };
 
 export const sendMessageToClient = (clientId, message) => {
@@ -87,7 +90,7 @@ export const closeWebSocket = () => {
 export const fetchActiveClients = async () => {
 	try {
 		const response = await axios.get(
-			'http://192.168.1.110:8000/active-clients',
+			`http://${BASE_URL}/active-clients`,
 		);
 		return response.data.clients;
 	} catch {

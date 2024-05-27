@@ -1,9 +1,8 @@
 import axios from 'axios';
-import { Alert } from 'react-native';
 import { LOCAL_IP } from '@env';
 
 const API_BASE_URL = `http://${LOCAL_IP}:8000`;
-const WS_BASE_URL = `ws://${LOCAL_IP}:8000`;
+const WS_BASE_URL = `ws://${LOCAL_IP}:8001`;
 
 export const loginUser = async (email: string, password: string) => {
   try {
@@ -165,41 +164,6 @@ export const addTransaction = async (transaction) => {
     throw error;
   }
 };
-
-//   // return response.data;
-// } catch (error) {
-//   console.error('Merchant Registration error:', error);
-//   throw error;
-//   }
-// };
-
-// export const registerUser = async (
-//   email: string,
-//   password: string,
-//   phoneNumber: string,
-//   accountType: string,
-
-//   firstName: string,
-//   lastName: string
-// ) => {
-
-//   try {
-//     const response = await axios.post(`${API_BASE_URL}/users`, {
-//       email,
-//       password,
-//       phone_number: phoneNumber,
-//       account_type: accountType.toLowerCase(),
-
-//       first_name: firstName,
-//       last_name: lastName
-//     });
-
-//     return response.data;
-//   } catch (error) {
-//     console.error('User Registration error:', error);
-//     throw error;
-//   }
-// };
 
 export const validateQRCodeData = async (data) => {
   try {

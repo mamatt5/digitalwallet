@@ -1,42 +1,43 @@
-import React, { useEffect, useState } from "react";
-import { getMerchant, getUser } from "../../api/api";
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
   TextInput,
   TouchableOpacity,
   StyleSheet,
-} from "react-native";
-import QRCode from "react-native-qrcode-svg";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { Button } from "react-native-paper";
-import { parse } from "react-native-svg";
+} from 'react-native';
+import QRCode from 'react-native-qrcode-svg';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Button } from 'react-native-paper';
+import { parse } from 'react-native-svg';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { getMerchant, getUser } from '../../api/api';
 
-const GenerateGenericQR = ({ route }) => {
+function GenerateGenericQR({ route, navigation }) {
   const { account } = route.params;
 
-  const [qrValue, setQrValue] = useState("");
+  const [qrValue, setQrValue] = useState('');
   const [isActive, setIsActive] = useState(false);
 
-  const [merchant, setMerchant] = useState("");
-  const [walletId, setWalletId] = useState("");
-  const [amount, setAmount] = useState("");
-  const [description, setDescription] = useState("");
+  const [merchant, setMerchant] = useState('');
+  const [walletId, setWalletId] = useState('');
+  const [amount, setAmount] = useState('');
+  const [description, setDescription] = useState('');
 
   const fetchAccountInfo = async () => {
-    if (account.account_type === "user") {
+    if (account.account_type === 'user') {
       try {
         const response = await getUser(account.account_id);
         setMerchant(response.first_name);
       } catch (error) {
-        console.error("Get User error:", error);
+        console.error('Get User error:', error);
       }
-    } else if (account.account_type === "merchant") {
+    } else if (account.account_type === 'merchant') {
       try {
         const response = await getMerchant(account.account_id);
         setMerchant(response.company_name);
       } catch (error) {
-        console.error("Get Merchant error:", error);
+        console.error('Get Merchant error:', error);
       }
     }
   };
@@ -70,6 +71,14 @@ const GenerateGenericQR = ({ route }) => {
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.headerText}>Generate QR code</Text>
+          {account.account_type === 'user' && (
+          <TouchableOpacity
+            onPress={() => navigation.navigate('GenerateQRMerchant')}
+            style={styles.iconButton}
+          >
+            <MaterialCommunityIcons name="qrcode" size={30} color="#FFF" />
+          </TouchableOpacity>
+          )}
         </View>
 
         <View style={styles.generatorContainer}>
@@ -78,7 +87,7 @@ const GenerateGenericQR = ({ route }) => {
               <Text style={styles.subheaderText}>Payment value:</Text>
               <TextInput
                 placeholder="0.00"
-                placeholderTextColor={"lightgray"}
+                placeholderTextColor="lightgray"
                 value={amount}
                 onChangeText={setAmount}
                 keyboardType="numeric"
@@ -87,14 +96,18 @@ const GenerateGenericQR = ({ route }) => {
               <Text style={styles.subheaderText}>Description:</Text>
               <TextInput
                 placeholder="for groceries"
-                placeholderTextColor={"lightgray"}
+                placeholderTextColor="lightgray"
                 value={description}
                 onChangeText={setDescription}
                 style={styles.input}
               />
               <TouchableOpacity onPress={generateQRCode}>
-                <Button style={styles.generateButton}
-                textColor="black">Generate QR Code</Button>
+                <Button
+                  style={styles.generateButton}
+                  textColor="black"
+                >
+                  Generate QR Code
+                </Button>
               </TouchableOpacity>
             </>
           )}
@@ -108,63 +121,72 @@ const GenerateGenericQR = ({ route }) => {
                 backgroundColor="white"
               />
 
-              <Button style={styles.generateButton}
-              textColor="black"
-              onPress={() => setIsActive(false)}>Generate new QR</Button>
+              <Button
+                style={styles.generateButton}
+                textColor="black"
+                onPress={() => setIsActive(false)}
+              >
+                Generate new QR
+              </Button>
             </View>
           )}
         </View>
       </View>
     </SafeAreaView>
   );
-};
+}
 
 export default GenerateGenericQR;
 
 const styles = StyleSheet.create({
-  screenContainer: {
-    backgroundColor: "#0f003f",
-    height: 2000,
-  },
   container: {
-    justifyContent: "center",
+    justifyContent: 'center',
     margin: 20,
+  },
+  generateButton: {
+    backgroundColor: '#ffffff',
+    marginTop: 60,
+  },
+  generatorContainer: {
+    marginTop: 20,
   },
   header: {
     marginTop: 40,
   },
   headerText: {
-    color: "#ffffff",
+    alignContent: 'center',
+    color: '#ffffff',
     fontSize: 40,
-    fontWeight: "bold",
-    alignContent: "center",
-    textAlign: "center",
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
-  generatorContainer: {
-    marginTop: 20,
-  },
-  subheaderText: {
-    color: "#ffffff",
-    fontSize: 24,
-    fontWeight: "bold",
-    textAlign: "left",
+  iconButton: {
+    position: 'absolute',
+    right: 10,
+    top: 10,
   },
   input: {
-    height: 40,
-    borderColor: "gray",
+    borderColor: 'gray',
     borderWidth: 1,
-    color: "#ffffff",
+    color: '#ffffff',
     fontSize: 24,
-    paddingLeft: 10,
-    marginTop: 10,
+    height: 40,
     marginBottom: 20,
-  },
-  generateButton: {
-    backgroundColor: "#ffffff",
-    marginTop: 60,
+    marginTop: 10,
+    paddingLeft: 10,
   },
   qrcode: {
+    alignItems: 'center',
     marginTop: 30,
-    alignItems: "center",
+  },
+  screenContainer: {
+    backgroundColor: '#0f003f',
+    height: 2000,
+  },
+  subheaderText: {
+    color: '#ffffff',
+    fontSize: 24,
+    fontWeight: 'bold',
+    textAlign: 'left',
   },
 });
