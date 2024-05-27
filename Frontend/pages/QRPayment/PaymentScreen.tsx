@@ -5,6 +5,7 @@ import {
   FlatList,
   TouchableOpacity,
   StyleSheet,
+  Vibration
 } from "react-native";
 import { Button } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -70,6 +71,7 @@ const PaymentScreen = ({ route, navigation }) => {
       console.log(transaction)
 
     await saveTransaction(transaction);
+    Vibration.vibrate(500);
     navigation.navigate("PaymentComplete", { parsedData, selectedCardData, date: transaction.date, time: transaction.time });
   };
 
