@@ -4,6 +4,7 @@ from services.transaction_service import TransactionService
 
 router = APIRouter(prefix="/transactions", tags=["transaction"])
 
+import logging
 
 @router.post("/addtransaction")
 def add_transaction_route(transaction: Transaction, transaction_service: TransactionService = Depends(TransactionService)) -> None:

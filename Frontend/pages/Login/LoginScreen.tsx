@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
-  SafeAreaView, ScrollView, View, Text, StyleSheet, Image, Dimensions
+  SafeAreaView, ScrollView, View, Text, StyleSheet, Image, Dimensions, Animated
 } from 'react-native';
 import { Button } from 'react-native-paper';
 import DynamicTextInput from '../../components/DynamicTextInput/DynamicTextInput';
@@ -12,6 +12,7 @@ import Genericlogo from '../../assets/Genericlogo.png';
 // import Genericlogo from '../../assets/Genericlogo.png';
 import APPlogo from '../../assets/APPlogo.png';
 import { Alert } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 
 function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
@@ -21,6 +22,33 @@ function LoginScreen({ navigation }) {
   const [passwordError, setPasswordError] = useState(false);
 
   const [showFullPass, setShowFullPass] = useState(false);
+
+ 
+  const [fadeAnim, setfadeAnim] = useState(useRef(new Animated.Value(0)))
+  const [resetAnimation, setResetAnimation] = useState(false);
+
+
+  // const startAnimation = () => {
+  //   Animated.timing(
+  //     fadeAnim,
+  //     {
+  //       toValue: 1,
+  //       duration: 1000,
+  //       useNativeDriver: true,
+  //     }
+  //   ).start();
+  // };
+
+
+  // useFocusEffect(
+  //   React.useCallback(() => {
+      
+  //     startAnimation();
+  //     setfadeAnim(useRef(new Animated.Value(0)))
+  //   }, [navigation])
+
+  // )
+
 
   const handleEmailChange = (event) => {
     setEmail(event)
@@ -69,7 +97,8 @@ function LoginScreen({ navigation }) {
 
 
   return (
-    <SafeAreaView style={{ backgroundColor: '#0f003f', height: 2000 }}>
+    
+    <SafeAreaView  style={{ backgroundColor: '#0f003f', height: 2000 }}>
       <Image source={APPlogo} style={styles.APPlogo} />
       <ScrollView>
         <View style={styles.centerView}>
@@ -130,6 +159,7 @@ function LoginScreen({ navigation }) {
         </View>
       </ScrollView>
     </SafeAreaView>
+   
   );
 }
 
