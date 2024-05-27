@@ -66,17 +66,19 @@ function LoginScreen({ navigation }) {
     const newPasswordError = password === '' || !/(?=.*[0-9])(?=.*[A-Z]).+/.test(password);
 
 
-    if (newEmailError) {
-      setEmailError(true);
-    }
-
-    if (newPasswordError) {
-      setPasswordError(true);
-    }
-
     if (newEmailError || newPasswordError) {
+      setEmailError(true);
+      setPasswordError(true);
       return;
     }
+
+    // if (newPasswordError) {
+    //   setPasswordError(true);
+    // }
+
+    // if (newEmailError || newPasswordError) {
+    //   return;
+    // }
  
     try {
       const response = await loginUser(email, password);

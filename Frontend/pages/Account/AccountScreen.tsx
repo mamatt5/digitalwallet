@@ -148,6 +148,8 @@ function AccountScreen({ navigation, route }) {
   );
 }
 
+const screenWidth = Dimensions.get('window').width;
+
 const styles = StyleSheet.create({
   boldText: {
     fontWeight: 'bold',
@@ -201,6 +203,9 @@ const styles = StyleSheet.create({
   },
   transactionContainer: {
     flex: 1,
+    ...(screenWidth >= 600 && {
+      marginHorizontal: 100,
+    })
   },
   transactions: {
     flex: 1,

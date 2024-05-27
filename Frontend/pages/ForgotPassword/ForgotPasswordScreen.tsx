@@ -5,7 +5,7 @@ import DynamicTextInput from "../../components/DynamicTextInput/DynamicTextInput
 import { useState } from "react";
 import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 import { getAccountFromEmail } from "../../api/api";
-import Genericlogo from '../../assets/Genericlogo.png';
+import APPlogo from '../../assets/APPlogo.png';
 import { sendEmail } from "../../api/sendEmail";
 
 
@@ -54,7 +54,7 @@ const ForgotPasswordScreen = ({ navigation }) => {
     <ScrollView>
       <SafeAreaView style={{ backgroundColor: '#0f003f', height: 2000 }}>
 
-        <Image source={Genericlogo} style={styles.APPlogo} />
+        <Image source={APPlogo} style={styles.APPlogo} />
 
         <View style={styles.centerView}>
           <Text style={styles.titleText}>
