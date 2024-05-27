@@ -10,13 +10,16 @@ import {
 import QRCode from "react-native-qrcode-svg";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Button } from "react-native-paper";
+import QRGenerateScreenMerchant from "./GenerateQRMerchantScreen";
 import { parse } from "react-native-svg";
 
-const GenerateGenericQR = ({ route }) => {
+const GenerateGenericQR = ({ route, navigation }) => {
   const { account } = route.params;
 
   const [qrValue, setQrValue] = useState("");
   const [isActive, setIsActive] = useState(false);
+  const [isMerchant, setIsMerchant] = useState(false);
+  const [refresh, setRefresh] = useState(false);
 
   const [merchant, setMerchant] = useState("");
   const [walletId, setWalletId] = useState("");
@@ -34,12 +37,28 @@ const GenerateGenericQR = ({ route }) => {
     } else if (account.account_type === "merchant") {
       try {
         const response = await getMerchant(account.account_id);
+        setIsMerchant(true);
         setMerchant(response.company_name);
       } catch (error) {
         console.error("Get Merchant error:", error);
       }
     }
   };
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      setRefresh((prev) => !prev);
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
+  useEffect(() => {
+    setIsActive(false);
+    setAmount("");
+    setDescription("");
+  }, [refresh]);
+
 
   useEffect(() => {
     fetchAccountInfo();
@@ -75,6 +94,20 @@ const GenerateGenericQR = ({ route }) => {
         <View style={styles.generatorContainer}>
           {!isActive && (
             <>
+              {isMerchant && (
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate("QRGenerateScreenMerchant", { account })
+                  }
+                >
+                  <Button
+                    style={styles.generateMerchantButton}
+                    textColor="black"
+                  >
+                    Merchant QR
+                  </Button>
+                </TouchableOpacity>
+              )}
               <Text style={styles.subheaderText}>Payment value:</Text>
               <TextInput
                 placeholder="0.00"
@@ -86,7 +119,7 @@ const GenerateGenericQR = ({ route }) => {
               />
               <Text style={styles.subheaderText}>Description:</Text>
               <TextInput
-                placeholder="Eg: For Groceries"
+                placeholder="eg: for groceries"
                 placeholderTextColor={"lightgray"}
                 value={description}
                 onChangeText={setDescription}
@@ -111,7 +144,7 @@ const GenerateGenericQR = ({ route }) => {
 
               <View style={styles.qrcode}>
                 <Text style={styles.qrDetails}>
-                  Pay ${parseFloat(amount).toFixed(2)} to {merchant} for "{description}"
+                  Pay ${parseFloat(amount).toFixed(2)} for "{description}"
                 </Text>
               </View>
 
@@ -169,14 +202,18 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     marginTop: 10,
     marginBottom: 20,
-    
   },
   generateButton: {
-    backgroundColor: "#ffffff",
+    backgroundColor: "#2dfc7d",
     marginTop: 60,
     width: 200,
-    alignSelf: 'center'
-  
+    alignSelf: "center",
+  },
+  generateMerchantButton: {
+    backgroundColor: "#ffffff",
+    marginBottom: 20,
+    width: 200,
+    alignSelf: "center",
   },
   qrcode: {
     marginTop: 30,
@@ -187,5 +224,5 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     textAlign: "center",
-  }
+  },
 });

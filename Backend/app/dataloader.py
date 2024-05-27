@@ -98,7 +98,7 @@ if __name__ == "__main__":
     with TestClient(app) as client:
         register_request = RegisterRequest(
             email="beza@example.com",
-            password='password',
+            password='Password1',
             phone_number=fake.phone_number(),
             account_type="user",
             first_name="Beza",
@@ -110,7 +110,7 @@ if __name__ == "__main__":
 
         register_request = RegisterRequest(
             email="robert@example.com",
-            password='password',
+            password='Password1',
             phone_number=fake.phone_number(),
             account_type="user",
             first_name="Robert",
@@ -121,23 +121,11 @@ if __name__ == "__main__":
         register_account(client, register_request)
 
         register_request = RegisterRequest(
-            email="company@example.com",
-            password='password',
+            email="lora@example.com",
+            password='Password1',
             phone_number=fake.phone_number(),
             account_type="merchant",
-            company_name="Lemonade Stand",
-            ABN=fake.msisdn(),
-            first_name="",
-            last_name="",
-        )
-        register_account(client, register_request)
-
-        register_request = RegisterRequest(
-            email="company@example.com",
-            password='password',
-            phone_number=fake.phone_number(),
-            account_type="merchant",
-            company_name="Walmart",
+            company_name="Lora's Cafe",
             ABN=fake.msisdn(),
             first_name="",
             last_name="",
@@ -146,7 +134,7 @@ if __name__ == "__main__":
 
         register_request = RegisterRequest(
             email="matthew@example.com",
-            password='password',
+            password='Password1',
             phone_number=fake.phone_number(),
             account_type="user",
             first_name="Matthew",

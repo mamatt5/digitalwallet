@@ -52,6 +52,7 @@ function AddCardScreen({ navigation, route }) {
     addCard(cardNumber, expiryDate, cardCVV, account.wallet.wallet_id)
       .then(() => {
         navigation.navigate('AccountHome', { account });
+        alert(`Card ending in **${cardNumber.slice(-4)} added successfully!`);
       })
       .catch((error) => {
         console.error('Add Card error:', error);
