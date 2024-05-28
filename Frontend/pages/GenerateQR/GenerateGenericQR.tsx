@@ -172,18 +172,23 @@ const styles = StyleSheet.create({
     textAlign: "left",
   },
   input: {
-    height: 40,
+    
     borderColor: "gray",
-    borderWidth: 1,
-    color: "#ffffff",
-    fontSize: 24,
+    
+    // color: "#ffffff",
+    fontSize: 20,
     paddingLeft: 10,
     marginTop: 10,
     marginBottom: 20,
     
+    backgroundColor: '#ffffff',
+    borderRadius: 5,
+    padding: 10,
+    
   },
   errorOutline: {
     borderColor: 'red', // Change border color to red when error occurs
+    borderWidth: 2
   },
   generateButton: {
     backgroundColor: "#ffffff",
