@@ -4,14 +4,16 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  StyleSheet,
+  StyleSheet, Dimensions,
 } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from 'react-native-paper';
-import { parse } from 'react-native-svg';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { getMerchant, getUser } from '../../api/api';
+
+const { width, height } = Dimensions.get('window');
+const scale = width / 320;
 
 function GenerateGenericQR({ route, navigation }) {
   const { account } = route.params;
@@ -76,7 +78,7 @@ function GenerateGenericQR({ route, navigation }) {
             onPress={() => navigation.navigate('GenerateQRMerchant')}
             style={styles.iconButton}
           >
-            <MaterialCommunityIcons name="qrcode" size={30} color="#FFF" />
+            <MaterialCommunityIcons name="qrcode" size={25 * scale} color="#FFF" />
           </TouchableOpacity>
           )}
         </View>
@@ -141,29 +143,31 @@ export default GenerateGenericQR;
 const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
-    margin: 20,
+    marginHorizontal: 20 * scale,
   },
   generateButton: {
     backgroundColor: '#ffffff',
     marginTop: 60,
   },
   generatorContainer: {
-    marginTop: 20,
+    marginTop: 35 * scale,
   },
   header: {
-    marginTop: 40,
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 20 * scale,
+    paddingHorizontal: 10,
   },
   headerText: {
-    alignContent: 'center',
     color: '#ffffff',
-    fontSize: 40,
+    fontSize: 20 * scale,
     fontWeight: 'bold',
     textAlign: 'center',
   },
   iconButton: {
     position: 'absolute',
     right: 10,
-    top: 10,
   },
   input: {
     borderColor: 'gray',
@@ -185,7 +189,7 @@ const styles = StyleSheet.create({
   },
   subheaderText: {
     color: '#ffffff',
-    fontSize: 24,
+    fontSize: 14 * scale,
     fontWeight: 'bold',
     textAlign: 'left',
   },

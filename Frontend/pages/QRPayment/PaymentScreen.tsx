@@ -1,31 +1,36 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
   FlatList,
   TouchableOpacity,
   StyleSheet,
-} from "react-native";
-import { Button } from "react-native-paper";
-import { SafeAreaView } from "react-native-safe-area-context";
-import Icon from "react-native-vector-icons/FontAwesome6";
-import { getWalletCards, addTransaction } from "../../api/api";
-import SmallDebitCard from "../../components/SmallDebitCard";
+  Dimensions,
+} from 'react-native';
+import { Button } from 'react-native-paper';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Icon from 'react-native-vector-icons/FontAwesome6';
+import { getWalletCards, addTransaction } from '../../api/api';
+import SmallDebitCard from '../../components/SmallDebitCard';
 
-const PaymentScreen = ({ route, navigation }) => {
+const { width, height } = Dimensions.get('window');
+const scale = width / 320;
+
+function PaymentScreen({ route, navigation }) {
   const { data, account } = route.params;
   const [cards, setCards] = useState([]);
   const [transactionConfirmed, setTransactionConfirmed] = useState(false);
   const [isValidQR, setIsValidQR] = useState(false);
-  const [parsedData, setParsedData] = useState("");
+  const [parsedData, setParsedData] = useState('');
   const [selectedCard, setSelectedCard] = useState(-1);
 
   const fetchCards = async () => {
     try {
       const response = await getWalletCards(account.wallet.wallet_id);
+      console.log(response);
       setCards(response);
     } catch (error) {
-      console.error("Get Cards error:", error);
+      console.error('Get Cards error:', error);
     }
   };
 
@@ -43,7 +48,7 @@ const PaymentScreen = ({ route, navigation }) => {
         setParsedData(parsed);
       }
     } catch (error) {
-      console.error("Error parsing QR data", error);
+      console.error('Error parsing QR data', error);
     }
   }, [data]);
 
@@ -51,9 +56,9 @@ const PaymentScreen = ({ route, navigation }) => {
     try {
       await addTransaction(transaction);
     } catch (error) {
-      console.error("Save Transaction error:", error.response.data);
+      console.error('Save Transaction error:', error.response.data);
     }
-  }
+  };
 
   const handleConfirmPayment = async () => {
     const selectedCardData = cards[selectedCard];
@@ -65,12 +70,15 @@ const PaymentScreen = ({ route, navigation }) => {
       card_id: selectedCardData.card_id,
       sender: account.wallet.wallet_id,
       recipient: parsedData.wallet_id,
-      description: parsedData.description, };
+      description: parsedData.description,
+    };
 
-      console.log(transaction)
+    console.log(transaction);
 
     await saveTransaction(transaction);
-    navigation.navigate("PaymentComplete", { parsedData, selectedCardData, date: transaction.date, time: transaction.time });
+    navigation.navigate('PaymentComplete', {
+      parsedData, selectedCardData, date: transaction.date, time: transaction.time,
+    });
   };
 
   return (
@@ -83,14 +91,23 @@ const PaymentScreen = ({ route, navigation }) => {
                 <Icon
                   name="money-bill-transfer"
                   size={150}
-                  color={"lightgray"}
+                  color="lightgray"
                 />
               </View>
               <Text style={styles.merchant}>{parsedData.merchant}</Text>
-              <Text style={styles.amount}>${parsedData.amount}</Text>
+              <Text style={styles.amount}>
+                $
+                {parsedData.amount}
+              </Text>
               <Text style={styles.description}>{parsedData.description}</Text>
-              <Text style={styles.date}>Date: {new Date().toLocaleDateString()}</Text>
-              <Text style={styles.time}>Time: {new Date().toLocaleTimeString()}</Text>
+              <Text style={styles.date}>
+                Date:
+                {new Date().toLocaleDateString()}
+              </Text>
+              <Text style={styles.date}>
+                Time:
+                {new Date().toLocaleTimeString()}
+              </Text>
 
               <View style={styles.buttonContainer}>
                 <Button
@@ -108,9 +125,7 @@ const PaymentScreen = ({ route, navigation }) => {
                   style={styles.cancelButton}
                   textColor="white"
                   mode="outlined"
-                  onPress={() =>
-                    navigation.navigate("AccountHome", { account })
-                  }
+                  onPress={() => navigation.navigate('AccountHome', { account })}
                 >
                   Cancel
                 </Button>
@@ -127,44 +142,36 @@ const PaymentScreen = ({ route, navigation }) => {
           )}
 
           {transactionConfirmed && (
-            <>
-              <View style={styles.container}>
-                <View>
-                  <Text style={styles.headerText}>Payment</Text>
-                </View>
-
-                <View style={styles.subheaderContainer}>
-                  <Text style={styles.subheaderText}>Payment options:</Text>
-                  <View style={styles.cardsContainer}>
-                    {cards.length > 0 ? (
-                      <FlatList
-                        data={cards}
-                        keyExtractor={(item, index) => index.toString()}
-                        renderItem={({ item, index }) => (
-                          <TouchableOpacity
-                            style={
+            <View style={styles.container}>
+              <Text style={styles.headerText}>Payment Options</Text>
+              {cards.length > 0 ? (
+                <FlatList
+                  data={cards}
+                  keyExtractor={(item, index) => index.toString()}
+                  renderItem={({ item, index }) => (
+                    <TouchableOpacity
+                      style={
                               index === selectedCard
                                 ? styles.selectedCard
                                 : styles.card
                             }
-                            onPress={() => setSelectedCard(index)}
-                          >
-                            <View style={styles.cardInfo}>
-                              <SmallDebitCard card={item} />
-                              {index === selectedCard && (
-                                <Icon name="check" size={20} color="white" />
-                              )}
-                            </View>
-                          </TouchableOpacity>
+                      onPress={() => setSelectedCard(index)}
+                    >
+                      <View style={styles.cardInfo}>
+                        <SmallDebitCard card={item} />
+                        {index === selectedCard && (
+                        <Icon name="check" size={20} color="white" />
                         )}
-                      />
-                    ) : (
-                      <Text style={styles.subheaderText}>
-                        No cards available
-                      </Text>
-                    )}
-                  </View>
-                </View>
+                      </View>
+                    </TouchableOpacity>
+                  )}
+                />
+              ) : (
+                <Text style={styles.subheaderText}>
+                  No cards available
+                </Text>
+              )}
+
                 {selectedCard !== -1 && (
                   <View style={styles.buttonContainer}>
                     <Button
@@ -180,122 +187,118 @@ const PaymentScreen = ({ route, navigation }) => {
                       style={styles.cancelButton}
                       textColor="white"
                       mode="outlined"
-                      onPress={() =>
-                        navigation.navigate("AccountHome", { account })
-                      }
+                      onPress={() => navigation.navigate('AccountHome', { account })}
                     >
                       Cancel
                     </Button>
                   </View>
                 )}
-              </View>
-            </>
+            </View>
           )}
         </View>
       </View>
     </SafeAreaView>
   );
-};
+}
 
 export default PaymentScreen;
 
 const styles = StyleSheet.create({
-  screenContainer: {
-    backgroundColor: "#0f003f",
-    height: 2000,
-  },
-  container: {
-    justifyContent: "center",
-    marginTop: 10,
-    width: "100%",
-  },
-  qrData: {
-    marginTop: 20,
-    alignItems: "center",
-  },
-  merchant: {
-    color: "#ffffff",
-    fontSize: 50,
-    marginBottom: 30,
-    fontWeight: "bold",
-  },
   amount: {
-    color: "#ffffff",
-    fontSize: 40,
-    marginBottom: 25,
-    fontWeight: "bold",
+    color: '#ffffff',
+    fontSize: 20 * scale,
+    fontWeight: 'bold',
+    marginBottom: 15 * scale,
   },
-  description: {
-    color: "#ffffff",
-    fontSize: 24,
-    marginBottom: 10,
-  },
-  date: {
-    color: "#ffffff",
-    fontSize: 18,
-  },
-  time: {
-    color: "#ffffff",
-    fontSize: 18,
-  },
-  //   headerText: {
-  //     color: "#ffffff",
-  //     fontSize: 24,
-  //     margin: 30,
-  //     alignContent: "center",
-  //     textAlign: "center",
-  //   },
   buttonContainer: {
-    marginTop: 50,
-    alignSelf: "center",
-    width: "50%",
-  },
-  proceedButton: {
-    backgroundColor: "#ffffff",
-    marginBottom: 10,
+    alignSelf: 'center',
+    marginTop: 40 * scale,
+    width: '80%',
   },
   cancelButton: {
-    borderColor: "#ffffff",
-  },
-  headerText: {
-    color: "#ffffff",
-    fontSize: 50,
-    fontWeight: "bold",
-    alignContent: "center",
-    textAlign: "center",
-  },
-  subheaderText: {
-    color: "#ffffff",
-    fontSize: 24,
-    fontWeight: "bold",
-    textAlign: "left",
-  },
-  subheaderContainer: {
-    margin: 30,
-  },
-  cardsContainer: {
-    marginTop: 20,
-    width: "100%",
-    marginLeft: 10,
+    borderColor: '#ffffff',
   },
   card: {
-    borderWidth: 1,
-    borderColor: "white",
+    borderColor: 'white',
     borderRadius: 10,
-    margin: 3,
-    borderStyle: "dotted",
-    padding: 5,
-  },
-  selectedCard: {
+    borderStyle: 'dotted',
     borderWidth: 2,
-    borderColor: "white",
-    borderRadius: 10,
     margin: 3,
     padding: 5,
   },
   cardInfo: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    alignItems: 'center',
+    flexDirection: 'row',
+    flex: 1,
+    justifyContent: 'space-between',
+  },
+  cardInfo: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  cardsContainer: {
+    marginLeft: 10,
+    marginTop: 20,
+    width: '100%',
+  },
+  container: {
+    justifyContent: 'center',
+    width: '90%',
+  },
+  date: {
+    color: '#ffffff',
+    fontSize: 12 * scale,
+    marginBottom: 5 * scale,
+  },
+  description: {
+    color: '#ffffff',
+    fontSize: 24,
+    marginBottom: 10 * scale,
+  },
+  headerText: {
+    alignContent: 'center',
+    color: '#ffffff',
+    fontSize: 30 * scale,
+    fontWeight: 'bold',
+    marginBottom: 20 * scale,
+    textAlign: 'center',
+  },
+  merchant: {
+    color: '#ffffff',
+    fontSize: 30 * scale,
+    fontWeight: 'bold',
+    marginBottom: 10 * scale,
+  },
+  proceedButton: {
+    backgroundColor: '#ffffff',
+    marginBottom: 10,
+  },
+  qrData: {
+    alignItems: 'center',
+  },
+  screenContainer: {
+    alignItems: 'center',
+    backgroundColor: '#0f003f',
+    flex: 1,
+    justifyContent: 'center',
+  },
+  selectedCard: {
+    borderColor: 'green',
+    borderRadius: 10,
+    borderStyle: 'dotted',
+    borderWidth: 2,
+    margin: 3,
+    padding: 5,
+
+  },
+  subheaderContainer: {
+    margin: 30,
+  },
+  subheaderText: {
+    color: '#ffffff',
+    fontSize: 24,
+    fontWeight: 'bold',
+    textAlign: 'left',
   },
 });

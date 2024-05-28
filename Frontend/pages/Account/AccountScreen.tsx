@@ -13,6 +13,9 @@ import {
 } from '../../api/api';
 import CardTabs from '../../components/CardFilterTabs/CardTabs';
 
+const { width, height } = Dimensions.get('window');
+const scale = width / 320;
+
 function AccountScreen({ navigation, route }) {
   const [bankCards, setBankCards] = useState([]);
   const [loyaltyCards, setLoyaltyCards] = useState([]);
@@ -149,14 +152,6 @@ function AccountScreen({ navigation, route }) {
 }
 
 const styles = StyleSheet.create({
-  boldText: {
-    fontWeight: 'bold',
-  },
-  buttonContainer: {
-    margin: 20,
-    marginTop: 10,
-    width: 200,
-  },
   centerView: {
     alignItems: 'center',
     display: 'flex',
@@ -170,11 +165,6 @@ const styles = StyleSheet.create({
   iconContainer: {
     marginTop: 10,
   },
-  infoText: {
-    color: '#ffffff',
-    fontSize: 18,
-    marginBottom: 10,
-  },
   noCardContainer: {
     alignItems: 'center',
     borderColor: '#fff',
@@ -187,7 +177,7 @@ const styles = StyleSheet.create({
   },
   noCardText: {
     color: '#fff',
-    fontSize: 18,
+    fontSize: 20,
   },
   noTransactionsContainer: {
     alignItems: 'center',
@@ -195,12 +185,13 @@ const styles = StyleSheet.create({
   },
   titleText: {
     color: '#ffffff',
-    fontSize: 24,
+    fontSize: 20 * scale,
     fontWeight: 'bold',
     marginVertical: 10,
   },
   transactionContainer: {
     flex: 1,
+    paddingHorizontal: 10 * scale,
   },
   transactions: {
     flex: 1,

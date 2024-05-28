@@ -1,8 +1,11 @@
 import React from 'react';
 import {
-  Text, TouchableOpacity, View, StyleSheet,
+  Text, TouchableOpacity, View, StyleSheet, Dimensions,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+
+const { width, height } = Dimensions.get('window');
+const scale = width / 320;
 
 function Tab({ isActive, onPress, label }) {
   return (
@@ -26,6 +29,7 @@ const styles = StyleSheet.create({
   buttonText: {
     backgroundColor: 'transparent',
     color: '#ffffff',
+    fontSize: 15 * scale - 20,
     textAlign: 'center',
   },
   innerContainer: {
@@ -38,7 +42,7 @@ const styles = StyleSheet.create({
   linearGradient: {
     borderRadius: 20,
     height: 40,
-    width: 200,
+    width: 120 * scale,
   },
   tab: {
     alignItems: 'center',
