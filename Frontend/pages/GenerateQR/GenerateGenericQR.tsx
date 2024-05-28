@@ -99,13 +99,6 @@ function GenerateGenericQR({ route, navigation }) {
 
     // QR data
     const qrData = {
-      items: [
-        {
-          name: "Transfer",
-          price: formattedAmount,
-          quantity: 1,
-        }
-      ],
       amount: formattedAmount,
       account_id: account.account_id,
       wallet_id: walletId, // wallet_id of the merchant
@@ -176,8 +169,8 @@ function GenerateGenericQR({ route, navigation }) {
               <QRCode
                 value={qrValue}
                 size={0.7 * width}
-                color="black"
-                backgroundColor="white"
+                color="white"
+                backgroundColor="#0f003f"
               />
               <View style={styles.qrcode}>
                 <Text style={styles.qrDetails}>
