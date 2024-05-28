@@ -5,7 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  Alert
+  Alert,
   Dimensions,
 } from "react-native";
 import QRCode from "react-native-qrcode-svg";
@@ -106,10 +106,10 @@ function GenerateGenericQR({ route, navigation }) {
           quantity: 1,
         }
       ],
+      amount: formattedAmount,
       account_id: account.account_id,
       wallet_id: walletId, // wallet_id of the merchant
       merchant,
-      amount: formattedAmount,
       description,
     };
 
@@ -207,10 +207,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     margin: 20,
   },
-  generateButton: {
-    backgroundColor: "#ffffff",
-    marginTop: 50,
-  },
   generateMerchantButton: {
     position: "absolute",
     right: 0,
@@ -258,8 +254,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 30,
   },
-  qrdetails: {
-
+  qrDetails: {
+    alignContent: "center",
+    color: "#ffffff",
+    fontSize: 20,
+    textAlign: "center",
   },
   screenContainer: {
     backgroundColor: "#0f003f",
