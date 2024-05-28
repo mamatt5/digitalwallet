@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     borderRadius: 5,
     padding: 10,
-    
+    // width:275
   },
   errorOutline: {
     borderColor: 'red', // Change border color to red when error occurs
