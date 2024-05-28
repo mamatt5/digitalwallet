@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  Alert
 } from "react-native";
 import QRCode from "react-native-qrcode-svg";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -22,6 +23,8 @@ const GenerateGenericQR = ({ route }) => {
   const [walletId, setWalletId] = useState("");
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
+
+  const [valueError, setValueError] = useState(false);
 
   const fetchAccountInfo = async () => {
     if (account.account_type === "user") {
@@ -46,11 +49,20 @@ const GenerateGenericQR = ({ route }) => {
     setWalletId(account.wallet.wallet_id);
   }, []);
 
+  const onValueChange = (event) => {
+    setValueError(false)
+    setAmount(event)
+  }
   const generateQRCode = () => {
-    if (!amount) return;
+
+    if (amount === '' || !/^\d+(\.\d+)?$/.test(amount)) {
+      setValueError(true);
+      Alert.alert('Invalid Payment Value', 'Please enter a valid payment value');
+      return;
+    }
 
     const formattedAmount = parseFloat(amount).toFixed(2);
-
+ 
     const date = new Date();
     const qrData = {
       account_id: account.account_id,
@@ -80,9 +92,9 @@ const GenerateGenericQR = ({ route }) => {
                 placeholder="0.00"
                 placeholderTextColor={"lightgray"}
                 value={amount}
-                onChangeText={setAmount}
+                onChangeText={onValueChange}
                 keyboardType="numeric"
-                style={styles.input}
+                style={[styles.input, valueError && styles.errorOutline]}
               />
               <Text style={styles.subheaderText}>Description:</Text>
               <TextInput
@@ -108,7 +120,6 @@ const GenerateGenericQR = ({ route }) => {
                 color="black"
                 backgroundColor="white"
               />
-
               <View style={styles.qrcode}>
                 <Text style={styles.qrDetails}>
                   Pay ${parseFloat(amount).toFixed(2)} to {merchant} for "{description}"
@@ -170,6 +181,9 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 20,
     
+  },
+  errorOutline: {
+    borderColor: 'red', // Change border color to red when error occurs
   },
   generateButton: {
     backgroundColor: "#ffffff",
