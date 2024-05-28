@@ -12,7 +12,7 @@ import { connectToWebSocket, getMerchant } from "../../api/api";
 
 function QRGenerateMerchantScreen({ route }) {
   const { account } = route.params;
-  const clientName = account.email.split("@")[0];
+  const clientName = account.email.split("@")[0]; // Extract name from getMerchant
   const [transactionData, setTransactionData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const { width } = Dimensions.get("window");
@@ -52,23 +52,11 @@ function QRGenerateMerchantScreen({ route }) {
     });
 
     return ws;
-  }, [clientName, merchant]);
+  }, [clientNameclientName, merchant]);
 
-  const qrData = transactionData ? JSON.stringify(transactionData) : "";
-
-  const formatPrice = (price) => {
-    const number = parseFloat(price);
-    return isNaN(number) ? "0.00" : number.toFixed(2);
-  };
-
-  const tableHead = ["Item", "Quantity", "Price ($)"];
-  const tableData = transactionData
-    ? transactionData.items.map((item) => [
-        item.name,
-        item.quantity.toString(),
-        `$${formatPrice(item.price)}`,
-      ])
-    : [];
+  const qrData = transactionData
+    ? JSON.stringify(transactionData)
+    : '';
 
   return (
     <View style={styles.container}>

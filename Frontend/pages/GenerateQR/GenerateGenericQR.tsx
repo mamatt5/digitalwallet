@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -15,11 +15,14 @@ import { parse } from "react-native-svg";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { getMerchant, getUser } from "../../api/api";
 
+const { width, height } = Dimensions.get('window');
+const scale = width / 320;
+
 function GenerateGenericQR({ route, navigation }) {
   const { account } = route.params;
   const { width } = Dimensions.get("window");
 
-  const [qrValue, setQrValue] = useState("");
+  const [qrValue, setQrValue] = useState('');
   const [isActive, setIsActive] = useState(false);
 
   const [merchant, setMerchant] = useState("");
@@ -31,19 +34,19 @@ function GenerateGenericQR({ route, navigation }) {
   const [valueError, setValueError] = useState(false);
 
   const fetchAccountInfo = async () => {
-    if (account.account_type === "user") {
+    if (account.account_type === 'user') {
       try {
         const response = await getUser(account.account_id);
         setMerchant(response.first_name);
       } catch (error) {
-        console.error("Get User error:", error);
+        console.error('Get User error:', error);
       }
-    } else if (account.account_type === "merchant") {
+    } else if (account.account_type === 'merchant') {
       try {
         const response = await getMerchant(account.account_id);
         setMerchant(response.company_name);
       } catch (error) {
-        console.error("Get Merchant error:", error);
+        console.error('Get Merchant error:', error);
       }
     }
   };
@@ -116,6 +119,14 @@ function GenerateGenericQR({ route, navigation }) {
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.headerText}>Generate QR code</Text>
+          {account.account_type === 'user' && (
+          <TouchableOpacity
+            onPress={() => navigation.navigate('GenerateQRMerchant')}
+            style={styles.iconButton}
+          >
+            <MaterialCommunityIcons name="qrcode" size={25 * scale} color="#FFF" />
+          </TouchableOpacity>
+          )}
         </View>
 
         <View style={styles.generatorContainer}>
@@ -185,37 +196,56 @@ function GenerateGenericQR({ route, navigation }) {
               >
                 Generate new QR
               </Button>
+              <Button
+                style={styles.generateButton}
+                textColor="black"
+                onPress={() => setIsActive(false)}
+              >
+                Generate new QR
+              </Button>
             </View>
           )}
         </View>
       </View>
     </SafeAreaView>
   );
-}
+};
 
 export default GenerateGenericQR;
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: "center",
-    margin: 20,
+    justifyContent: 'center',
+    marginHorizontal: 20 * scale,
+  },
+  generateButton: {
+    backgroundColor: '#ffffff',
+    marginTop: 60,
+  },
+  generatorContainer: {
+    marginTop: 35 * scale,
   },
   generateMerchantButton: {
     position: "absolute",
     right: 0,
   },
-  generatorContainer: {
-    marginTop: 20,
-  },
   header: {
-    marginTop: 40,
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 20 * scale,
+    paddingHorizontal: 10,
   },
   headerText: {
+    color: '#ffffff',
+    fontSize: 20 * scale,
+    fontWeight: 'bold',
+    textAlign: 'center',
     alignContent: "center",
-    color: "#ffffff",
-    fontSize: 40,
-    fontWeight: "bold",
-    textAlign: "center",
+  },
+  iconButton: {
+    position: 'absolute',
+    right: 10,
   },
   input: {
     
@@ -236,13 +266,7 @@ const styles = StyleSheet.create({
     borderColor: 'red', // Change border color to red when error occurs
     borderWidth: 2
   },
-  generateButton: {
-    backgroundColor: "#ffffff",
-    marginTop: 60,
-    width: 200,
-    alignSelf: 'center'
-  
-  },
+
   qrcode: {
     alignItems: "center",
     marginTop: 30,

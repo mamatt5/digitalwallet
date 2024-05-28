@@ -1,6 +1,9 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Dimensions } from 'react-native';
 import Tab from './Tab';
+
+const { width, height } = Dimensions.get('window');
+const scale = width / 320;
 
 function CardTabs({ activeTabIndex, setActiveTabIndex }) {
   return (
@@ -22,8 +25,8 @@ function CardTabs({ activeTabIndex, setActiveTabIndex }) {
 const styles = StyleSheet.create({
   tabContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    paddingVertical: 10,
+    justifyContent: 'center',
+    paddingVertical: 10 * scale,
   },
 });
 

@@ -1,12 +1,15 @@
 import React from 'react';
 import {
-  View, Text, ImageBackground, StyleSheet,
+  View, Text, ImageBackground, StyleSheet, Dimensions,
 } from 'react-native';
 import Barcode from '@kichiyaki/react-native-barcode-generator';
 
 import LoyaltyCardImage1 from '../assets/LoyaltyCard1.jpg';
 import LoyaltyCardImage2 from '../assets/LoyaltyCard2.jpg';
 import LoyaltyCardImage3 from '../assets/LoyaltyCard3.jpg';
+
+const { width, height } = Dimensions.get('window');
+const scale = width / 320;
 
 function LoyaltyCard({ loyaltyCard }) {
   const { card_number, member_name, card_expiry } = loyaltyCard;
