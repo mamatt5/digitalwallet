@@ -52,7 +52,7 @@ const startReconnect = url => {
 };
 
 export const initializeWebSocket = url => {
-	connectWebSocket('ws://192.168.1.110:8000/ws/interface');
+	connectWebSocket('ws://192.168.86.22:8001/ws/interface');
 };
 
 export const sendMessageToClient = (clientId, message) => {
@@ -87,7 +87,7 @@ export const closeWebSocket = () => {
 export const fetchActiveClients = async () => {
 	try {
 		const response = await axios.get(
-			'http://192.168.1.110:8000/active-clients',
+			'http://192.168.86.22:8001/active-clients',
 		);
 		return response.data.clients;
 	} catch {

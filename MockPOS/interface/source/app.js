@@ -52,26 +52,25 @@ function App() {
 	]);
 
 	const transactionData = {
-		merchant_id: 'M12345678',
-		transaction_id: 'TX12346789',
 		items: selectedItems.map(item => ({
 			name: item.name,
 			price: item.price.toFixed(2),
 			quantity: item.quantity,
 		})),
-		total_amount: selectedItems.reduce(
+			amount: selectedItems.reduce(
 			(total, item) => total + item.price * item.quantity,
 			0,
 		),
 	};
+	
 
 	const availableItems = [
-		{name: 'Item 1', price: 10},
-		{name: 'Item 2', price: 15.5},
-		{name: 'Item 3', price: 20.34},
-		{name: 'Item 4', price: 25.99},
-		{name: 'Item 5', price: 30},
-		{name: 'Item 6', price: 35.1},
+		{name: 'Long black', price: 4.00},
+		{name: 'Flat white', price: 4.00},
+		{name: 'Mocha', price: 4.00},
+		{name: 'Espresso', price: 3.00},
+		{name: 'Macchiato', price: 4.50},
+		{name: 'Croissant', price: 5.00},
 	];
 
 	const handleArrowNavigation = key => {

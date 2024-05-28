@@ -3,7 +3,7 @@ import { Alert } from 'react-native';
 import { LOCAL_IP } from '@env';
 
 const API_BASE_URL = `http://${LOCAL_IP}:8000`;
-const WS_BASE_URL = `ws://${LOCAL_IP}:8000`;
+const WS_BASE_URL = `ws://${LOCAL_IP}:8001`;
 
 export const loginUser = async (email: string, password: string) => {
   try {

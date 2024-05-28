@@ -5,7 +5,7 @@ import {
   FlatList,
   TouchableOpacity,
   StyleSheet,
-  Vibration
+  Vibration,
 } from "react-native";
 import { Button } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -39,7 +39,12 @@ const PaymentScreen = ({ route, navigation }) => {
     try {
       const parsed = JSON.parse(data);
 
-      if (parsed.merchant && parsed.amount && parsed.wallet_id && parsed.account_id) {
+      if (
+        parsed.merchant &&
+        parsed.amount &&
+        parsed.wallet_id &&
+        parsed.account_id
+      ) {
         setIsValidQR(true);
         setParsedData(parsed);
       }
@@ -50,11 +55,12 @@ const PaymentScreen = ({ route, navigation }) => {
 
   const saveTransaction = async (transaction) => {
     try {
+      console.log("from saveTransaction: " , transaction)
       await addTransaction(transaction);
     } catch (error) {
       console.error("Save Transaction error:", error.response.data);
     }
-  }
+  };
 
   const handleConfirmPayment = async () => {
     const selectedCardData = cards[selectedCard];
@@ -66,13 +72,20 @@ const PaymentScreen = ({ route, navigation }) => {
       card_id: selectedCardData.card_id,
       sender: account.wallet.wallet_id,
       recipient: parsedData.wallet_id,
-      description: parsedData.description, };
+      description: parsedData.description,
+      items: parsedData.items,
+    };
 
-      console.log(transaction)
+    console.log("Payment screen:" + transaction);
 
     await saveTransaction(transaction);
     Vibration.vibrate(500);
-    navigation.navigate("PaymentComplete", { parsedData, selectedCardData, date: transaction.date, time: transaction.time });
+    navigation.navigate("PaymentComplete", {
+      parsedData,
+      selectedCardData,
+      date: transaction.date,
+      time: transaction.time,
+    });
   };
 
   return (
@@ -91,8 +104,12 @@ const PaymentScreen = ({ route, navigation }) => {
               <Text style={styles.merchant}>{parsedData.merchant}</Text>
               <Text style={styles.amount}>${parsedData.amount}</Text>
               <Text style={styles.description}>{parsedData.description}</Text>
-              <Text style={styles.date}>Date: {new Date().toLocaleDateString()}</Text>
-              <Text style={styles.time}>Time: {new Date().toLocaleTimeString()}</Text>
+              <Text style={styles.date}>
+                Date: {new Date().toLocaleDateString()}
+              </Text>
+              <Text style={styles.time}>
+                Time: {new Date().toLocaleTimeString()}
+              </Text>
 
               <View style={styles.buttonContainer}>
                 <Button
