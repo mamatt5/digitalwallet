@@ -37,6 +37,7 @@ function AddCardScreen({ navigation, route }) {
   }
 
   const expiryYearRef = useRef(null);
+  const cvvRef = useRef(null);
 
   useEffect(() => {
     if (expiryMonth.length === 2) {
@@ -49,6 +50,12 @@ function AddCardScreen({ navigation, route }) {
       expiryYearRef.current.blur();
     }
   }, [expiryYear, expiryMonth]);
+
+  useEffect(() => {
+    if (cardCVV.length === 3) {
+      cvvRef.current.blur();
+    }
+  }, [cardCVV]);
 
   useEffect(() => {
     if (expiryMonth.length === 2 && expiryYear.length === 2) {
@@ -92,6 +99,7 @@ function AddCardScreen({ navigation, route }) {
 
 
     if (newCardNumberError || newCvvError || newExpiryDateError || parseInt(expiryMonth, 10) < 1) {
+      alert('Please enter valid data into the fields.');
       return;
     }
 
@@ -160,6 +168,7 @@ function AddCardScreen({ navigation, route }) {
             <Text style={styles.separator}>/</Text>
             <View style={styles.smallInputContainer}>
               <TextInput
+                ref={expiryYearRef}
                 style={styles.smallInput}
                 onChangeText={setExpiryYear}
                 value={expiryYear}
@@ -173,8 +182,9 @@ function AddCardScreen({ navigation, route }) {
           </View>
           <View style={styles.inputContainer}>
             <TextInput
+              ref={cvvRef}
               style={styles.input}
-              onChangeText={setCardCVV}
+              onChangeText={handleCvvChange}
               value={cardCVV}
               placeholder="CVV"
               keyboardType="numeric"

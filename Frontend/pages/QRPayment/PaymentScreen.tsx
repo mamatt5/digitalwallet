@@ -242,11 +242,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-between',
   },
-  cardInfo: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
   cardsContainer: {
     marginLeft: 10,
     marginTop: 20,
@@ -257,6 +252,11 @@ const styles = StyleSheet.create({
     width: '90%',
   },
   date: {
+    color: '#ffffff',
+    fontSize: 12 * scale,
+    marginBottom: 5 * scale,
+  },
+  time: {
     color: '#ffffff',
     fontSize: 12 * scale,
     marginBottom: 5 * scale,

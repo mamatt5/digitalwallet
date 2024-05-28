@@ -196,13 +196,6 @@ function GenerateGenericQR({ route, navigation }) {
               >
                 Generate new QR
               </Button>
-              <Button
-                style={styles.generateButton}
-                textColor="black"
-                onPress={() => setIsActive(false)}
-              >
-                Generate new QR
-              </Button>
             </View>
           )}
         </View>
