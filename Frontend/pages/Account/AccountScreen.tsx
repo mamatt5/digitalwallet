@@ -91,8 +91,17 @@ function AccountScreen({ navigation, route }) {
   }, [refresh]);
 
   useEffect(() => {
+
     if (bankCards.length > 0) {
-      fetchTransactions();
+
+      // If statment is here as fetchTransactions for loyalty cards isn't implmeted yet and throws an error
+      // When implemented the if condition can be removed.
+      if (activeTabIndex == 0) {
+        fetchTransactions();
+      }
+      
+      
+      
     }
   }, [bankCards, activeIndex, refresh]);
 
@@ -130,7 +139,10 @@ function AccountScreen({ navigation, route }) {
         </View>
 
         <ScrollView style={styles.transactions}>
-          {transactions.length === 0 ? (
+
+          {/* activeTabIndex === 1 is used as a place holder as fethcing transactions for loyalty cards doesn't work yet
+          once it works it can be removed*/}
+          {transactions.length === 0 || activeTabIndex === 1 ? (
             <View style={styles.noTransactionsContainer}>
               <Text style={styles.noCardText}>No transactions found</Text>
             </View>

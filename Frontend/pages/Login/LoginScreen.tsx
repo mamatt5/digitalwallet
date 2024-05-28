@@ -39,7 +39,6 @@ function LoginScreen({ navigation }) {
   //   ).start();
   // };
 
-
   // useFocusEffect(
   //   React.useCallback(() => {
       

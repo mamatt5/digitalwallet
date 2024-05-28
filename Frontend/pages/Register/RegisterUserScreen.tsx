@@ -71,8 +71,10 @@ function RegisterUserScreen({ navigation }) {
     if (newEmailError) {
       setEmailError(true);
     } else {
-      let resp = (await getAccountFromEmail(email)).data
-      if (resp) {
+
+      let doesEmailExist = (await getAccountFromEmail(email)).data
+      
+      if (doesEmailExist) {
         setEmailError(true)
       } else {
         setEmailError(false)
@@ -83,8 +85,10 @@ function RegisterUserScreen({ navigation }) {
     if (newPhoneNumberError) {
       setMobileError(true);
     } else {
-      let resp = (await mobileExist(phoneNumber)).data
-      if (resp) {
+      
+      let doesMobileExist = (await mobileExist(phoneNumber)).data
+      
+      if (doesMobileExist) {
         setMobileError(true)
       } else {
         setMobileError(false)
