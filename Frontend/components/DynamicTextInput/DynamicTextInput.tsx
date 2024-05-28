@@ -9,6 +9,7 @@ type PlaceholderProps = {
   onChangeText?: (text: string) => void;
   secureTextEntry?: boolean;
   error?: boolean;
+  onFocus?: ()=> void
 };
 
 const styles = StyleSheet.create({
@@ -48,6 +49,8 @@ function DynamicTextInput(props: PlaceholderProps) {
       value={props.value}
       onChangeText={props.onChangeText}
       secureTextEntry={props.secureTextEntry}
+      onFocus={props.onFocus}
+      
     />
   );
 }

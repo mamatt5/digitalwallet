@@ -5,6 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  Alert
   Dimensions,
 } from "react-native";
 import QRCode from "react-native-qrcode-svg";
@@ -26,6 +27,8 @@ function GenerateGenericQR({ route, navigation }) {
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
   const [refresh, setRefresh] = useState(false);
+
+  const [valueError, setValueError] = useState(false);
 
   const fetchAccountInfo = async () => {
     if (account.account_type === "user") {
@@ -64,11 +67,34 @@ function GenerateGenericQR({ route, navigation }) {
     setDescription("");
   }, [refresh]);
 
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      setRefresh((prev) => !prev);
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
+  useEffect(() => {
+    setIsActive(false);
+    setAmount("");
+    setDescription("");
+  }, [refresh]);
+
+  const onValueChange = (event) => {
+    setValueError(false)
+    setAmount(event)
+  }
   const generateQRCode = () => {
-    if (!amount) return;
+
+    if (amount === '' || !/^\d+(\.\d+)?$/.test(amount)) {
+      setValueError(true);
+      Alert.alert('Invalid Payment Value', 'Please enter a valid payment value');
+      return;
+    }
 
     const formattedAmount = parseFloat(amount).toFixed(2);
-
+ 
     const date = new Date();
 
     // QR data
@@ -107,9 +133,9 @@ function GenerateGenericQR({ route, navigation }) {
                 placeholder="0.00"
                 placeholderTextColor="lightgray"
                 value={amount}
-                onChangeText={setAmount}
+                onChangeText={onValueChange}
                 keyboardType="numeric"
-                style={styles.input}
+                style={[styles.input, valueError && styles.errorOutline]}
               />
               <Text style={styles.subheaderText}>Description:</Text>
               <TextInput
@@ -153,6 +179,11 @@ function GenerateGenericQR({ route, navigation }) {
                 color="black"
                 backgroundColor="white"
               />
+              <View style={styles.qrcode}>
+                <Text style={styles.qrDetails}>
+                  Pay ${parseFloat(amount).toFixed(2)} to {merchant} for "{description}"
+                </Text>
+              </View>
 
               <Button
                 style={styles.generateButton}
@@ -198,18 +229,37 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   input: {
+    
     borderColor: "gray",
-    borderWidth: 1,
-    color: "#ffffff",
-    fontSize: 24,
-    height: 40,
-    marginBottom: 20,
-    marginTop: 10,
+    
+    // color: "#ffffff",
+    fontSize: 20,
     paddingLeft: 10,
+    marginTop: 10,
+    marginBottom: 20,
+    
+    backgroundColor: '#ffffff',
+    borderRadius: 5,
+    padding: 10,
+    // width:275
+  },
+  errorOutline: {
+    borderColor: 'red', // Change border color to red when error occurs
+    borderWidth: 2
+  },
+  generateButton: {
+    backgroundColor: "#ffffff",
+    marginTop: 60,
+    width: 200,
+    alignSelf: 'center'
+  
   },
   qrcode: {
     alignItems: "center",
     marginTop: 30,
+  },
+  qrdetails: {
+
   },
   screenContainer: {
     backgroundColor: "#0f003f",

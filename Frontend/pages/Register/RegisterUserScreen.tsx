@@ -71,8 +71,10 @@ function RegisterUserScreen({ navigation }) {
     if (newEmailError) {
       setEmailError(true);
     } else {
-      let resp = (await getAccountFromEmail(email)).data
-      if (resp) {
+
+      let doesEmailExist = (await getAccountFromEmail(email)).data
+      
+      if (doesEmailExist) {
         setEmailError(true)
       } else {
         setEmailError(false)
@@ -83,8 +85,10 @@ function RegisterUserScreen({ navigation }) {
     if (newPhoneNumberError) {
       setMobileError(true);
     } else {
-      let resp = (await mobileExist(phoneNumber)).data
-      if (resp) {
+      
+      let doesMobileExist = (await mobileExist(phoneNumber)).data
+      
+      if (doesMobileExist) {
         setMobileError(true)
       } else {
         setMobileError(false)
@@ -103,7 +107,8 @@ function RegisterUserScreen({ navigation }) {
 
   return (
     <SafeAreaView style={{ backgroundColor: '#0f003f', height: 2000 }}>
-      <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
+      <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }} keyboardVerticalOffset={120}>
+
         <ScrollView>
           <View style={styles.centerView}>
             <Text style={{ color: '#ffffff', fontSize: 40, margin: 30 }}>

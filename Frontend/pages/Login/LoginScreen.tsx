@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import {
-  SafeAreaView, ScrollView, View, Text, StyleSheet, Image, Dimensions, Animated
+  SafeAreaView, ScrollView, View, Text, StyleSheet, Image, Dimensions, Animated, KeyboardAvoidingView
 } from 'react-native';
 import { Button } from 'react-native-paper';
 import DynamicTextInput from '../../components/DynamicTextInput/DynamicTextInput';
@@ -13,6 +13,7 @@ import Genericlogo from '../../assets/Genericlogo.png';
 import APPlogo from '../../assets/APPlogo.png';
 import { Alert } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
+import { getAccountFromEmail } from '../../api/api';
 
 function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
@@ -23,7 +24,7 @@ function LoginScreen({ navigation }) {
 
   const [showFullPass, setShowFullPass] = useState(false);
 
- 
+
   const [fadeAnim, setfadeAnim] = useState(useRef(new Animated.Value(0)))
   const [resetAnimation, setResetAnimation] = useState(false);
 
@@ -39,16 +40,25 @@ function LoginScreen({ navigation }) {
   //   ).start();
   // };
 
-
   // useFocusEffect(
   //   React.useCallback(() => {
-      
+
   //     startAnimation();
   //     setfadeAnim(useRef(new Animated.Value(0)))
   //   }, [navigation])
 
   // )
 
+
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      // Clear the text input value when the screen comes into focus
+      setEmail("")
+      setPassword("")
+    })
+    return unsubscribe;
+  }, [navigation]);
 
   const handleEmailChange = (event) => {
     setEmail(event)
@@ -60,14 +70,26 @@ function LoginScreen({ navigation }) {
     setPasswordError(false)
   }
 
+
+
+
   const handleLogin = async () => {
 
     const newEmailError = email === '' || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
     const newPasswordError = password === '' || !/(?=.*[0-9])(?=.*[A-Z]).+/.test(password);
 
 
+
     if (newEmailError || newPasswordError) {
       setEmailError(true);
+      setPasswordError(true);
+      return;
+    }
+
+    const resp = getAccountFromEmail(email)
+
+    if (!(await resp).data) {
+      setEmailError(true)
       setPasswordError(true);
       return;
     }
@@ -79,8 +101,9 @@ function LoginScreen({ navigation }) {
     // if (newEmailError || newPasswordError) {
     //   return;
     // }
- 
+
     try {
+
       const response = await loginUser(email, password);
       console.log("hi");
       const { account } = response;
@@ -92,6 +115,8 @@ function LoginScreen({ navigation }) {
         console.error('Account object is missing in response');
       }
     } catch (error) {
+      setEmailError(true);
+      setPasswordError(true);
       console.error('Login error:', error);
     }
   };
@@ -99,69 +124,73 @@ function LoginScreen({ navigation }) {
 
 
   return (
-    
-    <SafeAreaView  style={{ backgroundColor: '#0f003f', height: 2000 }}>
-      <Image source={APPlogo} style={styles.APPlogo} />
-      <ScrollView>
-        <View style={styles.centerView}>
-          <Text style={{ color: '#ffffff', fontSize: 30, margin: 30 }}>
-            {'Log in'}
-          </Text>
 
-          <View style={styles.container}>
-         
-            <View>
-              <DynamicTextInput placeholder="EMAIL" onChangeText={(e)=>handleEmailChange(e)} value={email} error={emailError} />
+    <SafeAreaView style={{ backgroundColor: '#0f003f', height: 2000 }}>
+
+      <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }} keyboardVerticalOffset={120}>
+
+        <ScrollView automaticallyAdjustKeyboardInsets={true}>
+          <Image source={APPlogo} style={styles.APPlogo} />
+          <View style={styles.centerView}>
+            <Text style={{ color: '#ffffff', fontSize: 30, margin: 30 }}>
+              {'Log in'}
+            </Text>
+
+            <View style={styles.container}>
+
+              <View>
+                <DynamicTextInput placeholder="EMAIL" onChangeText={(e) => handleEmailChange(e)} value={email} error={emailError} onFocus={() => setEmail("")} />
+              </View>
+              {emailError && (
+                <MaterialIcons
+                  name="error-outline"
+                  onPress={() => Alert.alert('Invalid Email', 'Please enter a valid email')}
+                  color="red"
+                  style={styles.errorIcon}
+                  size={25}
+                />
+              )}
+
             </View>
-            {emailError && (
-              <MaterialIcons
-                name="error-outline"
-                onPress={() => Alert.alert('Invalid Email', 'Please enter a valid email')}
-                color="red"
-                style={styles.errorIcon}
-                size={25}
-              />
-            )}
-         
-         </View>
 
-         <View style={styles.container}>
-            <View>
-              <DynamicTextInput placeholder="PASSWORD" onChangeText={handlePasswordChange} value={password} error={passwordError} secureTextEntry={showFullPass} />
+            <View style={styles.container}>
+              <View>
+                <DynamicTextInput placeholder="PASSWORD" onChangeText={handlePasswordChange} value={password} error={passwordError} secureTextEntry={showFullPass} />
+              </View>
+
+              <Ionicons name={showFullPass ? "eye" : "eye-off"} size={25} color="#fff" onPress={() => setShowFullPass(!showFullPass)} style={styles.eyeButton} />
+
+
+              {passwordError && (
+                <MaterialIcons
+                  name="error-outline"
+                  onPress={() => Alert.alert('Invalid password', 'Please enter a valid password')}
+                  color="red"
+                  style={styles.errorIcon}
+                  size={25}
+                />
+              )}
             </View>
-            
-            <Ionicons name={showFullPass ? "eye" : "eye-off"} size={25} color="#fff" onPress={() => setShowFullPass(!showFullPass)} style={styles.eyeButton}/>
-         
 
-            {passwordError && (
-              <MaterialIcons
-                name="error-outline"
-                onPress={() => Alert.alert('Invalid password', 'Please enter a valid password')}
-                color="red"
-                style={styles.errorIcon}
-                size={25}
-              />
-            )}
-          </View>
-        
             <Button buttonColor="#ffffff" textColor="#000000" onPress={handleLogin} style={styles.buttonContainer}>
               <Text>
                 Log In
               </Text>
             </Button>
-          
-          <Text onPress={() => navigation.navigate('ForgotPassword')} style={styles.linkText}>
-            Forgot Password
-          </Text>
-          <Text onPress={() => navigation.navigate('RegisterOption')} style={styles.linkText}>
-            Sign Up
-          </Text>
-          
 
-        </View>
-      </ScrollView>
+            <Text onPress={() => navigation.navigate('ForgotPassword')} style={styles.linkText}>
+              Forgot Password
+            </Text>
+            <Text onPress={() => navigation.navigate('RegisterOption')} style={styles.linkText}>
+              Sign Up
+            </Text>
+
+
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
-   
+
   );
 }
 
@@ -169,10 +198,10 @@ let screenWidth = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
   APPlogo: {
-    width: screenWidth * 0.5, 
-    height: screenWidth * 0.5, 
-    marginLeft: 'auto', 
-    marginRight: 'auto', 
+    width: screenWidth * 0.5,
+    height: screenWidth * 0.5,
+    marginLeft: 'auto',
+    marginRight: 'auto',
     marginTop: 50
   },
   container: {
@@ -208,7 +237,7 @@ const styles = StyleSheet.create({
     right: 25, // Adjust the position as needed
     opacity: 0.6,
   }
-  
+
 
 });
 

@@ -13,6 +13,25 @@ function AddCardScreen({ navigation, route }) {
   const [expiryYear, setExpiryYear] = useState('');
   const [expiryDate, setExpiryDate] = useState('');
 
+  const [cardNumberError, setCardNumberError] = useState(false)
+  const [expiryDateError, setExpriyDateError] = useState(false)
+  const [cvvError, setCvvError] = useState(false)
+
+  const handleCardNumberChange = (event) => {
+    setCardNumberError(false);
+    setCardNumber(event)
+  }
+
+  const handleCvvChange = (event) => {
+    setCvvError(false);
+    setCardCVV(event)
+  }
+
+  const handleExpiryDate = (event) => {
+    setExpriyDateError(false);
+    setExpiryYear(event)
+  }
+
   const expiryYearRef = useRef(null);
 
   useEffect(() => {
@@ -34,6 +53,8 @@ function AddCardScreen({ navigation, route }) {
   }, [expiryMonth, expiryYear]);
 
   const handleExpiryMonth = (value: string) => {
+    setExpriyDateError(false)
+
     if (parseInt(value, 10) <= 12) {
       setExpiryMonth(value);
     } else {
@@ -43,11 +64,32 @@ function AddCardScreen({ navigation, route }) {
 
   const handleAddCard = () => {
     
-    if (!cardNumber || !expiryDate || !cardCVV || parseInt(expiryMonth, 10) < 1) {
-      alert('Please enter valid data into the fields.');
-      return;
+
+    const newCardNumberError = cardNumber === '' || !/^\d{16}$/.test(cardNumber)
+    const newCvvError = cardCVV === '' || !/^\d{3}$/.test(cardCVV)
+ 
+
+    if (newCardNumberError) {
+      setCardNumberError(true)
     }
 
+    if (newCvvError) {
+      setCvvError(true)
+    }
+
+    const currentDate = new Date();
+    const [month, year] = expiryDate.split('/');
+    const inputDate = new Date(`20${year}`, parseInt(month, 10) - 1, 1); // Assuming all years are in 20XX forma
+    const newExpiryDateError = expiryDate === '' || !/^(0[1-9]|1[0-2])\/([0-9]{2})$/.test(expiryDate)
+
+    if (newExpiryDateError || inputDate <= currentDate) {
+      setExpriyDateError(true)
+    } 
+
+
+    if (newCardNumberError || newCvvError || newExpiryDateError || parseInt(expiryMonth, 10) < 1) {
+      return;
+    }
 
     addCard(cardNumber, expiryDate, cardCVV, account.wallet.wallet_id)
       .then(() => {
@@ -73,13 +115,13 @@ function AddCardScreen({ navigation, route }) {
                 Card number:
               </Text>
               <TextInput
-                style={styles.input}
-                onChangeText={setCardNumber}
+                style={[styles.input, cardNumberError && styles.errorOutline]}
+                onChangeText={handleCardNumberChange}
                 value={cardNumber}
                 placeholder="XXXX XXXX XXXX XXXX"
                 maxLength={16}
                 keyboardType="numeric"
-                onFocus={() => setCardNumber('')}
+                // onFocus={() => setCardNumber('')}
               />
 
               <Text style={styles.labelText}>
@@ -87,7 +129,7 @@ function AddCardScreen({ navigation, route }) {
               </Text>
               <View style={styles.row}>
                 <TextInput
-                  style={styles.smallInput}
+                  style={[styles.input, expiryDateError && styles.errorOutline]}
                   onChangeText={handleExpiryMonth}
                   value={expiryMonth}
                   placeholder="MM"
@@ -103,8 +145,8 @@ function AddCardScreen({ navigation, route }) {
                 <Text style={styles.separator}>/</Text>
                 <TextInput
                   ref={expiryYearRef}
-                  style={styles.smallInput}
-                  onChangeText={setExpiryYear}
+                  style={[styles.input, expiryDateError && styles.errorOutline]}
+                  onChangeText={handleExpiryDate}
                   value={expiryYear}
                   placeholder="YY"
                   keyboardType="numeric"
@@ -118,13 +160,13 @@ function AddCardScreen({ navigation, route }) {
                   CVV:
                 </Text>
                 <TextInput
-                  style={styles.smallInput}
-                  onChangeText={setCardCVV}
+                  style={[styles.smallInput, cvvError && styles.errorOutline]}
+                  onChangeText={handleCvvChange}
                   value={cardCVV}
                   placeholder="XXX"
                   keyboardType="numeric"
                   maxLength={3}
-                  onFocus={() => setCardCVV('')}
+                  // onFocus={() => setCardCVV('')}
                 />
               </View>
             </View>
@@ -166,6 +208,7 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     fontSize: 20,
     margin: 10,
+    
   },
   row: {
     alignItems: 'center',
@@ -191,6 +234,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     margin: 30,
     textAlign: 'center',
+  },
+  errorOutline: {
+    borderColor: 'red', // Change border color to red when error occurs
+    borderWidth: 2
   },
 });
 
