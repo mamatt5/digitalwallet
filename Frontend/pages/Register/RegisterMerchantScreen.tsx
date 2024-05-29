@@ -153,6 +153,7 @@ function RegisterMerchantScreen({ navigation }) {
                   onChangeText={(e)=>handleMobileChange(e)}
                   value={phoneNumber}
                   error={mobileError}
+                  maxLength={10}
                 />
               </View>
               {mobileError && (
