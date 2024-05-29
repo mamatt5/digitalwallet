@@ -86,7 +86,7 @@ function LoginScreen({ navigation }) {
       return;
     }
 
-    const resp = getAccountFromEmail(email)
+    const resp = getAccountFromEmail(email.toLocaleLowerCase())
 
     if (!(await resp).data) {
       setEmailError(true)
@@ -104,10 +104,8 @@ function LoginScreen({ navigation }) {
 
     try {
 
-      const response = await loginUser(email, password);
-      console.log("hi");
+      const response = await loginUser(email.toLocaleLowerCase(), password);
       const { account } = response;
-      console.log('Account data:', account);
 
       if (account) {
         navigation.navigate('Main', { account });
@@ -129,7 +127,7 @@ function LoginScreen({ navigation }) {
 
       <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }} keyboardVerticalOffset={120}>
 
-        <ScrollView automaticallyAdjustKeyboardInsets={true}>
+        <ScrollView>
           <Image source={APPlogo} style={styles.APPlogo} />
           <View style={styles.centerView}>
             <Text style={{ color: '#ffffff', fontSize: 30, margin: 30 }}>
@@ -139,7 +137,7 @@ function LoginScreen({ navigation }) {
             <View style={styles.container}>
 
               <View>
-                <DynamicTextInput placeholder="EMAIL" onChangeText={(e) => handleEmailChange(e)} value={email} error={emailError} onFocus={() => setEmail("")} />
+                <DynamicTextInput placeholder="EMAIL" onChangeText={(e) => handleEmailChange(e)} value={email} error={emailError} keyboardType="email-address"/>
               </View>
               {emailError && (
                 <MaterialIcons
@@ -155,7 +153,7 @@ function LoginScreen({ navigation }) {
 
             <View style={styles.container}>
               <View>
-                <DynamicTextInput placeholder="PASSWORD" onChangeText={handlePasswordChange} value={password} error={passwordError} secureTextEntry={showFullPass} />
+                <DynamicTextInput placeholder="PASSWORD" onChangeText={handlePasswordChange} value={password} error={passwordError} secureTextEntry={!showFullPass} />
               </View>
 
               <Ionicons name={showFullPass ? "eye" : "eye-off"} size={25} color="#fff" onPress={() => setShowFullPass(!showFullPass)} style={styles.eyeButton} />

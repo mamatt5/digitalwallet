@@ -9,7 +9,7 @@ import DebitCard from '../../components/DebitCard';
 import LoyaltyCard from '../../components/LoyaltyCard';
 import Transaction from '../../components/Transaction';
 import {
-  getWalletCards, getMerchant, getUser, getTransactions, fetchLoyaltyCards,
+  getWalletCards, getMerchant, getUser, getTransactionsByWallet, fetchLoyaltyCards,
 } from '../../api/api';
 import CardTabs from '../../components/CardFilterTabs/CardTabs';
 
@@ -47,7 +47,7 @@ function AccountScreen({ navigation, route }) {
   const fetchCards = async () => {
     try {
       const bankCards = await getWalletCards(account.wallet.wallet_id);
-      const loyaltyCards = await fetchLoyaltyCards();
+      const loyaltyCards = await fetchLoyaltyCards(account.wallet.wallet_id);
       setBankCards(bankCards);
       setLoyaltyCards(loyaltyCards);
     } catch (error) {
@@ -57,8 +57,9 @@ function AccountScreen({ navigation, route }) {
 
   const fetchTransactions = async () => {
     try {
-      const response = await getTransactions(bankCards[activeIndex].card_id);
-      setTransactions(response);
+      const response = await getTransactionsByWallet(account.wallet.wallet_id);
+      const sortedResponse = response.sort((a, b) => b.transaction_id - a.transaction_id);
+      setTransactions(sortedResponse);
     } catch (error) {
       console.error('Get Transactions error:', error);
     }
@@ -91,6 +92,7 @@ function AccountScreen({ navigation, route }) {
   useEffect(() => {
     fetchCards();
     fetchAccountInfo();
+    fetchTransactions();
   }, [refresh]);
 
   useEffect(() => {
@@ -129,7 +131,13 @@ function AccountScreen({ navigation, route }) {
         {renderCards()}
         <View style={styles.iconContainer}>
           <TouchableOpacity
-            onPress={() => navigation.navigate('AddCard', { account, refresh })}
+                    onPress={() => {
+                      if (activeTabIndex === 0) {
+                        navigation.navigate('AddCard', { account, refresh });
+                      } else {
+                        navigation.navigate('AddLoyaltyCard', { account, refresh });
+                      }
+                    }}
           >
             <Icon name="plus-square-o" size={40} color="#fff" />
           </TouchableOpacity>
@@ -138,7 +146,7 @@ function AccountScreen({ navigation, route }) {
 
       <View style={styles.transactionContainer}>
         <View>
-          <Text style={styles.titleText}> Transactions </Text>
+          <Text style={styles.titleText}>Wallet transactions</Text>
         </View>
 
         <ScrollView style={styles.transactions}>
@@ -152,7 +160,7 @@ function AccountScreen({ navigation, route }) {
           ) : (
             transactions.map((transaction, index) => (
               <View key={index}>
-                <Transaction transaction={transaction} />
+                <Transaction transaction={transaction} walletId={account.wallet.wallet_id} />
               </View>
             ))
           )}

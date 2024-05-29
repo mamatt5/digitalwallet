@@ -34,6 +34,15 @@ if exist "requirements.txt" (
 REM Start the backend
 echo Starting backend server
 cd app
+
+REM Check if dev_database.db exists and delete it
+if exist "dev_database.db" (
+    echo Deleting existing dev_database.db
+    del dev_database.db
+) else (
+    echo No existing dev_database.db found
+)
+
 where uvicorn
 if %errorlevel% equ 0 (
     start "Backend Server" cmd /k "uvicorn main:app --reload --host 0.0.0.0"
@@ -41,6 +50,13 @@ if %errorlevel% equ 0 (
     start "Backend Server" cmd /k "python -m uvicorn main:app --reload --host 0.0.0.0"
 )
 
+REM Populate database with dataloader
+echo Populating database with dataloader
+if exist "dataloader.py" (
+    python dataloader.py
+) else (
+    echo No dataloader.py found
+)
 
 
 REM ### FRONTEND ###

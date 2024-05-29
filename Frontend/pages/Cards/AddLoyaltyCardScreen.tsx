@@ -1,36 +1,43 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
-   Button, Dimensions, Image, SafeAreaView, Text, TextInput, View, StyleSheet, Keyboard, TouchableWithoutFeedback,
+   Dimensions, Image, SafeAreaView, Text, TextInput, View, StyleSheet, Keyboard, TouchableWithoutFeedback,
   TouchableOpacity,
   Alert,
+  Button,
 } from 'react-native';
-import { addCard } from '../../api/api';
+import { addLoyaltyCard } from '../../api/api';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { MaterialIcons, Ionicons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
+import { CameraView, useCameraPermissions } from "expo-camera";
 
 const { width, height } = Dimensions.get('window');
 const scale = width / 320;
 
-function AddCardScreen({ navigation, route }) {
+function AddLoyaltyCardScreen({ navigation, route }) {
   const { account, fetchCards } = route.params;
   const [cardNumber, setCardNumber] = useState('');
-  const [cardCVV, setCardCVV] = useState('');
+  const [memberName, setMemberName] = useState('');
   const [expiryMonth, setExpiryMonth] = useState('');
   const [expiryYear, setExpiryYear] = useState('');
   const [expiryDate, setExpiryDate] = useState('');
-
-  const [cardNumberError, setCardNumberError] = useState(false)
   const [expiryDateError, setExpriyDateError] = useState(false)
-  const [cvvError, setCvvError] = useState(false)
+  const [permission, requestPermission] = useCameraPermissions();
+
+  const [isScannerVisible, setIsScannerVisible] = useState(false);
+
+  const handleBarcodeScanned = ({ data }) => {
+    setCardNumber(data);
+    setIsScannerVisible(false);
+    Alert.alert('Barcode Scanned', `Card Number: ${data}`);
+  };
+
 
   const handleCardNumberChange = (event) => {
-    setCardNumberError(false);
     setCardNumber(event)
   }
 
-  const handleCvvChange = (event) => {
-    setCvvError(false);
-    setCardCVV(event)
+  const handleMemberNameChange = (event) => {
+    setMemberName(event)
   }
 
   const handleExpiryDate = (event) => {
@@ -39,7 +46,6 @@ function AddCardScreen({ navigation, route }) {
   }
 
   const expiryYearRef = useRef(null);
-  const cvvRef = useRef(null);
 
   useEffect(() => {
     if (expiryMonth.length === 2) {
@@ -52,12 +58,6 @@ function AddCardScreen({ navigation, route }) {
       expiryYearRef.current.blur();
     }
   }, [expiryYear, expiryMonth]);
-
-  useEffect(() => {
-    if (cardCVV.length === 3) {
-      cvvRef.current.blur();
-    }
-  }, [cardCVV]);
 
   useEffect(() => {
     if (expiryMonth.length === 2 && expiryYear.length === 2) {
@@ -75,61 +75,75 @@ function AddCardScreen({ navigation, route }) {
     }
   };
 
-  const handleAddCard = () => {
+  if (!permission) {
+    return <Text>Requesting for camera permission</Text>;
+  }
 
+  if (!permission.granted) {
+    return (
+      <View style={styles.container}>
+        <Text>No access to camera</Text>
+        <View style={styles.permsbuttonContainer}>
+          <Button title="Allow Camera" onPress={requestPermission} />
+        </View>
+      </View>
+    );
+  }
 
-    const newCardNumberError = cardNumber === '' || !/^\d{16}$/.test(cardNumber)
-    const newCvvError = cardCVV === '' || !/^\d{3}$/.test(cardCVV)
-
-
-    if (newCardNumberError) {
-      setCardNumberError(true)
-    }
-
-    if (newCvvError) {
-      setCvvError(true)
-    }
-
+  const handleAddLoyaltyCard = () => {
     const currentDate = new Date();
     const [month, year] = expiryDate.split('/');
-    const inputDate = new Date(`20${year}`, parseInt(month, 10) - 1, 1); // Assuming all years are in 20XX forma
+    const inputDate = new Date(`20${year}`, parseInt(month, 10) - 1, 1);
     const newExpiryDateError = expiryDate === '' || !/^(0[1-9]|1[0-2])\/([0-9]{2})$/.test(expiryDate)
 
     if (newExpiryDateError || inputDate <= currentDate) {
       setExpriyDateError(true)
     }
-    
 
-
-    if (newCardNumberError || newCvvError || newExpiryDateError || parseInt(expiryMonth, 10) < 1 || inputDate <= currentDate) {
-      
+    if (newExpiryDateError || parseInt(expiryMonth, 10) < 1 || inputDate <= currentDate) {
       return;
     }
 
-    addCard(cardNumber, expiryDate, cardCVV, account.wallet.wallet_id)
+    addLoyaltyCard(cardNumber, expiryDate, memberName, account.wallet.wallet_id)
       .then(() => {
         navigation.navigate('AccountHome', { account });
-        Alert.alert("Success", `Card ending in **${cardNumber.slice(-4)} added successfully!`);
+        alert(`Card added successfully!`);
       })
       .catch((error) => {
-        console.error('Add Card error:', error);
+        console.error('Add Loyalty Card error:', error);
       });
   };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <SafeAreaView style={styles.safeArea}>
+        {isScannerVisible ? (
+            <CameraView
+                style={styles.camera}
+                onBarcodeScanned={handleBarcodeScanned}
+                barCodeScannerSettings={{
+                    barCodeTypes: [
+                    'ean13',
+                    'ean8',
+                    'upc_a',
+                    'code128',
+                    ],
+                }}
+                >
+                <View style={styles.barcodeFrame}></View>
+            </CameraView>
+        ) : (
         <View style={styles.container}>
           <Text style={styles.titleText}>
-            Add New Card
+            Add Loyalty Card
           </Text>
           <View style={styles.cardImageContainer}>
             <Image
               style={styles.cardImage}
-              source={require('../../assets/cards.png')}
+              source={require('../../assets/loyaltycards.png')}
             />
           </View>
-          <TouchableOpacity style={styles.scanButton} disabled>
+          <TouchableOpacity style={styles.scanButton} onPress={() => setIsScannerVisible(true)}>
             <MaterialCommunityIcons name="credit-card-scan" size={20} color="#ffffff" />
             <Text style={styles.scanButtonText}>Scan to Add Card</Text>
           </TouchableOpacity>
@@ -138,7 +152,7 @@ function AddCardScreen({ navigation, route }) {
             <Text style={styles.dividerText}>OR</Text>
             <View style={styles.dividerLine} />
           </View>
-          <View style={[styles.inputContainer , cardNumberError && styles.errorOutline]}>
+          <View style={styles.inputContainer}>
             <TextInput
               style={styles.input}
               onChangeText={handleCardNumberChange}
@@ -148,20 +162,9 @@ function AddCardScreen({ navigation, route }) {
               maxLength={16}
               placeholderTextColor="#ffffff"
             />
-
-            {cardNumberError && (
-              <MaterialIcons
-                name="error-outline"
-                onPress={() => Alert.alert('Invalid Card Number', 'Please enter a valid Card Number.\nValid Card NUmber contains 16 digits')}
-                color="red"
-                style={styles.errorIcon}
-                size={25} />
-
-            )}
             <MaterialCommunityIcons name="credit-card" size={20} color="#ffffff" style={styles.icon} />
           </View>
           <View style={styles.row}>
-
             <View style={[styles.smallInputContainer , expiryDateError && styles.errorOutline]}>
               <TextInput
                 style={styles.smallInput}
@@ -204,31 +207,18 @@ function AddCardScreen({ navigation, route }) {
               <MaterialCommunityIcons name="calendar-month" size={20} color="#ffffff" style={styles.icon} />
             </View>
           </View>
-          <View style={[styles.inputContainer , cvvError && styles.errorOutline]}>
+          <View style={styles.inputContainer}>
             <TextInput
-              ref={cvvRef}
               style={styles.input}
-              onChangeText={handleCvvChange}
-              value={cardCVV}
-              placeholder="CVV"
-              keyboardType="numeric"
-              maxLength={3}
+              onChangeText={handleMemberNameChange}
+              value={memberName}
+              placeholder="Member Name"
               placeholderTextColor="#ffffff"
             />
-
-            {cvvError && (
-              <MaterialIcons
-                name="error-outline"
-                onPress={() => Alert.alert('Invalid CVV', 'Please enter a valid CVV.\nOnly 3 digit numbers are allowed.')}
-                color="red"
-                style={styles.errorIcon}
-                size={25} />
-
-            )}
             <MaterialCommunityIcons name="information-outline" size={20} color="#ffffff" style={styles.icon} />
           </View>
           <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.addButton} onPress={() => handleAddCard()}>
+            <TouchableOpacity style={styles.addButton} onPress={() => handleAddLoyaltyCard()}>
               <Text style={styles.addCardbuttonText}>Add Card</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.cancelButton} onPress={() => navigation.goBack()}>
@@ -237,6 +227,7 @@ function AddCardScreen({ navigation, route }) {
           </View>
 
         </View>
+      )}
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );
@@ -256,6 +247,11 @@ const styles = StyleSheet.create({
     color: '#000',
     fontSize: 16,
     textAlign: 'center',
+  },
+  permsbuttonContainer: {
+    alignSelf: "center",
+    width: "50%",
+    marginTop: 70
   },
   buttonContainer: {
     alignItems: 'center',
@@ -278,7 +274,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   cardImage: {
-    height: height * 0.14,
+    height: height * 0.145,
     resizeMode: 'contain',
   },
   cardImageContainer: {
@@ -346,7 +342,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     marginTop: 15 * scale,
-    opacity: 0.5,
     paddingHorizontal: 10 * scale,
     paddingVertical: 5 * scale,
   },
@@ -385,15 +380,26 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   errorOutline: {
-    borderColor: 'red', // Change border color to red when error occurs
+    borderColor: 'red',
     borderWidth: 2
   },
   errorIcon: {
     position: 'relative',
     right: -75
   },
-
-
+  barcodeFrame: {
+    backgroundColor: 'transparent',
+    borderColor: 'white',
+    borderWidth: 2,
+    borderRadius: 10,
+    height: 200,
+    width: 300,
+  },
+  camera: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
 
-export default AddCardScreen;
+export default AddLoyaltyCardScreen;

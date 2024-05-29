@@ -2,10 +2,10 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import React from 'react';
 import QRScanScreen from '../pages/QRScan/QRScanScreen';
-import ReceiptsScreen from '../pages/Receipts/ReceiptsScreen';
 import OverviewScreen from '../pages/Overview/OverviewScreen';
 import AccountNavigator from './AccountNavigator';
 import QRGenerateNavigator from './QRGenerateNavigator';
+import ReceiptNavigator from './ReceiptNavigator';
 
 const Tab = createBottomTabNavigator();
 
@@ -16,6 +16,12 @@ function MainNavigator({ route }) {
       initialRouteName="Account"
       screenOptions={{
         headerShown: false,
+        // tabBarStyle: {
+        //   borderTopLeftRadius: 20,
+        //   borderTopRightRadius: 20,
+        //   bottom: -10,
+        //   backgroundColor: '#0f003f',
+        // }
       }}
     >
       <Tab.Screen
@@ -64,7 +70,8 @@ function MainNavigator({ route }) {
       />
       <Tab.Screen
         name="Receipts"
-        component={ReceiptsScreen}
+        component={ReceiptNavigator}
+        initialParams={{ account }}
         options={{
           tabBarLabel: 'Receipts',
           tabBarIcon: ({ color, size }) => (

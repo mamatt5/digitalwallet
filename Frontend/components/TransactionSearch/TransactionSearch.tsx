@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import {
-  View, StyleSheet, TextInput, ScrollView,
+  View, StyleSheet, TextInput, ScrollView, Pressable,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import TransactionCard from '../TransactionCard/TransactionCard';
@@ -42,60 +42,7 @@ const styles = StyleSheet.create({
   },
 });
 
-function TransactionSearch() {
-  const navigation = useNavigation();
-  // assume this is an API Call
-  const transactions = [
-    {
-      transactionID: 1,
-      vendorName: 'KFC',
-      vendorType: 'consumables',
-      transactionDate: '2021-04-01',
-      amount: '19.95',
-    },
-    {
-      transactionID: 2,
-      vendorName: 'Transport NSW',
-      vendorType: 'travel',
-      transactionDate: '2021-04-01',
-      amount: '10.75',
-    },
-    {
-      transactionID: 3,
-      vendorName: "Wendy's",
-      vendorType: 'consumables',
-      transactionDate: '2021-04-01',
-      amount: '1000',
-    },
-    {
-      transactionID: 4,
-      vendorName: 'Woolworths',
-      vendorType: 'consumables',
-      transactionDate: '2021-04-01',
-      amount: '20',
-    },
-    {
-      transactionID: 5,
-      vendorName: "Carl's Jr.",
-      vendorType: 'consumables',
-      transactionDate: '2021-04-01',
-      amount: '1000',
-    },
-    {
-      transactionID: 6,
-      vendorName: 'KFC',
-      vendorType: 'consumables',
-      transactionDate: '2021-04-01',
-      amount: '1000',
-    },
-    {
-      transactionID: 7,
-      vendorName: 'Burger King',
-      vendorType: 'consumables',
-      transactionDate: '2021-04-01',
-      amount: '1000',
-    },
-  ];
+function TransactionSearch({ navigation, transactions, account }) {
 
   return (
     <View>
@@ -115,7 +62,9 @@ function TransactionSearch() {
       <ScrollView style={styles.recieptsContainer}>
         {transactions.map((transaction, index) => (
           <View key={index}>
-            <TransactionCard transaction={transaction} />
+            <Pressable onPress={() => navigation.navigate('DetailedReceipt', { transaction: transactions[index], account })}>
+              <TransactionCard transaction={transaction} />
+            </Pressable>
           </View>
         ))}
       </ScrollView>

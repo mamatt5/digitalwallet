@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
   buttonText: {
     backgroundColor: 'transparent',
     color: '#ffffff',
-    fontSize: 15 * scale - 20,
+    fontSize: 15,
     textAlign: 'center',
   },
   innerContainer: {

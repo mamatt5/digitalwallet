@@ -1,6 +1,6 @@
 from fastapi import Depends
 
-from models.transaction import Transaction
+from models.transaction import Item, Transaction
 from repositories.transaction_repository import TransactionRepository
 
 
@@ -20,3 +20,12 @@ class TransactionService:
     
     def get_transaction_by_card_id(self, card_id: int) -> list[Transaction]:
         return self.transaction_repository.get_by_card_id(card_id)
+    
+    def get_transaction_by_wallet_id(self, wallet_id: int) -> list[Transaction]:
+        return self.transaction_repository.get_by_wallet_id(wallet_id)
+    
+    def get_transaction_by_sender(self, sender: int) -> list[Transaction]:
+        return self.transaction_repository.get_by_sender(sender)
+    
+    def get_items_by_transaction_id(self, transaction_id: int) -> list[Item]:
+        return self.transaction_repository.get_items_by_transaction_id(transaction_id)

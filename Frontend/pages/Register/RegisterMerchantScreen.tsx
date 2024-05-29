@@ -24,7 +24,7 @@ function RegisterMerchantScreen({ navigation }) {
   const [hidePass, setHidePass] = useState(true);
 
   const handleEmailChange = (event) => {
-    setEmail(event)
+    setEmail(event.toLowerCase())
     setEmailError(false)
   }
 
@@ -72,7 +72,7 @@ function RegisterMerchantScreen({ navigation }) {
     setPasswordError(newPasswordError);
 
     if (!newEmailError && !newPhoneNumberError && !newPasswordError && !newCompanyNameError && !newAbnError) {
-      registerAccount(email, password, phoneNumber, 'merchant', companyName, abn, '', '')
+      registerAccount(email.toLocaleLowerCase(), password, phoneNumber, 'merchant', companyName, abn, '', '')
         .then(navigation.navigate('RegisterSucessful')).catch((error) => console.error('Registration error:', error));
     }
   };
@@ -113,6 +113,8 @@ function RegisterMerchantScreen({ navigation }) {
                   onChangeText={(e)=>handleAbnChange(e)}
                   value={abn}
                   error={abnError}
+                  maxLength={11}
+                  keyboardType='number-pad'
                 />
               </View>
               {abnError && (
@@ -133,6 +135,7 @@ function RegisterMerchantScreen({ navigation }) {
                   onChangeText={(e)=>handleEmailChange(e)}
                   value={email}
                   error={emailError}
+                  keyboardType='email-address'
                 />
               </View>
               {emailError && (
@@ -153,6 +156,8 @@ function RegisterMerchantScreen({ navigation }) {
                   onChangeText={(e)=>handleMobileChange(e)}
                   value={phoneNumber}
                   error={mobileError}
+                  maxLength={10}
+                  keyboardType='phone-pad'
                 />
               </View>
               {mobileError && (
@@ -203,6 +208,9 @@ function RegisterMerchantScreen({ navigation }) {
                 </Text>
               </Button>
             </View>
+            <Text style={{ color: '#ffffff', marginTop: 20 }} onPress={() => navigation.navigate('Login')}>
+              Already have an account
+            </Text>
 
           </View>
         </ScrollView>

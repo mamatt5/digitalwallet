@@ -8,6 +8,7 @@
 		"node": ">=16"
 	},
 	"scripts": {
+		"start" : "python setup_env.py && node dist/cli.js",
 		"format": "prettier --write .",
 		"lint": "xo",
 		"lint:fix": "xo --fix",

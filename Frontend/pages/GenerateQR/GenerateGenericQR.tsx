@@ -70,20 +70,6 @@ function GenerateGenericQR({ route, navigation }) {
     setDescription("");
   }, [refresh]);
 
-  useEffect(() => {
-    const unsubscribe = navigation.addListener("focus", () => {
-      setRefresh((prev) => !prev);
-    });
-
-    return unsubscribe;
-  }, [navigation]);
-
-  useEffect(() => {
-    setIsActive(false);
-    setAmount("");
-    setDescription("");
-  }, [refresh]);
-
   const onValueChange = (event) => {
     setValueError(false)
     setAmount(event)
@@ -111,7 +97,7 @@ function GenerateGenericQR({ route, navigation }) {
 
     setQrValue(JSON.stringify(qrData));
     setIsActive(true);
-    console.log(qrData);
+    console.log("QR generated: ", qrData);
   };
 
   return (
@@ -119,7 +105,7 @@ function GenerateGenericQR({ route, navigation }) {
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.headerText}>Generate QR code</Text>
-          {account.account_type === 'user' && (
+          {account.account_type === 'merchant' && (
           <TouchableOpacity
             onPress={() => navigation.navigate('GenerateQRMerchant')}
             style={styles.iconButton}
@@ -149,22 +135,6 @@ function GenerateGenericQR({ route, navigation }) {
                 onChangeText={setDescription}
                 style={styles.input}
               />
-              {account.account_type === "merchant" && (
-                <View style={{ display: "flex", flexDirection: "row-reverse" }}>
-                  <TouchableOpacity
-                    style={{ width: 40, height: 40 }}
-                    onPress={() => navigation.navigate("GenerateQRMerchant")}>
-
-                    <MaterialCommunityIcons
-                      style={styles.generateMerchantButton}
-                      name="receipt"
-                      size={40}
-                      color="#FFF"
-                    />
-
-                  </TouchableOpacity>
-                </View>
-              )}
               <Button
                 style={styles.generateButton}
                 textColor="black"

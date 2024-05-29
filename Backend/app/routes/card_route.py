@@ -18,7 +18,7 @@ def get_cards_route(card_service: CardService = Depends(CardService)) -> list[Ca
 
 
 @router.get("/getcard/{card_id}")
-def get_card_route(card_id: int, card_service: CardService = Depends(CardService)) -> Card:
+def get_card_route(card_id: int, card_service: CardService = Depends(CardService)) -> CardInfo:
     return card_service.get_card(card_id)
 
 

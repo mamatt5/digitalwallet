@@ -9,6 +9,10 @@ import {
 import { Table, Row, Rows } from "react-native-table-component";
 import QRCode from "react-native-qrcode-svg";
 import { connectToWebSocket, getMerchant } from "../../api/api";
+import React from "react";
+
+const { width, height } = Dimensions.get("window");
+const scale = width / 320;
 
 function QRGenerateMerchantScreen({ route }) {
   const { account } = route.params;
@@ -31,12 +35,9 @@ function QRGenerateMerchantScreen({ route }) {
     fetchAccountInfo(account, setMerchant);
   }, [account]);
 
-
   useEffect(() => {
-
     const ws = connectToWebSocket(`/ws/clients/${clientName}`, (data) => {
       if (data) {
-
         const updatedData = {
           ...data,
           account_id: account.account_id,
@@ -45,18 +46,30 @@ function QRGenerateMerchantScreen({ route }) {
           amount: formatPrice(data.amount),
           description: "POS",
         };
-        console.log("POS generated:", updatedData)
+        console.log("POS generated:", updatedData);
         setTransactionData(updatedData);
         setIsLoading(false);
       }
     });
 
     return ws;
-  }, [clientNameclientName, merchant]);
+  }, [clientName, merchant]);
 
-  const qrData = transactionData
-    ? JSON.stringify(transactionData)
-    : '';
+  const qrData = transactionData ? JSON.stringify(transactionData) : "";
+
+  const formatPrice = (price) => {
+    const number = parseFloat(price);
+    return isNaN(number) ? "0.00" : number.toFixed(2);
+  };
+
+  const tableHead = ["Item", "Quantity", "Price ($)"];
+  const tableData = transactionData
+    ? transactionData.items.map((item) => [
+        item.name,
+        item.quantity.toString(),
+        `$${formatPrice(item.price)}`,
+      ])
+    : [];
 
   return (
     <View style={styles.container}>
@@ -68,29 +81,30 @@ function QRGenerateMerchantScreen({ route }) {
       ) : (
         <View style={styles.content}>
           <Text style={styles.titleText}>Scan the QR code to pay</Text>
-          <Table
-            borderStyle={{ borderWidth: 2, borderColor: "#ffffff" }}
-            style={{ width: "100%" }}
-          >
-            <Row
-              data={tableHead}
-              style={styles.head}
-              textStyle={styles.headerText}
-            />
-            <Rows
-              data={tableData}
-              style={styles.rows}
-              textStyle={styles.text}
-            />
-          </Table>
-          <Text style={styles.totalText}>
-            Total: $
-            {transactionData ? transactionData.amount : "0.00"}
+          <View style={styles.tableContainer}>
+            <Table
+              borderStyle={{ borderWidth: 2, borderColor: "#ffffff" }}
+              style={{ width: "100%" }}
+            >
+              <Row
+                data={tableHead}
+                style={styles.head}
+                textStyle={styles.headerText}
+              />
+              <Rows
+                data={tableData}
+                style={styles.rows}
+                textStyle={styles.text}
+              />
+            </Table>
+            <Text style={styles.totalText}>
+            Total: ${transactionData ? transactionData.amount : "0.00"}
           </Text>
+          </View>
           <View style={styles.qrCodeContainer}>
             <QRCode
               value={qrData}
-              size={0.7 * width}
+              size={0.45 * width}
               color="white"
               backgroundColor="#0f003f"
             />
@@ -115,19 +129,19 @@ const styles = StyleSheet.create({
   },
   head: {
     backgroundColor: "#0b0035",
-    height: 40,
+    height: 25 * scale,
+  },
+  tableContainer: {
+    paddingHorizontal: 30 * scale,
+    width: "100%",
+    alignItems: "center",
   },
   headerText: {
     color: "#fff",
     fontWeight: "bold",
     margin: 6,
     textAlign: "center",
-  },
-  instructionText: {
-    color: "#ffffff",
-    fontSize: 18,
-    marginBottom: 20,
-    textAlign: "center",
+    fontSize: 12 * scale,
   },
   loadingContainer: {
     alignItems: "center",
@@ -136,7 +150,7 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     color: "#ffffff",
-    fontSize: 24,
+    fontSize: 20 * scale,
     marginBottom: 20,
     textAlign: "center",
   },
@@ -151,20 +165,22 @@ const styles = StyleSheet.create({
   },
   text: {
     color: "#ffffff",
-    margin: 6,
+    margin: 6 * scale,
     textAlign: "center",
+    fontSize: 8 * scale,
   },
   titleText: {
     color: "#ffffff",
-    fontSize: 24,
+    fontSize: 24 * scale,
     fontWeight: "bold",
-    marginBottom: 20,
+    marginBottom: 20 * scale,
     textAlign: "center",
   },
   totalText: {
     color: "#ffffff",
-    fontSize: 20,
+    fontSize: 10 * scale,
     marginVertical: 20,
+    fontWeight: "bold",
   },
 });
 

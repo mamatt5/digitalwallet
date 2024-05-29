@@ -1,64 +1,34 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {SafeAreaView, ScrollView, View, Text, StyleSheet, TextInput, Pressable} from 'react-native';
 import TransactionSearch from '../../components/TransactionSearch/TransactionSearch';
 import ProfileButton from '../../components/ProfileButton/ProfileButton';
-import AwesomeIcon from 'react-native-vector-icons/FontAwesome';
-import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Button } from 'react-native-paper';
 import ProfileModal from '../../components/ProfileModal/ProfileModal';
+import { getTransactionsBySender, getMerchant } from '../../api/api';
 
-function ReceiptsScreen({ navigation }) {
-  // change to axios call when transaction objects are done
-  const transactions = [
-    {
-      transaction_ID: 1,
-      vendor_name: 'McDonalds',
-      transaction_date: '2021-04-01',
-      amount: '$1000',
-    },
-    {
-      transaction_ID: 2,
-      vendor_name: 'Hungry Jacks',
-      transaction_date: '2021-04-01',
-      amount: '$1000',
-    },
-    {
-      transaction_ID: 3,
-      vendor_name: "Wendy's",
-      transaction_date: '2021-04-01',
-      amount: '$1000',
-    },
-    {
-      transaction_ID: 4,
-      vendor_name: 'Jollibee',
-      transaction_date: '2021-04-01',
-      amount: '$1000',
-    },
-    {
-      transaction_ID: 5,
-      vendor_name: "Carl's Jr.",
-      transaction_date: '2021-04-01',
-      amount: '$1000',
-    },
-    {
-      transaction_ID: 6,
-      vendor_name: 'KFC',
-      transaction_date: '2021-04-01',
-      amount: '$1000',
-    },
-    {
-      transaction_ID: 7,
-      vendor_name: 'Burger King',
-      transaction_date: '2021-04-01',
-      amount: '$1000',
-    },
-  ];
+function ReceiptsScreen({ navigation, route }) {
+  const { account } = route.params
+
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [transactions, setTransactions] = useState([]);
 
   function handleModal(modalValue) {
     setIsModalOpen(modalValue);
   };
+
+  const fetchTransactionsBySender = async () => {
+    try {
+      const transactions = await getTransactionsBySender(account.wallet.wallet_id);
+      const sortedTransactions = transactions.sort((a, b) => b.transaction_id - a.transaction_id);
+      setTransactions(sortedTransactions);
+    } catch (error) {
+      console.error('Get Transactions error:', error);
+    }
+  }
+
+  useEffect(() => {
+    fetchTransactionsBySender();
+  }, [])
 
   return (
     <SafeAreaView style={styles.container}>
@@ -76,7 +46,7 @@ function ReceiptsScreen({ navigation }) {
         <View style={styles.bodyContainer}>
           <Text style={styles.searchbarTitle}>Recent Activity</Text>
         </View>
-        <TransactionSearch />
+        <TransactionSearch navigation={navigation} transactions={transactions} account={account} />
       </ScrollView>
     </SafeAreaView>
   );
