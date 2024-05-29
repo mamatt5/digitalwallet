@@ -203,6 +203,9 @@ function RegisterMerchantScreen({ navigation }) {
                 </Text>
               </Button>
             </View>
+            <Text style={{ color: '#ffffff', marginTop: 20 }} onPress={() => navigation.navigate('Login')}>
+              Already have an account
+            </Text>
 
           </View>
         </ScrollView>
