@@ -51,7 +51,7 @@ function DynamicTextInput(props: PlaceholderProps) {
       onChangeText={props.onChangeText}
       secureTextEntry={props.secureTextEntry}
       onFocus={props.onFocus}
-      maxLength={props.maxLength}
+      maxLength={props.maxLength ? props.maxLength : 10000}
       
     />
   );

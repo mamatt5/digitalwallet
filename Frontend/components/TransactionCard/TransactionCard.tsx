@@ -84,11 +84,9 @@ const styles = StyleSheet.create({
 });
 
 function TransactionCard({ transaction }) {
-  const navigation = useNavigation();
-
   return (
     <View style={styles.container}>
-      <Pressable onPress={() => navigation.navigate('Login')} style={styles.pageContainer}>
+      <View style={styles.pageContainer}>
         {/* Vender Icon */}
         <View style={styles.vendorIconContainer}>
           <Icon
@@ -123,7 +121,7 @@ function TransactionCard({ transaction }) {
             {transaction.amount ? transaction.amount : '0'}
           </Text>
         </View>
-      </Pressable>
+      </View>
     </View>
   );
 }

@@ -9,6 +9,7 @@ import ResetPasswordScreen from '../pages/ForgotPassword/ResetPasswordScreen';
 import RegisterSucessScreen from '../pages/Register/RegisterSucessScreen';
 import ResetPasswordSuccessfulScreen from '../pages/ForgotPassword/ResetPasswordSuccessfulScreen';
 import ReceiptsScreen from '../pages/Receipts/ReceiptsScreen';
+import DetailedReceiptsScreen from '../pages/DetailedReceipt/DetailedReceipt';
 
 const AuthStack = createStackNavigator();
 
@@ -32,6 +33,8 @@ function AuthNavigator() {
       <AuthStack.Screen name="RegisterSucessful" component={RegisterSucessScreen} />
       <AuthStack.Screen name="ResetPasswordSuccessful" component={ResetPasswordSuccessfulScreen} />
       <AuthStack.Screen name="Receipts" component={ReceiptsScreen} />
+      <AuthStack.Screen name="DetailedReceipt" component={DetailedReceiptsScreen} />
+
     </AuthStack.Navigator>
   );
 }

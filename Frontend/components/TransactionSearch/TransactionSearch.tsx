@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import {
-  View, StyleSheet, TextInput, ScrollView,
+  View, StyleSheet, TextInput, ScrollView, Pressable,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import TransactionCard from '../TransactionCard/TransactionCard';
@@ -42,8 +42,7 @@ const styles = StyleSheet.create({
   },
 });
 
-function TransactionSearch() {
-  const navigation = useNavigation();
+function TransactionSearch({ navigation }) {
   // assume this is an API Call
   const transactions = [
     {
@@ -115,7 +114,9 @@ function TransactionSearch() {
       <ScrollView style={styles.recieptsContainer}>
         {transactions.map((transaction, index) => (
           <View key={index}>
-            <TransactionCard transaction={transaction} />
+            <Pressable onPress={() => navigation.navigate('DetailedReceipt', { transaction: transactions[index]})}>
+              <TransactionCard transaction={transaction} />
+            </Pressable>
           </View>
         ))}
       </ScrollView>
