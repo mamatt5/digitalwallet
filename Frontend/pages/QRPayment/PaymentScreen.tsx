@@ -141,6 +141,7 @@ const PaymentScreen = ({ route, navigation }) => {
                     {cards.length > 0 ? (
                       <FlatList
                         data={cards}
+                        nestedScrollEnabled={true}
                         keyExtractor={(item, index) => index.toString()}
                         renderItem={({ item, index }) => (
                           <TouchableOpacity

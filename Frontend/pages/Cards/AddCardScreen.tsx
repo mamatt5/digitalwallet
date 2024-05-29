@@ -87,7 +87,7 @@ function AddCardScreen({ navigation, route }) {
     } 
 
 
-    if (newCardNumberError || newCvvError || newExpiryDateError || parseInt(expiryMonth, 10) < 1) {
+    if (newCardNumberError || newCvvError || newExpiryDateError || parseInt(expiryMonth, 10) < 1 || inputDate <= currentDate) {
       return;
     }
 
@@ -141,6 +141,7 @@ function AddCardScreen({ navigation, route }) {
                     }
                   }}
                 />
+
                 <Text style={styles.separator}>/</Text>
                 <TextInput
                   ref={expiryYearRef}
