@@ -34,21 +34,21 @@ function DetailedReceiptsScreen({ navigation, route }) {
   const fetchMerchant = async () => {
     try {
       const merchant = await getMerchant(transaction.vendor);
-      setVendor(merchant.company_name)
+      setVendor(merchant.company_name);
     } catch (error) {
       console.error("Get Merchant error:", error);
     }
-  }
+  };
 
   const fetchCard = async () => {
     try {
       const response = await getCard(transaction.card_id);
-      console.log("card response: ", response)
+      console.log("card response: ", response);
       setCard(response.card_number);
     } catch (error) {
       console.error("Get Card error:", error);
     }
-  }
+  };
 
   useEffect(() => {
     fetchItems();
@@ -121,7 +121,7 @@ function DetailedReceiptsScreen({ navigation, route }) {
           <ScrollView style={styles.itemScrollContainer}>
             {items.map((item, index) => (
               <DetailedItemCard
-              key={index}
+                key={index}
                 itemDetails={{
                   itemName: item.name,
                   itemAmount: item.quantity,
@@ -136,19 +136,32 @@ function DetailedReceiptsScreen({ navigation, route }) {
       <View style={styles.cardDetailsContainer}>
         <View style={styles.cardDetails}>
           <View style={styles.cardHeaderText}>
-            <Text style={styles.cardHeaderTotal}>Total({items.length} {items.length > 1 ? "items" : "item"})</Text>
-            <Text style={styles.cardHeaderPrice}>${(transaction.amount/1.1).toFixed(2)}</Text>
+            <Text style={styles.cardHeaderTotal}>
+              Total(
+              {items.reduce((total, item) => total + item.quantity, 0)}
+              {items.reduce((total, item) => total + item.quantity, 0) > 1
+                ? " items"
+                : " item"}
+              )
+            </Text>
+            <Text style={styles.cardHeaderPrice}>
+              ${(transaction.amount / 1.1).toFixed(2)}
+            </Text>
           </View>
           <View style={styles.cardHeaderText}>
             <Text style={styles.gstHeader}>#Total includes GST</Text>
-            <Text style={styles.gstPrice}>${(transaction.amount/11).toFixed(2)}</Text>
+            <Text style={styles.gstPrice}>
+              ${(transaction.amount / 11).toFixed(2)}
+            </Text>
           </View>
           <View style={styles.paymentHeader}>
             <Text style={styles.paymentText}>Payment</Text>
           </View>
           <View style={styles.cardContainer}>
             <Icon name={getCardLogo(card)} size={30} color="#FFFFFF" />
-            <Text style={styles.cardNumberText}>Card ending in **{card.slice(-4)}</Text>
+            <Text style={styles.cardNumberText}>
+              Card ending in **{card.slice(-4)}
+            </Text>
           </View>
         </View>
       </View>
@@ -223,7 +236,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   itemScrollContainer: {
-    height: 150,
+    height: 250,
   },
   cardDetailsContainer: {
     backgroundColor: "#696087",

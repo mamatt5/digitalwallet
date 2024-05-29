@@ -86,7 +86,7 @@ function LoginScreen({ navigation }) {
       return;
     }
 
-    const resp = getAccountFromEmail(email)
+    const resp = getAccountFromEmail(email.toLocaleLowerCase())
 
     if (!(await resp).data) {
       setEmailError(true)
@@ -104,7 +104,7 @@ function LoginScreen({ navigation }) {
 
     try {
 
-      const response = await loginUser(email, password);
+      const response = await loginUser(email.toLocaleLowerCase(), password);
       const { account } = response;
 
       if (account) {
@@ -153,7 +153,7 @@ function LoginScreen({ navigation }) {
 
             <View style={styles.container}>
               <View>
-                <DynamicTextInput placeholder="PASSWORD" onChangeText={handlePasswordChange} value={password} error={passwordError} secureTextEntry={showFullPass} />
+                <DynamicTextInput placeholder="PASSWORD" onChangeText={handlePasswordChange} value={password} error={passwordError} secureTextEntry={!showFullPass} />
               </View>
 
               <Ionicons name={showFullPass ? "eye" : "eye-off"} size={25} color="#fff" onPress={() => setShowFullPass(!showFullPass)} style={styles.eyeButton} />

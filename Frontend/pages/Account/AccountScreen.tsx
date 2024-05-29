@@ -92,6 +92,7 @@ function AccountScreen({ navigation, route }) {
   useEffect(() => {
     fetchCards();
     fetchAccountInfo();
+    fetchTransactions();
   }, [refresh]);
 
   useEffect(() => {

@@ -17,14 +17,21 @@ const Transaction = ({ transaction, walletId }) => {
 
   const fetchAccount = async () => {
     try {
-      const account = await getAccount(vendor);
+      let accountId;
+      if (sender === walletId) {
+        accountId = recipient;
+      } else if (recipient === walletId) {
+        accountId = sender;
+      }
+  
+      const account = await getAccount(accountId);
       
       if (account.account_type === "user") {
-        const user = await getUser(vendor);
+        const user = await getUser(accountId);
         setVendorName(user.first_name + " " + user.last_name);
         
       } else if (account.account_type === "merchant") {
-        const merchant = await getMerchant(vendor);
+        const merchant = await getMerchant(accountId);
         setVendorName(merchant.company_name);
       }
     } catch (error) {

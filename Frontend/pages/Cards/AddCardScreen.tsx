@@ -109,7 +109,7 @@ function AddCardScreen({ navigation, route }) {
     addCard(cardNumber, expiryDate, cardCVV, account.wallet.wallet_id)
       .then(() => {
         navigation.navigate('AccountHome', { account });
-        alert(`Card ending in **${cardNumber.slice(-4)} added successfully!`);
+        Alert.alert("Success", `Card ending in **${cardNumber.slice(-4)} added successfully!`);
       })
       .catch((error) => {
         console.error('Add Card error:', error);
@@ -219,7 +219,7 @@ function AddCardScreen({ navigation, route }) {
             {cvvError && (
               <MaterialIcons
                 name="error-outline"
-                onPress={() => Alert.alert('Invalid CVV', 'Please enter a valid CVV.\nONly 3 digit numbers are allowed.')}
+                onPress={() => Alert.alert('Invalid CVV', 'Please enter a valid CVV.\nOnly 3 digit numbers are allowed.')}
                 color="red"
                 style={styles.errorIcon}
                 size={25} />
