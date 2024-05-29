@@ -11,6 +11,7 @@ type PlaceholderProps = {
   error?: boolean;
   onFocus?: ()=> void
   maxLength?: number
+  keyboardType?: 'default' | 'numeric' | 'email-address' | 'phone-pad' | 'decimal-pad' | 'number-pad' | 'ascii-capable' | 'url';
 };
 
 const styles = StyleSheet.create({
@@ -52,7 +53,7 @@ function DynamicTextInput(props: PlaceholderProps) {
       secureTextEntry={props.secureTextEntry}
       onFocus={props.onFocus}
       maxLength={props.maxLength ? props.maxLength : 10000}
-      
+      keyboardType={props.keyboardType}
     />
   );
 }

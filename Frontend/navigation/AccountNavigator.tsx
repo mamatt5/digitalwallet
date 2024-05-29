@@ -5,6 +5,7 @@ import AddCardScreen from '../pages/Cards/AddCardScreen';
 import PaymentScreen from '../pages/QRPayment/PaymentScreen';
 import PaymentComplete from '../pages/QRPayment/PaymentComplete';
 import QRGenerateScreenMerchant from '../pages/GenerateQR/GenerateQRMerchantScreen';
+import AddLoyaltyCardScreen from '../pages/Cards/AddLoyaltyCardScreen';
 
 const AccountStack = createStackNavigator();
 
@@ -29,6 +30,10 @@ function AuthNavigator({ route }) {
       <AccountStack.Screen
         name="AddCard"
         component={AddCardScreen}
+      />
+      <AccountStack.Screen
+        name="AddLoyaltyCard"
+        component={AddLoyaltyCardScreen}
       />
       <AccountStack.Screen
         name="QRPayment"

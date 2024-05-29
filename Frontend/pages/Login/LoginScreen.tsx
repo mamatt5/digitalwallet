@@ -74,6 +74,7 @@ function LoginScreen({ navigation }) {
 
 
   const handleLogin = async () => {
+    console.log("help")
 
     const newEmailError = email === '' || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
     const newPasswordError = password === '' || !/(?=.*[0-9])(?=.*[A-Z]).+/.test(password);
@@ -86,7 +87,7 @@ function LoginScreen({ navigation }) {
       return;
     }
 
-    const resp = getAccountFromEmail(email)
+    const resp = getAccountFromEmail(email.toLocaleLowerCase())
 
     if (!(await resp).data) {
       setEmailError(true)
@@ -139,7 +140,7 @@ function LoginScreen({ navigation }) {
             <View style={styles.container}>
 
               <View>
-                <DynamicTextInput placeholder="EMAIL" onChangeText={(e) => handleEmailChange(e)} value={email} error={emailError} />
+                <DynamicTextInput placeholder="EMAIL" onChangeText={(e) => handleEmailChange(e)} value={email} error={emailError} keyboardType="email-address"/>
               </View>
               {emailError && (
                 <MaterialIcons

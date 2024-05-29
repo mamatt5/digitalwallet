@@ -113,6 +113,8 @@ function RegisterMerchantScreen({ navigation }) {
                   onChangeText={(e)=>handleAbnChange(e)}
                   value={abn}
                   error={abnError}
+                  maxLength={11}
+                  keyboardType='number-pad'
                 />
               </View>
               {abnError && (
@@ -133,6 +135,7 @@ function RegisterMerchantScreen({ navigation }) {
                   onChangeText={(e)=>handleEmailChange(e)}
                   value={email}
                   error={emailError}
+                  keyboardType='email-address'
                 />
               </View>
               {emailError && (
@@ -154,6 +157,7 @@ function RegisterMerchantScreen({ navigation }) {
                   value={phoneNumber}
                   error={mobileError}
                   maxLength={10}
+                  keyboardType='phone-pad'
                 />
               </View>
               {mobileError && (

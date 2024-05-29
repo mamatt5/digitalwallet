@@ -167,6 +167,7 @@ function RegisterUserScreen({ navigation }) {
                   onChangeText={(e)=>handleEmailChange(e)}
                   value={email}
                   error={emailError}
+                  keyboardType='email-address'
                 />
               </View>
 
@@ -190,6 +191,7 @@ function RegisterUserScreen({ navigation }) {
                   value={phoneNumber}
                   error={mobileError}
                   maxLength={10}
+                  keyboardType='phone-pad'
                 />
               </View>
 

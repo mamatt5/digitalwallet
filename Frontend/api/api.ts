@@ -14,6 +14,7 @@ export const loginUser = async (email: string, password: string) => {
       client_secret: '',
       scope: '',
     });
+    console.log(requestData)
 
     const response = await axios.post(`${API_BASE_URL}/auth/login`, requestData.toString(), {
       headers: {
@@ -67,17 +68,15 @@ export const getWalletCards = async (walletId: string) => {
   }
 };
 
-export const fetchLoyaltyCards = async () => [
-  {
-    card_number: '1234567890123451', member_name: 'Member Name', card_expiry: '12/24',
-  },
-  {
-    card_number: '2345678901234563', member_name: 'Member Name', card_expiry: '11/25',
-  },
-  {
-    card_number: '2345678901234564', member_name: 'Member Name', card_expiry: '10/23',
-  },
-];
+export const fetchLoyaltyCards = async (walletId: string) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/loyaltycards/getcardsfromwallet/${walletId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Get Wallet Loyalty Cards error:', error);
+    throw error;
+  }
+};
 
 export const addCard = async (cardNumber: string, expiryDate: string, cardCVV: string, walletId: string) => {
   try {
@@ -93,6 +92,23 @@ export const addCard = async (cardNumber: string, expiryDate: string, cardCVV: s
     throw error;
   }
 };
+
+export const addLoyaltyCard = async (cardNumber: string, expiryDate: string, memberName: string, walletId: string) => {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/loyaltycards/addcard`, {
+      card_number: cardNumber,
+      card_expiry: expiryDate,
+      member_name: memberName,
+      wallet_id: walletId,
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Add Loyalty Card error:', error);
+    throw error;
+  }
+};
+
+
 
 export const getUser = async (accountId: string) => {
   try {

@@ -47,7 +47,7 @@ function AccountScreen({ navigation, route }) {
   const fetchCards = async () => {
     try {
       const bankCards = await getWalletCards(account.wallet.wallet_id);
-      const loyaltyCards = await fetchLoyaltyCards();
+      const loyaltyCards = await fetchLoyaltyCards(account.wallet.wallet_id);
       setBankCards(bankCards);
       setLoyaltyCards(loyaltyCards);
     } catch (error) {
@@ -129,7 +129,13 @@ function AccountScreen({ navigation, route }) {
         {renderCards()}
         <View style={styles.iconContainer}>
           <TouchableOpacity
-            onPress={() => navigation.navigate('AddCard', { account, refresh })}
+                    onPress={() => {
+                      if (activeTabIndex === 0) {
+                        navigation.navigate('AddCard', { account, refresh });
+                      } else {
+                        navigation.navigate('AddLoyaltyCard', { account, refresh });
+                      }
+                    }}
           >
             <Icon name="plus-square-o" size={40} color="#fff" />
           </TouchableOpacity>
