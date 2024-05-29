@@ -1,14 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
    Button, Dimensions, Image, SafeAreaView, Text, TextInput, View, StyleSheet, Keyboard, TouchableWithoutFeedback,
-  Alert,
   TouchableOpacity,
   Alert,
 } from 'react-native';
 import { addCard } from '../../api/api';
-import { MaterialIcons, Ionicons } from '@expo/vector-icons'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
 import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 
 const { width, height } = Dimensions.get('window');
@@ -101,7 +98,7 @@ function AddCardScreen({ navigation, route }) {
     if (newExpiryDateError || inputDate <= currentDate) {
       setExpriyDateError(true)
     }
-    }
+    
 
 
     if (newCardNumberError || newCvvError || newExpiryDateError || parseInt(expiryMonth, 10) < 1 || inputDate <= currentDate) {
@@ -394,17 +391,9 @@ const styles = StyleSheet.create({
   errorIcon: {
     position: 'relative',
     right: -75
-  }
+  },
 
 
-  errorIcon: {
-    position: 'relative', // Position the icon absolutely
-    right: -15, // Adjust the position as needed
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
 });
 
 export default AddCardScreen;
