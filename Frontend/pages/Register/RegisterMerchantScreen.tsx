@@ -24,7 +24,7 @@ function RegisterMerchantScreen({ navigation }) {
   const [hidePass, setHidePass] = useState(true);
 
   const handleEmailChange = (event) => {
-    setEmail(event)
+    setEmail(event.toLowerCase())
     setEmailError(false)
   }
 
@@ -72,7 +72,7 @@ function RegisterMerchantScreen({ navigation }) {
     setPasswordError(newPasswordError);
 
     if (!newEmailError && !newPhoneNumberError && !newPasswordError && !newCompanyNameError && !newAbnError) {
-      registerAccount(email, password, phoneNumber, 'merchant', companyName, abn, '', '')
+      registerAccount(email.toLowerCase(), password, phoneNumber, 'merchant', companyName, abn, '', '')
         .then(navigation.navigate('RegisterSucessful')).catch((error) => console.error('Registration error:', error));
     }
   };
