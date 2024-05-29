@@ -70,7 +70,10 @@ function App() {
 		{name: 'Mocha', price: 4.00},
 		{name: 'Espresso', price: 3.00},
 		{name: 'Macchiato', price: 4.50},
+		{name: 'Matcha Latte', price: 5.00},
 		{name: 'Croissant', price: 5.00},
+		{name: 'Brownie', price: 4.00},
+		{name: 'Egg roll', price: 8.00},
 	];
 
 	const handleArrowNavigation = key => {
@@ -181,7 +184,7 @@ function App() {
 		>
 			<Header />
 			<Box flexDirection="row">
-				<Box flexDirection="column" width={40} borderStyle="single">
+				<Box flexDirection="column" width={60} borderStyle="single">
 					<Text>
 						<Text bold color="yellow">
 							Transaction ID:

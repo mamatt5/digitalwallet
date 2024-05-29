@@ -42,59 +42,7 @@ const styles = StyleSheet.create({
   },
 });
 
-function TransactionSearch({ navigation }) {
-  // assume this is an API Call
-  const transactions = [
-    {
-      transactionID: 1,
-      vendorName: 'KFC',
-      vendorType: 'consumables',
-      transactionDate: '2021-04-01',
-      amount: '19.95',
-    },
-    {
-      transactionID: 2,
-      vendorName: 'Transport NSW',
-      vendorType: 'travel',
-      transactionDate: '2021-04-01',
-      amount: '10.75',
-    },
-    {
-      transactionID: 3,
-      vendorName: "Wendy's",
-      vendorType: 'consumables',
-      transactionDate: '2021-04-01',
-      amount: '1000',
-    },
-    {
-      transactionID: 4,
-      vendorName: 'Woolworths',
-      vendorType: 'consumables',
-      transactionDate: '2021-04-01',
-      amount: '20',
-    },
-    {
-      transactionID: 5,
-      vendorName: "Carl's Jr.",
-      vendorType: 'consumables',
-      transactionDate: '2021-04-01',
-      amount: '1000',
-    },
-    {
-      transactionID: 6,
-      vendorName: 'KFC',
-      vendorType: 'consumables',
-      transactionDate: '2021-04-01',
-      amount: '1000',
-    },
-    {
-      transactionID: 7,
-      vendorName: 'Burger King',
-      vendorType: 'consumables',
-      transactionDate: '2021-04-01',
-      amount: '1000',
-    },
-  ];
+function TransactionSearch({ navigation, transactions }) {
 
   return (
     <View>

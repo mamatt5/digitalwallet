@@ -12,6 +12,8 @@ const Transaction = ({ transaction, walletId }) => {
     amount,
   } = transaction;
 
+  console.log(transaction)
+
   const [vendorName, setVendorName] = useState("");
   const [isSender, setIsSender] = useState(false);
 
@@ -36,6 +38,7 @@ const Transaction = ({ transaction, walletId }) => {
     fetchAccount();
     if (sender === walletId) {
       setIsSender(true);
+
     } else if (recipient === walletId) {
       setIsSender(false);
     }
@@ -85,10 +88,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   sender: {
-    color: "lightred",
+    color: "#F22625",
   },
   recipient: {
-    color: "lightgreen",
+    color: "#75D940",
   },
   dashedLine: {
     borderTopWidth: 1,

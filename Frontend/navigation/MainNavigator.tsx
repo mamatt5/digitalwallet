@@ -71,6 +71,7 @@ function MainNavigator({ route }) {
       <Tab.Screen
         name="Receipts"
         component={ReceiptsScreen}
+        initialParams={{ account }}
         options={{
           tabBarLabel: 'Receipts',
           tabBarIcon: ({ color, size }) => (

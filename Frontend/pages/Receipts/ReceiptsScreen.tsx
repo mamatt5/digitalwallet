@@ -1,61 +1,47 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {SafeAreaView, ScrollView, View, Text, StyleSheet, TextInput, Pressable} from 'react-native';
 import TransactionSearch from '../../components/TransactionSearch/TransactionSearch';
 import ProfileButton from '../../components/ProfileButton/ProfileButton';
 import ProfileModal from '../../components/ProfileModal/ProfileModal';
+import { getTransactionsBySender, getMerchant } from '../../api/api';
 
-function ReceiptsScreen({ navigation }) {
-  // change to axios call when transaction objects are done
-  const transactions = [
-    {
-      transaction_ID: 1,
-      vendor_name: 'McDonalds',
-      transaction_date: '2021-04-01',
-      amount: '$1000',
-    },
-    {
-      transaction_ID: 2,
-      vendor_name: 'Hungry Jacks',
-      transaction_date: '2021-04-01',
-      amount: '$1000',
-    },
-    {
-      transaction_ID: 3,
-      vendor_name: "Wendy's",
-      transaction_date: '2021-04-01',
-      amount: '$1000',
-    },
-    {
-      transaction_ID: 4,
-      vendor_name: 'Jollibee',
-      transaction_date: '2021-04-01',
-      amount: '$1000',
-    },
-    {
-      transaction_ID: 5,
-      vendor_name: "Carl's Jr.",
-      transaction_date: '2021-04-01',
-      amount: '$1000',
-    },
-    {
-      transaction_ID: 6,
-      vendor_name: 'KFC',
-      transaction_date: '2021-04-01',
-      amount: '$1000',
-    },
-    {
-      transaction_ID: 7,
-      vendor_name: 'Burger King',
-      transaction_date: '2021-04-01',
-      amount: '$1000',
-    },
-  ];
+function ReceiptsScreen({ navigation, route }) {
+  const { account } = route.params
+
+  console.log("account: ", account)
+
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [transactions, setTransactions] = useState([]);
 
   function handleModal(modalValue) {
     setIsModalOpen(modalValue);
   };
+
+  const fetchTransactionsBySender = async () => {
+    try {
+      const transactions = await getTransactionsBySender(account.wallet.wallet_id); //should be recipient
+      // console.log("transactions by sender: ", transactions)
+      setTransactions(transactions);
+    } catch (error) {
+      console.error('Get Transactions error:', error);
+    }
+  }
+
+  const fetchMerchant = async (merchantId) => {
+    try {
+      const merchant = await getMerchant(merchantId);
+      console.log("merchant: ", merchant)
+      return merchant;
+    } catch (error) {
+      console.error('Get Merchant error:', error);
+    }
+  }
+
+  useEffect(() => {
+    fetchTransactionsBySender();
+    fetchMerchant(account.account_id);
+  }, [])
 
   return (
     <SafeAreaView style={styles.container}>
@@ -73,7 +59,7 @@ function ReceiptsScreen({ navigation }) {
         <View style={styles.bodyContainer}>
           <Text style={styles.searchbarTitle}>Recent Activity</Text>
         </View>
-        <TransactionSearch navigation={navigation} />
+        <TransactionSearch navigation={navigation} transactions={transactions} />
       </ScrollView>
     </SafeAreaView>
   );

@@ -105,7 +105,7 @@ function LoginScreen({ navigation }) {
 
     try {
 
-      const response = await loginUser(email.toLowerCase(), password);
+      const response = await loginUser(email, password);
       console.log("hi");
       const { account } = response;
       console.log('Account data:', account);

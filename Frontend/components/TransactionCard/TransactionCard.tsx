@@ -91,7 +91,7 @@ function TransactionCard({ transaction }) {
         <View style={styles.vendorIconContainer}>
           <Icon
             style={styles.vendorIcon}
-            name={handleIcon(transaction.vendorType)}
+            name={handleIcon("default")}
             size={30}
             color="#0f003f"
           />

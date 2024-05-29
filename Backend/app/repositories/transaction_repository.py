@@ -1,10 +1,10 @@
 from typing import Annotated, List, Any
 
 from repositories.base_repository import RepositoryBase, T
-from models.transaction import Transaction
+from models.transaction import Item, Transaction
 
 from fastapi import Depends
-from sqlmodel import Session, delete, select, update
+from sqlmodel import Session, delete, or_, select, update
 
 from database import get_db_session
 
@@ -50,6 +50,11 @@ class TransactionRepository(RepositoryBase[Transaction]):
         return transactions
     
     def get_by_wallet_id(self, wallet_id: int) -> List[Transaction]:
-        statement = select(Transaction).where(Transaction.sender == wallet_id or Transaction.recipient == wallet_id)
+        statement = select(Transaction).where(or_(Transaction.sender == wallet_id, Transaction.recipient == wallet_id))
+        transactions = self.session.exec(statement).all()
+        return transactions
+    
+    def get_by_sender(self, wallet_id: int) -> List[Transaction]:
+        statement = select(Transaction).join(Item, Transaction.transaction_id == Item.transaction_id).where(Transaction.sender == wallet_id).distinct()
         transactions = self.session.exec(statement).all()
         return transactions

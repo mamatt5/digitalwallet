@@ -192,6 +192,16 @@ export const getTransactionsByWallet = async (walletId: string) => {
   }
 }
 
+export const getTransactionsBySender = async (walletId: string) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/transactions/gettransactions/sender/${walletId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Get Transactions error:', error);
+    throw error;
+  }
+}
+
 export const addTransaction = async (transaction) => {
   try {
     const response = await axios.post(`${API_BASE_URL}/transactions/addtransaction`, transaction);

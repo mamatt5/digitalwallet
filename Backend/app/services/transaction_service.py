@@ -23,3 +23,6 @@ class TransactionService:
     
     def get_transaction_by_wallet_id(self, wallet_id: int) -> list[Transaction]:
         return self.transaction_repository.get_by_wallet_id(wallet_id)
+    
+    def get_transaction_by_sender(self, sender: int) -> list[Transaction]:
+        return self.transaction_repository.get_by_sender(sender)
