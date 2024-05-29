@@ -9,6 +9,7 @@ import {
 import { Table, Row, Rows } from "react-native-table-component";
 import QRCode from "react-native-qrcode-svg";
 import { connectToWebSocket, getMerchant } from "../../api/api";
+import React from "react";
 
 const { width, height } = Dimensions.get("window");
 const scale = width / 320;

@@ -2,9 +2,12 @@ import React, { useEffect, useRef, useState } from 'react';
 import {
   Button, Dimensions, Image, SafeAreaView, Text, TextInput, View, StyleSheet, Keyboard, TouchableWithoutFeedback,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { addCard } from '../../api/api';
+import { MaterialIcons, Ionicons } from '@expo/vector-icons'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
 
 const { width, height } = Dimensions.get('window');
 const scale = width / 320;
@@ -74,11 +77,11 @@ function AddCardScreen({ navigation, route }) {
   };
 
   const handleAddCard = () => {
-    
+
 
     const newCardNumberError = cardNumber === '' || !/^\d{16}$/.test(cardNumber)
     const newCvvError = cardCVV === '' || !/^\d{3}$/.test(cardCVV)
- 
+
 
     if (newCardNumberError) {
       setCardNumberError(true)
@@ -95,11 +98,11 @@ function AddCardScreen({ navigation, route }) {
 
     if (newExpiryDateError || inputDate <= currentDate) {
       setExpriyDateError(true)
-    } 
+    }
 
 
-    if (newCardNumberError || newCvvError || newExpiryDateError || parseInt(expiryMonth, 10) < 1) {
-      alert('Please enter valid data into the fields.');
+    if (newCardNumberError || newCvvError || newExpiryDateError || parseInt(expiryMonth, 10) < 1 || inputDate <= currentDate) {
+      
       return;
     }
 
@@ -135,20 +138,31 @@ function AddCardScreen({ navigation, route }) {
             <Text style={styles.dividerText}>OR</Text>
             <View style={styles.dividerLine} />
           </View>
-          <View style={styles.inputContainer}>
+          <View style={[styles.inputContainer , cardNumberError && styles.errorOutline]}>
             <TextInput
               style={styles.input}
-              onChangeText={setCardNumber}
+              onChangeText={handleCardNumberChange}
               value={cardNumber}
               placeholder="Card Number"
               keyboardType="numeric"
               maxLength={16}
               placeholderTextColor="#ffffff"
             />
+
+            {cardNumberError && (
+              <MaterialIcons
+                name="error-outline"
+                onPress={() => Alert.alert('Invalid Card Number', 'Please enter a valid Card Number.\nValid Card NUmber contains 16 digits')}
+                color="red"
+                style={styles.errorIcon}
+                size={25} />
+
+            )}
             <MaterialCommunityIcons name="credit-card" size={20} color="#ffffff" style={styles.icon} />
           </View>
           <View style={styles.row}>
-            <View style={styles.smallInputContainer}>
+
+            <View style={[styles.smallInputContainer , expiryDateError && styles.errorOutline]}>
               <TextInput
                 style={styles.smallInput}
                 onChangeText={handleExpiryMonth}
@@ -166,21 +180,31 @@ function AddCardScreen({ navigation, route }) {
               <MaterialCommunityIcons name="calendar-range-outline" size={20} color="#ffffff" style={styles.icon} />
             </View>
             <Text style={styles.separator}>/</Text>
-            <View style={styles.smallInputContainer}>
+            <View style={[styles.smallInputContainer , expiryDateError && styles.errorOutline]}>
               <TextInput
                 ref={expiryYearRef}
                 style={styles.smallInput}
-                onChangeText={setExpiryYear}
+                onChangeText={handleExpiryDate}
                 value={expiryYear}
                 placeholder="YY"
                 keyboardType="numeric"
                 maxLength={2}
                 placeholderTextColor="#ffffff"
               />
+
+              {expiryDateError && (
+                <MaterialIcons
+                  name="error-outline"
+                  onPress={() => Alert.alert('Invalid Expiry Date', 'Please enter a valid Expiry Date.\nValid Expiry Dates are in the form MM/YY')}
+                  color="red"
+                  style={styles.errorIcon}
+                  size={25} />
+
+              )}
               <MaterialCommunityIcons name="calendar-month" size={20} color="#ffffff" style={styles.icon} />
             </View>
           </View>
-          <View style={styles.inputContainer}>
+          <View style={[styles.inputContainer , cvvError && styles.errorOutline]}>
             <TextInput
               ref={cvvRef}
               style={styles.input}
@@ -191,6 +215,16 @@ function AddCardScreen({ navigation, route }) {
               maxLength={3}
               placeholderTextColor="#ffffff"
             />
+
+            {cvvError && (
+              <MaterialIcons
+                name="error-outline"
+                onPress={() => Alert.alert('Invalid CVV', 'Please enter a valid CVV.\nONly 3 digit numbers are allowed.')}
+                color="red"
+                style={styles.errorIcon}
+                size={25} />
+
+            )}
             <MaterialCommunityIcons name="information-outline" size={20} color="#ffffff" style={styles.icon} />
           </View>
           <View style={styles.buttonContainer}>
@@ -354,6 +388,11 @@ const styles = StyleSheet.create({
     borderColor: 'red', // Change border color to red when error occurs
     borderWidth: 2
   },
+  errorIcon: {
+    position: 'relative',
+    right: -75
+  }
+
 });
 
 export default AddCardScreen;
