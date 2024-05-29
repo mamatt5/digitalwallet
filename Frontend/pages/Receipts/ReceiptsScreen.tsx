@@ -2,9 +2,6 @@ import React, { useState } from 'react';
 import {SafeAreaView, ScrollView, View, Text, StyleSheet, TextInput, Pressable} from 'react-native';
 import TransactionSearch from '../../components/TransactionSearch/TransactionSearch';
 import ProfileButton from '../../components/ProfileButton/ProfileButton';
-import AwesomeIcon from 'react-native-vector-icons/FontAwesome';
-import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Button } from 'react-native-paper';
 import ProfileModal from '../../components/ProfileModal/ProfileModal';
 
 function ReceiptsScreen({ navigation }) {
@@ -76,7 +73,7 @@ function ReceiptsScreen({ navigation }) {
         <View style={styles.bodyContainer}>
           <Text style={styles.searchbarTitle}>Recent Activity</Text>
         </View>
-        <TransactionSearch />
+        <TransactionSearch navigation={navigation} />
       </ScrollView>
     </SafeAreaView>
   );

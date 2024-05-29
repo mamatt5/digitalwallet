@@ -7,6 +7,7 @@ import RegisterOptionScreen from '../pages/Register/RegisterOptionScreen';
 import RegisterMerchantScreen from '../pages/Register/RegisterMerchantScreen';
 import ResetPasswordScreen from '../pages/ForgotPassword/ResetPasswordScreen';
 import ReceiptsScreen from '../pages/Receipts/ReceiptsScreen';
+import DetailedReceiptsScreen from '../pages/DetailedReceipt/DetailedReceipt';
 
 const AuthStack = createStackNavigator();
 
@@ -28,6 +29,8 @@ function AuthNavigator() {
       <AuthStack.Screen name="RegisterMerchant" component={RegisterMerchantScreen} />
       <AuthStack.Screen name="ResetPassword" component={ResetPasswordScreen} />
       <AuthStack.Screen name="Receipts" component={ReceiptsScreen} />
+      <AuthStack.Screen name="DetailedReceipt" component={DetailedReceiptsScreen} />
+
     </AuthStack.Navigator>
   );
 }
