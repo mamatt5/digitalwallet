@@ -58,8 +58,8 @@ function AccountScreen({ navigation, route }) {
   const fetchTransactions = async () => {
     try {
       const response = await getTransactionsByWallet(account.wallet.wallet_id);
-      console.log("fetching: ", response)
-      setTransactions(response);
+      const sortedResponse = response.sort((a, b) => b.transaction_id - a.transaction_id);
+      setTransactions(sortedResponse);
     } catch (error) {
       console.error('Get Transactions error:', error);
     }

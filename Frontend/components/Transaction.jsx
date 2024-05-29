@@ -12,8 +12,6 @@ const Transaction = ({ transaction, walletId }) => {
     amount,
   } = transaction;
 
-  console.log(transaction)
-
   const [vendorName, setVendorName] = useState("");
   const [isSender, setIsSender] = useState(false);
 
@@ -34,6 +32,11 @@ const Transaction = ({ transaction, walletId }) => {
     }
   };
 
+  const convertDate = (date) => {
+    const [day, month, year] = date.split('/');
+    return new Date(`${year}-${month}-${day}`);
+  };
+
   useEffect(() => {
     fetchAccount();
     if (sender === walletId) {
@@ -51,7 +54,7 @@ const Transaction = ({ transaction, walletId }) => {
 
         <View style={styles.leftContainer}>
           <Text style={styles.vendor}>{vendorName}</Text>
-          <Text style={styles.date}>{date}</Text>
+          <Text style={styles.date}>{new Date(convertDate(date)).toLocaleDateString(undefined, { year: '2-digit', month: 'short', day: '2-digit' })}</Text>
         </View>
 
         <Text style={[styles.amount, isSender ? styles.sender : styles.recipient]}>{isSender ? '-' : '+'} ${amount}</Text>

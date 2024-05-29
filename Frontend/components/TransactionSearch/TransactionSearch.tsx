@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   },
 });
 
-function TransactionSearch({ navigation, transactions }) {
+function TransactionSearch({ navigation, transactions, account }) {
 
   return (
     <View>
@@ -62,7 +62,7 @@ function TransactionSearch({ navigation, transactions }) {
       <ScrollView style={styles.recieptsContainer}>
         {transactions.map((transaction, index) => (
           <View key={index}>
-            <Pressable onPress={() => navigation.navigate('DetailedReceipt', { transaction: transactions[index]})}>
+            <Pressable onPress={() => navigation.navigate('DetailedReceipt', { transaction: transactions[index], account })}>
               <TransactionCard transaction={transaction} />
             </Pressable>
           </View>

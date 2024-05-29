@@ -24,9 +24,6 @@ def add_transaction_route(transaction_data: dict, transaction_service: Transacti
             description=transaction_data.get('description', None)
         )
 
-        print("1:")
-        print(transaction)
-
         for item_data in transaction_data.get('items', []):
             item = Item(
                 name=item_data['name'],
@@ -34,12 +31,8 @@ def add_transaction_route(transaction_data: dict, transaction_service: Transacti
                 quantity=item_data['quantity']
             )
 
-            print("2:")
-            print(item)
             transaction.items.append(item)
 
-        print("3:")
-        print(transaction)
         transaction_service.add_transaction(transaction)
 
 
@@ -58,3 +51,7 @@ def get_transaction_by_wallet_id(wallet_id: int, transaction_service: Transactio
 @router.get('/gettransactions/sender/{wallet_id}')
 def get_transaction_by_sender(wallet_id: int, transaction_service: TransactionService = Depends(TransactionService)) -> list[Transaction]:
     return transaction_service.get_transaction_by_sender(wallet_id)
+
+@router.get('/getitems/{transaction_id}')
+def get_items_by_transaction_id(transaction_id: int, transaction_service: TransactionService = Depends(TransactionService)) -> list[Item]:
+    return transaction_service.get_items_by_transaction_id(transaction_id)

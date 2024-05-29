@@ -8,8 +8,6 @@ import { getTransactionsBySender, getMerchant } from '../../api/api';
 function ReceiptsScreen({ navigation, route }) {
   const { account } = route.params
 
-  console.log("account: ", account)
-
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [transactions, setTransactions] = useState([]);
@@ -20,27 +18,16 @@ function ReceiptsScreen({ navigation, route }) {
 
   const fetchTransactionsBySender = async () => {
     try {
-      const transactions = await getTransactionsBySender(account.wallet.wallet_id); //should be recipient
-      // console.log("transactions by sender: ", transactions)
-      setTransactions(transactions);
+      const transactions = await getTransactionsBySender(account.wallet.wallet_id);
+      const sortedTransactions = transactions.sort((a, b) => b.transaction_id - a.transaction_id);
+      setTransactions(sortedTransactions);
     } catch (error) {
       console.error('Get Transactions error:', error);
     }
   }
 
-  const fetchMerchant = async (merchantId) => {
-    try {
-      const merchant = await getMerchant(merchantId);
-      console.log("merchant: ", merchant)
-      return merchant;
-    } catch (error) {
-      console.error('Get Merchant error:', error);
-    }
-  }
-
   useEffect(() => {
     fetchTransactionsBySender();
-    fetchMerchant(account.account_id);
   }, [])
 
   return (
@@ -59,7 +46,7 @@ function ReceiptsScreen({ navigation, route }) {
         <View style={styles.bodyContainer}>
           <Text style={styles.searchbarTitle}>Recent Activity</Text>
         </View>
-        <TransactionSearch navigation={navigation} transactions={transactions} />
+        <TransactionSearch navigation={navigation} transactions={transactions} account={account} />
       </ScrollView>
     </SafeAreaView>
   );

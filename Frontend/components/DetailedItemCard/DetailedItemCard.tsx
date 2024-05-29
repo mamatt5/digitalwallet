@@ -4,7 +4,7 @@ import {View, StyleSheet, Text, Pressable,} from 'react-native';
 type itemDetails = {
     itemName: string,
     itemAmount: number,
-    price: number
+    unitPrice: number,
 }
 
 const styles = StyleSheet.create({
@@ -30,16 +30,17 @@ const styles = StyleSheet.create({
 });
 
 function DetailedItemCard({itemDetails}) {
+    const price = itemDetails.itemAmount * itemDetails.unitPrice;
   return (
     <View style={styles.itemCardContainer}>
         <Text style={styles.itemAmountText}>
-            {itemDetails.itemAmount}X
+            {itemDetails.itemAmount}x
         </Text>
         <Text style={styles.itemNameText}>
             {itemDetails.itemName}
         </Text>
         <Text style={styles.itemPriceText}>
-            ${itemDetails.price}
+            ${(price).toFixed(2)}
         </Text>
     </View>
   );

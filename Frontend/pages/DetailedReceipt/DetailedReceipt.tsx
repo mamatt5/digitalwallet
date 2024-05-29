@@ -1,152 +1,216 @@
-import React, { useState } from 'react';
-import {SafeAreaView, ScrollView, View, Text, StyleSheet, Image,Alert, Pressable} from 'react-native';
-import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useRoute } from '@react-navigation/native';
-import moment from 'moment';
-import DetailedItemCard from '../../components/DetailedItemCard/DetailedItemCard';
-import Barcode from '../../assets/Barcode.png';
-import VisaCard from '../../assets/VisaCard.png';
+import React, { useEffect, useState } from "react";
+import {
+  SafeAreaView,
+  ScrollView,
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Pressable,
+} from "react-native";
+import MaterialIcon from "react-native-vector-icons/MaterialCommunityIcons";
+import DetailedItemCard from "../../components/DetailedItemCard/DetailedItemCard";
+import { getItems, getMerchant, getCard } from "../../api/api";
+import Icon from "react-native-vector-icons/FontAwesome";
 
+function DetailedReceiptsScreen({ navigation, route }) {
+  const { account, transaction } = route.params;
+  const [items, setItems] = useState([]);
+  const [vendor, setVendor] = useState("");
+  const [card, setCard] = useState("");
 
-function DetailedReceiptsScreen({ navigation }) {
+  // console.log("detailed transaction: ", transaction);
 
-    function generateRandomNumber() {
-        return Math.floor(Math.random() * (99 - 1 + 1)) + 1; 
+  const fetchItems = async () => {
+    try {
+      const items = await getItems(transaction.transaction_id);
+      console.log("items: ", items);
+      setItems(items);
+    } catch (error) {
+      console.error("Get Items error:", error);
     }
+  };
 
+  const fetchMerchant = async () => {
+    try {
+      const merchant = await getMerchant(transaction.vendor);
+      setVendor(merchant.company_name)
+    } catch (error) {
+      console.error("Get Merchant error:", error);
+    }
+  }
 
-const transaction = useRoute().params?.transaction
-const date = moment(transaction.transactionDate)
+  const fetchCard = async () => {
+    try {
+      const response = await getCard(transaction.card_id);
+      console.log("card response: ", response)
+      setCard(response.card_number);
+    } catch (error) {
+      console.error("Get Card error:", error);
+    }
+  }
+
+  useEffect(() => {
+    fetchItems();
+    fetchMerchant();
+    fetchCard();
+  }, [transaction]);
+
+  const convertDate = (date) => {
+    const [day, month, year] = date.split("/");
+    return new Date(`${year}-${month}-${day}`);
+  };
+
+  const getCardLogo = (number) => {
+    switch (number[0]) {
+      case "1":
+      case "2":
+      case "5":
+        return "cc-mastercard";
+
+      case "3":
+      case "6":
+      case "8":
+        return "cc-amex";
+
+      case "4":
+      case "7":
+      case "9":
+        return "cc-visa";
+
+      default:
+        return "cc-visa";
+    }
+  };
+
+  const date = convertDate(transaction.date);
+
   return (
     <SafeAreaView style={styles.container}>
-        <View style={styles.headerContainer}>
-            <Pressable style={styles.backButtonContainer} onPress={() => navigation.navigate('Receipts')}>
-                <MaterialIcon
-                name='chevron-left'
-                size={50}
-                color="#FFFFFF"
-                />
-            </Pressable>
-            <Text style={styles.transactionDate}>
-                {date.format('DD MMM YYYY')}
-            </Text>
-            <Pressable style={styles.ShareButtonContainer}>
-                <MaterialIcon
-                name='share-variant'
-                size={30}
-                color="#FFFFFF"
-                />
-            </Pressable>
+      <View style={styles.headerContainer}>
+        <Pressable
+          style={styles.backButtonContainer}
+          onPress={() => navigation.navigate("ReceiptsScreen", { account })}
+        >
+          <MaterialIcon name="chevron-left" size={50} color="#FFFFFF" />
+        </Pressable>
+        <Text style={styles.transactionDate}>
+          {new Date(date).toLocaleDateString(undefined, {
+            year: "2-digit",
+            month: "short",
+            day: "2-digit",
+          })}
+        </Text>
+        <Pressable style={styles.ShareButtonContainer}>
+          <MaterialIcon name="share-variant" size={30} color="#FFFFFF" />
+        </Pressable>
+      </View>
+
+      <View style={styles.vendorDetailsContainer}>
+        <View style={styles.vendorIconContainer}>
+          <MaterialIcon name="shopping" size={80} color="#FFFFFF" />
         </View>
-        <View style={styles.vendorDetailsContainer}>
-            <View style={styles.vendorIconContainer}>
-                <MaterialIcon
-                name='shopping'
-                size={80}
-                color="#FFFFFF"
-                />
-            </View>
-            <Text style={styles.VendorName}>
-                {transaction.vendorName}
-            </Text>
-            <Text style={styles.timeText}>
-                Time: {date.format('LT')}
-            </Text>
+        <Text style={styles.VendorName}>{vendor}</Text>
+        <Text style={styles.timeText}>Time: {transaction.time}</Text>
+      </View>
+
+      <View style={styles.itemContainer}>
+        <View style={styles.item}>
+          <Text style={styles.itemContainerHeader}>Details</Text>
+
+          <ScrollView style={styles.itemScrollContainer}>
+            {items.map((item, index) => (
+              <DetailedItemCard
+              key={index}
+                itemDetails={{
+                  itemName: item.name,
+                  itemAmount: item.quantity,
+                  unitPrice: item.price,
+                }}
+              ></DetailedItemCard>
+            ))}
+          </ScrollView>
         </View>
-        <View style={styles.itemContainer}>
-            <View style={styles.item}>  
-            <Text style={styles.itemContainerHeader}>Details</Text>
-                <ScrollView style={styles.itemScrollContainer}>
-                <DetailedItemCard itemDetails={{itemName: 'Item1', itemAmount: 1, price:generateRandomNumber() + '.' + generateRandomNumber()}}></DetailedItemCard>
-                <DetailedItemCard itemDetails={{itemName: 'Item2', itemAmount: 2, price:generateRandomNumber() + '.' + generateRandomNumber()}}></DetailedItemCard>
-                <DetailedItemCard itemDetails={{itemName: 'Item3', itemAmount: 1, price:generateRandomNumber() + '.' + generateRandomNumber()}}></DetailedItemCard>
-                <DetailedItemCard itemDetails={{itemName: 'Item4', itemAmount: 4, price:generateRandomNumber() + '.' + generateRandomNumber()}}></DetailedItemCard>
-                <DetailedItemCard itemDetails={{itemName: 'Item5', itemAmount: 3, price:generateRandomNumber() + '.' + generateRandomNumber()}}></DetailedItemCard>
-                <DetailedItemCard itemDetails={{itemName: 'Item6', itemAmount: 1, price:generateRandomNumber() + '.' + generateRandomNumber()}}></DetailedItemCard>
-                </ScrollView>
-            </View>
+      </View>
+
+      <View style={styles.cardDetailsContainer}>
+        <View style={styles.cardDetails}>
+          <View style={styles.cardHeaderText}>
+            <Text style={styles.cardHeaderTotal}>Total({items.length} {items.length > 1 ? "items" : "item"})</Text>
+            <Text style={styles.cardHeaderPrice}>${(transaction.amount/1.1).toFixed(2)}</Text>
+          </View>
+          <View style={styles.cardHeaderText}>
+            <Text style={styles.gstHeader}>#Total includes GST</Text>
+            <Text style={styles.gstPrice}>${(transaction.amount/11).toFixed(2)}</Text>
+          </View>
+          <View style={styles.paymentHeader}>
+            <Text style={styles.paymentText}>Payment</Text>
+          </View>
+          <View style={styles.cardContainer}>
+            <Icon name={getCardLogo(card)} size={30} color="#FFFFFF" />
+            <Text style={styles.cardNumberText}>Card ending in **{card.slice(-4)}</Text>
+          </View>
         </View>
-        <View style={styles.cardDetailsContainer}>
-            <View style={styles.cardDetails}>
-                <View style={styles.cardHeaderText}>
-                    <Text style={styles.cardHeaderTotal}>Total(6 Items)</Text>
-                    <Text style={styles.cardHeaderPrice}>$97.40</Text>
-                </View>
-                <View style={styles.cardHeaderText}>
-                    <Text style={styles.gstHeader}>#Total includes GST</Text>
-                    <Text style={styles.gstPrice}>$4.87</Text>
-                </View>
-                <View style={styles.paymentHeader}>
-                    <Text style={styles.paymentText}>Payment</Text>
-                </View>
-                <View style={styles.cardContainer}>
-                    <Image source={VisaCard} style={styles.cardImage}/>
-                    <Text style={styles.cardNumberText}>Card ending in *123</Text>
-                </View>
-            </View>
-        </View>
-        <View style={styles.barcodeContainer}>
-            <Image source={Barcode} style={styles.barcodeStyle}/>
-        </View>
+      </View>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#0f003f', 
-    height: 2000
+    backgroundColor: "#0f003f",
+    height: 2000,
   },
   headerContainer: {
     marginHorizontal: 15,
     marginTop: 10,
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center'
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
   },
   backButtonContainer: {
     width: 50,
-    position: 'absolute',
-    left: 0
+    position: "absolute",
+    left: 0,
   },
   ShareButtonContainer: {
     width: 50,
-    position: 'absolute',
-    right: 0
+    position: "absolute",
+    right: 0,
   },
   transactionDate: {
-      color: '#FFFFFF',
-      fontSize: 20
+    color: "#FFFFFF",
+    fontSize: 20,
   },
   vendorDetailsContainer: {
     marginHorizontal: 10,
     marginTop: 20,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center'
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
   vendorIconContainer: {
-    backgroundColor: '#aba6bc',
+    backgroundColor: "#aba6bc",
     borderRadius: 100,
     height: 100,
     width: 100,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 10
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 10,
   },
   VendorName: {
-      color: '#FFFFFF',
-      fontSize: 30
+    color: "#FFFFFF",
+    fontSize: 30,
   },
   timeText: {
-    color: '#FFFFFF',
-    fontSize: 15
+    color: "#FFFFFF",
+    fontSize: 15,
   },
   itemContainer: {
-    backgroundColor: '#696087',
-    height: 200,
+    backgroundColor: "#696087",
+    height: 290,
     borderRadius: 20,
     marginHorizontal: 30,
     marginTop: 15,
@@ -155,83 +219,83 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   itemContainerHeader: {
-    color: '#FFFFFF',
-    fontWeight: 'bold',
+    color: "#FFFFFF",
+    fontWeight: "bold",
   },
   itemScrollContainer: {
-      height: 150
+    height: 150,
   },
   cardDetailsContainer: {
-    backgroundColor: '#696087',
+    backgroundColor: "#696087",
     height: 150,
     borderRadius: 20,
     marginHorizontal: 30,
-    marginTop: 15
+    marginTop: 15,
   },
   barcodeContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#696087',
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#696087",
     height: 100,
     borderRadius: 20,
     marginHorizontal: 30,
-    marginTop: 15
+    marginTop: 15,
   },
   barcodeStyle: {
-      height: 80,
-      width: 200,
+    height: 80,
+    width: 200,
   },
   cardHeaderText: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
   },
   cardHeaderTotal: {
-    color: '#FFFFFF',
-    fontWeight: 'bold',
-    fontSize: 20
+    color: "#FFFFFF",
+    fontWeight: "bold",
+    fontSize: 20,
   },
   cardHeaderPrice: {
-    color: '#FFFFFF',
-    fontWeight: 'bold',
-    position: 'absolute',
+    color: "#FFFFFF",
+    fontWeight: "bold",
+    position: "absolute",
     right: 0,
-    fontSize: 20
+    fontSize: 20,
   },
   gstHeader: {
-    color: '#FFFFFF',
+    color: "#FFFFFF",
   },
   gstPrice: {
-    color: '#FFFFFF',
-    position: 'absolute',
+    color: "#FFFFFF",
+    position: "absolute",
     right: 0,
   },
   paymentHeader: {
-    marginTop: 10
+    marginTop: 25,
   },
   paymentText: {
-    color: '#FFFFFF',
+    color: "#FFFFFF",
     fontSize: 15,
-    fontWeight: 'bold'
+    fontWeight: "bold",
   },
   cardDetails: {
     margin: 10,
   },
   cardImage: {
-      marginTop: 10,
-      height: 40,
-      width: 60
+    marginTop: 10,
+    height: 40,
+    width: 60,
   },
   cardContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
   },
   cardNumberText: {
-    color: '#FFFFFF',
-    marginLeft: 5
-  }
+    color: "#FFFFFF",
+    marginLeft: 5,
+  },
 });
 
 export default DetailedReceiptsScreen;

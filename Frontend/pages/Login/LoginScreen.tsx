@@ -74,7 +74,6 @@ function LoginScreen({ navigation }) {
 
 
   const handleLogin = async () => {
-    console.log("help")
 
     const newEmailError = email === '' || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
     const newPasswordError = password === '' || !/(?=.*[0-9])(?=.*[A-Z]).+/.test(password);
@@ -87,7 +86,7 @@ function LoginScreen({ navigation }) {
       return;
     }
 
-    const resp = getAccountFromEmail(email.toLocaleLowerCase())
+    const resp = getAccountFromEmail(email)
 
     if (!(await resp).data) {
       setEmailError(true)
@@ -106,9 +105,7 @@ function LoginScreen({ navigation }) {
     try {
 
       const response = await loginUser(email, password);
-      console.log("hi");
       const { account } = response;
-      console.log('Account data:', account);
 
       if (account) {
         navigation.navigate('Main', { account });

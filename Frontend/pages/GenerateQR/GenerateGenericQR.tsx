@@ -97,7 +97,7 @@ function GenerateGenericQR({ route, navigation }) {
 
     setQrValue(JSON.stringify(qrData));
     setIsActive(true);
-    console.log(qrData);
+    console.log("QR generated: ", qrData);
   };
 
   return (

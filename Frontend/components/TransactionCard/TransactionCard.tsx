@@ -1,16 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View, StyleSheet, Text, Pressable,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-
-type transaction = {
-  vendorName: string;
-  vendorType: 'consumables' | 'travel'
-  transactionDate: string;
-  amount: number;
-};
+import { getMerchant } from '../../api/api';
 
 const handleIcon = (vendorType) => {
   switch (vendorType) {
@@ -84,6 +78,26 @@ const styles = StyleSheet.create({
 });
 
 function TransactionCard({ transaction }) {
+  const [merchantName, setMerchantName] = useState('Unknown Vendor');
+
+  const fetchMerchant = async () => {
+    try {
+      const merchant = await getMerchant(transaction.vendor)
+      setMerchantName(merchant.company_name);
+    } catch (error) {
+      console.error('Get Merchant error:', error);
+      throw error;
+    }};
+
+    const convertDate = (date) => {
+      const [day, month, year] = date.split('/');
+      return new Date(`${year}-${month}-${day}`);
+    };
+
+    useEffect(() => {
+      fetchMerchant();
+    }, []);
+
   return (
     <View style={styles.container}>
       <View style={styles.pageContainer}>
@@ -100,7 +114,7 @@ function TransactionCard({ transaction }) {
         {/* Vender Info */}
         <View>
           <Text numberOfLines={1} style={styles.vendorTitle}>
-            {transaction.vendorName ? transaction.vendorName : 'Unknown Vendor'}
+            {merchantName}
           </Text>
           <View style={styles.dateContainer}>
             <Icon
@@ -110,7 +124,7 @@ function TransactionCard({ transaction }) {
               color="#0f003f"
             />
             <Text style={styles.dateText}>
-              {transaction.transactionDate ? new Date(transaction.transactionDate).toLocaleDateString(undefined, { day: '2-digit', month: 'short', year: 'numeric' }) : 'XX XXX XXXX'}
+              {transaction.date ? new Date(convertDate(transaction.date)).toLocaleDateString(undefined, { year: '2-digit', month: 'short', day: '2-digit' }) : 'Unknown Date'}
             </Text>
           </View>
         </View>

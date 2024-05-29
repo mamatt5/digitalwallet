@@ -58,3 +58,8 @@ class TransactionRepository(RepositoryBase[Transaction]):
         statement = select(Transaction).join(Item, Transaction.transaction_id == Item.transaction_id).where(Transaction.sender == wallet_id).distinct()
         transactions = self.session.exec(statement).all()
         return transactions
+    
+    def get_items_by_transaction_id(self, transaction_id: int) -> List[Item]:
+        statement = select(Item).where(Item.transaction_id == transaction_id)
+        items = self.session.exec(statement).all()
+        return items
