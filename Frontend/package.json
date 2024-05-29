@@ -9,8 +9,29 @@
     "web": "expo start --web"
   },
   "dependencies": {
+<<<<<<< Updated upstream
     "expo": "~50.0.14",
     "expo-status-bar": "~1.11.1",
+=======
+    "@expo/config": "~9.0.0",
+    "@expo/metro-config": "~0.18.1",
+    "@expo/metro-runtime": "~3.2.1",
+    "@react-native-community/checkbox": "^0.5.17",
+    "@react-native-picker/picker": "2.7.5",
+    "@react-navigation/bottom-tabs": "^6.5.20",
+    "@react-navigation/native": "^6.1.17",
+    "@react-navigation/stack": "^6.3.29",
+    "@types/react": "~18.2.45",
+    "axios": "^1.6.8",
+    "deprecated-react-native-prop-types": "^5.0.0",
+    "directory": "^0.1.0",
+    "expo": "~51.0.4",
+    "expo-camera": "~15.0.7",
+    "expo-constants": "~16.0.1",
+    "expo-status-bar": "~1.12.1",
+    "moment": "^2.30.1",
+    "randomstring": "^1.3.0",
+>>>>>>> Stashed changes
     "react": "18.2.0",
     "react-native": "0.73.6"
   },
