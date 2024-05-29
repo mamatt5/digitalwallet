@@ -158,15 +158,23 @@ export const updatePassword = async (email: string, password: string) => {
 
 export const getTransactions = async (cardId: string) => {
   try {
-    console.log(" bruh")
     const response = await axios.get(`${API_BASE_URL}/transactions/gettransactions/${cardId}`);
-    console.log(response)
     return response.data;
   } catch (error) {
     console.error('Get Transactions error:', error);
     throw error;
   }
 };
+
+export const getTransactionsByWallet = async (walletId: string) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/transactions/gettransactions/wallet/${walletId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Get Transactions error:', error);
+    throw error;
+  }
+}
 
 export const addTransaction = async (transaction) => {
   try {

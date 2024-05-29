@@ -129,7 +129,7 @@ function LoginScreen({ navigation }) {
 
       <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }} keyboardVerticalOffset={120}>
 
-        <ScrollView automaticallyAdjustKeyboardInsets={true}>
+        <ScrollView>
           <Image source={APPlogo} style={styles.APPlogo} />
           <View style={styles.centerView}>
             <Text style={{ color: '#ffffff', fontSize: 30, margin: 30 }}>

@@ -48,3 +48,8 @@ class TransactionRepository(RepositoryBase[Transaction]):
         statement = select(Transaction).where(Transaction.card_id == card_id)
         transactions = self.session.exec(statement).all()
         return transactions
+    
+    def get_by_wallet_id(self, wallet_id: int) -> List[Transaction]:
+        statement = select(Transaction).where(Transaction.sender == wallet_id or Transaction.recipient == wallet_id)
+        transactions = self.session.exec(statement).all()
+        return transactions

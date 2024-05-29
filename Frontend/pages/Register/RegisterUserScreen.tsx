@@ -72,7 +72,7 @@ function RegisterUserScreen({ navigation }) {
       setEmailError(true);
     } else {
 
-      let doesEmailExist = (await getAccountFromEmail(email)).data
+      let doesEmailExist = (await getAccountFromEmail(email.toLocaleLowerCase())).data
       
       if (doesEmailExist) {
         setEmailError(true)
@@ -100,7 +100,7 @@ function RegisterUserScreen({ navigation }) {
     setLastNameError(newLastNameError);
 
     if (!newEmailError && !newPhoneNumberError && !newPasswordError && !newFirstNameError && !newLastNameError) {
-      registerAccount(email, password, phoneNumber, 'user', '', '', firstName, lastName)
+      registerAccount(email.toLocaleLowerCase(), password, phoneNumber, 'user', '', '', firstName, lastName)
         .then(navigation.navigate('RegisterSucessful')).catch((error) => console.error('Registration error:', error));
     }
   };
@@ -189,6 +189,7 @@ function RegisterUserScreen({ navigation }) {
                   onChangeText={(e)=>handleMobileChange(e)}
                   value={phoneNumber}
                   error={mobileError}
+                  maxLength={10}
                 />
               </View>
 

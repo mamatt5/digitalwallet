@@ -50,3 +50,7 @@ def get_transactions(transaction: Transaction, transaction_service: TransactionS
 @router.get('/gettransactions/{card_id}')
 def get_transaction_by_card_id(card_id: int, transaction_service: TransactionService = Depends(TransactionService)) -> list[Transaction]:
     return transaction_service.get_transaction_by_card_id(card_id)
+
+@router.get('/gettransactions/wallet/{wallet_id}')
+def get_transaction_by_wallet_id(wallet_id: int, transaction_service: TransactionService = Depends(TransactionService)) -> list[Transaction]:
+    return transaction_service.get_transaction_by_wallet_id(wallet_id)

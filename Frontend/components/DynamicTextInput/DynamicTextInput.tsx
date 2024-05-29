@@ -10,6 +10,7 @@ type PlaceholderProps = {
   secureTextEntry?: boolean;
   error?: boolean;
   onFocus?: ()=> void
+  maxLength?: number
 };
 
 const styles = StyleSheet.create({
@@ -50,6 +51,7 @@ function DynamicTextInput(props: PlaceholderProps) {
       onChangeText={props.onChangeText}
       secureTextEntry={props.secureTextEntry}
       onFocus={props.onFocus}
+      maxLength={props.maxLength}
       
     />
   );

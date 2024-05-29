@@ -16,10 +16,12 @@ function MainNavigator({ route }) {
       initialRouteName="Account"
       screenOptions={{
         headerShown: false,
-        tabBarStyle: {
-          borderTopLeftRadius: 100,
-          borderTopRightRadius: 100,
-        }
+        // tabBarStyle: {
+        //   borderTopLeftRadius: 20,
+        //   borderTopRightRadius: 20,
+        //   bottom: -10,
+        //   backgroundColor: '#0f003f',
+        // }
       }}
     >
       <Tab.Screen

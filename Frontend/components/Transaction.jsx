@@ -2,15 +2,18 @@ import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { getAccount, getUser, getMerchant } from "../api/api";
 
-const Transaction = ({ transaction }) => {
+const Transaction = ({ transaction, walletId }) => {
   
   const {
     vendor,
+    sender,
+    recipient,
     date,
     amount,
   } = transaction;
 
   const [vendorName, setVendorName] = useState("");
+  const [isSender, setIsSender] = useState(false);
 
   const fetchAccount = async () => {
     try {
@@ -31,6 +34,11 @@ const Transaction = ({ transaction }) => {
 
   useEffect(() => {
     fetchAccount();
+    if (sender === walletId) {
+      setIsSender(true);
+    } else if (recipient === walletId) {
+      setIsSender(false);
+    }
   }, [vendor]);
 
 
@@ -43,7 +51,7 @@ const Transaction = ({ transaction }) => {
           <Text style={styles.date}>{date}</Text>
         </View>
 
-        <Text style={styles.amount}>- ${amount}</Text>
+        <Text style={[styles.amount, isSender ? styles.sender : styles.recipient]}>{isSender ? '-' : '+'} ${amount}</Text>
 
       </View>
       
@@ -75,7 +83,12 @@ const styles = StyleSheet.create({
   },
   amount: {
     fontSize: 16,
-    color: "#fff",
+  },
+  sender: {
+    color: "lightred",
+  },
+  recipient: {
+    color: "lightgreen",
   },
   dashedLine: {
     borderTopWidth: 1,

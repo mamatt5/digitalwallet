@@ -121,7 +121,7 @@ if __name__ == "__main__":
         register_account(client, register_request)
 
         register_request = RegisterRequest(
-            email="lora@example.com",
+            email="lorascafe@example.com",
             password='Password1',
             phone_number=fake.phone_number(),
             account_type="merchant",
@@ -139,6 +139,18 @@ if __name__ == "__main__":
             account_type="user",
             first_name="Matthew",
             last_name="Chanco",
+            company_name="",
+            ABN="",
+        )
+        register_account(client, register_request)
+
+        register_request = RegisterRequest(
+            email="bob@example.com",
+            password='Password1',
+            phone_number=fake.phone_number(),
+            account_type="user",
+            first_name="Bob",
+            last_name="Tilman",
             company_name="",
             ABN="",
         )

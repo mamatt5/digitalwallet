@@ -37,6 +37,7 @@ function AuthNavigator({ route }) {
       <AccountStack.Screen
         name="PaymentComplete"
         component={PaymentComplete}
+        options={{ headerShown: false }}
       />
       <AccountStack.Screen
         name="QRGenerateScreenMerchant"
