@@ -1,7 +1,10 @@
 import { CameraView, useCameraPermissions } from "expo-camera";
 import React, { useEffect, useState } from "react";
-import { Button, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { Button, Dimensions, SafeAreaView, StyleSheet, Text, View } from "react-native";
 import { useIsFocused } from "@react-navigation/native";
+
+const { width, height } = Dimensions.get('window');
+const scale = width / 320;
 
 function QRScanScreen({ navigation, route }) {
   const isFocused = useIsFocused();
@@ -82,8 +85,8 @@ const styles = StyleSheet.create({
     marginTop: 70
   },
   camera: {
-    height: 300,
-    width: 300,
+    height: 250 * scale,
+    width: 250 * scale,
   },
   cameraContainer: {
     borderColor: "#00a28e",

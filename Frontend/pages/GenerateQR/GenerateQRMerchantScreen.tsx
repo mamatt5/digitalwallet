@@ -31,12 +31,9 @@ function QRGenerateMerchantScreen({ route }) {
     fetchAccountInfo(account, setMerchant);
   }, [account]);
 
-
   useEffect(() => {
-
     const ws = connectToWebSocket(`/ws/clients/${clientName}`, (data) => {
       if (data) {
-
         const updatedData = {
           ...data,
           account_id: account.account_id,
@@ -45,18 +42,30 @@ function QRGenerateMerchantScreen({ route }) {
           amount: formatPrice(data.amount),
           description: "POS",
         };
-        console.log("POS generated:", updatedData)
+        console.log("POS generated:", updatedData);
         setTransactionData(updatedData);
         setIsLoading(false);
       }
     });
 
     return ws;
-  }, [clientNameclientName, merchant]);
+  }, [clientName, merchant]);
 
-  const qrData = transactionData
-    ? JSON.stringify(transactionData)
-    : '';
+  const qrData = transactionData ? JSON.stringify(transactionData) : "";
+
+  const formatPrice = (price) => {
+    const number = parseFloat(price);
+    return isNaN(number) ? "0.00" : number.toFixed(2);
+  };
+
+  const tableHead = ["Item", "Quantity", "Price ($)"];
+  const tableData = transactionData
+    ? transactionData.items.map((item) => [
+        item.name,
+        item.quantity.toString(),
+        `$${formatPrice(item.price)}`,
+      ])
+    : [];
 
   return (
     <View style={styles.container}>
@@ -84,8 +93,7 @@ function QRGenerateMerchantScreen({ route }) {
             />
           </Table>
           <Text style={styles.totalText}>
-            Total: $
-            {transactionData ? transactionData.amount : "0.00"}
+            Total: ${transactionData ? transactionData.amount : "0.00"}
           </Text>
           <View style={styles.qrCodeContainer}>
             <QRCode

@@ -139,7 +139,7 @@ function LoginScreen({ navigation }) {
             <View style={styles.container}>
 
               <View>
-                <DynamicTextInput placeholder="EMAIL" onChangeText={(e) => handleEmailChange(e)} value={email} error={emailError} onFocus={() => setEmail("")} />
+                <DynamicTextInput placeholder="EMAIL" onChangeText={(e) => handleEmailChange(e)} value={email} error={emailError} />
               </View>
               {emailError && (
                 <MaterialIcons
