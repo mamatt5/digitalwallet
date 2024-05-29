@@ -1,10 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
-  Button, Dimensions, Image, SafeAreaView, Text, TextInput, View, StyleSheet, Keyboard, TouchableWithoutFeedback,
+   Button, Dimensions, Image, SafeAreaView, Text, TextInput, View, StyleSheet, Keyboard, TouchableWithoutFeedback,
+  Alert,
   TouchableOpacity,
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { addCard } from '../../api/api';
+import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 
 const { width, height } = Dimensions.get('window');
 const scale = width / 320;
@@ -74,11 +76,11 @@ function AddCardScreen({ navigation, route }) {
   };
 
   const handleAddCard = () => {
-    
+
 
     const newCardNumberError = cardNumber === '' || !/^\d{16}$/.test(cardNumber)
     const newCvvError = cardCVV === '' || !/^\d{3}$/.test(cardCVV)
- 
+
 
     if (newCardNumberError) {
       setCardNumberError(true)
@@ -95,11 +97,10 @@ function AddCardScreen({ navigation, route }) {
 
     if (newExpiryDateError || inputDate <= currentDate) {
       setExpriyDateError(true)
-    } 
+    }
 
 
-    if (newCardNumberError || newCvvError || newExpiryDateError || parseInt(expiryMonth, 10) < 1) {
-      alert('Please enter valid data into the fields.');
+    if (newCardNumberError || newCvvError || newExpiryDateError || parseInt(expiryMonth, 10) < 1 || inputDate <= currentDate) {
       return;
     }
 
@@ -353,6 +354,15 @@ const styles = StyleSheet.create({
   errorOutline: {
     borderColor: 'red', // Change border color to red when error occurs
     borderWidth: 2
+  },
+
+  errorIcon: {
+    position: 'relative', // Position the icon absolutely
+    right: -15, // Adjust the position as needed
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
 
