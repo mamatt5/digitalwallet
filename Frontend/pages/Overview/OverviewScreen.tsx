@@ -54,8 +54,8 @@ export default function OverviewScreen() {
     header: {
       color: '#ffffff',
       fontSize: 24,
-      marginBottom: 20,
-      margin:10
+      margin: 10,
+      marginBottom: 10,
     },
     tabsContainer: {
       flexDirection: 'row',
@@ -66,20 +66,22 @@ export default function OverviewScreen() {
       position: 'absolute',
       top: '70%',
       left: '50%',
-      transform: [{ translateX: -screenWidth / 2}],
+      transform: [{ translateX: -screenWidth * 0.5 }, { translateY: -100 }],
       zIndex: 999,
       opacity: 0.5,
       fontSize: 40,
       color: '#ffffff',
       fontWeight: 'bold',
       textAlign: 'center',
-      width: screenWidth, }
+      width: screenWidth,
+    },
+ 
   });
 
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.header}>Your Spendings</Text>
-      <Text style={styles.watermark}> DEVELOPMENT IN PROGRESS</Text>
+      <Text style={styles.watermark}>DEVELOPMENT IN PROGRESS</Text>
       <View style={styles.tabsContainer}>
         <FilterTab label="Daily" onPress={() => console.log('Daily')} />
         <FilterTab label="Weekly" onPress={() => console.log('Weekly')} />
