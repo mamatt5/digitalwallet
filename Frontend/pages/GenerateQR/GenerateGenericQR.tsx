@@ -211,10 +211,7 @@ const styles = StyleSheet.create({
     right: 10,
   },
   input: {
-    
     borderColor: "gray",
-    
-    // color: "#ffffff",
     fontSize: 20,
     paddingLeft: 10,
     marginTop: 10,
@@ -223,10 +220,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     borderRadius: 5,
     padding: 10,
-    // width:275
   },
   errorOutline: {
-    borderColor: 'red', // Change border color to red when error occurs
+    borderColor: 'red',
     borderWidth: 2
   },
 

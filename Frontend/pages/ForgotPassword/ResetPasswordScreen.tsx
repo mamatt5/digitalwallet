@@ -116,9 +116,9 @@ const styles = StyleSheet.create({
     marginTop: 50
   },
   container: {
-    flexDirection: 'row', // Arrange children horizontally
-    alignItems: 'center', // Align items vertically
-    position: 'relative', // Required for absolute positioning
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    position: 'relative', 
   },
   centerView: {
     display: 'flex',
@@ -143,8 +143,8 @@ const styles = StyleSheet.create({
     marginBottom: 40
   },
   errorIcon: {
-    position: 'absolute', // Position the icon absolutely
-    right: -20, // Adjust the position as needed
+    position: 'absolute', 
+    right: -20, 
   },
 });
 
