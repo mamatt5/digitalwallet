@@ -1,5 +1,4 @@
 from typing import Annotated, List
-
 from database import get_db_session
 from fastapi import Depends
 from models.user import User

@@ -385,7 +385,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   errorOutline: {
-    borderColor: 'red', // Change border color to red when error occurs
+    borderColor: 'red', 
     borderWidth: 2
   },
   errorIcon: {

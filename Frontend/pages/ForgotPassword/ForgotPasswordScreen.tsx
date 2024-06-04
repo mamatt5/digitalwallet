@@ -45,8 +45,6 @@ const ForgotPasswordScreen = ({ navigation }) => {
         setEmailError(true)
       }
       
-      
-      
     }
 
   }
