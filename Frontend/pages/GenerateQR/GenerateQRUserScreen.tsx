@@ -19,7 +19,6 @@ function GenerateQRScreen() {
 
     try {
       const data = await validateQRCodeData(qrCodeDataTest);
-      // const formattedData = JSON.stringify(data);
       setQrCodeData(data);
       setShowImage(true);
     } catch (error) {

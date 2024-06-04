@@ -7,8 +7,6 @@ import { Button } from "react-native-paper";
 import { useRoute } from '@react-navigation/native';
 import { updatePassword } from '../../api/api';
 
-
-// maybe pass the email of the user whos passwrod is being reset here?
 const ResetPasswordScreen = ({ route, navigation }) => {
   const [verificationCode, setVerificationCode] = useState("")
   const [verificationCodeError, setVerificationCodeError] = useState(false)
@@ -48,8 +46,6 @@ const ResetPasswordScreen = ({ route, navigation }) => {
           <Text style={styles.verificationText}>
             {'Please enter your verification Code \n        and your new Password'}
           </Text>
-
-
           <View style={styles.container}>
             <View>
               <DynamicTextInput

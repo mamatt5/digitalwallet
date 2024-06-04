@@ -58,18 +58,6 @@ function QRScanScreen({ navigation, route }) {
               Please scan the QR code to proceed with payment
             </Text>
           </View>
-
-          {/* {scanned && (
-          <View>
-            <Text style={styles.qrText}>{text}</Text>
-            <View style={styles.buttonContainer}>
-              <Button
-                title="Tap to Scan Again"
-                onPress={() => setScanned(false)}
-              />
-            </View>
-          </View>
-          )} */}
         </View>
       )}
     </SafeAreaView>

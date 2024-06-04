@@ -77,10 +77,8 @@ function AddCardScreen({ navigation, route }) {
 
   const handleAddCard = () => {
 
-
     const newCardNumberError = cardNumber === '' || !/^\d{16}$/.test(cardNumber)
     const newCvvError = cardCVV === '' || !/^\d{3}$/.test(cardCVV)
-
 
     if (newCardNumberError) {
       setCardNumberError(true)
@@ -98,11 +96,8 @@ function AddCardScreen({ navigation, route }) {
     if (newExpiryDateError || inputDate <= currentDate) {
       setExpriyDateError(true)
     }
-    
-
 
     if (newCardNumberError || newCvvError || newExpiryDateError || parseInt(expiryMonth, 10) < 1 || inputDate <= currentDate) {
-      
       return;
     }
 

@@ -5,10 +5,7 @@ from services.account_service import AccountService
 from fastapi import APIRouter, Depends, Request
 from security import hash_password
 
-import logging
-
 router = APIRouter(prefix="/accounts", tags=["Accounts"])
-
 
 @router.get("/getuser/{account_id}")
 def get_user_route(account_id: int, account_service: AccountService = Depends(AccountService)) -> User:

@@ -4,7 +4,6 @@ from fastapi import APIRouter, Depends
 
 router = APIRouter(prefix="/wallets", tags=["Wallets"])
 
-
 @router.post("/addwallet")
 def add_wallet_route(wallet: Wallet, wallet_service: WalletService = Depends(WalletService)) -> None:
     wallet_service.add_wallet(wallet)

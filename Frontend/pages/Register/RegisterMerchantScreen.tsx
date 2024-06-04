@@ -50,13 +50,13 @@ function RegisterMerchantScreen({ navigation }) {
 
 
   const createMerchant = async () => {
-    // Values of regex need to be saved as react states(line 20 - 25) are one state behind
+    // Values of regex need to be saved as react states are one state behind
 
     const newCompanyNameError = (companyName === '');
     const newEmailError = email === '' || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
 
     // 11 digits
-    // can be enter with or without white spaces
+    // can be entered with or without white spaces
     const newAbnError = abn === '' || !/^\d{2}\s?\d{3}\s?\d{3}\s?\d{3}$/.test(abn);
 
     // needs 10 digits

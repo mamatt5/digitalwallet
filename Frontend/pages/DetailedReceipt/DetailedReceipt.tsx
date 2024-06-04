@@ -19,8 +19,6 @@ function DetailedReceiptsScreen({ navigation, route }) {
   const [vendor, setVendor] = useState("");
   const [card, setCard] = useState("");
 
-  // console.log("detailed transaction: ", transaction);
-
   const fetchItems = async () => {
     try {
       const items = await getItems(transaction.transaction_id);

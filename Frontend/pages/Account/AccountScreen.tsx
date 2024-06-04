@@ -105,8 +105,6 @@ function AccountScreen({ navigation, route }) {
         fetchTransactions();
       }
       
-      
-      
     }
   }, [bankCards, activeIndex, refresh]);
 
