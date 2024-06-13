@@ -232,6 +232,26 @@ export const addTransaction = async (transaction) => {
   }
 };
 
+export const addAPPoints = async (transaction) => {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/transactions/addpoints`, transaction);
+    return response.data;
+  } catch (error) {
+    console.error('Add AP points error:', error.response.data);
+    throw error;
+  }
+};
+
+export const getAPPoints = async (walletId: string) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/wallets/getpoints/${walletId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Get AP points error:', error);
+    throw error;
+  }
+}
+
 export const validateQRCodeData = async (data) => {
   try {
     const response = await axios.post(`${API_BASE_URL}/validate_qr`, data);

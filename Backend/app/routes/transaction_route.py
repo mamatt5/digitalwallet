@@ -37,8 +37,10 @@ def add_transaction_route(transaction_data: dict, transaction_service: Transacti
             transaction.items.append(item)
 
         transaction_service.add_transaction(transaction)
-        wallet_service.update_wallet_ap_points(transaction.sender, float(transaction_data.get('amount', 0)) * 100 )
 
+@router.post("/addpoints")
+def add_ap_points(transaction_data: dict, wallet_service: WalletService = Depends(WalletService)) -> None:
+     wallet_service.update_wallet_ap_points(transaction_data['sender'], float(transaction_data.get('amount', 0)) * 100 )
 
 @router.get('/gettransactions')
 def get_transactions(transaction: Transaction, transaction_service: TransactionService = Depends(TransactionService)):
