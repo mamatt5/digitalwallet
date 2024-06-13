@@ -16,3 +16,6 @@ class WalletService:
 
     def get_wallets(self) -> list[Wallet]:
         return self.wallet_repository.get_all()
+    
+    def update_wallet_ap_points(self, wallet_id: int, points: int) -> Wallet:
+        return self.wallet_repository.update_wallet_ap_points(wallet_id, points)

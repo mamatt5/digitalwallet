@@ -12,3 +12,4 @@ class Wallet(SQLModel, table=True):
     account_id: int = Field(foreign_key="account.account_id")
     cards: List[Card] = Relationship(back_populates="wallet")
     loyalty_cards: List[LoyaltyCard] = Relationship(back_populates="wallet")
+    ap_points: int = Field(default=0)

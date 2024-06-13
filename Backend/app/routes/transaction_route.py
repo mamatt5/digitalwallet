@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends
+from services.wallet_service import WalletService
 from models.transaction import Transaction, Item
 from services.transaction_service import TransactionService
 
@@ -11,7 +12,9 @@ import logging
 #     transaction_service.add_transaction(transaction)
 
 @router.post("/addtransaction")
-def add_transaction_route(transaction_data: dict, transaction_service: TransactionService = Depends(TransactionService)) -> None:
+def add_transaction_route(transaction_data: dict, transaction_service: TransactionService = Depends(TransactionService),
+                          wallet_service: WalletService = Depends(WalletService)) -> None:
+        
         transaction = Transaction(
              
             vendor=transaction_data['vendor'],
@@ -34,6 +37,7 @@ def add_transaction_route(transaction_data: dict, transaction_service: Transacti
             transaction.items.append(item)
 
         transaction_service.add_transaction(transaction)
+        wallet_service.update_wallet_ap_points(transaction.sender, float(transaction_data.get('amount', 0)) * 100 )
 
 
 @router.get('/gettransactions')

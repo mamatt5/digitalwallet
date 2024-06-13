@@ -2,6 +2,7 @@ from typing import Annotated, List, Any
 
 from repositories.base_repository import RepositoryBase, T
 from models.transaction import Item, Transaction
+from models.loyalty_card import LoyaltyTransaction
 
 from fastapi import Depends
 from sqlmodel import Session, delete, or_, select, update
@@ -19,6 +20,12 @@ class TransactionRepository(RepositoryBase[Transaction]):
         self.session.commit()
         self.session.refresh(transaction)
         return transaction
+    
+    def create_loyalty_transaction(self, loyalty_transaction: LoyaltyTransaction) -> LoyaltyTransaction:
+        self.session.add(loyalty_transaction)
+        self.session.commit()
+        self.session.refresh(loyalty_transaction)
+        return loyalty_transaction
 
     def update(self, transaction: Transaction) -> Transaction:
         statement = update(Transaction).where(Transaction.transaction_id == Transaction.transaction_id).values(

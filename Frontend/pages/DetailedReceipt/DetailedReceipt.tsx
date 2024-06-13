@@ -137,21 +137,29 @@ function DetailedReceiptsScreen({ navigation, route }) {
         <View style={styles.cardDetails}>
           <View style={styles.cardHeaderText}>
             <Text style={styles.cardHeaderTotal}>
-              Total(
+              Total (
+
               {items.reduce((total, item) => total + item.quantity, 0)}
               {items.reduce((total, item) => total + item.quantity, 0) > 1
                 ? " items"
                 : " item"}
+
               )
             </Text>
-            <Text style={styles.cardHeaderPrice}>
-              ${(transaction.amount / 1.1).toFixed(2)}
-            </Text>
+            <Text style={styles.cardHeaderPrice}>${transaction.amount}</Text>
           </View>
-          <View style={styles.cardHeaderText}>
-            <Text style={styles.gstHeader}>#Total includes GST</Text>
+
+          <View>
+            <Text style={styles.gstHeader}>#GST</Text>
             <Text style={styles.gstPrice}>
               ${(transaction.amount / 11).toFixed(2)}
+            </Text>
+          </View>
+
+          <View>
+          <Text style={styles.gstHeader}>#excl. GST</Text>
+            <Text style={styles.gstPrice}>
+              ${(transaction.amount / 1.1).toFixed(2)}
             </Text>
           </View>
           <View style={styles.paymentHeader}>
@@ -285,7 +293,7 @@ const styles = StyleSheet.create({
     right: 0,
   },
   paymentHeader: {
-    marginTop: 25,
+    marginTop: 15,
   },
   paymentText: {
     color: "#FFFFFF",
