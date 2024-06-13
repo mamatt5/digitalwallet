@@ -41,3 +41,9 @@ class WalletRepository(RepositoryBase[Wallet]):
         statement = select(Wallet).where(Wallet.wallet_id == wallet_id)
         wallet = self.session.exec(statement).first()
         return wallet
+    
+    def update_wallet_ap_points(self, wallet_id: int, points: int) -> Wallet:
+        statement = update(Wallet).where(Wallet.wallet_id == wallet_id).values(ap_points=Wallet.ap_points + points)
+        wallet = self.session.exec(statement)
+        self.session.commit()
+        return wallet

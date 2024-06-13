@@ -58,7 +58,6 @@ if exist "dataloader.py" (
     echo No dataloader.py found
 )
 
-
 REM ### FRONTEND ###
 
 cd ../../frontend
@@ -84,6 +83,24 @@ REM Start the frontend
 echo Starting frontend development server
 start "Frontend Server" cmd /c "npm run start"
 
+REM ### MOCKPOS ###
 
-REM ### POS ###
-REM todo
+cd ../MockPOS
+
+REM Start the POS server
+cd app
+start "POS Server" cmd /c "python -m uvicorn server:app --host 0.0.0.0 --reload --port 8001"
+
+REM Install POS CLI dependencies if package.json exists
+cd ../interface
+
+if exist "package.json" (
+    echo Installing POS CLI dependencies
+    call npm install
+    if %errorlevel% neq 0 (
+        echo Failed to install POS CLI dependencies
+        exit /b 1
+    )
+)
+
+start "POS CLI" cmd /c "npm run build && npm run start"

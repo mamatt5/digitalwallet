@@ -8,6 +8,7 @@ from fastapi.testclient import TestClient
 from main import app
 from models.account import AccountType
 from schemas.auth_schema import AuthResponse, RegisterRequest
+from schemas.card_schema import CardRegisterRequest
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -48,6 +49,12 @@ def create_card_data() -> Dict:
         "card_expiry": fake.credit_card_expire(),
         "card_cvv": fake.credit_card_security_code(),
     }
+
+def register_card(client, card_register_request: CardRegisterRequest) -> None:
+    logger.info(f"Registering card: {card_register_request}")
+    response = client.post("/cards/addcard", json=card_register_request.model_dump())
+    assert response.status_code == status.HTTP_200_OK, f"Card registration failed: {response.text}"
+    logger.info("Card registered successfully")
 
 
 def create_transaction_data() -> Dict:
@@ -144,14 +151,35 @@ if __name__ == "__main__":
         )
         register_account(client, register_request)
 
+        card_register_request = CardRegisterRequest(
+            card_number=fake.pystr_format(string_format="################"),
+            card_expiry=fake.credit_card_expire(),
+            card_cvv=fake.credit_card_security_code(),
+            wallet_id=14,
+        )
+        register_card(client, card_register_request)
+
+
         register_request = RegisterRequest(
-            email="bob@example.com",
+            email="coles@example.com",
             password='Password1',
             phone_number=fake.phone_number(),
-            account_type="user",
-            first_name="Bob",
-            last_name="Tilman",
-            company_name="",
-            ABN="",
+            account_type="merchant",
+            company_name="Coles",
+            ABN=fake.msisdn(),
+            first_name="",
+            last_name="",
+        )
+        register_account(client, register_request)
+
+        register_request = RegisterRequest(
+            email="woolworths@example.com",
+            password='Password1',
+            phone_number=fake.phone_number(),
+            account_type="merchant",
+            company_name="Woolworth's",
+            ABN=fake.msisdn(),
+            first_name="",
+            last_name="",
         )
         register_account(client, register_request)

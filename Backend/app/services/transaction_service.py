@@ -9,7 +9,6 @@ class TransactionService:
         self.transaction_repository = transaction_repository
 
     def add_transaction(self, transaction: Transaction) -> None:
-        print(transaction)
         transaction = self.transaction_repository.create(transaction)
 
     def get_transaction(self, transaction_id: int) -> Transaction:
