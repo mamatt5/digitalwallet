@@ -5,12 +5,6 @@ from services.transaction_service import TransactionService
 
 router = APIRouter(prefix="/transactions", tags=["transaction"])
 
-import logging
-
-# @router.post("/addtransaction")
-# def add_transaction_route(transaction: Transaction, transaction_service: TransactionService = Depends(TransactionService)) -> None:
-#     transaction_service.add_transaction(transaction)
-
 @router.post("/addtransaction")
 def add_transaction_route(transaction_data: dict, transaction_service: TransactionService = Depends(TransactionService),
                           wallet_service: WalletService = Depends(WalletService)) -> None:

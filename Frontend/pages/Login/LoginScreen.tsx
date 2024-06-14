@@ -9,7 +9,6 @@ import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Genericlogo from '../../assets/Genericlogo.png';
-// import Genericlogo from '../../assets/Genericlogo.png';
 import APPlogo from '../../assets/APPlogo.png';
 import { Alert } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
@@ -23,32 +22,6 @@ function LoginScreen({ navigation }) {
   const [passwordError, setPasswordError] = useState(false);
 
   const [showFullPass, setShowFullPass] = useState(false);
-
-
-  const [fadeAnim, setfadeAnim] = useState(useRef(new Animated.Value(0)))
-  const [resetAnimation, setResetAnimation] = useState(false);
-
-
-  // const startAnimation = () => {
-  //   Animated.timing(
-  //     fadeAnim,
-  //     {
-  //       toValue: 1,
-  //       duration: 1000,
-  //       useNativeDriver: true,
-  //     }
-  //   ).start();
-  // };
-
-  // useFocusEffect(
-  //   React.useCallback(() => {
-
-  //     startAnimation();
-  //     setfadeAnim(useRef(new Animated.Value(0)))
-  //   }, [navigation])
-
-  // )
-
 
 
   useEffect(() => {
@@ -93,14 +66,6 @@ function LoginScreen({ navigation }) {
       setPasswordError(true);
       return;
     }
-
-    // if (newPasswordError) {
-    //   setPasswordError(true);
-    // }
-
-    // if (newEmailError || newPasswordError) {
-    //   return;
-    // }
 
     try {
 
@@ -203,9 +168,9 @@ const styles = StyleSheet.create({
     marginTop: 50
   },
   container: {
-    flexDirection: 'row', // Arrange children horizontally
-    alignItems: 'center', // Align items vertically
-    position: 'relative', // Required for absolute positioning
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    position: 'relative', 
   },
   centerView: {
     display: 'flex',
@@ -227,12 +192,12 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   errorIcon: {
-    position: 'absolute', // Position the icon absolutely
-    right: -20, // Adjust the position as needed
+    position: 'absolute', 
+    right: -20, 
   },
   eyeButton: {
-    position: 'absolute', // Position the icon absolutely
-    right: 25, // Adjust the position as needed
+    position: 'absolute', 
+    right: 25, 
     opacity: 0.6,
   }
 

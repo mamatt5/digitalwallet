@@ -5,8 +5,6 @@ from services.account_service import AccountService
 from fastapi import APIRouter, Depends, Request
 from security import hash_password
 
-import logging
-
 router = APIRouter(prefix="/accounts", tags=["Accounts"])
 
 
