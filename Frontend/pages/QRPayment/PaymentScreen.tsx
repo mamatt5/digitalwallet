@@ -11,7 +11,7 @@ import {
 import { Button } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome6';
-import { getWalletCards, addTransaction } from '../../api/api';
+import { getWalletCards, addTransaction, addAPPoints } from '../../api/api';
 import SmallDebitCard from '../../components/SmallDebitCard';
 
 const { width, height } = Dimensions.get('window');
@@ -24,6 +24,7 @@ function PaymentScreen({ route, navigation }) {
   const [isValidQR, setIsValidQR] = useState(false);
   const [parsedData, setParsedData] = useState('');
   const [selectedCard, setSelectedCard] = useState(-1);
+  const [useLoyaltyCard, setUseLoyaltyCard] = useState(false);
 
   const fetchCards = async () => {
     try {
@@ -60,10 +61,18 @@ function PaymentScreen({ route, navigation }) {
 
   const saveTransaction = async (transaction) => {
     try {
-      console.log("from saveTransaction: " , transaction)
-      await addTransaction(transaction);
+      console.log("from saveTransaction: " , transaction);
+      await addTransaction(transaction)
     } catch (error) {
       console.error('Save Transaction error:', error.response.data);
+    }
+  };
+
+  const addPoints = async (transaction) => {
+    try {
+      await addAPPoints(transaction);
+    } catch (error) {
+      console.error('Add AP points error:', error.response.data);
     }
   };
 
@@ -84,6 +93,11 @@ function PaymentScreen({ route, navigation }) {
     console.log("Payment screen:" + transaction);
 
     await saveTransaction(transaction);
+
+    if (parsedData.description === 'POS' && parsedData.items.length > 0) {
+      await addPoints(transaction);
+    }
+
     Vibration.vibrate(500);
     navigation.navigate("PaymentComplete", {
       parsedData,

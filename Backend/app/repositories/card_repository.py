@@ -1,7 +1,5 @@
 from typing import Annotated, List
-
 from fastapi import Depends
-
 from sqlmodel import Session, select, update, delete
 from models.card import Card
 from database import get_db_session

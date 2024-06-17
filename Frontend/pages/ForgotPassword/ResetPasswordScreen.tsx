@@ -8,7 +8,6 @@ import { useRoute } from '@react-navigation/native';
 import { updatePassword } from '../../api/api';
 
 
-// maybe pass the email of the user whos passwrod is being reset here?
 const ResetPasswordScreen = ({ route, navigation }) => {
   const [verificationCode, setVerificationCode] = useState("")
   const [verificationCodeError, setVerificationCodeError] = useState(false)
@@ -120,9 +119,9 @@ const styles = StyleSheet.create({
     marginTop: 50
   },
   container: {
-    flexDirection: 'row', // Arrange children horizontally
-    alignItems: 'center', // Align items vertically
-    position: 'relative', // Required for absolute positioning
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    position: 'relative', 
   },
   centerView: {
     display: 'flex',
@@ -147,8 +146,8 @@ const styles = StyleSheet.create({
     marginBottom: 40
   },
   errorIcon: {
-    position: 'absolute', // Position the icon absolutely
-    right: -20, // Adjust the position as needed
+    position: 'absolute', 
+    right: -20, 
   },
 });
 

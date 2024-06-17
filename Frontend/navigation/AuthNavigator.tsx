@@ -8,6 +8,7 @@ import RegisterMerchantScreen from '../pages/Register/RegisterMerchantScreen';
 import ResetPasswordScreen from '../pages/ForgotPassword/ResetPasswordScreen';
 import RegisterSucessScreen from '../pages/Register/RegisterSucessScreen';
 import ResetPasswordSuccessfulScreen from '../pages/ForgotPassword/ResetPasswordSuccessfulScreen';
+import RewardsScreen from '../pages/Rewards/RewardsScreen';
 
 const AuthStack = createStackNavigator();
 

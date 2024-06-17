@@ -1,12 +1,10 @@
 from typing import Annotated, List, Any
-
 from repositories.base_repository import RepositoryBase, T
 from models.transaction import Item, Transaction
 from models.loyalty_card import LoyaltyTransaction
 
 from fastapi import Depends
 from sqlmodel import Session, delete, or_, select, update
-
 from database import get_db_session
 
 

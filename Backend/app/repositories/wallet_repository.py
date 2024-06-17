@@ -1,7 +1,5 @@
 from typing import Annotated, List
-
 from fastapi import Depends
-
 from sqlmodel import Session, select, update, delete
 from models.wallet import Wallet
 from database import get_db_session
@@ -41,6 +39,11 @@ class WalletRepository(RepositoryBase[Wallet]):
         statement = select(Wallet).where(Wallet.wallet_id == wallet_id)
         wallet = self.session.exec(statement).first()
         return wallet
+    
+    def get_wallet_points(self, wallet_id: int) -> int:
+        statement = select(Wallet).where(Wallet.wallet_id == wallet_id)
+        wallet = self.session.exec(statement).first()
+        return wallet.ap_points
     
     def update_wallet_ap_points(self, wallet_id: int, points: int) -> Wallet:
         statement = update(Wallet).where(Wallet.wallet_id == wallet_id).values(ap_points=Wallet.ap_points + points)
