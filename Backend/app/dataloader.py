@@ -1,6 +1,7 @@
 import logging
 import random
-from typing import Dict
+import json
+from typing import Dict, List
 
 from faker import Faker
 from fastapi import status
@@ -57,12 +58,33 @@ def register_card(client, card_register_request: CardRegisterRequest) -> None:
     logger.info("Card registered successfully")
 
 
-def create_transaction_data() -> Dict:
+def create_transaction_data(users: List[int]) -> Dict:
     logger.info("Creating transaction data")
+    randomDatetime = fake.date_time_this_year(before_now=True)
+    customer = 1
+    if len(users) > 0:
+        customer = random.choice(users)
     return {
-        "date": fake.date_time_this_year(before_now=True),
-        "amount": random.randint(1, 1000),
+        "vendor": 13,
+        "date": randomDatetime.strftime("%x"),
+        "time": randomDatetime.strftime("%X"),
+        "amount": str(round(random.uniform(5, 20), 2)),
+        "description": "Test transaction",
+        "card_id": customer,
+        "sender": customer,
+        "recipient": 13,
+        "items": [],
     }
+
+
+def add_transaction_data(client, num_transactions: int, users: List[int]) -> AuthResponse:
+    transactions = list()
+    for _ in range(num_transactions):
+        transactions.append(create_transaction_data(users))
+    response = client.post("/transactions/addtransactions", json=json.dumps([ob.__dict__ for ob in transactions]))
+    assert response.status_code == status.HTTP_200_OK, f"Transactions add failed: {response.text}"
+    logger.info(f"Transactions added successfully: {response.json()}")
+    return AuthResponse(**response.json())
 
 
 def register_account(client, register_request: RegisterRequest) -> AuthResponse:
@@ -82,25 +104,31 @@ def add_card_to_wallet(client, auth_response: AuthResponse, card_data: Dict) -> 
     logger.info("Card added to wallet successfully")
 
 
-def generate_dummy_data(client: TestClient, num_records: int) -> None:
+def generate_dummy_data(client: TestClient, num_records: int) -> List[int]:
     logger.info(f"Generating dummy data for {num_records} records")
-    for _ in range(num_records):
+    users = list()
+    for i in range(num_records):
         account_type = AccountType.MERCHANT if fake.boolean() else AccountType.USER
+        if account_type == AccountType.USER:
+            users.append(i + 1)
         register_request = create_register_request(account_type)
         auth_response = register_account(client, register_request)
         card_data = create_card_data()
         add_card_to_wallet(client, auth_response, card_data)
+    return users
 
 
-def load_dummy_data(num_records: int):
+def load_dummy_data(num_records: int) -> List[int]:
     logger.info(f"Loading dummy data for {num_records} records")
     with TestClient(app) as client:
-        generate_dummy_data(client, num_records)
+        users = generate_dummy_data(client, num_records)
+    return users
 
 
 if __name__ == "__main__":
     num_records = 10
-    load_dummy_data(num_records)
+    transaction_records = 100
+    users = load_dummy_data(num_records)
 
     with TestClient(app) as client:
         register_request = RegisterRequest(
@@ -183,3 +211,5 @@ if __name__ == "__main__":
             last_name="",
         )
         register_account(client, register_request)
+
+        add_transaction_data(client, transaction_records, users)

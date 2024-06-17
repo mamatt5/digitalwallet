@@ -19,6 +19,13 @@ class TransactionRepository(RepositoryBase[Transaction]):
         self.session.refresh(transaction)
         return transaction
     
+    def create_all(self, transactions: List[Transaction]) -> List[Transaction]:
+        self.session.bulk_save_objects(transactions)
+        self.session.commit()
+        for transaction in transactions:
+            self.session.refresh(transaction)
+        return transactions
+    
     def create_loyalty_transaction(self, loyalty_transaction: LoyaltyTransaction) -> LoyaltyTransaction:
         self.session.add(loyalty_transaction)
         self.session.commit()
