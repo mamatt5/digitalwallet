@@ -11,7 +11,11 @@ from models.account import AccountType
 from schemas.auth_schema import AuthResponse, RegisterRequest
 from schemas.card_schema import CardRegisterRequest
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(filename='app.log', 
+                    filemode='w', 
+                    format='%(asctime)s - %(levelname)s - %(message)s', 
+                    level=logging.DEBUG)
+
 logger = logging.getLogger(__name__)
 
 fake = Faker()
@@ -77,14 +81,13 @@ def create_transaction_data(users: List[int]) -> Dict:
     }
 
 
-def add_transaction_data(client, num_transactions: int, users: List[int]) -> AuthResponse:
+def add_transaction_data(client, num_transactions: int, users: List[int]) -> None:
     transactions = list()
     for _ in range(num_transactions):
         transactions.append(create_transaction_data(users))
-    response = client.post("/transactions/addtransactions", json=json.dumps([ob.__dict__ for ob in transactions]))
+    response = client.post("/transactions/addtransactions", json=transactions)
     assert response.status_code == status.HTTP_200_OK, f"Transactions add failed: {response.text}"
-    logger.info(f"Transactions added successfully: {response.json()}")
-    return AuthResponse(**response.json())
+    logger.info(f"Transactions added successfully")
 
 
 def register_account(client, register_request: RegisterRequest) -> AuthResponse:

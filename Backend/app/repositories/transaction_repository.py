@@ -20,7 +20,7 @@ class TransactionRepository(RepositoryBase[Transaction]):
         return transaction
     
     def create_all(self, transactions: List[Transaction]) -> List[Transaction]:
-        self.session.bulk_save_objects(transactions)
+        self.session.add_all(transactions)
         self.session.commit()
         for transaction in transactions:
             self.session.refresh(transaction)
