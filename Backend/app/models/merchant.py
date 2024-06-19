@@ -1,4 +1,5 @@
 from models.account import Account
+from models.category import Category
 from sqlmodel import Field, Relationship, SQLModel
 
 
@@ -17,3 +18,4 @@ class Merchant(SQLModel, table=True):
     company_name: str
     ABN: str
     account: Account | None = Relationship(back_populates="merchant")
+    category: Category | None = Relationship(back_populates="merchant")
