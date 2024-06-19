@@ -4,6 +4,7 @@ import * as dc from 'dc';
 import { useState } from "react";
 import { PieChart, RowChart, BubbleChart, BarChart } from 'react-dc-js'
 import crossfilter from 'crossfilter2'
+import axios from 'axios'
 
 function generateTransactions(numTransactions) {
 	const transactions = [];
@@ -19,7 +20,6 @@ function generateTransactions(numTransactions) {
 		card_id: "Card "+Math.floor(Math.random() * 20),
 		sender: "Customer "+Math.floor(Math.random() * 10),
 		recipient: 13,
-		// 
 	  };
   
 	  transactions.push(transaction);
@@ -29,7 +29,17 @@ function generateTransactions(numTransactions) {
 }
 
 export default function Index() {
-    let data = generateTransactions(100)
+    const [transactions, setTransactions] = useState([])
+
+	const endpoint = "http://localhost:8000/transactions/gettransactions"
+	const requestOptions = {}
+
+	axios.get(endpoint, requestOptions)
+		.then(response => {setTransactions(response.data); console.log(response.data)})
+		.catch(error => console.log(error))
+
+	
+	let data = generateTransactions(100)
 
 	let ndx = crossfilter(data);
 	let all = ndx.groupAll();
