@@ -70,7 +70,7 @@ def add_ap_points(transaction_data: dict, wallet_service: WalletService = Depend
 
 @router.get('/gettransactions')
 def get_transactions(transaction: Transaction, transaction_service: TransactionService = Depends(TransactionService)):
-    return TransactionService.add_transaction(transaction)
+    return transaction_service.get_transactions()
 
 @router.get('/gettransactions/{card_id}')
 def get_transaction_by_card_id(card_id: int, transaction_service: TransactionService = Depends(TransactionService)) -> list[Transaction]:
