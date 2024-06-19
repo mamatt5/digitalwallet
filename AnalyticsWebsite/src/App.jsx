@@ -8,6 +8,7 @@ import Box from '@mui/material/Box';
 import Transactions from './pages/Transactions';
 import Login from './pages/Login';
 import Index from './pages/Index';
+import QRCustomization from './pages/QRCustomization';
 
 //////////////////// COMPONENTS ////////////////////////
 import SideMenu from './components/SideMenu/SideMenu';
@@ -26,6 +27,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<Index />} />
           <Route path="/transactions" element={<Transactions />} />
+          <Route path="/customize" element={<QRCustomization />} />
         </Routes>
       </Box>
     </Box>
