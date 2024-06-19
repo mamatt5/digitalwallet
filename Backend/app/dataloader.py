@@ -1,6 +1,5 @@
 import logging
 import random
-import json
 from typing import Dict, List
 
 from faker import Faker
