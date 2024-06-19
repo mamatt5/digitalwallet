@@ -1,5 +1,6 @@
 from models.account import Account
 from models.category import Category
+from typing import TYPE_CHECKING, Optional
 from sqlmodel import Field, Relationship, SQLModel
 
 
@@ -18,4 +19,5 @@ class Merchant(SQLModel, table=True):
     company_name: str
     ABN: str
     account: Account | None = Relationship(back_populates="merchant")
-    category: Category | None = Relationship(back_populates="merchant")
+    category_id: Optional[int] = Field(default=None, foreign_key='category.category_id')
+    category: Category | None = Relationship(back_populates="merchants")
