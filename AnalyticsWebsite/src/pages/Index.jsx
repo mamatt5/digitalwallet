@@ -56,7 +56,7 @@ export default function Index() {
 	// let all = ndx.groupAll();
 
 	let cardIdDim = ndx.dimension(function (d) {return d["card_id"]})
-	let senderDim = ndx.dimension(function (d) {return d["sender"]})
+	let senderDim = ndx.dimension(function (d) {return "Customer "+d["sender"]})
 	let amountDim = ndx.dimension(function (d) {return parseFloat(d["amount"]) > 10 ? "Over $10" : "Under $10"})
 
 	const moveMonths = ndx.dimension((d) => d.month);
