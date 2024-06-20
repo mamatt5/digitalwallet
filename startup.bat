@@ -3,7 +3,7 @@
 REM ### BACKEND ###
 
 REM Change to the backend directory
-cd backend
+cd Backend
 
 REM Check for a virtual environment
 if exist "venv" (
@@ -52,55 +52,56 @@ if %errorlevel% equ 0 (
 
 REM Populate database with dataloader
 echo Populating database with dataloader
+@REM python dataloader.py
 if exist "dataloader.py" (
     python dataloader.py
 ) else (
     echo No dataloader.py found
 )
 
-@REM REM ### FRONTEND ###
+REM ### FRONTEND ###
 
-@REM cd ../../frontend
+cd ../../frontend
 
-@REM REM Check if Node.js is installed
-@REM where node
-@REM if %errorlevel% neq 0 (
-@REM     echo Node.js is not installed
-@REM     exit /b 1
-@REM )
+REM Check if Node.js is installed
+where node
+if %errorlevel% neq 0 (
+    echo Node.js is not installed
+    exit /b 1
+)
 
-@REM REM Install frontend dependencies if package.json exists
-@REM if exist "package.json" (
-@REM     echo Installing frontend dependencies
-@REM     call npm install
-@REM     if %errorlevel% neq 0 (
-@REM         echo Failed to install frontend dependencies
-@REM         exit /b 1
-@REM     )
-@REM )
+REM Install frontend dependencies if package.json exists
+if exist "package.json" (
+    echo Installing frontend dependencies
+    call npm install
+    if %errorlevel% neq 0 (
+        echo Failed to install frontend dependencies
+        exit /b 1
+    )
+)
 
-@REM REM Start the frontend
-@REM echo Starting frontend development server
-@REM start "Frontend Server" cmd /c "npm run start"
+REM Start the frontend
+echo Starting frontend development server
+start "Frontend Server" cmd /c "npm run start"
 
-@REM REM ### MOCKPOS ###
+REM ### MOCKPOS ###
 
-@REM cd ../MockPOS
+cd ../MockPOS
 
-@REM REM Start the POS server
-@REM cd app
-@REM start "POS Server" cmd /c "python -m uvicorn server:app --host 0.0.0.0 --reload --port 8001"
+REM Start the POS server
+cd app
+start "POS Server" cmd /c "python -m uvicorn server:app --host 0.0.0.0 --reload --port 8001"
 
-@REM REM Install POS CLI dependencies if package.json exists
-@REM cd ../interface
+REM Install POS CLI dependencies if package.json exists
+cd ../interface
 
-@REM if exist "package.json" (
-@REM     echo Installing POS CLI dependencies
-@REM     call npm install
-@REM     if %errorlevel% neq 0 (
-@REM         echo Failed to install POS CLI dependencies
-@REM         exit /b 1
-@REM     )
-@REM )
+if exist "package.json" (
+    echo Installing POS CLI dependencies
+    call npm install
+    if %errorlevel% neq 0 (
+        echo Failed to install POS CLI dependencies
+        exit /b 1
+    )
+)
 
-@REM start "POS CLI" cmd /c "npm run build && npm run start"
+start "POS CLI" cmd /c "npm run build && npm run start"
