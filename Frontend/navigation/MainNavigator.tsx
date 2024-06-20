@@ -12,7 +12,6 @@ const Tab = createBottomTabNavigator();
 
 function MainNavigator({ route }) {
   const { account } = route.params;
-  console.log("Account logged in: ", account)
   return (
     <Tab.Navigator
       initialRouteName="Account"
@@ -75,6 +74,7 @@ function MainNavigator({ route }) {
           <Tab.Screen
           name="Rewards"
           component={RewardsScreen}
+          initialParams={{ account }}
           options={{
             tabBarLabel: 'Rewards',
             tabBarIcon: ({ color, size }) => (

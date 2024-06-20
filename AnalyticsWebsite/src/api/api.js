@@ -15,7 +15,6 @@ export const loginUser = async (email, password) => {
       client_secret: '',
       scope: '',
     });
-    console.log(requestData)
 
     const response = await axios.post(`${API_BASE_URL}/auth/login`, requestData.toString(), {
       headers: {

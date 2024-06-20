@@ -21,6 +21,10 @@ def get_cards_route(card_service: CardService = Depends(CardService)) -> list[Ca
 def get_card_route(card_id: int, card_service: CardService = Depends(CardService)) -> CardInfo:
     return card_service.get_card(card_id)
 
+@router.delete("/deletecard/{card_id}")
+def delete_card_route(card_id: int, card_service: CardService = Depends(CardService)) -> None:
+    card_service.delete_card(card_id)
+
 
 @router.get("/getcardsfromwallet/{wallet_id}", response_model=List[CardInfo])
 def get_cards_from_wallet_route(wallet_id: int, card_service: CardService = Depends(CardService)) -> list[CardInfo]:

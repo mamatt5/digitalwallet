@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { SafeAreaView, View, Text, Dimensions, StyleSheet } from "react-native";
+import {
+  SafeAreaView,
+  View,
+  Text,
+  Dimensions,
+  StyleSheet,
+  Alert,
+} from "react-native";
 import Carousel from "react-native-snap-carousel";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -13,6 +20,7 @@ import {
   getTransactionsByWallet,
   fetchLoyaltyCards,
   getAPPoints,
+  deleteCardById,
 } from "../../api/api";
 import CardTabs from "../../components/CardFilterTabs/CardTabs";
 import ProfileButton from "../../components/ProfileButton/ProfileButton";
@@ -79,11 +87,15 @@ function AccountScreen({ navigation, route }) {
     } catch (error) {
       console.error("Get Wallet Points error:", error);
     }
-  }
+  };
 
   const _renderItem = ({ item }) => {
     if (activeTabIndex === 0) {
-      return <DebitCard bankCard={item} />;
+      return (
+        <TouchableOpacity onLongPress={() => handleLongPress(item.card_id, item.card_number)}>
+          <DebitCard bankCard={item} />
+        </TouchableOpacity>
+      );
     }
     return <LoyaltyCard loyaltyCard={item} />;
   };
@@ -107,6 +119,34 @@ function AccountScreen({ navigation, route }) {
         onSnapToItem={(index) => setActiveIndex(index)}
       />
     );
+  };
+
+  const handleLongPress = (cardId, cardNumber) => {
+    Alert.alert(
+      `Deleting card ending in **${cardNumber.slice(-4)}`,
+      "Are you sure you want to delete card?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Delete",
+          onPress: () => {
+            deleteCard(cardId);
+          },
+        },
+      ],
+    );
+  };
+
+  const deleteCard = async (cardId) => {
+    try {
+      await deleteCardById(cardId);
+      setRefresh((prev) => !prev);
+    } catch (error) {
+      console.error("Delete Card error:", error);
+    }
   };
 
   useEffect(() => {
@@ -170,9 +210,8 @@ function AccountScreen({ navigation, route }) {
 
           <View style={styles.pointsContainer}>
             <Icon name="star" size={15 * scale} color="#fff" />
-          <Text style={styles.pointsText}>{walletPoints}</Text>
+            <Text style={styles.pointsText}>{walletPoints}</Text>
           </View>
-
         </View>
 
         <ScrollView style={styles.transactions}>

@@ -14,7 +14,6 @@ export const loginUser = async (email: string, password: string) => {
       client_secret: '',
       scope: '',
     });
-    console.log(requestData)
 
     const response = await axios.post(`${API_BASE_URL}/auth/login`, requestData.toString(), {
       headers: {
@@ -102,6 +101,16 @@ export const addCard = async (cardNumber: string, expiryDate: string, cardCVV: s
     throw error;
   }
 };
+
+export const deleteCardById = async (cardId: string) => {
+  try {
+    const response = await axios.delete(`${API_BASE_URL}/cards/deletecard/${cardId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Delete Card error:', error);
+    throw error;
+  }
+}
 
 export const addLoyaltyCard = async (cardNumber: string, expiryDate: string, memberName: string, walletId: string) => {
   try {
