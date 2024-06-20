@@ -11,6 +11,7 @@ import afterpay_logo_small from "../assets/afterpay_logo_small.png"
 import paypath_logo_small from "../assets/ap_logo_small.png"
 
 import "./CheckoutPage.css"
+import { useEffect } from 'react'
 
 const CheckoutPage = () => {
     
@@ -49,15 +50,27 @@ const CheckoutPage = () => {
     
     const openPayPathModal = () => {
 
-        // div - to be an opacity layer on top of the current screen
-        // div for the actual window linking to the paypath website
-        // style: z-index: 1000
-        setIsPayPathModalOpen(true);
+        setIsPayPathModalOpen(true)
+
+        const paymentData = {
+            items: ["wool blend wrap felt coat in camel", "double breasted cut away crombie coat in grey"],
+            description: "web app",
+            amount: 109.98 + 99.98,
+            vendor: 13
+        }
+
+        setTimeout(() => {
+            const iframe = document.querySelector(".paypath-iframe")
+            if (iframe && iframe.contentWindow) {
+                // console.log(JSON.stringify(paymentData, null, 2))
+                iframe.contentWindow.postMessage(paymentData, "http://localhost:3001")
+            }
+        }, 50) // ensure frame has loaded before sending data
 
     }
 
     const closePayPathModal = () => {
-        setIsPayPathModalOpen(false);
+        setIsPayPathModalOpen(false)
     }
 
     const creditCardForm = () => {
