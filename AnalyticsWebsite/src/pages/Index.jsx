@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from "react";
 import * as d3 from 'd3';
 import * as dc from 'dc';
 import { useState } from "react";
-import { PieChart, RowChart, BubbleChart, BarChart } from 'react-dc-js'
+import { PieChart, RowChart, BubbleChart, BarChart, ChartContext } from 'react-dc-js'
 import crossfilter from 'crossfilter2'
 import axios from 'axios'
 
@@ -29,25 +29,38 @@ function generateTransactions(numTransactions) {
 }
 
 export default function Index() {
-    const [transactions, setTransactions] = useState([])
+    const [data, setData] = useState([])
 
-	const endpoint = "http://loaclhost:8000/transactions/gettransactions"
-	const requestOptions = {}
+	useEffect(()=>{
+		const endpoint = "http://localhost:8000/transactions/gettransactions"
+		const requestOptions = {}
 
-	axios.get(endpoint, requestOptions)
-		.then(response => {setTransactions(response.data); console.log(response.data)})
+		axios.get(endpoint, requestOptions)
+		.then(response => {
+
+			const processingData = response.data;
+			const dateFormatParser = d3.timeParse("%m/%d/%Y");
+
+			processingData.forEach((d) => {
+			  d.dd = dateFormatParser(d.date);
+			  d.month = d3.timeMonth(d.dd);
+			})
+
+			setData(processingData)
+			console.log(processingData)
+		})
 		.catch(error => console.log(error))
-
-	
-	let data = generateTransactions(100)
+	}, [])
 
 	let ndx = crossfilter(data);
-	let all = ndx.groupAll();
+	// let all = ndx.groupAll();
 
-	// const [cardIdDim, setCardIdDim] = useState(ndx.dimension(function (d) {return d["card_id"]}))
 	let cardIdDim = ndx.dimension(function (d) {return d["card_id"]})
 	let senderDim = ndx.dimension(function (d) {return d["sender"]})
-	// let amountDim = ndx.dimension(function (d) {return d["amount"]}).filter([100])
+	let amountDim = ndx.dimension(function (d) {return parseFloat(d["amount"]) > 10 ? "Over $10" : "Under $10"})
+
+	const moveMonths = ndx.dimension((d) => d.month);
+  	const volumeByMonthGroup = moveMonths.group()
 
     const cardReset = () => {
         // cardIdDim = ndx.dimension(function (d) {return d["card_id"]})
@@ -65,23 +78,53 @@ export default function Index() {
 
 	return <>
 		<h1>Dashboard</h1>
-        
-        <RowChart 
-			dimension={cardIdDim} 
-			group={cardIdDim.group()}
+
+		<ChartContext>
+        <h3>Purchases Made By Each Customer</h3>
+        <div style={{display: "inline-flex"}}>
+		<RowChart 
+			dimension={senderDim} 
+			group={senderDim.group()}
 			elasticX={true}
 			elasticY={true}
 			width={600}
 			height={400}
 		/>
-        {/* <button onClick={()=>{cardReset()}}>Reset Row</button> */}
-		{/* <button onClick={()=>{senderReset()}}>Reset Pie</button> */}
 		<PieChart 
-			dimension={senderDim} 
-			group={senderDim.group()}
+			dimension={amountDim} 
+			group={amountDim.group()}
 			elasticX={true}
 			elasticY={true}
 			height={400}
 		/>
+		</div>
+		
+        {/* <button onClick={()=>{cardReset()}}>Reset Row</button> */}
+		{/* <button onClick={()=>{senderReset()}}>Reset Pie</button> */}
+		{/* <h3>Purchases Made By Each Customer</h3>
+		<RowChart 
+			dimension={amountDim} 
+			group={amountDim.group()}
+			elasticX={true}
+			elasticY={true}
+			height={400}
+		/> */}
+
+		{/* <BarChart
+          dimension={moveMonths}
+          group={volumeByMonthGroup}
+          width={990}
+          height={180}
+          radius={80}
+          centerBar={true}
+          gap={1}
+          x={d3
+            .scaleTime()
+            .domain([new Date(2024, 1, 1), new Date(2024, 12, 31)])}
+          round={d3.timeMonth.round}
+          alwaysUseRounding={true}
+          xUnits={d3.timeMonths}
+        /> */}
+		</ChartContext>
 	</>
 };
