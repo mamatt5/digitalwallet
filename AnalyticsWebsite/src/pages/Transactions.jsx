@@ -43,7 +43,7 @@ const Transactions = () => {
 
   useEffect(() => {
     const initializeData = async () => {
-      await addDummyTransactions(10);
+      // await addDummyTransactions(10); 
       await fetchTransactions(); 
     };
     initializeData();
