@@ -1,9 +1,9 @@
-@echo off
+@echo on
 
 REM ### BACKEND ###
 
 REM Change to the backend directory
-cd backend
+cd Backend
 
 REM Check for a virtual environment
 if exist "venv" (
@@ -52,6 +52,7 @@ if %errorlevel% equ 0 (
 
 REM Populate database with dataloader
 echo Populating database with dataloader
+@REM python dataloader.py
 if exist "dataloader.py" (
     python dataloader.py
 ) else (
