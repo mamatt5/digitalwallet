@@ -74,8 +74,8 @@ export default function Index() {
 			width={600}
 			height={400}
 		/>
-        <button onClick={()=>{cardReset()}}>Reset Row</button>
-		<button onClick={()=>{senderReset()}}>Reset Pie</button>
+        {/* <button onClick={()=>{cardReset()}}>Reset Row</button> */}
+		{/* <button onClick={()=>{senderReset()}}>Reset Pie</button> */}
 		<PieChart 
 			dimension={senderDim} 
 			group={senderDim.group()}
