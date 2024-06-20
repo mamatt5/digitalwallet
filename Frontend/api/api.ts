@@ -187,7 +187,7 @@ export const getTransactions = async (cardId: string) => {
     const response = await axios.get(`${API_BASE_URL}/transactions/gettransactions/${cardId}`);
     return response.data;
   } catch (error) {
-    console.error('Get Transactions error:', error);
+    console.error('Get Transactions by card error:', error);
     throw error;
   }
 };
@@ -197,7 +197,7 @@ export const getTransactionsByWallet = async (walletId: string) => {
     const response = await axios.get(`${API_BASE_URL}/transactions/gettransactions/wallet/${walletId}`);
     return response.data;
   } catch (error) {
-    console.error('Get Transactions error:', error);
+    console.error('Get Transactions by wallet error:', error);
     throw error;
   }
 }
@@ -207,7 +207,7 @@ export const getTransactionsBySender = async (walletId: string) => {
     const response = await axios.get(`${API_BASE_URL}/transactions/gettransactions/sender/${walletId}`);
     return response.data;
   } catch (error) {
-    console.error('Get Transactions error:', error);
+    console.error('Get Transactions by sender error:', error);
     throw error;
   }
 }

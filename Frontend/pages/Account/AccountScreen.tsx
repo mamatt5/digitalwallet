@@ -68,7 +68,7 @@ function AccountScreen({ navigation, route }) {
       );
       setTransactions(sortedResponse);
     } catch (error) {
-      console.error("Get Transactions error:", error);
+      console.error("Get Transactions on account screen error:", error);
     }
   };
 
