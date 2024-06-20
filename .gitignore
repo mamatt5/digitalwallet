@@ -1,4 +1,5 @@
 node_modules
 Frontend/.env
 *.pyc
+*.log
 Frontend/.env
