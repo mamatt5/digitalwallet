@@ -12,6 +12,7 @@ import "./CheckoutPage.css"
 const CheckoutPage = () => {
     
     const [paymentOption, setPaymentOption] = useState(0) //Set which payment option is selected
+    const [isPayPathModalOpen, setIsPayPathModalOpen] = useState(false);
 
     const altPaymentScreen = () => {
 
@@ -19,11 +20,29 @@ const CheckoutPage = () => {
             <div>
                 {paymentOption === 2 && <button className="paypal-button">Pay with PayPal</button>}
                 {paymentOption === 3 && <button className="afterpay-button">Pay with Afterpay</button>}
-                {paymentOption === 4 && <button className="paypath-button">Pay with PayPath</button>}
+                {paymentOption === 4 && <button 
+                                            type="button"
+                                            className="paypath-button" 
+                                            onClick={ () => openPayPathModal() }>
+                                                Pay with PayPath
+                                            </button>}
             </div>
         )
     }
 
+    
+    const openPayPathModal = () => {
+
+        // div - to be an opacity layer on top of the current screen
+        // div for the actual window linking to the paypath website
+        // style: z-index: 1000
+        setIsPayPathModalOpen(true);
+
+    }
+
+    const closePayPathModal = () => {
+        setIsPayPathModalOpen(false);
+    }
 
     const creditCardForm = () => {
 
@@ -133,7 +152,19 @@ const CheckoutPage = () => {
                         {paymentOption === 4 && altPaymentScreen()}
                     </div>
                 </div>
+                
             </div>
+            {isPayPathModalOpen && (
+                <div className="modal-overlay">
+                    <button 
+                        onClick={closePayPathModal}>
+                            Close
+                    </button>
+                    <div className="modal-content">
+                        <iframe src="http://localhost:3001" title="PayPath Login" className="paypath-iframe"></iframe>
+                    </div>
+                </div>
+            )}
         </div>
     )
 }
