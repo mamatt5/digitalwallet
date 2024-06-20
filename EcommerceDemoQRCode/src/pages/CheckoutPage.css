@@ -52,17 +52,17 @@
 
 .paypal-button {
     color: white;
-    background-color: blue;
+    background-color: #0070e0;
 }
 
 .afterpay-button {
-    color: white;
-    background-color: teal;
+    color: black;
+    background-color: #cbfdec;
 }
 
 .paypath-button {
     color: white;
-    background-color: purple;
+    background-color: #090644;
 }
 
 .date-field {

@@ -6,6 +6,9 @@ import afterpay_logo from "../assets/afterpay_logo.png"
 import paypath_logo from "../assets/APPlogo.png"
 import credit_card_logo from "../assets/credit_card_icon.png"
 import paypal_logo from "../assets/paypal_icon.png"
+import paypal_logo_small from "../assets/paypal_logo_small.png"
+import afterpay_logo_small from "../assets/afterpay_logo_small.png"
+import paypath_logo_small from "../assets/ap_logo_small.png"
 
 import "./CheckoutPage.css"
 
@@ -17,9 +20,24 @@ const CheckoutPage = () => {
 
         return (
             <div>
-                {paymentOption === 2 && <button className="paypal-button">Pay with PayPal</button>}
-                {paymentOption === 3 && <button className="afterpay-button">Pay with Afterpay</button>}
-                {paymentOption === 4 && <button className="paypath-button">Pay with PayPath</button>}
+                {paymentOption === 2 && 
+                    <button className="paypal-button">
+                        <div style={{"display":"flex", "justifyContent":"center"}}>
+                            <img style={{"paddingRight":"12px"}} src={paypal_logo_small} width="30" />Pay with PayPal
+                        </div>
+                    </button>}
+                {paymentOption === 3 && 
+                    <button className="afterpay-button">
+                        <div style={{"display":"flex", "justifyContent":"center"}}>
+                            <img style={{"paddingRight":"12px"}} src={afterpay_logo_small} width="30" />Pay with Afterpay
+                        </div>
+                    </button>}
+                {paymentOption === 4 && 
+                    <button className="paypath-button">
+                        <div style={{"display":"flex", "justifyContent":"center"}}>
+                            <img style={{"paddingRight":"12px"}} src={paypath_logo_small} width="30" />Pay with PayPath
+                        </div>
+                    </button>}
             </div>
         )
     }
@@ -126,7 +144,7 @@ const CheckoutPage = () => {
                 </div>
                 <div className="payment" onClick={() => setPaymentOption(4)}>
                     <div className="payment-name">
-                        <img src={paypath_logo} width="56" />
+                        <img src={paypath_logo_small} width="56" />
                         <p>PayPath</p>
                     </div>
                     <div>
