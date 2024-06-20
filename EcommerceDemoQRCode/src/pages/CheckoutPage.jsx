@@ -11,10 +11,12 @@ import afterpay_logo_small from "../assets/afterpay_logo_small.png"
 import paypath_logo_small from "../assets/ap_logo_small.png"
 
 import "./CheckoutPage.css"
+import { useEffect } from 'react'
 
 const CheckoutPage = () => {
     
     const [paymentOption, setPaymentOption] = useState(0) //Set which payment option is selected
+    const [isPayPathModalOpen, setIsPayPathModalOpen] = useState(false);
 
     const altPaymentScreen = () => {
 
@@ -33,7 +35,10 @@ const CheckoutPage = () => {
                         </div>
                     </button>}
                 {paymentOption === 4 && 
-                    <button className="paypath-button">
+                    <button className="paypath-button"
+                        type="button"
+                        onClick={ () => openPayPathModal() }
+                    >
                         <div style={{"display":"flex", "justifyContent":"center"}}>
                             <img style={{"paddingRight":"12px"}} src={paypath_logo_small} width="30" />Pay with PayPath
                         </div>
@@ -42,6 +47,31 @@ const CheckoutPage = () => {
         )
     }
 
+    
+    const openPayPathModal = () => {
+
+        setIsPayPathModalOpen(true)
+
+        const paymentData = {
+            items: ["wool blend wrap felt coat in camel", "double breasted cut away crombie coat in grey"],
+            description: "web app",
+            amount: 109.98 + 99.98,
+            vendor: 13
+        }
+
+        setTimeout(() => {
+            const iframe = document.querySelector(".paypath-iframe")
+            if (iframe && iframe.contentWindow) {
+                // console.log(JSON.stringify(paymentData, null, 2))
+                iframe.contentWindow.postMessage(paymentData, "http://localhost:3001")
+            }
+        }, 50) // ensure frame has loaded before sending data
+
+    }
+
+    const closePayPathModal = () => {
+        setIsPayPathModalOpen(false)
+    }
 
     const creditCardForm = () => {
 
@@ -151,7 +181,19 @@ const CheckoutPage = () => {
                         {paymentOption === 4 && altPaymentScreen()}
                     </div>
                 </div>
+                
             </div>
+            {isPayPathModalOpen && (
+                <div className="modal-overlay">
+                    <button 
+                        onClick={closePayPathModal}>
+                            Close
+                    </button>
+                    <div className="modal-content">
+                        <iframe src="http://localhost:3001" title="PayPath Login" className="paypath-iframe"></iframe>
+                    </div>
+                </div>
+            )}
         </div>
     )
 }
