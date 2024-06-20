@@ -31,7 +31,7 @@ function generateTransactions(numTransactions) {
 export default function Index() {
     const [transactions, setTransactions] = useState([])
 
-	const endpoint = "http://localhost:8000/transactions/gettransactions"
+	const endpoint = "http://loaclhost:8000/transactions/gettransactions"
 	const requestOptions = {}
 
 	axios.get(endpoint, requestOptions)
