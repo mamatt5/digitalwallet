@@ -185,7 +185,7 @@ export const updatePassword = async (email, password) => {
 
 export const getTransactions = async (cardId) => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/transactions/gettransactions/${cardId}`);
+    const response = await axios.get(`${API_BASE_URL}/transactions/gettransactions/card/${cardId}`);
     return response.data;
   } catch (error) {
     console.error('Get Transactions error:', error);
