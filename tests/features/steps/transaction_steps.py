@@ -3,6 +3,7 @@ from behave import given, when, then
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import time
 
 @given('I am logged in')
 def step_am_logged_in(context):
@@ -23,3 +24,4 @@ def step_should_see_transactions(context):
         EC.presence_of_all_elements_located((By.CLASS_NAME, 'MuiDataGrid-row'))
     )
     assert len(transactions) > 0, "No transactions found in the data grid"
+    time.sleep(1)
