@@ -15,6 +15,7 @@ import "./CheckoutPage.css"
 const CheckoutPage = () => {
     
     const [paymentOption, setPaymentOption] = useState(0) //Set which payment option is selected
+    const [isPayPathModalOpen, setIsPayPathModalOpen] = useState(false);
 
     const altPaymentScreen = () => {
 
@@ -33,7 +34,10 @@ const CheckoutPage = () => {
                         </div>
                     </button>}
                 {paymentOption === 4 && 
-                    <button className="paypath-button">
+                    <button className="paypath-button"
+                        type="button"
+                        onClick={ () => openPayPathModal() }
+                    >
                         <div style={{"display":"flex", "justifyContent":"center"}}>
                             <img style={{"paddingRight":"12px"}} src={paypath_logo_small} width="30" />Pay with PayPath
                         </div>
@@ -42,6 +46,19 @@ const CheckoutPage = () => {
         )
     }
 
+    
+    const openPayPathModal = () => {
+
+        // div - to be an opacity layer on top of the current screen
+        // div for the actual window linking to the paypath website
+        // style: z-index: 1000
+        setIsPayPathModalOpen(true);
+
+    }
+
+    const closePayPathModal = () => {
+        setIsPayPathModalOpen(false);
+    }
 
     const creditCardForm = () => {
 
@@ -151,7 +168,19 @@ const CheckoutPage = () => {
                         {paymentOption === 4 && altPaymentScreen()}
                     </div>
                 </div>
+                
             </div>
+            {isPayPathModalOpen && (
+                <div className="modal-overlay">
+                    <button 
+                        onClick={closePayPathModal}>
+                            Close
+                    </button>
+                    <div className="modal-content">
+                        <iframe src="http://localhost:3001" title="PayPath Login" className="paypath-iframe"></iframe>
+                    </div>
+                </div>
+            )}
         </div>
     )
 }
