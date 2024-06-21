@@ -37,7 +37,6 @@ export default function Index() {
 
 		axios.get(endpoint, requestOptions)
 		.then(response => {
-
 			const processingData = response.data;
 			const dateFormatParser = d3.timeParse("%m/%d/%Y");
 
@@ -89,6 +88,7 @@ export default function Index() {
 			elasticY={true}
 			width={600}
 			height={400}
+			
 		/>
 		<PieChart 
 			dimension={amountDim} 
@@ -96,6 +96,8 @@ export default function Index() {
 			elasticX={true}
 			elasticY={true}
 			height={400}
+			// x={d3.scaleLinear([0,100])}
+			// xAxis={d3.ticks(100)}
 		/>
 		</div>
 		
