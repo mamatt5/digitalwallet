@@ -1,21 +1,24 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 
-import coat_image from "../assets/wool_blend_coat_image.jpg"
-import grey_coat_image from "../assets/grey_coat_image.png"
-import afterpay_logo from "../assets/afterpay_logo.png"
-import paypath_logo from "../assets/APPlogo.png"
-import credit_card_logo from "../assets/credit_card_icon.png"
-import paypal_logo from "../assets/paypal_icon.png"
-import paypal_logo_small from "../assets/paypal_logo_small.png"
-import afterpay_logo_small from "../assets/afterpay_logo_small.png"
-import paypath_logo_small from "../assets/ap_logo_small.png"
+import coat_image from "../assets/wool_blend_coat_image.jpg";
+import grey_coat_image from "../assets/grey_coat_image.png";
+import afterpay_logo from "../assets/afterpay_logo.png";
+import paypath_logo from "../assets/APPlogo.png";
+import credit_card_logo from "../assets/credit_card_icon.png";
+import paypal_logo from "../assets/paypal_icon.png";
+import paypal_logo_small from "../assets/paypal_logo_small.png";
+import afterpay_logo_small from "../assets/afterpay_logo_small.png";
+import paypath_logo_small from "../assets/ap_logo_small.png";
 
-import "./CheckoutPage.css"
-import { useEffect } from 'react'
+import "./CheckoutPage.css";
+import { useEffect } from 'react';
 
 const CheckoutPage = () => {
+
+    const navigate = useNavigate();
     
-    const [paymentOption, setPaymentOption] = useState(0) //Set which payment option is selected
+    const [paymentOption, setPaymentOption] = useState(0); //Set which payment option is selected
     const [isPayPathModalOpen, setIsPayPathModalOpen] = useState(false);
 
     const altPaymentScreen = () => {
@@ -65,13 +68,32 @@ const CheckoutPage = () => {
                 // console.log(JSON.stringify(paymentData, null, 2))
                 iframe.contentWindow.postMessage(paymentData, "http://localhost:3001")
             }
-        }, 50) // ensure frame has loaded before sending data
+        }, 1000) // ensure frame has loaded before sending data
 
     }
 
     const closePayPathModal = () => {
         setIsPayPathModalOpen(false)
     }
+
+    useEffect(() => {
+
+        const handleMessage = (event) => {
+            console.log(event);
+            if (event.origin !== "http://localhost:3001") return; // Ensure you are receiving messages from the correct origin
+
+            console.log('Received message:', event.data);
+
+            closePayPathModal();
+            navigate("/receipt");
+        };
+
+        window.addEventListener("message", handleMessage);
+
+        return () => {
+            window.removeEventListener("message", handleMessage);
+        };
+    }, [])
 
     const creditCardForm = () => {
 
