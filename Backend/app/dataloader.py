@@ -71,7 +71,7 @@ def create_transaction_data(users: List[int]) -> Dict:
         "vendor": 13,
         "date": randomDatetime.strftime("%x"),
         "time": randomDatetime.strftime("%X"),
-        "amount": str(round(random.uniform(5, 20), 2)),
+        "amount": str(round(random.uniform(5, 100), 2)),
         "description": "Test transaction",
         "card_id": customer,
         "sender": customer,

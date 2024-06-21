@@ -51,7 +51,7 @@ class TransactionRepository(RepositoryBase[Transaction]):
         transaction = self.session.exec(statement).first()
         return transaction
 
-    def get_all(self, skip: int = 0, limit: int = 20) -> List[Transaction]:
+    def get_all(self, skip: int = 0, limit: int = 100) -> List[Transaction]:
         statement = select(Transaction).offset(skip).limit(limit)
         transactions = self.session.exec(statement).all()
         return transactions
