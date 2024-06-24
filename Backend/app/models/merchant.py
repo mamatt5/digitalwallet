@@ -1,8 +1,12 @@
 from models.account import Account
 from models.category import Category
 from typing import TYPE_CHECKING, Optional
-from sqlmodel import Field, Relationship, SQLModel
+from sqlmodel import Field, Relationship, SQLModel 
+from models.vouchers import Voucher
+from typing import List
 
+if TYPE_CHECKING:
+    from models.vouchers import Voucher
 
 class Merchant(SQLModel, table=True):
     """
@@ -21,3 +25,5 @@ class Merchant(SQLModel, table=True):
     account: Account | None = Relationship(back_populates="merchant")
     category_id: Optional[int] = Field(default=None, foreign_key='category.category_id')
     category: Category | None = Relationship(back_populates="merchants")
+
+    vouchers: List[Voucher] = Relationship(back_populates="merchant")

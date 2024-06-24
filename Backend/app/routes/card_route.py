@@ -4,11 +4,20 @@ from models.card import Card
 from services.card_service import CardService
 from fastapi import APIRouter, Depends
 
+import logging
 router = APIRouter(prefix="/cards", tags=["Cards"])
+
+logging.basicConfig(filename='app.log', 
+                    filemode='w', 
+                    format='%(asctime)s - %(levelname)s - %(message)s', 
+                    level=logging.DEBUG)
+
+logger = logging.getLogger(__name__)
 
 
 @router.post("/addcard")
 def add_card_route(card: Card, card_service: CardService = Depends(CardService)) -> None:
+    logger.info("in add card")
     card_service.add_card(card)
 
 

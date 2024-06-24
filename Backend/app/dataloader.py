@@ -9,6 +9,7 @@ from main import app
 from models.account import AccountType
 from schemas.auth_schema import AuthResponse, RegisterRequest
 from schemas.card_schema import CardRegisterRequest
+from schemas.voucher_schema import VoucherRequest
 
 logging.basicConfig(filename='app.log', 
                     filemode='w', 
@@ -60,6 +61,16 @@ def register_card(client, card_register_request: CardRegisterRequest) -> None:
     assert response.status_code == status.HTTP_200_OK, f"Card registration failed: {response.text}"
     logger.info("Card registered successfully")
 
+def add_voucher_to_merchant(client, add_voucher_to_merchant_request: VoucherRequest) -> None:
+    logger.info(f"Adding Voucher to Merchant: {add_voucher_to_merchant_request}")
+    logger.info("hi")
+    response = client.post("/vouchers/addvoucher", json=add_voucher_to_merchant_request.model_dump())
+    logger.info("bye")
+
+    
+    assert response.status_code == status.HTTP_200_OK, f"Adding Voucher to merchant failed: {response.text}"
+    logger.info("Voucher Creation successfully")
+
 
 def create_transaction_data(users: List[int]) -> Dict:
     logger.info("Creating transaction data")
@@ -104,6 +115,9 @@ def add_card_to_wallet(client, auth_response: AuthResponse, card_data: Dict) -> 
     response = client.post("/cards/addcard", json=card_data, headers=headers)
     assert response.status_code == status.HTTP_200_OK, f"Adding card failed: {response.text}"
     logger.info("Card added to wallet successfully")
+
+
+
 
 
 def generate_dummy_data(client: TestClient, num_records: int) -> List[int]:
@@ -214,4 +228,13 @@ if __name__ == "__main__":
         )
         register_account(client, register_request)
 
+        voucher_request = VoucherRequest(
+            voucher_desciprtion = "test",
+            merchant_id = 2,
+        )
+
+        add_voucher_to_merchant(client, voucher_request)
+
+
+ 
         add_transaction_data(client, transaction_records, users)
