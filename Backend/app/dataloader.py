@@ -65,9 +65,7 @@ def add_voucher_to_merchant(client, add_voucher_to_merchant_request: VoucherRequ
     logger.info(f"Adding Voucher to Merchant: {add_voucher_to_merchant_request}")
     logger.info("hi")
     response = client.post("/vouchers/addvoucher", json=add_voucher_to_merchant_request.model_dump())
-    logger.info("bye")
-
-    
+    logger.info("bye")    
     assert response.status_code == status.HTTP_200_OK, f"Adding Voucher to merchant failed: {response.text}"
     logger.info("Voucher Creation successfully")
 
