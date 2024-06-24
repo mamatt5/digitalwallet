@@ -1,21 +1,25 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 
-import coat_image from "../assets/wool_blend_coat_image.jpg"
-import grey_coat_image from "../assets/grey_coat_image.png"
+import almond_milk from "../assets/almond_milk.png"
+import coffee_beans from "../assets/coffee_beans.jpg"
+import french_press from "../assets/french_press.png"
+
 import afterpay_logo from "../assets/afterpay_logo.png"
-import paypath_logo from "../assets/APPlogo.png"
 import credit_card_logo from "../assets/credit_card_icon.png"
 import paypal_logo from "../assets/paypal_icon.png"
 import paypal_logo_small from "../assets/paypal_logo_small.png"
 import afterpay_logo_small from "../assets/afterpay_logo_small.png"
 import paypath_logo_small from "../assets/ap_logo_small.png"
 
-import "./CheckoutPage.css"
-import { useEffect } from 'react'
+import "./CheckoutPage.css";
+import { useEffect } from 'react';
 
 const CheckoutPage = () => {
+
+    const navigate = useNavigate();
     
-    const [paymentOption, setPaymentOption] = useState(0) //Set which payment option is selected
+    const [paymentOption, setPaymentOption] = useState(0); //Set which payment option is selected
     const [isPayPathModalOpen, setIsPayPathModalOpen] = useState(false);
 
     const altPaymentScreen = () => {
@@ -47,16 +51,35 @@ const CheckoutPage = () => {
         )
     }
 
+    const listOfItems = [
+        {
+            name: "Lora's Signature Coffee Beans 500g",
+            price: 29.00,
+            quantity: 2
+        },
+        {
+            name: "French Press Coffee Maker",
+            price: 69.95,
+            quantity: 1
+        },
+        {
+            name: "MILKLAB Almond Milk (8 X 1L)",
+            price: 48.99,
+            quantity: 1
+        },
+    ]
+
     
     const openPayPathModal = () => {
 
         setIsPayPathModalOpen(true)
 
         const paymentData = {
-            items: ["wool blend wrap felt coat in camel", "double breasted cut away crombie coat in grey"],
+            items: listOfItems,
             description: "web app",
-            amount: 109.98 + 99.98,
-            vendor: 13
+            amount: calculateTotalPrice(listOfItems),
+            vendor: 13,
+            merchant_name: "Lora's Cafe"
         }
 
         setTimeout(() => {
@@ -65,13 +88,40 @@ const CheckoutPage = () => {
                 // console.log(JSON.stringify(paymentData, null, 2))
                 iframe.contentWindow.postMessage(paymentData, "http://localhost:3001")
             }
-        }, 50) // ensure frame has loaded before sending data
+        }, 500) // ensure frame has loaded before sending data
 
     }
 
     const closePayPathModal = () => {
         setIsPayPathModalOpen(false)
     }
+
+    const calculateTotalPrice = (data) => {
+        let total = 0;
+        for (let item of data) {
+            total += item.price * item.quantity
+        }
+        return total
+    }
+
+    useEffect(() => {
+
+        const handleMessage = (event) => {
+            console.log(event);
+            if (event.origin !== "http://localhost:3001") return; // Ensure you are receiving messages from the correct origin
+
+            console.log('Received message:', event.data);
+
+            closePayPathModal();
+            navigate("/receipt");
+        };
+
+        window.addEventListener("message", handleMessage);
+
+        return () => {
+            window.removeEventListener("message", handleMessage);
+        };
+    }, [])
 
     const creditCardForm = () => {
 
@@ -119,29 +169,41 @@ const CheckoutPage = () => {
     
     return (
         <div>
-            <h1>Checkout</h1>
+            <h1>Lora's Cafe Specialty Products</h1>
             <div className="item-list">
-            <h2>Item List</h2>
+            <h2>Checkout</h2>
                 <div className="item">
-                    <img src={coat_image} height="232" width="180" />
+                    <img src={coffee_beans} height="232" width="180" />
                     <div className="item-description">
-                        <p style={{"fontWeight":"bold"}}>Basque</p>
-                        <p>Wool Blend Wrap Felt Coat in Camel</p>
-                        <p>$109.98</p>
-                        <p>Quantity: 1</p>
+                        <p style={{"fontWeight":"bold"}}>{listOfItems[0].name}</p>
+                        <p>${listOfItems[0].price.toFixed(2)}</p>
+                        <p>Quantity: {listOfItems[0].quantity}</p>
                         <button>Remove Item</button>
                     </div>
                 </div>
                 <div className="item">
-                    <img src={grey_coat_image} height="232" width="180"/>
+                    <img src={french_press} height="232" width="180"/>
                     <div className="item-description">
-                        <p style={{"fontWeight":"bold"}}>Basque</p>
-                        <p>Double Breasted Cut Away Crombie Coat in Grey</p>
-                        <p>$99.98</p>
-                        <p>Quantity: 1</p>
+                        <p style={{"fontWeight":"bold"}}>{listOfItems[1].name}</p>
+                        <p>${listOfItems[1].price}</p>
+                        <p>Quantity: {listOfItems[1].quantity}</p>
                         <button>Remove Item</button>
                     </div>
                 </div>
+                <div className="item">
+                    <img src={almond_milk} height="232" width="180"/>
+                    <div className="item-description">
+                        <p style={{"fontWeight":"bold"}}>{listOfItems[2].name}</p>
+                        <p>${listOfItems[2].price}</p>
+                        <p>Quantity: {listOfItems[2].quantity}</p>
+                        <button>Remove Item</button>
+                    </div>
+                </div>
+            </div>
+            <div className="total-price">
+                <p><b>Subtotal(Before GST):</b> ${(calculateTotalPrice(listOfItems) * 0.91).toFixed(2)}</p>
+                <p><b>GST:</b> ${(calculateTotalPrice(listOfItems) * 0.09).toFixed(2)}</p>
+                <p><b>Total:</b> ${calculateTotalPrice(listOfItems)}</p>
             </div>
             <div className="all-payments">
                 <h2>Pay Here:</h2>
