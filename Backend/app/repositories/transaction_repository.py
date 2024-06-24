@@ -75,3 +75,8 @@ class TransactionRepository(RepositoryBase[Transaction]):
         statement = select(Item).where(Item.transaction_id == transaction_id)
         items = self.session.exec(statement).all()
         return items
+    
+    def check_transaction(self, transaction_ref: str) -> bool:
+        statement = select(Transaction).where(Transaction.transaction_ref == transaction_ref)
+        transaction = self.session.exec(statement).first()
+        return transaction is not None

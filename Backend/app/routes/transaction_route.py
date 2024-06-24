@@ -19,7 +19,8 @@ def add_transaction_route(transaction_data: dict, transaction_service: Transacti
             card_id=transaction_data['card_id'],
             sender=transaction_data['sender'],
             recipient=transaction_data['recipient'],
-            description=transaction_data.get('description', None)
+            description=transaction_data.get('description', None),
+            transaction_ref=transaction_data.get('transaction_ref', None)
         )
 
         for item_data in transaction_data.get('items', []):
@@ -71,6 +72,10 @@ def add_ap_points(transaction_data: dict, wallet_service: WalletService = Depend
 @router.get('/gettransactions')
 def get_transactions(transaction_service: TransactionService = Depends(TransactionService)):
     return transaction_service.get_transactions()
+
+@router.get('/checktransaction/{transaction_ref}')
+def check_transaction(transaction_ref: str, transaction_service: TransactionService = Depends(TransactionService)):
+    return transaction_service.check_transaction(transaction_ref)
 
 @router.get('/gettransactions/card/{card_id}')
 def get_transaction_by_card_id(card_id: int, transaction_service: TransactionService = Depends(TransactionService)) -> list[Transaction]:

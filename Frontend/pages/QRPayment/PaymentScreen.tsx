@@ -12,7 +12,12 @@ import {
 import { Button } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/FontAwesome6";
-import { getWalletCards, addTransaction, addAPPoints } from "../../api/api";
+import {
+  getWalletCards,
+  addTransaction,
+  addAPPoints,
+  checkTransaction,
+} from "../../api/api";
 import SmallDebitCard from "../../components/SmallDebitCard";
 
 const { width, height } = Dimensions.get("window");
@@ -95,10 +100,16 @@ function PaymentScreen({ route, navigation }) {
       recipient: parsedData.wallet_id,
       description: parsedData.description,
       items: parsedData.items,
+      transaction_ref: parsedData.transaction_reference,
     };
 
     try {
-      await saveTransaction(transaction);
+      if (!(await checkTransaction(transaction.transaction_ref))) {
+        await saveTransaction(transaction);
+      } else {
+        Alert.alert("Payment error", "QR code already used");
+        return navigation.navigate("AccountHome", { account });
+      }
     } catch (error) {
       console.error("Save Transaction error:", error.response.data);
       navigation.navigate("AccountHome", { account });

@@ -32,3 +32,6 @@ class TransactionService:
     
     def get_items_by_transaction_id(self, transaction_id: int) -> list[Item]:
         return self.transaction_repository.get_items_by_transaction_id(transaction_id)
+    
+    def check_transaction(self, transaction_ref: str) -> bool:
+        return self.transaction_repository.check_transaction(transaction_ref)
