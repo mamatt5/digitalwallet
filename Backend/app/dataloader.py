@@ -61,29 +61,275 @@ def register_card(client, card_register_request: CardRegisterRequest) -> None:
     logger.info("Card registered successfully")
 
 
-def create_transaction_data(users: List[int]) -> Dict:
+def create_transaction_data(users: List[int], items: List) -> Dict:
     logger.info("Creating transaction data")
     randomDatetime = fake.date_time_this_year(before_now=True)
-    customer = 1
-    if len(users) > 0:
-        customer = random.choice(users)
+    num_items = random.randint(1, 3)
+    bought_items = random.choices(population=items, k=num_items)
+    total = 0
+    for item in bought_items:
+        total += float(item["price"])
+    customer = random.choice(users)
     return {
         "vendor": 13,
         "date": randomDatetime.strftime("%x"),
         "time": randomDatetime.strftime("%X"),
-        "amount": str(round(random.uniform(5, 100), 2)),
+        "amount": str(total),
         "description": "Test transaction",
         "card_id": customer,
         "sender": customer,
         "recipient": 13,
-        "items": [],
+        "items": bought_items,
     }
 
+def create_items() -> List:
+    latte = {
+        "name": "Latte",
+        "price": "5",
+        "quantity": "1"
+    }
+    
+    flat_white = {
+        "name": "Flat White",
+        "price": "5",
+        "quantity": "1"
+    }
+    
+    cappuccino = {
+        "name": "Cappuccino",
+        "price": "5",
+        "quantity": "1"
+    }
+    
+    long_black = {
+        "name": "Long Black",
+        "price": "4",
+        "quantity": "1"
+    }
+    
+    espresso = {
+        "name": "Espresso",
+        "price": "3",
+        "quantity": "1"
+    }
+    
+    mocha = {
+        "name": "Mocha",
+        "price": "5",
+        "quantity": "1"
+    }
+    
+    muffin = {
+        "name": "Muffin",
+        "price": "5.50",
+        "quantity": "1"
+    }
+    
+    cookie = {
+        "name": "Cookie",
+        "price": "4.75",
+        "quantity": "1"
+    }
+    
+    brownie = {
+        "name": "Brownie",
+        "price": "6",
+        "quantity": "1"
+    }
+    
+    glazed_donut = {
+        "name": "Glazed Donut",
+        "price": "4",
+        "quantity": "1"
+    }
+    
+    chocolate_donut = {
+        "name": "Chocolate Donut",
+        "price": "4.50",
+        "quantity": "1"
+    }
+    
+    avocado_toast = {
+        "name": "Avocado Toast",
+        "price": "10",
+        "quantity": "1"
+    }
+    
+    eggs_benedict = {
+        "name": "Eggs Benedict",
+        "price": "15",
+        "quantity": "1"
+    }
 
-def add_transaction_data(client, num_transactions: int, users: List[int]) -> None:
+    pancakes = {
+        "name": "Pancakes",
+        "price": "12",
+        "quantity": "1"
+    }
+
+    breakfast_bowl = {
+        "name": "Breakfast Bowl",
+        "price": "14",
+        "quantity": "1"
+    }
+
+    smashed_peas = {
+        "name": "Smashed Peas",
+        "price": "11",
+        "quantity": "1"
+    }
+
+    big_breakfast = {
+        "name": "Big Breakfast",
+        "price": "18",
+        "quantity": "1"
+    }
+
+    sandwich = {
+        "name": "Sandwich",
+        "price": "8",
+        "quantity": "1"
+    }
+
+    salad = {
+        "name": "Salad",
+        "price": "12",
+        "quantity": "1"
+    }
+
+    burger = {
+        "name": "Burger",
+        "price": "15",
+        "quantity": "1"
+    }
+
+    fish_and_chips = {
+        "name": "Fish and Chips",
+        "price": "17",
+        "quantity": "1"
+    }
+
+    pie = {
+        "name": "Pie",
+        "price": "6",
+        "quantity": "1"
+    }
+
+    sausage_roll = {
+        "name": "Sausage Roll",
+        "price": "5",
+        "quantity": "1"
+    }
+
+    quiche = {
+        "name": "Quiche",
+        "price": "7",
+        "quantity": "1"
+    }
+
+    soup = {
+        "name": "Soup of the Day",
+        "price": "10",
+        "quantity": "1"
+    }
+
+    arancini = {
+        "name": "Arancini Balls",
+        "price": "9",
+        "quantity": "1"
+    }
+
+    bruschetta = {
+        "name": "Bruschetta",
+        "price": "8",
+        "quantity": "1"
+    }
+
+    scones = {
+        "name": "Scones",
+        "price": "5",
+        "quantity": "1"
+    }
+
+    cake = {
+        "name": "Cake",
+        "price": "7",
+        "quantity": "1"
+    }
+
+    pastry = {
+        "name": "Pastry",
+        "price": "4",
+        "quantity": "1"
+    }
+
+    tea = {
+        "name": "Tea",
+        "price": "4",
+        "quantity": "1"
+    }
+
+    smoothie = {
+        "name": "Smoothie",
+        "price": "8",
+        "quantity": "1"
+    }
+
+    milkshake = {
+        "name": "Milkshake",
+        "price": "7",
+        "quantity": "1"
+    }
+
+    vegetarian_burger = {
+        "name": "Vegetarian Burger",
+        "price": "15",
+        "quantity": "1"
+    }
+
+    vegan_bowl = {
+        "name": "Vegan Bowl",
+        "price": "14",
+        "quantity": "1"
+    }
+
+    gluten_free_cake = {
+        "name": "Gluten-Free Cake",
+        "price": "7",
+        "quantity": "1"
+    }
+
+    dumplings = {
+        "name": "Dumplings",
+        "price": "10",
+        "quantity": "1"
+    }
+
+    falafel = {
+        "name": "Falafel",
+        "price": "9",
+        "quantity": "1"
+    }
+
+    mezze_platter = {
+        "name": "Mezze Platter",
+        "price": "18",
+        "quantity": "1"
+    }
+    
+    return [latte, flat_white, cappuccino, long_black, espresso, mocha, tea,
+            muffin, cookie, glazed_donut, chocolate_donut, brownie, avocado_toast,
+            eggs_benedict, breakfast_bowl, pancakes, smashed_peas,
+            big_breakfast, sandwich, salad, burger, fish_and_chips,
+            pie, sausage_roll, quiche, soup, arancini, bruschetta, scones,
+            cake, pastry, smoothie, milkshake, vegan_bowl, vegetarian_burger,
+            gluten_free_cake, dumplings, falafel, mezze_platter]
+
+
+def add_transaction_data(client, num_transactions: int, users: List[int], items: List) -> None:
     transactions = list()
     for _ in range(num_transactions):
-        transactions.append(create_transaction_data(users))
+        transactions.append(create_transaction_data(users, items))
     response = client.post("/transactions/addtransactions", json=transactions)
     assert response.status_code == status.HTTP_200_OK, f"Transactions add failed: {response.text}"
     logger.info(f"Transactions added successfully")
@@ -131,6 +377,7 @@ if __name__ == "__main__":
     num_records = 10
     transaction_records = 100
     users = load_dummy_data(num_records)
+    items = create_items()
 
     with TestClient(app) as client:
         register_request = RegisterRequest(
@@ -214,4 +461,4 @@ if __name__ == "__main__":
         )
         register_account(client, register_request)
 
-        add_transaction_data(client, transaction_records, users)
+        add_transaction_data(client, transaction_records, users, items)
