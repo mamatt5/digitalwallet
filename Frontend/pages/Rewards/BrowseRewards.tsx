@@ -6,45 +6,50 @@ import {
   Dimensions,
   StyleSheet,
   Alert,
+  FlatList,
 } from "react-native";
 
 import RewardTabs from "../../components/CardFilterTabs/RewardTabs";
-import BrowseRewards from "./BrowseRewards";
+import { getAllMerchantsAndVouchers } from "../../api/api";
+import LoyaltyRewardCard from "../../components/LoyaltyRewardCard/LoyaltyRewardCard";
 
 const { width, height } = Dimensions.get("window");
 const scale = width / 320;
 
-function RewardsScreen({navigation, route}) {
+function BrowseRewards({navigation, route}) {
 
     const [activeTabIndex, setActiveTabIndex] = useState(0);
+    const [merchants, setMerchants] = useState([]);
 
+    const getMerchantAndVouchers = async () => {
+        
+        let allMerchantsAndVouchers = []
+        // Gets all merchants
+        try {
+          allMerchantsAndVouchers = await getAllMerchantsAndVouchers();
+          setMerchants(allMerchantsAndVouchers)
+          } catch (error) {
+            console.error("Get All Vouchers error:", error);
+          }
+
+        console.log(allMerchantsAndVouchers)
+
+    }
+
+    useEffect(() => {
+        getMerchantAndVouchers();
+      }, []);
 
 
     return (
     <SafeAreaView style={styles.container}>
       <View style={styles.centerView}>
-        <View style={styles.header}>
-          <Text style={styles.titleText}>Rewards</Text>
-          <View style={styles.profileButton}>
-          </View>
-        </View>
-
-        <RewardTabs
-          activeTabIndex={activeTabIndex}
-          setActiveTabIndex={setActiveTabIndex}
-        />
-
-        {activeTabIndex === 0 ? (
-            <View style={styles.noTransactionsContainer}>
-              <Text style={styles.noCardText}>Browse REwards</Text>
-              <BrowseRewards ></BrowseRewards>
-            </View>
-          ) : (
-            <View style={styles.noTransactionsContainer}>
-            <Text style={styles.noCardText}>My rewards</Text> 
-          </View>
-          )}
-
+        
+      {/* <FlatList
+        data={merchants}
+        keyExtractor={(merchants) => merchants.id} // Assuming each item has a unique id
+        renderItem={() => <LoyaltyRewardCard itemDetails={{rewardPrice: 2000, rewardNumber: 1}} />}
+      /> */}
 
         </View>
         </SafeAreaView>
@@ -119,4 +124,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RewardsScreen;
+export default BrowseRewards;
