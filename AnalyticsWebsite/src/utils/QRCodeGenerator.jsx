@@ -49,25 +49,8 @@ const QRCodeGenerator = () => {
           id="myQRCode"
         />
       </div>
-      <br />
-      <div className="center">
-        <button className="w3-button w3-white w3-border w3-border-blue" style={{ margin: '0 auto' }} onClick={() => downloadQRCode('myQRCode')}>
-          Download PNG
-        </button>
-      </div>
     </div>
   );
-};
-
-const downloadQRCode = (id) => {
-  const canvas = document.getElementById(id).querySelector('canvas');
-  const pngUrl = canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');
-  let downloadLink = document.createElement('a');
-  downloadLink.href = pngUrl;
-  downloadLink.download = 'qr_image.png';
-  document.body.appendChild(downloadLink);
-  downloadLink.click();
-  document.body.removeChild(downloadLink);
 };
 
 export default QRCodeGenerator;
