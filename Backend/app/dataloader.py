@@ -227,8 +227,9 @@ if __name__ == "__main__":
         register_account(client, register_request)
 
         voucher_request = VoucherRequest(
-            voucher_desciprtion = "test",
+            description = "test",
             merchant_id = 2,
+            discount = 40,
         )
 
         add_voucher_to_merchant(client, voucher_request)

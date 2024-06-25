@@ -35,7 +35,7 @@ class VoucherRepository(RepositoryBase[Voucher]):
         return vouchers
 
     def get_by_id(self, voucher_id: int) -> Voucher | None:
-        statement = select(Voucher).where(Voucher.account_id == voucher_id)
+        statement = select(Voucher).where(Voucher.voucher_id == voucher_id)
         voucher = self.session.exec(statement).first()
         return voucher
 
