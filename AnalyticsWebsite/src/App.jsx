@@ -15,7 +15,7 @@ import SideMenu from './components/SideMenu/SideMenu';
 import Register from './pages/Register';
 
 function App() {
-  const location = useLocation();
+  const location = useLocation(); 
   const hideMenuRoutes = ['/register', '/login'];
 
   return (
