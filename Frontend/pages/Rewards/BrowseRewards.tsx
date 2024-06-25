@@ -9,41 +9,36 @@ import {
 } from "react-native";
 
 import RewardTabs from "../../components/CardFilterTabs/RewardTabs";
-import BrowseRewards from "./BrowseRewards";
+import { getAllVouchers } from "../../api/api";
+import { getAllMerchants } from "../../api/api";
 
 const { width, height } = Dimensions.get("window");
 const scale = width / 320;
 
-function RewardsScreen({navigation, route}) {
+function BrowseRewards({navigation, route}) {
 
     const [activeTabIndex, setActiveTabIndex] = useState(0);
 
+    const getMerchantAndVouchers = async () => {
+        // Gets all vouchers
+        try {
+            const transactions = await getAllMerchants();
+            console.log(transactions)
+          } catch (error) {
+            console.error("Get All Vouchers error:", error);
+          }
+
+    }
+
+    useEffect(() => {
+        getMerchantAndVouchers();
+      }, []);
 
 
     return (
     <SafeAreaView style={styles.container}>
       <View style={styles.centerView}>
-        <View style={styles.header}>
-          <Text style={styles.titleText}>Rewards</Text>
-          <View style={styles.profileButton}>
-          </View>
-        </View>
-
-        <RewardTabs
-          activeTabIndex={activeTabIndex}
-          setActiveTabIndex={setActiveTabIndex}
-        />
-
-        {activeTabIndex === 0 ? (
-            <View style={styles.noTransactionsContainer}>
-              <Text style={styles.noCardText}>Browse REwards</Text>
-              <BrowseRewards ></BrowseRewards>
-            </View>
-          ) : (
-            <View style={styles.noTransactionsContainer}>
-            <Text style={styles.noCardText}>My rewards</Text> 
-          </View>
-          )}
+        
 
 
         </View>
@@ -119,4 +114,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RewardsScreen;
+export default BrowseRewards;

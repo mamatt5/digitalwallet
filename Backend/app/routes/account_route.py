@@ -16,6 +16,10 @@ def get_user_route(account_id: int, account_service: AccountService = Depends(Ac
 def get_merchant_route(account_id: int, account_service: AccountService = Depends(AccountService)) -> Merchant:
     return account_service.get_merchant(account_id)
 
+@router.get("/getmerchants")
+def get_merchant_route(account_service: AccountService = Depends(AccountService)) -> list[Merchant]:
+    return account_service.get_all_merchants()
+
 @router.get("/getaccount/{account_id}")
 def get_account_route(account_id: int, account_service: AccountService = Depends(AccountService)) -> Account:
     return account_service.get_account_with_id(account_id)
