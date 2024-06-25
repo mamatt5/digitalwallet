@@ -59,30 +59,30 @@ if exist "dataloader.py" (
     echo No dataloader.py found
 )
 
-REM ### FRONTEND ###
+@REM REM ### FRONTEND ###
 
-cd ../../frontend
+@REM cd ../../frontend
 
-REM Check if Node.js is installed
-where node
-if %errorlevel% neq 0 (
-    echo Node.js is not installed
-    exit /b 1
-)
+@REM REM Check if Node.js is installed
+@REM where node
+@REM if %errorlevel% neq 0 (
+@REM     echo Node.js is not installed
+@REM     exit /b 1
+@REM )
 
-REM Install frontend dependencies if package.json exists
-if exist "package.json" (
-    echo Installing frontend dependencies
-    call npm install
-    if %errorlevel% neq 0 (
-        echo Failed to install frontend dependencies
-        exit /b 1
-    )
-)
+@REM REM Install frontend dependencies if package.json exists
+@REM if exist "package.json" (
+@REM     echo Installing frontend dependencies
+@REM     call npm install
+@REM     if %errorlevel% neq 0 (
+@REM         echo Failed to install frontend dependencies
+@REM         exit /b 1
+@REM     )
+@REM )
 
-REM Start the frontend
-echo Starting frontend development server
-start "Frontend Server" cmd /c "npm run start"
+@REM REM Start the frontend
+@REM echo Starting frontend development server
+@REM start "Frontend Server" cmd /c "npm run start"
 
 @REM REM ### MOCKPOS ###
 

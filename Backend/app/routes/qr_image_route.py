@@ -3,6 +3,7 @@ from services.qr_image_service import QRImageService
 from fastapi import APIRouter, File, UploadFile, HTTPException, Depends
 from fastapi.responses import StreamingResponse
 from typing import Dict
+import magic
 import io
 
 router = APIRouter(prefix="/qr_images", tags=["QRImages"])
@@ -23,7 +24,12 @@ def get_qr_image_route(qr_image_id: int, qr_image_service: QRImageService = Depe
     image = qr_image_service.get_qr_image(qr_image_id)
     if image is None:
         raise HTTPException(status_code=404, detail="Image not found")
-    return StreamingResponse(io.BytesIO(image.data), media_type="image/png")
+    
+    # Use python-magic to detect the MIME type
+    mime = magic.Magic(mime=True)
+    mime_type = mime.from_buffer(image.data)
+    
+    return StreamingResponse(io.BytesIO(image.data), media_type=mime_type)
 
 
 @router.put("/update")
