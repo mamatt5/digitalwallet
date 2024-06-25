@@ -160,7 +160,7 @@ export const getAllMerchants = async () => {
 };
 
 
-export const getAllVouchers = async () => {
+export const getAllVouchersForMerchant = async (merchantId: string) => {
   try {
     const response = await axios.get(`${API_BASE_URL}/vouchers/getvouchers`);
     return response.data;

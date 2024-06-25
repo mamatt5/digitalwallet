@@ -15,3 +15,5 @@ class MerchantResponse(MerchantBase):
     account: AccountResponse = Field(..., description="Merchants account information")
 
     model_config = ConfigDict(from_attributes=True)
+
+    

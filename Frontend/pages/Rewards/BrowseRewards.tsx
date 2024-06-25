@@ -11,6 +11,7 @@ import {
 import RewardTabs from "../../components/CardFilterTabs/RewardTabs";
 import { getAllVouchers } from "../../api/api";
 import { getAllMerchants } from "../../api/api";
+import { getAllVouchersForMerchant } from "../../api/api";
 
 const { width, height } = Dimensions.get("window");
 const scale = width / 320;
@@ -18,15 +19,37 @@ const scale = width / 320;
 function BrowseRewards({navigation, route}) {
 
     const [activeTabIndex, setActiveTabIndex] = useState(0);
+    const [merchants, setMerchants] = useState([]);
 
     const getMerchantAndVouchers = async () => {
-        // Gets all vouchers
+        // Gets all 
+        let allMerchants = []
         try {
-            const transactions = await getAllMerchants();
-            console.log(transactions)
+            allMerchants = await getAllMerchants();
+            setMerchants(allMerchants)
+            console.log(allMerchants)
           } catch (error) {
             console.error("Get All Vouchers error:", error);
           }
+
+        for (let i = 0; i < allMerchants.length; i++) {
+          let vouchers = []
+          let curr = allMerchants.at(i)
+          console.log("curr merchant is")
+          console.log(curr)
+          try {
+            vouchers = await getAllVouchersForMerchant(curr.account_id);
+            console.log("deez")
+            console.log(vouchers)
+          } catch (error) {
+            console.error("Get All Vouchers error:", error);
+          }
+
+          curr.vouchers = vouchers;
+
+        }
+        console.log("final")
+        console.log(allMerchants)
 
     }
 

@@ -18,3 +18,6 @@ class VoucherService:
     
     def delete_voucher(self, voucher_id: int) -> None:
         self.voucher_repositoary.delete(voucher_id)
+
+    def get_vouchers_for_merchant(self, merchant_id: int) -> list[Voucher]:
+        return self.voucher_repositoary.get_voucher_for_merchant(merchant_id)
