@@ -4,7 +4,7 @@ import { QRCode } from '@jackybaby/react-custom-qrcode';
 const QRCodeGenerator = () => {
   const [url, setUrl] = useState('https://github.com/gcoro/react-qrcode-logo');
   const [image, setImage] = useState(null);
-  const [logoOpacity, setLogoOpacity] = useState(0.5); 
+  const [logoOpacity, setLogoOpacity] = useState(0.45); 
 
   const handleImageChange = (e) => {
     const reader = new FileReader();
@@ -21,9 +21,6 @@ const QRCodeGenerator = () => {
       <p>
         Select an image to customise the QR code.
       </p>
-      <div className="center">
-        {image && <img src={image} alt="Uploaded" style={{ width: '200px', height: '200px' }} />}
-      </div>
       <label>URL*:</label>
       <input
         className="w3-input"
@@ -31,6 +28,7 @@ const QRCodeGenerator = () => {
         type="text"
         value={url}
         onChange={(e) => setUrl(e.target.value)}
+        hidden
       />
       <br />
       <div className="center">
