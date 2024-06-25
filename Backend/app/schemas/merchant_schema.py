@@ -1,5 +1,7 @@
 from pydantic import BaseModel, ConfigDict, Field
 from schemas.account_schema import AccountRequest, AccountResponse
+from schemas.voucher_schema import VoucherInfo
+from models.vouchers import Voucher
 
 
 class MerchantBase(BaseModel):
@@ -16,4 +18,5 @@ class MerchantResponse(MerchantBase):
 
     model_config = ConfigDict(from_attributes=True)
 
-    
+class MerchantAndVoucherInfo(MerchantBase):
+    vouchers: list[Voucher]= Field(..., description="Merchants account information")

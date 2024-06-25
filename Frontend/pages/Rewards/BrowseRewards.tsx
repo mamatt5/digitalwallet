@@ -6,12 +6,13 @@ import {
   Dimensions,
   StyleSheet,
   Alert,
+  FlatList,
 } from "react-native";
 
 import RewardTabs from "../../components/CardFilterTabs/RewardTabs";
-import { getAllVouchers } from "../../api/api";
 import { getAllMerchants } from "../../api/api";
 import { getAllVouchersForMerchant } from "../../api/api";
+import LoyaltyRewardCard from "../../components/LoyaltyRewardCard/LoyaltyRewardCard";
 
 const { width, height } = Dimensions.get("window");
 const scale = width / 320;
@@ -22,33 +23,30 @@ function BrowseRewards({navigation, route}) {
     const [merchants, setMerchants] = useState([]);
 
     const getMerchantAndVouchers = async () => {
-        // Gets all 
+        
         let allMerchants = []
+        // Gets all merchants
         try {
             allMerchants = await getAllMerchants();
-            setMerchants(allMerchants)
-            console.log(allMerchants)
           } catch (error) {
             console.error("Get All Vouchers error:", error);
           }
 
+        // for each merchant entry, finds all the list vouchers that belong to that merchant
+        // then adds that list of voucher to the entry
         for (let i = 0; i < allMerchants.length; i++) {
           let vouchers = []
           let curr = allMerchants.at(i)
-          console.log("curr merchant is")
-          console.log(curr)
           try {
             vouchers = await getAllVouchersForMerchant(curr.account_id);
-            console.log("deez")
-            console.log(vouchers)
           } catch (error) {
-            console.error("Get All Vouchers error:", error);
+            console.error("Get All Vouchers for Merchant error:", error);
           }
-
           curr.vouchers = vouchers;
 
         }
         console.log("final")
+        setMerchants(allMerchants)
         console.log(allMerchants)
 
     }
@@ -60,9 +58,13 @@ function BrowseRewards({navigation, route}) {
 
     return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.centerView}>
+      <View style={styles.centerView}>x
         
-
+      <FlatList
+        data={merchants}
+        keyExtractor={(merchants) => merchants.id} // Assuming each item has a unique id
+        renderItem={() => <LoyaltyRewardCard itemDetails={{rewardPrice: 2000, rewardNumber: 1}} />}
+      />
 
         </View>
         </SafeAreaView>

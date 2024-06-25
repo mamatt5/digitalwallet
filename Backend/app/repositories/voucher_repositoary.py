@@ -43,4 +43,9 @@ class VoucherRepository(RepositoryBase[Voucher]):
         statment = select(Voucher).where(Voucher.merchant_id == merchant_id)
         vouchers = self.session.exec(statment).all()
         return vouchers
+    
+    def get_voucher_for_merchant_test(self, merchant_id: int) ->list[Voucher]:
+        statment = select(Voucher).where(Voucher.merchant_id == merchant_id)
+        vouchers = self.session.exec(statment).all()
+        return vouchers
 
