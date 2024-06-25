@@ -73,8 +73,13 @@ class TransactionRepository(RepositoryBase[Transaction]):
             return None
 
     def get_all(self, skip: int = 0) -> List[Transaction]:
-        statement = select(Transaction).offset(skip)
-        transactions = self.session.exec(statement).all()
+        index = skip + 1
+        transactions = []
+        transaction = self.get_by_id(index)
+        while transaction is not None:
+            transactions.append(transaction)
+            index += 1
+            transaction = self.get_by_id(index)
         return transactions
     
     def get_by_card_id(self, card_id: int) -> List[Transaction]:
