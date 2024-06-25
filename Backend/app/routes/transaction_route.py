@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends
 from typing import List
+from schemas.transaction_schema import TransactionResponse
 from services.wallet_service import WalletService
 from models.transaction import Transaction, Item
 from services.transaction_service import TransactionService
@@ -72,6 +73,10 @@ def add_ap_points(transaction_data: dict, wallet_service: WalletService = Depend
 @router.get('/gettransactions')
 def get_transactions(transaction_service: TransactionService = Depends(TransactionService)):
     return transaction_service.get_transactions()
+
+@router.get('/gettransaction/{transaction_id}', response_model=TransactionResponse)
+def get_transaction(transaction_id: int, transaction_service: TransactionService = Depends(TransactionService)):
+    return transaction_service.get_transaction(transaction_id)
 
 @router.get('/checktransaction/{transaction_ref}')
 def check_transaction(transaction_ref: str, transaction_service: TransactionService = Depends(TransactionService)):
