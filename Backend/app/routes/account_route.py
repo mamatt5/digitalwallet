@@ -37,8 +37,7 @@ async def update_accout_password(email: str, request: Request, account_service: 
     body = await request.json()
     return account_service.update_account_password(email, hash_password(body.get("password")))
 
-
-@router.get("/getmerchantandvouchers/{account_id}", response_model=MerchantAndVoucherInfo)
-def get_merchant_and_vouchers(account_id: int,  account_service: AccountService = Depends(AccountService)):
-    return account_service.get_merchant_and_vouchers(account_id)
+@router.get("/getmerchantandvouchers", response_model=list[MerchantAndVoucherInfo])
+def get_merchant_and_vouchers(account_service: AccountService = Depends(AccountService)):
+    return account_service.get_merchant_and_vouchers()
 

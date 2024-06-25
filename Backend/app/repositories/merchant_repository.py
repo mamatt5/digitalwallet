@@ -6,13 +6,7 @@ from models.merchant import Merchant
 from models.vouchers import Voucher
 from repositories.base_repository import RepositoryBase
 from sqlmodel import Session, delete, select, update
-import logging
-logging.basicConfig(filename='app.log', 
-                    filemode='w', 
-                    format='%(asctime)s - %(levelname)s - %(message)s', 
-                    level=logging.DEBUG)
 
-logger = logging.getLogger(__name__)
 
 class MerchantRepository(RepositoryBase[Merchant]):
     def __init__(self, session: Annotated[Session, Depends(get_db_session)]):
@@ -48,40 +42,24 @@ class MerchantRepository(RepositoryBase[Merchant]):
         return merchant
     
 
-    def get_merchant_and_vouchers(self, merchant_id: int) -> list[dict]:
-        # statement = select(Merchant, Voucher).join(Merchant.vouchers).where(Merchant.account_id == merchant_id)
-        # result = self.session.exec(statement)
-        
-        # logger.info(result)
-        # merchants_with_items = []
-        # curr_merchant = None
-        
-        # for merchant, voucher in result:
-        #     if curr_merchant is None or curr_merchant.account_id != merchant.account_id:
-        #         curr_merchant = dict(merchant)
-        #         curr_merchant["vouchers"] = []
-        #         merchants_with_items.append(curr_merchant)
- 
-        #     if voucher:
-        #         curr_merchant["vouchers"].append(dict(voucher))
-
-        # return merchants_with_items
-        
-        statement = select(Merchant).where(Merchant.account_id == merchant_id)
-        merchant = self.session.exec(statement).first()
-        final = []
-        for x in merchant:
-            vouchers_query = select(Voucher).where(Voucher.merchant_id == x.merchant_id)
+    def get_merchant_and_vouchers(self) -> list[dict]:
+        statement = select(Merchant)
+        merchants = self.session.exec(statement).all()
+        merchantsWithVouchers = []
+       
+        for merchant in merchants:
+            vouchers_query = select(Voucher).where(Voucher.merchant_id == merchant.account_id)
             vouchers = self.session.exec(vouchers_query).all()
             
             data = {
-                "company_name": x.company_name,
-                "ABN": x.abn,
+                "company_id": merchant.account_id,
+                "company_name": merchant.company_name,
+                "ABN": merchant.ABN,
                 "vouchers": vouchers
             }
-            final.append(data)
+            merchantsWithVouchers.append(data)
             
-        return final
+        return merchantsWithVouchers
             
 
 

@@ -10,8 +10,7 @@ import {
 } from "react-native";
 
 import RewardTabs from "../../components/CardFilterTabs/RewardTabs";
-import { getAllMerchants } from "../../api/api";
-import { getAllVouchersForMerchant } from "../../api/api";
+import { getAllMerchantsAndVouchers } from "../../api/api";
 import LoyaltyRewardCard from "../../components/LoyaltyRewardCard/LoyaltyRewardCard";
 
 const { width, height } = Dimensions.get("window");
@@ -24,30 +23,16 @@ function BrowseRewards({navigation, route}) {
 
     const getMerchantAndVouchers = async () => {
         
-        let allMerchants = []
+        let allMerchantsAndVouchers = []
         // Gets all merchants
         try {
-            allMerchants = await getAllMerchants();
+          allMerchantsAndVouchers = await getAllMerchantsAndVouchers();
+          setMerchants(allMerchantsAndVouchers)
           } catch (error) {
             console.error("Get All Vouchers error:", error);
           }
 
-        // for each merchant entry, finds all the list vouchers that belong to that merchant
-        // then adds that list of voucher to the entry
-        for (let i = 0; i < allMerchants.length; i++) {
-          let vouchers = []
-          let curr = allMerchants.at(i)
-          try {
-            vouchers = await getAllVouchersForMerchant(curr.account_id);
-          } catch (error) {
-            console.error("Get All Vouchers for Merchant error:", error);
-          }
-          curr.vouchers = vouchers;
-
-        }
-        console.log("final")
-        setMerchants(allMerchants)
-        console.log(allMerchants)
+        console.log(allMerchantsAndVouchers)
 
     }
 
@@ -58,13 +43,13 @@ function BrowseRewards({navigation, route}) {
 
     return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.centerView}>x
+      <View style={styles.centerView}>
         
-      <FlatList
+      {/* <FlatList
         data={merchants}
         keyExtractor={(merchants) => merchants.id} // Assuming each item has a unique id
         renderItem={() => <LoyaltyRewardCard itemDetails={{rewardPrice: 2000, rewardNumber: 1}} />}
-      />
+      /> */}
 
         </View>
         </SafeAreaView>

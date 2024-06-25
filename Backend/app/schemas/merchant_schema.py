@@ -12,13 +12,14 @@ class MerchantBase(BaseModel):
 class MerchantRequest(MerchantBase):
     account: AccountRequest = Field(..., description="Merchants account information")
 
-
+ 
 class MerchantResponse(MerchantBase):
     account: AccountResponse = Field(..., description="Merchants account information")
 
     model_config = ConfigDict(from_attributes=True)
 
 class MerchantAndVoucherInfo(MerchantBase):
+    company_id: int = Field(..., description="Merchants Id")
     company_name: str = Field(..., description="Merchants company name")
     ABN: str = Field(..., description="Merchants ABN")
     vouchers: list[Voucher]= Field(..., description="Merchants account information")

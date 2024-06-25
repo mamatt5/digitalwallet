@@ -160,9 +160,9 @@ export const getAllMerchants = async () => {
 };
 
 
-export const getAllVouchersForMerchant = async (merchantId: string) => {
+export const getAllMerchantsAndVouchers = async () => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/vouchers/getvouchers`);
+    const response = await axios.get(`${API_BASE_URL}/accounts/getmerchantandvouchers`);
     return response.data;
   } catch (error) {
     console.error('Get all Vouchers error:', error);

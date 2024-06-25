@@ -39,7 +39,7 @@ class AccountService:
     def get_all_merchants(self) -> list[Merchant]:
         return self.merchant_repository.get_all()
     
-    def get_merchant_and_vouchers(self, account_id: int) -> list[dict]:
-        return self.merchant_repository.get_merchant_and_vouchers(account_id)
+    def get_merchant_and_vouchers(self) -> dict:
+        return self.merchant_repository.get_merchant_and_vouchers()
     
         
