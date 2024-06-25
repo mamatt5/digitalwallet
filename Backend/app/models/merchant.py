@@ -1,5 +1,6 @@
 from models.account import Account
 from models.category import Category
+from models.qr_image import QRImage
 from typing import TYPE_CHECKING, Optional
 from sqlmodel import Field, Relationship, SQLModel
 
@@ -21,3 +22,4 @@ class Merchant(SQLModel, table=True):
     account: Account | None = Relationship(back_populates="merchant")
     category_id: Optional[int] = Field(default=None, foreign_key='category.category_id')
     category: Category | None = Relationship(back_populates="merchants")
+    qr_image: QRImage | None = Relationship(back_populates="merchant")
