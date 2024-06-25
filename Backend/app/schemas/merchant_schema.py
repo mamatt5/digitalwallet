@@ -19,4 +19,6 @@ class MerchantResponse(MerchantBase):
     model_config = ConfigDict(from_attributes=True)
 
 class MerchantAndVoucherInfo(MerchantBase):
+    company_name: str = Field(..., description="Merchants company name")
+    ABN: str = Field(..., description="Merchants ABN")
     vouchers: list[Voucher]= Field(..., description="Merchants account information")

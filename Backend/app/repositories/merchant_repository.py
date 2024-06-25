@@ -49,22 +49,39 @@ class MerchantRepository(RepositoryBase[Merchant]):
     
 
     def get_merchant_and_vouchers(self, merchant_id: int) -> list[dict]:
-        statement = select(Merchant, Voucher).join(Merchant.vouchers).where(Merchant.account_id == merchant_id)
-        result = self.session.exec(statement)
+        # statement = select(Merchant, Voucher).join(Merchant.vouchers).where(Merchant.account_id == merchant_id)
+        # result = self.session.exec(statement)
         
-        logger.info(result)
-        merchants_with_items = []
-        curr_merchant = None
+        # logger.info(result)
+        # merchants_with_items = []
+        # curr_merchant = None
         
-        for merchant, voucher in result:
-            if curr_merchant is None or curr_merchant.account_id != merchant.account_id:
-                curr_merchant = dict(merchant)
-                curr_merchant["vouchers"] = []
-                merchants_with_items.append(curr_merchant)
+        # for merchant, voucher in result:
+        #     if curr_merchant is None or curr_merchant.account_id != merchant.account_id:
+        #         curr_merchant = dict(merchant)
+        #         curr_merchant["vouchers"] = []
+        #         merchants_with_items.append(curr_merchant)
+ 
+        #     if voucher:
+        #         curr_merchant["vouchers"].append(dict(voucher))
 
-            if voucher:
-                curr_merchant["vouchers"].append(dict(voucher))
-
-        return merchants_with_items
+        # return merchants_with_items
+        
+        statement = select(Merchant).where(Merchant.account_id == merchant_id)
+        merchant = self.session.exec(statement).first()
+        final = []
+        for x in merchant:
+            vouchers_query = select(Voucher).where(Voucher.merchant_id == x.merchant_id)
+            vouchers = self.session.exec(vouchers_query).all()
+            
+            data = {
+                "company_name": x.company_name,
+                "ABN": x.abn,
+                "vouchers": vouchers
+            }
+            final.append(data)
+            
+        return final
+            
 
 
