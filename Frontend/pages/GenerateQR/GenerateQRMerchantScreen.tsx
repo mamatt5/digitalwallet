@@ -37,6 +37,9 @@ function QRGenerateMerchantScreen({ route }) {
 
   useEffect(() => {
     const ws = connectToWebSocket(`/ws/clients/${clientName}`, (data) => {
+      const salt = Math.random().toString(36).substring(2, 15);
+      const transaction_reference = merchant + salt;
+      console.log("Transaction Reference in POS: " + transaction_reference);
       if (data) {
         const updatedData = {
           ...data,
@@ -45,6 +48,7 @@ function QRGenerateMerchantScreen({ route }) {
           merchant: merchant,
           amount: formatPrice(data.amount),
           description: "POS",
+          transaction_reference: transaction_reference,
         };
         console.log("POS generated:", updatedData);
         setTransactionData(updatedData);
@@ -98,8 +102,8 @@ function QRGenerateMerchantScreen({ route }) {
               />
             </Table>
             <Text style={styles.totalText}>
-            Total: ${transactionData ? transactionData.amount : "0.00"}
-          </Text>
+              Total: ${transactionData ? transactionData.amount : "0.00"}
+            </Text>
           </View>
           <View style={styles.qrCodeContainer}>
             <QRCode
