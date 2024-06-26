@@ -10,12 +10,24 @@ import {
 } from "react-native";
 import MaterialIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import DetailedItemCard from "../../components/DetailedItemCard/DetailedItemCard";
-import { getItems, getMerchant, getCard } from "../../api/api";
+import { getItems, getMerchant, getCard, getAPPoints } from "../../api/api";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { TextInput } from "react-native-gesture-handler";
 import LoyaltyRewardCard from "../../components/LoyaltyRewardCard/LoyaltyRewardCard";
 
 function RewardsScreen({ navigation, route }) {
+  const [refresh, setRefresh] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      setRefresh((prev) => !prev);
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
+  const { account } = route.params;
+  const [walletPoints, setWalletPoints] = useState(0);
 
     const Row = ({ children }) => (
         <View style={styles.row}>{children}</View>
@@ -26,6 +38,19 @@ function RewardsScreen({ navigation, route }) {
         <View style={styles.col}>{children}</View>
     )
     }
+
+    const fetchWalletPoints = async () => {
+      try {
+        const response = await getAPPoints(account.wallet.wallet_id);
+        setWalletPoints(response);
+      } catch (error) {
+        console.error("Get Wallet Points error:", error);
+      }
+    }
+
+    useEffect(() => {
+      fetchWalletPoints();
+    }, [refresh]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -44,6 +69,7 @@ function RewardsScreen({ navigation, route }) {
           <TextInput style={styles.textInput} placeholder="Search" placeholderTextColor="white" />
         </View>
         <View style={styles.loyaltyCardContainer}>
+        <Text style={styles.transactionDate}>Points: {walletPoints}</Text>
         <ScrollView style={styles.rewardCardContainer}>
       <Row>
         <Col>

@@ -49,11 +49,37 @@ class TransactionRepository(RepositoryBase[Transaction]):
     def get_by_id(self, transaction_id: Any) -> Transaction | None:
         statement = select(Transaction).where(Transaction.transaction_id == transaction_id)
         transaction = self.session.exec(statement).first()
-        return transaction
+
+        if transaction:
+            items_statement = select(Item).where(Item.transaction_id == transaction.transaction_id)
+            items = self.session.exec(items_statement).all()
+
+            transaction_data = {
+                "transaction_id": transaction.transaction_id,
+                "transaction_ref": transaction.transaction_ref,
+                "vendor": transaction.vendor,
+                "date": transaction.date,
+                "time": transaction.time,
+                "amount": transaction.amount,
+                "description": transaction.description,
+                "card_id": transaction.card_id,
+                "sender": transaction.sender,
+                "recipient": transaction.recipient,
+                "items": items
+            }
+            return transaction_data
+    
+        else:
+            return None
 
     def get_all(self, skip: int = 0) -> List[Transaction]:
-        statement = select(Transaction).offset(skip)
-        transactions = self.session.exec(statement).all()
+        index = skip + 1
+        transactions = []
+        transaction = self.get_by_id(index)
+        while transaction is not None:
+            transactions.append(transaction)
+            index += 1
+            transaction = self.get_by_id(index)
         return transactions
     
     def get_by_card_id(self, card_id: int) -> List[Transaction]:
@@ -75,3 +101,8 @@ class TransactionRepository(RepositoryBase[Transaction]):
         statement = select(Item).where(Item.transaction_id == transaction_id)
         items = self.session.exec(statement).all()
         return items
+    
+    def check_transaction(self, transaction_ref: str) -> bool:
+        statement = select(Transaction).where(Transaction.transaction_ref == transaction_ref)
+        transaction = self.session.exec(statement).first()
+        return transaction is not None
