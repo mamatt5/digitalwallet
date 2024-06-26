@@ -12,6 +12,7 @@ const drawerWidth = 250;
 const menuItems = [
     { text: 'Dashboard', value: '' },
     { text: 'Transactions', value: 'transactions' },
+    { text: 'QR Customisation', value: 'customize' },
     { text: 'Profile', value: 'profile' },
 ];
 

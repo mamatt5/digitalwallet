@@ -9,13 +9,14 @@ import Transactions from './pages/Transactions';
 import Login from './pages/Login';
 import Index from './pages/Index';
 import QRCustomization from './pages/QRCustomization';
+import Landing from './pages/Landing';
 
 //////////////////// COMPONENTS ////////////////////////
 import SideMenu from './components/SideMenu/SideMenu';
 import Register from './pages/Register';
 
 function App() {
-  const location = useLocation();
+  const location = useLocation(); 
   const hideMenuRoutes = ['/register', '/login'];
 
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route path="/" element={<Index />} />
           <Route path="/transactions" element={<Transactions />} />
           <Route path="/customize" element={<QRCustomization />} />
+          <Route path="/landing" element={<Landing />} />
         </Routes>
       </Box>
     </Box>
