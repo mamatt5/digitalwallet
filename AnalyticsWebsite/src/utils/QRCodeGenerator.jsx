@@ -6,21 +6,24 @@ import Box from '@mui/material/Box';
 const QRCodeGenerator = () => {
   const [url, setUrl] = useState('');
   const [image, setImage] = useState(null);
+  const [imageName, setImageName] = useState('');
   const [logoOpacity] = useState(0.55);
 
   const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setImageName(file.name); 
     const reader = new FileReader();
     reader.onload = () => {
       setImage(reader.result);
     };
-    reader.readAsDataURL(e.target.files[0]);
+    reader.readAsDataURL(file);
   };
 
   const handleSave = async () => {
     const canvas = document.getElementById('myQRCode');
     canvas.toBlob(async (blob) => {
       const formData = new FormData();
-      formData.append('name', url);
+      formData.append('name', imageName); 
       formData.append('merchant_id', '13');
       formData.append('file', blob, 'qrcode.png');
   
