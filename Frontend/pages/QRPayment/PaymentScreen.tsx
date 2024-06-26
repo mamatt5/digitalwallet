@@ -19,6 +19,7 @@ import {
   checkTransaction,
 } from "../../api/api";
 import SmallDebitCard from "../../components/SmallDebitCard";
+import { ScrollView } from "react-native-gesture-handler";
 
 const { width, height } = Dimensions.get("window");
 const scale = width / 320;
@@ -187,7 +188,7 @@ function PaymentScreen({ route, navigation }) {
           )}
 
           {transactionConfirmed && (
-            <View style={styles.container}>
+            <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
               <Text style={styles.headerText}>Payment Options</Text>
               {cards.length > 0 ? (
                 <FlatList
@@ -210,6 +211,7 @@ function PaymentScreen({ route, navigation }) {
                       </View>
                     </TouchableOpacity>
                   )}
+                scrollEnabled={false}
                 />
               ) : (
                 <Text style={styles.subheaderText}>No cards available</Text>
@@ -238,7 +240,7 @@ function PaymentScreen({ route, navigation }) {
                   </Button>
                 </View>
               )}
-            </View>
+            </ScrollView>
           )}
         </View>
       </View>
@@ -257,7 +259,8 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     alignSelf: "center",
-    marginTop: 40 * scale,
+    marginTop: 20 * scale,
+    marginBottom: 20 * scale,
     width: "80%",
   },
   cancelButton: {
@@ -283,7 +286,6 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   container: {
-    justifyContent: "center",
     width: "90%",
   },
   date: {

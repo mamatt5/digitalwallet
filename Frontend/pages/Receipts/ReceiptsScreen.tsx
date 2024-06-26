@@ -9,20 +9,13 @@ import {
   RefreshControl,
 } from "react-native";
 import TransactionSearch from "../../components/TransactionSearch/TransactionSearch";
-import ProfileButton from "../../components/ProfileButton/ProfileButton";
-import ProfileModal from "../../components/ProfileModal/ProfileModal";
 import { getTransactionsBySender } from "../../api/api";
 
 function ReceiptsScreen({ navigation, route }) {
   const { account } = route.params;
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [transactions, setTransactions] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
-
-  function handleModal(modalValue) {
-    setIsModalOpen(modalValue);
-  }
 
   const fetchTransactionsBySender = async () => {
     setRefreshing(true);
@@ -46,18 +39,12 @@ function ReceiptsScreen({ navigation, route }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      {isModalOpen && <ProfileModal setModalstate={handleModal}></ProfileModal>}
 
       <View style={styles.headerContainer}>
         <Text style={styles.titleText}>Receipts</Text>
-        <Pressable
-          onPress={() => setIsModalOpen(true)}
-          style={styles.profileContainer}
-        >
-          <ProfileButton></ProfileButton>
-        </Pressable>
       </View>
       <ScrollView
+      contentContainerStyle={{ flexGrow: 1 }}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}

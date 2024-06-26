@@ -113,6 +113,7 @@ function AddCardScreen({ navigation, route }) {
       })
       .catch((error) => {
         console.error('Add Card error:', error);
+        Alert.alert('Error', 'Card is already registered. Please try again with a different card.');
       });
   };
 

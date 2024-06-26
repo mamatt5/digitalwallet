@@ -36,7 +36,7 @@ function RewardsScreen({navigation, route}) {
 
         {activeTabIndex === 0 ? (
             <View style={styles.noTransactionsContainer}>
-              <Text style={styles.noCardText}>Browse REwards</Text>
+              <Text style={styles.noCardText}>Browse Rewards</Text>
               <BrowseRewards ></BrowseRewards>
             </View>
           ) : (
