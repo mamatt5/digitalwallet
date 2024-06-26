@@ -1,6 +1,6 @@
 from models.qr_image import QRImage
 from services.qr_image_service import QRImageService
-from fastapi import APIRouter, File, UploadFile, HTTPException, Depends
+from fastapi import APIRouter, File, Form, UploadFile, HTTPException, Depends
 from fastapi.responses import StreamingResponse
 from typing import Dict
 import magic
@@ -8,15 +8,23 @@ import io
 
 router = APIRouter(prefix="/qr_images", tags=["QRImages"])
 
-
 @router.post("/add")
-async def upload_image_route(name: str, merchant_id: int, file: UploadFile = File(...),  qr_image_service: QRImageService = Depends(QRImageService)) -> Dict:
+async def upload_image_route(name: str = Form(...), merchant_id: int = Form(...), file: UploadFile = File(...), qr_image_service: QRImageService = Depends(QRImageService)) -> Dict:
     try:
         file_data = await file.read()
         image = qr_image_service.create_image(name=name, data=file_data, merchant_id=merchant_id)
         return {"id": image.qrimage_id, "name": image.name, "merchant_id": image.merchant_id}
     except Exception as e:
         raise HTTPException(status_code=400, detail="Image upload failed") from e
+
+# @router.post("/add")
+# async def upload_image_route(name: str, merchant_id: int, file: UploadFile = File(...),  qr_image_service: QRImageService = Depends(QRImageService)) -> Dict:
+#     try:
+#         file_data = await file.read()
+#         image = qr_image_service.create_image(name=name, data=file_data, merchant_id=merchant_id)
+#         return {"id": image.qrimage_id, "name": image.name, "merchant_id": image.merchant_id}
+#     except Exception as e:
+#         raise HTTPException(status_code=400, detail="Image upload failed") from e
 
 
 @router.get("/get/{qr_image_id}")
