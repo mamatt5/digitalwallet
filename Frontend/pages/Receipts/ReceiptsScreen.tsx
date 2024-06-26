@@ -35,7 +35,7 @@ function ReceiptsScreen({ navigation, route }) {
       );
       setTransactions(sortedTransactions);
     } catch (error) {
-      console.error("Get Transactions error:", error);
+      console.error("Get Transactions on receipts screen error:", error);
     }
     setRefreshing(false);
   };

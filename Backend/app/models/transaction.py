@@ -7,6 +7,7 @@ from models.loyalty_card import LoyaltyTransaction
 
 class Transaction(SQLModel, table=True):
     transaction_id: int | None = Field(default=None, primary_key=True)
+    transaction_ref: str | None = Field(default=None)
     vendor: int = Field(default=None, foreign_key='account.account_id')
     loyalty_transaction: Optional["LoyaltyTransaction"] = Relationship(back_populates="transaction")
     date: str = Field(default=None)

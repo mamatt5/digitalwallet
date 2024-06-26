@@ -6,6 +6,7 @@ import OverviewScreen from '../pages/Overview/OverviewScreen';
 import AccountNavigator from './AccountNavigator';
 import QRGenerateNavigator from './QRGenerateNavigator';
 import ReceiptNavigator from './ReceiptNavigator';
+import RewardsScreen from '../pages/Rewards/RewardsScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -58,16 +59,31 @@ function MainNavigator({ route }) {
         }}
       />
 
-      <Tab.Screen
-        name="Overview"
-        component={OverviewScreen}
-        options={{
-          tabBarLabel: 'Overview',
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="chart-arc" color={color} size={size} />
-          ),
-        }}
-      />
+      { account.account_type === 'merchant' ? (
+              <Tab.Screen
+              name="Overview"
+              component={OverviewScreen}
+              options={{
+                tabBarLabel: 'Overview',
+                tabBarIcon: ({ color, size }) => (
+                  <MaterialCommunityIcons name="chart-arc" color={color} size={size} />
+                ),
+              }}
+            />
+        ) : (
+          <Tab.Screen
+          name="Rewards"
+          component={RewardsScreen}
+          initialParams={{ account }}
+          options={{
+            tabBarLabel: 'Rewards',
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons name="gift" color={color} size={size} />
+            ),
+          }}
+        />
+        )}
+
       <Tab.Screen
         name="Receipts"
         component={ReceiptNavigator}
