@@ -32,6 +32,7 @@ def create_register_request(account_type: AccountType) -> RegisterRequest:
             ABN=fake.msisdn(),
             first_name="",
             last_name="",
+            category_id=1,
         )
     else:
         return RegisterRequest(
@@ -43,6 +44,7 @@ def create_register_request(account_type: AccountType) -> RegisterRequest:
             last_name=fake.last_name(),
             company_name="",
             ABN="",
+            category_id=1,
         )
 
 
@@ -333,6 +335,12 @@ def add_transaction_data(client, num_transactions: int, users: List[int], items:
     response = client.post("/transactions/addtransactions", json=transactions)
     assert response.status_code == status.HTTP_200_OK, f"Transactions add failed: {response.text}"
     logger.info(f"Transactions added successfully")
+    
+
+def add_categories(client) -> None:
+    response = client.post("/categories/addcategory", json={"category_name": "food"})
+    assert response.status_code == status.HTTP_200_OK, f"Transactions add failed: {response.text}"
+    logger.info(f"Categories added successfully")
 
 
 def register_account(client, register_request: RegisterRequest) -> AuthResponse:
@@ -389,6 +397,7 @@ if __name__ == "__main__":
             last_name="Charles",
             company_name="",
             ABN="",
+            category_id=1,
         )
         register_account(client, register_request)
 
@@ -401,6 +410,7 @@ if __name__ == "__main__":
             last_name="Donald",
             company_name="",
             ABN="",
+            category_id=1,
         )
         register_account(client, register_request)
 
@@ -413,6 +423,7 @@ if __name__ == "__main__":
             ABN=fake.msisdn(),
             first_name="",
             last_name="",
+            category_id=1,
         )
         register_account(client, register_request)
 
@@ -425,6 +436,7 @@ if __name__ == "__main__":
             last_name="Chanco",
             company_name="",
             ABN="",
+            category_id=1,
         )
         register_account(client, register_request)
 
@@ -446,6 +458,7 @@ if __name__ == "__main__":
             ABN=fake.msisdn(),
             first_name="",
             last_name="",
+            category_id=1,
         )
         register_account(client, register_request)
 
@@ -458,7 +471,10 @@ if __name__ == "__main__":
             ABN=fake.msisdn(),
             first_name="",
             last_name="",
+            category_id=1,
         )
         register_account(client, register_request)
 
         add_transaction_data(client, transaction_records, users, items)
+        
+        add_categories(client)
