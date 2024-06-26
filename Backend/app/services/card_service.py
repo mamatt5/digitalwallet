@@ -18,3 +18,6 @@ class CardService:
     
     def get_cards_from_wallet(self, wallet_id: int) -> list[Card]:
         return self.card_repository.get_by_wallet(wallet_id)
+    
+    def delete_card(self, card_id: int) -> None:
+        self.card_repository.delete(card_id)

@@ -14,7 +14,6 @@ export const loginUser = async (email: string, password: string) => {
       client_secret: '',
       scope: '',
     });
-    console.log(requestData)
 
     const response = await axios.post(`${API_BASE_URL}/auth/login`, requestData.toString(), {
       headers: {
@@ -103,6 +102,16 @@ export const addCard = async (cardNumber: string, expiryDate: string, cardCVV: s
   }
 };
 
+export const deleteCardById = async (cardId: string) => {
+  try {
+    const response = await axios.delete(`${API_BASE_URL}/cards/deletecard/${cardId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Delete Card error:', error);
+    throw error;
+  }
+}
+
 export const addLoyaltyCard = async (cardNumber: string, expiryDate: string, memberName: string, walletId: string) => {
   try {
     const response = await axios.post(`${API_BASE_URL}/loyaltycards/addcard`, {
@@ -187,7 +196,7 @@ export const getTransactions = async (cardId: string) => {
     const response = await axios.get(`${API_BASE_URL}/transactions/gettransactions/${cardId}`);
     return response.data;
   } catch (error) {
-    console.error('Get Transactions error:', error);
+    console.error('Get Transactions by card error:', error);
     throw error;
   }
 };
@@ -197,7 +206,7 @@ export const getTransactionsByWallet = async (walletId: string) => {
     const response = await axios.get(`${API_BASE_URL}/transactions/gettransactions/wallet/${walletId}`);
     return response.data;
   } catch (error) {
-    console.error('Get Transactions error:', error);
+    console.error('Get Transactions by wallet error:', error);
     throw error;
   }
 }
@@ -207,7 +216,7 @@ export const getTransactionsBySender = async (walletId: string) => {
     const response = await axios.get(`${API_BASE_URL}/transactions/gettransactions/sender/${walletId}`);
     return response.data;
   } catch (error) {
-    console.error('Get Transactions error:', error);
+    console.error('Get Transactions by sender error:', error);
     throw error;
   }
 }
@@ -218,6 +227,16 @@ export const getItems = async (transactionId: string) => {
     return response.data;
   } catch (error) {
     console.error('Get Items error:', error);
+    throw error;
+  }
+}
+
+export const checkTransaction = async (transaction_ref: string) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/transactions/checktransaction/${transaction_ref}`);
+    return response.data;
+  } catch (error) {
+    console.error('Check Transaction error:', error);
     throw error;
   }
 }

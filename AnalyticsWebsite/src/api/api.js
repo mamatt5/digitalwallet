@@ -15,7 +15,6 @@ export const loginUser = async (email, password) => {
       client_secret: '',
       scope: '',
     });
-    console.log(requestData)
 
     const response = await axios.post(`${API_BASE_URL}/auth/login`, requestData.toString(), {
       headers: {
@@ -188,7 +187,7 @@ export const getTransactions = async (cardId) => {
     const response = await axios.get(`${API_BASE_URL}/transactions/gettransactions/card/${cardId}`);
     return response.data;
   } catch (error) {
-    console.error('Get Transactions error:', error);
+    console.error('Get Transactions by card error:', error);
     throw error;
   }
 };
@@ -198,7 +197,7 @@ export const getTransactionsByWallet = async (walletId) => {
     const response = await axios.get(`${API_BASE_URL}/transactions/gettransactions/wallet/${walletId}`);
     return response.data;
   } catch (error) {
-    console.error('Get Transactions error:', error);
+    console.error('Get Transactions by wallet error:', error);
     throw error;
   }
 }
@@ -208,7 +207,7 @@ export const getTransactionsBySender = async (walletId) => {
     const response = await axios.get(`${API_BASE_URL}/transactions/gettransactions/sender/${walletId}`);
     return response.data;
   } catch (error) {
-    console.error('Get Transactions error:', error);
+    console.error('Get Transactions by sender error:', error);
     throw error;
   }
 }

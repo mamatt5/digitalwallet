@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -7,14 +7,20 @@ import {
   StyleSheet,
   Dimensions,
   Vibration,
-} from 'react-native';
-import { Button } from 'react-native-paper';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import Icon from 'react-native-vector-icons/FontAwesome6';
-import { getWalletCards, addTransaction, addAPPoints } from '../../api/api';
-import SmallDebitCard from '../../components/SmallDebitCard';
+  Alert,
+} from "react-native";
+import { Button } from "react-native-paper";
+import { SafeAreaView } from "react-native-safe-area-context";
+import Icon from "react-native-vector-icons/FontAwesome6";
+import {
+  getWalletCards,
+  addTransaction,
+  addAPPoints,
+  checkTransaction,
+} from "../../api/api";
+import SmallDebitCard from "../../components/SmallDebitCard";
 
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get("window");
 const scale = width / 320;
 
 function PaymentScreen({ route, navigation }) {
@@ -22,7 +28,7 @@ function PaymentScreen({ route, navigation }) {
   const [cards, setCards] = useState([]);
   const [transactionConfirmed, setTransactionConfirmed] = useState(false);
   const [isValidQR, setIsValidQR] = useState(false);
-  const [parsedData, setParsedData] = useState('');
+  const [parsedData, setParsedData] = useState("");
   const [selectedCard, setSelectedCard] = useState(-1);
   const [useLoyaltyCard, setUseLoyaltyCard] = useState(false);
 
@@ -32,7 +38,7 @@ function PaymentScreen({ route, navigation }) {
       console.log(response);
       setCards(response);
     } catch (error) {
-      console.error('Get Cards error:', error);
+      console.error("Get Cards error:", error);
     }
   };
 
@@ -55,16 +61,16 @@ function PaymentScreen({ route, navigation }) {
         setParsedData(parsed);
       }
     } catch (error) {
-      console.error('Error parsing QR data', error);
+      console.error("Error parsing QR data", error);
     }
   }, [data]);
 
   const saveTransaction = async (transaction) => {
     try {
-      console.log("from saveTransaction: " , transaction);
-      await addTransaction(transaction)
+      console.log("from saveTransaction: ", transaction);
+      await addTransaction(transaction);
     } catch (error) {
-      console.error('Save Transaction error:', error.response.data);
+      console.error("Save Transaction error:", error.response.data);
     }
   };
 
@@ -72,12 +78,18 @@ function PaymentScreen({ route, navigation }) {
     try {
       await addAPPoints(transaction);
     } catch (error) {
-      console.error('Add AP points error:', error.response.data);
+      console.error("Add AP points error:", error.response.data);
     }
   };
 
   const handleConfirmPayment = async () => {
     const selectedCardData = cards[selectedCard];
+
+    if (account.wallet.wallet_id === parsedData.wallet_id) {
+      Alert.alert("Payment error", "Sender and recipient cannot be the same");
+      return navigation.navigate("AccountHome", { account });
+    }
+
     const transaction = {
       vendor: parsedData.account_id,
       date: new Date().toLocaleDateString(),
@@ -88,14 +100,28 @@ function PaymentScreen({ route, navigation }) {
       recipient: parsedData.wallet_id,
       description: parsedData.description,
       items: parsedData.items,
+      transaction_ref: parsedData.transaction_reference,
     };
 
-    console.log("Payment screen:" + transaction);
+    try {
+      if (!(await checkTransaction(transaction.transaction_ref))) {
+        await saveTransaction(transaction);
+      } else {
+        Alert.alert("Payment error", "QR code already used");
+        return navigation.navigate("AccountHome", { account });
+      }
+    } catch (error) {
+      console.error("Save Transaction error:", error.response.data);
+      navigation.navigate("AccountHome", { account });
+      return;
+    }
 
-    await saveTransaction(transaction);
-
-    if (parsedData.description === 'POS' && parsedData.items.length > 0) {
-      await addPoints(transaction);
+    if (parsedData.description === "POS" && parsedData.items.length > 0) {
+      try {
+        await addPoints(transaction);
+      } catch (error) {
+        console.error("Add AP points error:", error.response.data);
+      }
     }
 
     Vibration.vibrate(500);
@@ -114,17 +140,10 @@ function PaymentScreen({ route, navigation }) {
           {isValidQR ? (
             <>
               <View>
-                <Icon
-                  name="money-bill-transfer"
-                  size={150}
-                  color="lightgray"
-                />
+                <Icon name="money-bill-transfer" size={150} color="lightgray" />
               </View>
               <Text style={styles.merchant}>{parsedData.merchant}</Text>
-              <Text style={styles.amount}>
-                $
-                {parsedData.amount}
-              </Text>
+              <Text style={styles.amount}>${parsedData.amount}</Text>
               <Text style={styles.description}>{parsedData.description}</Text>
               <Text style={styles.date}>
                 Date: {new Date().toLocaleDateString()}
@@ -149,7 +168,9 @@ function PaymentScreen({ route, navigation }) {
                   style={styles.cancelButton}
                   textColor="white"
                   mode="outlined"
-                  onPress={() => navigation.navigate('AccountHome', { account })}
+                  onPress={() =>
+                    navigation.navigate("AccountHome", { account })
+                  }
                 >
                   Cancel
                 </Button>
@@ -175,48 +196,48 @@ function PaymentScreen({ route, navigation }) {
                   renderItem={({ item, index }) => (
                     <TouchableOpacity
                       style={
-                              index === selectedCard
-                                ? styles.selectedCard
-                                : styles.card
-                            }
+                        index === selectedCard
+                          ? styles.selectedCard
+                          : styles.card
+                      }
                       onPress={() => setSelectedCard(index)}
                     >
                       <View style={styles.cardInfo}>
                         <SmallDebitCard card={item} />
                         {index === selectedCard && (
-                        <Icon name="check" size={20} color="white" />
+                          <Icon name="check" size={20} color="white" />
                         )}
                       </View>
                     </TouchableOpacity>
                   )}
                 />
               ) : (
-                <Text style={styles.subheaderText}>
-                  No cards available
-                </Text>
+                <Text style={styles.subheaderText}>No cards available</Text>
               )}
 
-                {selectedCard !== -1 && (
-                  <View style={styles.buttonContainer}>
-                    <Button
-                      style={styles.proceedButton}
-                      textColor="black"
-                      mode="contained"
-                      onPress={() => handleConfirmPayment()}
-                    >
-                      Confirm payment
-                    </Button>
+              {selectedCard !== -1 && (
+                <View style={styles.buttonContainer}>
+                  <Button
+                    style={styles.proceedButton}
+                    textColor="black"
+                    mode="contained"
+                    onPress={() => handleConfirmPayment()}
+                  >
+                    Confirm payment
+                  </Button>
 
-                    <Button
-                      style={styles.cancelButton}
-                      textColor="white"
-                      mode="outlined"
-                      onPress={() => navigation.navigate('AccountHome', { account })}
-                    >
-                      Cancel
-                    </Button>
-                  </View>
-                )}
+                  <Button
+                    style={styles.cancelButton}
+                    textColor="white"
+                    mode="outlined"
+                    onPress={() =>
+                      navigation.navigate("AccountHome", { account })
+                    }
+                  >
+                    Cancel
+                  </Button>
+                </View>
+              )}
             </View>
           )}
         </View>
@@ -229,100 +250,99 @@ export default PaymentScreen;
 
 const styles = StyleSheet.create({
   amount: {
-    color: '#ffffff',
+    color: "#ffffff",
     fontSize: 20 * scale,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 15 * scale,
   },
   buttonContainer: {
-    alignSelf: 'center',
+    alignSelf: "center",
     marginTop: 40 * scale,
-    width: '80%',
+    width: "80%",
   },
   cancelButton: {
-    borderColor: '#ffffff',
+    borderColor: "#ffffff",
   },
   card: {
-    borderColor: 'white',
+    borderColor: "white",
     borderRadius: 10,
-    borderStyle: 'dotted',
+    borderStyle: "dotted",
     borderWidth: 2,
     margin: 3,
     padding: 5,
   },
   cardInfo: {
-    alignItems: 'center',
-    flexDirection: 'row',
+    alignItems: "center",
+    flexDirection: "row",
     flex: 1,
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
   },
   cardsContainer: {
     marginLeft: 10,
     marginTop: 20,
-    width: '100%',
+    width: "100%",
   },
   container: {
-    justifyContent: 'center',
-    width: '90%',
+    justifyContent: "center",
+    width: "90%",
   },
   date: {
-    color: '#ffffff',
+    color: "#ffffff",
     fontSize: 12 * scale,
     marginBottom: 5 * scale,
   },
   time: {
-    color: '#ffffff',
+    color: "#ffffff",
     fontSize: 12 * scale,
     marginBottom: 5 * scale,
   },
   description: {
-    color: '#ffffff',
+    color: "#ffffff",
     fontSize: 24,
     marginBottom: 10 * scale,
   },
   headerText: {
-    alignContent: 'center',
-    color: '#ffffff',
+    alignContent: "center",
+    color: "#ffffff",
     fontSize: 30 * scale,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 20 * scale,
-    textAlign: 'center',
+    textAlign: "center",
   },
   merchant: {
-    color: '#ffffff',
+    color: "#ffffff",
     fontSize: 30 * scale,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 10 * scale,
   },
   proceedButton: {
-    backgroundColor: '#ffffff',
+    backgroundColor: "#ffffff",
     marginBottom: 10,
   },
   qrData: {
-    alignItems: 'center',
+    alignItems: "center",
   },
   screenContainer: {
-    alignItems: 'center',
-    backgroundColor: '#0f003f',
+    alignItems: "center",
+    backgroundColor: "#0f003f",
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   selectedCard: {
-    borderColor: 'green',
+    borderColor: "green",
     borderRadius: 10,
-    borderStyle: 'dotted',
+    borderStyle: "dotted",
     borderWidth: 2,
     margin: 3,
     padding: 5,
-
   },
   subheaderContainer: {
     margin: 30,
   },
   subheaderText: {
-    color: '#ffffff',
+    color: "#ffffff",
     fontSize: 24,
-    fontWeight: 'bold',
-    textAlign: 'left',
+    fontWeight: "bold",
+    textAlign: "left",
   },
 });
