@@ -157,7 +157,7 @@ function RewardsScreentest({ navigation, route }) {
                 <Text style={styles.subheading}>Description: {selectedVoucher.description}</Text>
                 <Text style={styles.subheading}>Price: {selectedVoucher.price}</Text>
                 <TouchableWithoutFeedback onPress={getVoucher}>
-            <Text >Get Voucher</Text>
+            <Text style={styles.getVoucher}>Get Voucher</Text>
           </TouchableWithoutFeedback>
                 
               </View>
@@ -290,6 +290,7 @@ const styles = StyleSheet.create({
   },
   getVoucher: {
     marginTop: 20
+    
   }
 });
 
