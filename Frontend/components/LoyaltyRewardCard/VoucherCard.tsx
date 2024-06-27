@@ -43,10 +43,10 @@ function VoucherCard({itemDetails, openModal}) {
 
     return (
         <View style={styles.container}>
-        <TouchableWithoutFeedback onPress={openModal}>
+        <TouchableWithoutFeedback onPress={()=>openModal(itemDetails)}>
           <View style={styles.roundedRectangle}>
             {/* Your content here */}
-            <Text>Open Modal</Text>
+            <Text>Voucher</Text>
           </View>
         </TouchableWithoutFeedback>
   

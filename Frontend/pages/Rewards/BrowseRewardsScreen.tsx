@@ -18,7 +18,7 @@ import LoyaltyRewardCard from "../../components/LoyaltyRewardCard/LoyaltyRewardC
 import { getAllMerchantsAndVouchers } from "../../api/api";
 import { FlatList } from "react-native";
 import VoucherCard from "../../components/LoyaltyRewardCard/VoucherCard"; 
-import { Modal } from "react-native-paper";
+import { Modal } from "react-native";
 
 import { TouchableWithoutFeedback } from "react-native";
 
@@ -37,15 +37,6 @@ function RewardsScreentest({ navigation, route }) {
   const { account } = route.params;
   const [walletPoints, setWalletPoints] = useState(0);
 
-    const Row = ({ children }) => (
-        <View style={styles.row}>{children}</View>
-      )
-
-    const Col = ({ children }) => {
-    return  (
-        <View style={styles.col}>{children}</View>
-    )
-    }
 
     const fetchWalletPoints = async () => {
       try {
@@ -81,9 +72,16 @@ function RewardsScreentest({ navigation, route }) {
   const itemWidth = width / 3;
 
   const [modalVisible, setModalVisible] = useState(false);
+  const [selectedVoucher, setSelectedVoucher] = useState({
+    company_name: "company_name",
+    discount: "discount",
+    description: "description"
+  })
 
-  const openModal = () => {
+  const openModal = (e) => {
+    setSelectedVoucher(e)
     setModalVisible(true);
+    return e
   };
 
   const closeModal = () => {
@@ -96,7 +94,6 @@ function RewardsScreentest({ navigation, route }) {
     //   <Text style={styles.itemText}>Price: ${item.price}</Text>
     // </View>
     <View style={styles.itemContainer}>
-
       <VoucherCard itemDetails={item} openModal={openModal}></VoucherCard>
     </View>
 
@@ -131,75 +128,35 @@ function RewardsScreentest({ navigation, route }) {
                   <Text style={styles.companyName}>{merchant.company_name}</Text>
                   {merchant.vouchers.length > 0 ? (
                     <FlatList
-                      data={merchant.vouchers}
+                      data={merchant.vouchers.map(voucher => ({ ...voucher, company_name: merchant.company_name }))}
                       renderItem={renderVoucherItem}
                       numColumns={3}
                       contentContainerStyle={styles.flatListContainer}
-                     
+                      
                     />) : null }
                 </View>
+
+                
               ))}
 
-              
-      
-      {/* <Row>
-        <Col>
-            <LoyaltyRewardCard itemDetails={{rewardPrice: 500, rewardNumber: 1}}></LoyaltyRewardCard>
-        </Col>
-        <Col>
-            <LoyaltyRewardCard itemDetails={{rewardPrice: 1000, rewardNumber: 1}}></LoyaltyRewardCard>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <LoyaltyRewardCard itemDetails={{rewardPrice: 2000, rewardNumber: 1}}></LoyaltyRewardCard>
-        </Col>
-        <Col>
-        <LoyaltyRewardCard itemDetails={{rewardPrice: 500, rewardNumber: 2}}></LoyaltyRewardCard>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <LoyaltyRewardCard  itemDetails={{rewardPrice: 1000, rewardNumber: 2}}></LoyaltyRewardCard>
-        </Col>
-        <Col>
-        <LoyaltyRewardCard  itemDetails={{rewardPrice: 2000, rewardNumber: 2}}></LoyaltyRewardCard>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <LoyaltyRewardCard itemDetails={{rewardPrice: 500, rewardNumber: 3}}></LoyaltyRewardCard>
-        </Col>
-        <Col>
-        <LoyaltyRewardCard  itemDetails={{rewardPrice: 1000, rewardNumber: 3}}></LoyaltyRewardCard>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <LoyaltyRewardCard  itemDetails={{rewardPrice: 2000, rewardNumber: 3}}></LoyaltyRewardCard>
-        </Col>
-        <Col>
-        <LoyaltyRewardCard  itemDetails={{rewardPrice: 500, rewardNumber: 4}}></LoyaltyRewardCard>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <LoyaltyRewardCard  itemDetails={{rewardPrice: 1000, rewardNumber: 4}}></LoyaltyRewardCard>
-        </Col>
-        <Col>
-        <LoyaltyRewardCard  itemDetails={{rewardPrice: 2000, rewardNumber: 4}}></LoyaltyRewardCard>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <LoyaltyRewardCard  itemDetails={{rewardPrice: 500, rewardNumber: 5}}></LoyaltyRewardCard>
-        </Col>
-        <Col>
-        <LoyaltyRewardCard  itemDetails={{rewardPrice: 1000, rewardNumber: 5}}></LoyaltyRewardCard>
-        </Col>
-      </Row> */}
     
         </View>
+        
+        <Modal visible={modalVisible}  transparent={true}>
+          <TouchableWithoutFeedback onPress={closeModal}>
+            <View style={styles.modalContainer}>
+              <View style={styles.modalContent}>
+              
+                <Text style={styles.titleText}>{selectedVoucher.company_name} Discount Voucher</Text>
+                <Text style={styles.subheading}>Amount: {selectedVoucher.discount}%</Text>
+                <Text style={styles.subheading}>Description: {selectedVoucher.description}</Text>
+                
+              </View>
+            </View>
+          </TouchableWithoutFeedback>
+        </Modal>
+
+
     </SafeAreaView>
   );
 }
@@ -307,9 +264,20 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     backgroundColor: '#FFFFFF',
+    width: '80%', // Adjust the width of the modal content
     padding: 20,
     borderRadius: 10,
     alignItems: 'center',
+  },
+  titleText: {
+    fontSize: 35, // Adjust as needed
+    fontWeight: 'bold', // Make it bold
+    marginBottom: 8, // Optional: Add spacing between this and the next text
+  },
+  subheading: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginTop: 5,
   },
 });
 

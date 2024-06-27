@@ -230,6 +230,7 @@ if __name__ == "__main__":
             description = "test1",
             merchant_id = 15,
             discount = 40,
+            price = 10,
         )
 
         add_voucher_to_merchant(client, voucher_request)
@@ -238,6 +239,7 @@ if __name__ == "__main__":
             description = "test2",
             merchant_id = 15,
             discount = 50,
+            price = 15
         )
 
         add_voucher_to_merchant(client, voucher_request)
@@ -246,6 +248,7 @@ if __name__ == "__main__":
             description = "test3",
             merchant_id = 16,
             discount = 60,
+            price = 20
         )
 
         add_voucher_to_merchant(client, voucher_request)
@@ -254,6 +257,7 @@ if __name__ == "__main__":
             description = "test4",
             merchant_id = 16,
             discount = 60,
+            price = 20
         )
 
         add_voucher_to_merchant(client, voucher_request)
@@ -262,6 +266,7 @@ if __name__ == "__main__":
             description = "test5",
             merchant_id = 16,
             discount = 60,
+            price = 20
         )
 
         add_voucher_to_merchant(client, voucher_request)
@@ -270,6 +275,7 @@ if __name__ == "__main__":
             description = "test6",
             merchant_id = 16,
             discount = 60,
+            price = 20
         )
 
         add_voucher_to_merchant(client, voucher_request)
