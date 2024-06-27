@@ -19,8 +19,10 @@ import { getAllMerchantsAndVouchers } from "../../api/api";
 import { FlatList } from "react-native";
 import VoucherCard from "../../components/LoyaltyRewardCard/VoucherCard"; 
 import { Modal } from "react-native";
-
+import { Button } from "react-native";
 import { TouchableWithoutFeedback } from "react-native";
+
+
 
 function RewardsScreentest({ navigation, route }) {
   const [refresh, setRefresh] = useState(false);
@@ -75,7 +77,8 @@ function RewardsScreentest({ navigation, route }) {
   const [selectedVoucher, setSelectedVoucher] = useState({
     company_name: "company_name",
     discount: "discount",
-    description: "description"
+    description: "description",
+    price: "price"
   })
 
   const openModal = (e) => {
@@ -103,7 +106,9 @@ function RewardsScreentest({ navigation, route }) {
 
   const merchantsWithVouchers = merchants.filter(item => item.vouchers.length > 0);
 
-  
+  const getVoucher = () => {
+    console.log("Get Voucher")
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -150,6 +155,10 @@ function RewardsScreentest({ navigation, route }) {
                 <Text style={styles.titleText}>{selectedVoucher.company_name} Discount Voucher</Text>
                 <Text style={styles.subheading}>Amount: {selectedVoucher.discount}%</Text>
                 <Text style={styles.subheading}>Description: {selectedVoucher.description}</Text>
+                <Text style={styles.subheading}>Price: {selectedVoucher.price}</Text>
+                <TouchableWithoutFeedback onPress={getVoucher}>
+            <Text >Get Voucher</Text>
+          </TouchableWithoutFeedback>
                 
               </View>
             </View>
@@ -279,6 +288,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginTop: 5,
   },
+  getVoucher: {
+    marginTop: 20
+  }
 });
 
 export default RewardsScreentest;
