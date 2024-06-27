@@ -16,14 +16,14 @@ type itemDetails = {
 
 const styles = StyleSheet.create({
     cardContainer: {
-        width: '100%',
+        width: '50%',
         backgroundColor: "#696087",
         height: 100,
         overflow: 'hidden'
     },
     cardImage: {
-      height: '100%',
-      width: '100%',
+      height: '50%',
+      width: '50%',
       position: 'absolute'
     },
     pointContainer: {
@@ -39,8 +39,8 @@ const styles = StyleSheet.create({
     },
     valueContainer: {
       position: 'absolute',
-      height: 100,
-      width: 100,
+      height: '50%',
+      width: '50%',
       left: -50,
       top: -50,
       backgroundColor: '#000000',
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
       left: 5,
       color: '#ffffff',
       fontSize: 20,
-    }
+    },
 });
 
 function processLogo(rewardNumber) {

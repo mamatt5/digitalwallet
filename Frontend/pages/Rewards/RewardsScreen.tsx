@@ -6,10 +6,12 @@ import {
   Dimensions,
   StyleSheet,
   Alert,
+  KeyboardAvoidingView 
 } from "react-native";
 
 import RewardTabs from "../../components/CardFilterTabs/RewardTabs";
 import BrowseRewards from "./BrowseRewards";
+import RewardsScreentest from "./BrowseRewardsScreen";
 
 const { width, height } = Dimensions.get("window");
 const scale = width / 320;
@@ -22,7 +24,10 @@ function RewardsScreen({navigation, route}) {
 
     return (
     <SafeAreaView style={styles.container}>
+      
       <View style={styles.centerView}>
+
+        
         <View style={styles.header}>
           <Text style={styles.titleText}>Rewards</Text>
           <View style={styles.profileButton}>
@@ -33,11 +38,12 @@ function RewardsScreen({navigation, route}) {
           activeTabIndex={activeTabIndex}
           setActiveTabIndex={setActiveTabIndex}
         />
-
+        
         {activeTabIndex === 0 ? (
             <View style={styles.noTransactionsContainer}>
-              <Text style={styles.noCardText}>Browse REwards</Text>
-              <BrowseRewards ></BrowseRewards>
+              {/* <Text style={styles.noCardText}>Browse Rewards</Text> */}
+              <RewardsScreentest navigation={navigation} route={route}></RewardsScreentest>
+              
             </View>
           ) : (
             <View style={styles.noTransactionsContainer}>
@@ -47,6 +53,9 @@ function RewardsScreen({navigation, route}) {
 
 
         </View>
+
+
+        
         </SafeAreaView>
     );
 }
@@ -58,6 +67,10 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     marginTop: 30,
+  },
+
+  top: {
+    position: "absolute"
   },
   header: {
     display: "flex",
