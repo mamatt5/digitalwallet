@@ -74,55 +74,77 @@ const Profile = () => {
     }, [accountId]);
 
     return (
-        <div ref={containerRef}>
-            <h1>Profile</h1>
-            <Card sx={{ minWidth: 575 }} ref={cardRef}>
-                <CardContent sx={{textAlign:'left'}}>
-                    <Typography sx={{ fontSize: 18 }} color="text.primary" gutterBottom> Account details </Typography>
-                    <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom> Phone number </Typography>
-                    <Typography variant="body2">{account && account.phone_number}</Typography>
-                    <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom> Email </Typography>
-                    <Typography variant="body2">{account && account.email}</Typography>
-                    <Box display="flex" alignItems="left">
-                        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                            Password
-                        </Typography>
-                        <IconButton onClick={handleClickOpen}>
-                            <EditIcon fontSize="small" />
-                        </IconButton>
-                    </Box>
-                    <Typography variant="body2">********************</Typography>
-                    <Divider sx={{margin:'1rem 0'}}/>
-                    <Typography sx={{ fontSize: 18 }} color="text.primary" gutterBottom> Merchant details </Typography>
-                    <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom> Company Name </Typography>
-                    <Typography variant="body2">{merchant && merchant.company_name}</Typography>
-                    <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom> ABN </Typography>
-                    <Typography variant="body2">{merchant && merchant.ABN}</Typography>
-                </CardContent>
-            </Card>
-
-            <Dialog open={open} onClose={handleClose} sx={{ minWidth: 575 }}>
-                <DialogTitle>Update Password</DialogTitle>
-                <DialogContent>
-                <TextField
-                    autoFocus
-                    margin="dense"
-                    id="newPassword"
-                    label="New Password"
-                    type="password"
-                    fullWidth
-                    variant="outlined"
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                />
-                </DialogContent>
-                <DialogActions>
-                <Button onClick={handleClose}>Cancel</Button>
-                <Button onClick={handleSavePassword}>Save</Button>
-                </DialogActions>
-            </Dialog>
+        <div>
+          <h1>Profile</h1>
+          <Card sx={{ minWidth: 475 }}>
+            <CardContent sx={{ textAlign: 'left' }}>
+              <Typography sx={{ fontSize: 18 }} color="text.primary" gutterBottom>
+                Account details
+              </Typography>
+              <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                Phone number
+              </Typography>
+              <Typography variant="body2">{account && account.phone_number}</Typography>
+              <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                Email
+              </Typography>
+              <Typography variant="body2">{account && account.email}</Typography>
+              <Box display="inline-flex" alignItems="center" sx={{ mb: 1 }}>
+                <Typography sx={{ fontSize: 14, flexGrow: 1 }} color="text.secondary">
+                  Password
+                </Typography>
+                <IconButton
+                  onClick={handleClickOpen}
+                  sx={{
+                    ml:1,
+                    outline: 'none',
+                    border: 'none',
+                    padding: 0,
+                    ':focus': { outline: 'none', border: 'none' },
+                    justifyContent:'left'
+                  }}
+                >
+                  <EditIcon fontSize="small" />
+                </IconButton>
+              </Box>
+              <Typography variant="body2">********************</Typography>
+              <Divider sx={{ margin: '1rem 0' }} />
+              <Typography sx={{ fontSize: 18 }} color="text.primary" gutterBottom>
+                Merchant details
+              </Typography>
+              <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                Company Name
+              </Typography>
+              <Typography variant="body2">{merchant && merchant.company_name}</Typography>
+              <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                ABN
+              </Typography>
+              <Typography variant="body2">{merchant && merchant.ABN}</Typography>
+            </CardContent>
+          </Card>
+    
+          <Dialog open={open} onClose={handleClose} sx={{ '.MuiDialog-paper': { minWidth: 575, p: 1 } }}>
+            <DialogTitle>Update Password</DialogTitle>
+            <DialogContent>
+              <TextField
+                autoFocus
+                margin="dense"
+                id="newPassword"
+                label="New Password"
+                type="password"
+                fullWidth
+                variant="outlined"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose}>Cancel</Button>
+              <Button onClick={handleSavePassword}>Save</Button>
+            </DialogActions>
+          </Dialog>
         </div>
-    );
-};
+      );
+    };
 
 export default Profile;
