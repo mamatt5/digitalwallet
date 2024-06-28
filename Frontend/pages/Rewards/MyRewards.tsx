@@ -60,15 +60,29 @@ function MyRewards({ navigation, route }) {
 
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedVoucher, setSelectedVoucher] = useState({
-    company_name: "company_name",
+    merchant_name: "company_name",
     discount: "discount",
     description: "description",
     price: "price",
-    voucher_id: "voucher_id"
+    voucher_id: "voucher_id",
+    merchant_id: "merchant_id"
   })
 
+  const [merchantName, setMerchantName] = useState()
 
+
+  const getMerchantName = async(e) => {
+      try {
+      
+      let merchant = await getMerchant(e.merchant_id); 
+      console.log(merchant)
+      setMerchantName(merchant.company_name)
+      } catch (error) {
+        console.error("Get Merchant error:", error);
+      }
+  }
   const openModal = (e) => {
+    getMerchantName(e)
     setSelectedVoucher(e)
     setModalVisible(true);
     return e
@@ -80,10 +94,6 @@ function MyRewards({ navigation, route }) {
 
 
   const renderVoucherItem = ({ item }) => (
-    // <View style={[styles.itemContainer, { width: itemWidth }]}>
-    //   <Text style={styles.itemText}>Voucher ID: {item.id}</Text>
-    //   <Text style={styles.itemText}>Price: ${item.price}</Text>
-    // </View>
     <View style={styles.itemContainer}>
       <VoucherCard itemDetails={item} openModal={openModal}></VoucherCard>
     </View>
@@ -94,6 +104,7 @@ function MyRewards({ navigation, route }) {
       <SafeAreaView style={styles.container}>
       {vouchers.length > 0 ? (
                     <FlatList
+                      // data={vouchers}
                       data={vouchers}
                       renderItem={renderVoucherItem}
                       numColumns={3}
@@ -106,11 +117,10 @@ function MyRewards({ navigation, route }) {
               <TouchableWithoutFeedback onPress={closeModal}>
                 <View style={styles.modalContainer}>
                   <View style={styles.modalContent}>
-                  
-                    <Text style={styles.titleText}>{selectedVoucher.company_name} Discount Voucher</Text>
+                    <Text style={styles.titleText}>{selectedVoucher.merchant_name} Discount Voucher</Text>
+                    
                     <Text style={styles.subheading}>Amount: {selectedVoucher.discount}%</Text>
                     <Text style={styles.subheading}>Description: {selectedVoucher.description}</Text>
-                    <Text style={styles.subheading}>Price: {selectedVoucher.price}</Text>
                     
                     
                   </View>

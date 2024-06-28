@@ -39,7 +39,7 @@ function processLogo(rewardNumber) {
 
 
 function VoucherCard({itemDetails, openModal}) {
-
+    
 
     return (
         <View style={styles.container}>

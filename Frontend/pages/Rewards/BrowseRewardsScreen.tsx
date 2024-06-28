@@ -7,7 +7,8 @@ import {
   StyleSheet,
   Image,
   Pressable,
-  Dimensions
+  Dimensions,
+  Alert
 } from "react-native";
 import MaterialIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import DetailedItemCard from "../../components/DetailedItemCard/DetailedItemCard";
@@ -76,7 +77,7 @@ function RewardsScreentest({ navigation, route }) {
 
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedVoucher, setSelectedVoucher] = useState({
-    company_name: "company_name",
+    merchant_name: "company_name",
     discount: "discount",
     description: "description",
     price: "price",
@@ -84,6 +85,8 @@ function RewardsScreentest({ navigation, route }) {
   })
 
   const openModal = (e) => {
+    console.log("nig")
+    console.log(e)
     setSelectedVoucher(e)
     setModalVisible(true);
     return e
@@ -112,17 +115,19 @@ function RewardsScreentest({ navigation, route }) {
     console.log("Get Voucher")
     console.log(account)
 
-    if (walletPoints < parseInt(selectedVoucher.price, 10)) {
+    if (walletPoints < parseInt(selectedVoucher.price, 10) && parseInt(selectedVoucher.price, 10) != 2000) {
 
       try {
       let result = await AddVoucherToUser(account.account_id, selectedVoucher.voucher_id);
       setModalVisible(false)
+      Alert.alert("Success", "You have bought a voucher!")
       } catch (error) {
         console.error("Add voucher to user  error:", error);
       }
 
     } else {
       console.log("get your money up")
+      Alert.alert("Invalid amount of points", "You have don't enough AP Points for this discount")
     }
 
   };
@@ -150,7 +155,7 @@ function RewardsScreentest({ navigation, route }) {
                   <Text style={styles.companyName}>{merchant.company_name}</Text>
                   {merchant.vouchers.length > 0 ? (
                     <FlatList
-                      data={merchant.vouchers.map(voucher => ({ ...voucher, company_name: merchant.company_name }))}
+                      data={merchant.vouchers}
                       renderItem={renderVoucherItem}
                       numColumns={3}
                       contentContainerStyle={styles.flatListContainer}
@@ -169,7 +174,7 @@ function RewardsScreentest({ navigation, route }) {
             <View style={styles.modalContainer}>
               <View style={styles.modalContent}>
               
-                <Text style={styles.titleText}>{selectedVoucher.company_name} Discount Voucher</Text>
+                <Text style={styles.titleText}>{selectedVoucher.merchant_name} Discount Voucher</Text>
                 <Text style={styles.subheading}>Amount: {selectedVoucher.discount}%</Text>
                 <Text style={styles.subheading}>Description: {selectedVoucher.description}</Text>
                 <Text style={styles.subheading}>Price: {selectedVoucher.price}</Text>

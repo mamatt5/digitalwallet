@@ -227,7 +227,8 @@ if __name__ == "__main__":
         register_account(client, register_request)
 
         voucher_request = VoucherRequest(
-            description = "test1",
+            merchant_name = "coles",
+            description = "40% voucher",
             merchant_id = 15,
             discount = 40,
             price = 10,
@@ -236,7 +237,8 @@ if __name__ == "__main__":
         add_voucher_to_merchant(client, voucher_request)
 
         voucher_request = VoucherRequest(
-            description = "test2",
+            merchant_name = "Coles",
+            description = "50% voucher",
             merchant_id = 15,
             discount = 50,
             price = 15
@@ -245,7 +247,8 @@ if __name__ == "__main__":
         add_voucher_to_merchant(client, voucher_request)
 
         voucher_request = VoucherRequest(
-            description = "test3",
+            merchant_name = "Woolworths",
+            description = "60% voucher",
             merchant_id = 16,
             discount = 60,
             price = 20
@@ -254,7 +257,8 @@ if __name__ == "__main__":
         add_voucher_to_merchant(client, voucher_request)
 
         voucher_request = VoucherRequest(
-            description = "test4",
+            merchant_name = "Woolworths",
+            description = "60% voucher",
             merchant_id = 16,
             discount = 60,
             price = 20
@@ -263,7 +267,8 @@ if __name__ == "__main__":
         add_voucher_to_merchant(client, voucher_request)
 
         voucher_request = VoucherRequest(
-            description = "test5",
+            merchant_name = "Woolworths",
+            description = "60% voucher",
             merchant_id = 16,
             discount = 60,
             price = 20
@@ -272,10 +277,11 @@ if __name__ == "__main__":
         add_voucher_to_merchant(client, voucher_request)
 
         voucher_request = VoucherRequest(
-            description = "test6",
+            merchant_name = "Woolworths",
+            description = "60% voucher",
             merchant_id = 16,
             discount = 60,
-            price = 20
+            price = 2000
         )
 
         add_voucher_to_merchant(client, voucher_request)

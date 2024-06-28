@@ -14,7 +14,7 @@ class Voucher(SQLModel, table=True):
     description: str | None = Field(default=None)
     discount : int = Field(default=None)
     price : int = Field(default = None)
-
+    merchant_name: str = Field(default=None)
 
     merchant_id: int = Field(foreign_key="merchant.account_id")
     merchant: Optional["Merchant"] | None = Relationship(back_populates="vouchers")
