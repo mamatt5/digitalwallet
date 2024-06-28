@@ -2,11 +2,11 @@ from typing import List, Optional, TYPE_CHECKING
 from sqlmodel import Field, Relationship, SQLModel
 
 from models.card import Card
-from models.user import User
-from UserVoucherLink import UserVoucherLink
+from models.UserVoucherLink import UserVoucherLink
 
 if TYPE_CHECKING:
     from models.merchant import Merchant
+    from models.user import User
 
 
 class Voucher(SQLModel, table=True):
@@ -19,6 +19,6 @@ class Voucher(SQLModel, table=True):
     merchant_id: int = Field(foreign_key="merchant.account_id")
     merchant: Optional["Merchant"] | None = Relationship(back_populates="vouchers")
     
-    users: List[User] = Relationship(back_populates="User", link_model=UserVoucherLink)
+    users: List["User"] = Relationship(back_populates="vouchers", link_model=UserVoucherLink)
 
     

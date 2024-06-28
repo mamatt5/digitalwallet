@@ -7,6 +7,9 @@ from security import hash_password
 from schemas.merchant_schema import MerchantAndVoucherInfo
 router = APIRouter(prefix="/accounts", tags=["Accounts"])
 
+import logging
+logging.basicConfig(level=logging.INFO, filename="py.log",filemode="w")
+
 
 @router.get("/getuser/{account_id}")
 def get_user_route(account_id: int, account_service: AccountService = Depends(AccountService)) -> User:
@@ -41,8 +44,11 @@ async def update_accout_password(email: str, request: Request, account_service: 
 def get_merchant_and_vouchers(account_service: AccountService = Depends(AccountService)):
     return account_service.get_merchant_and_vouchers()
 
-@router.post("/addVoucher")
-def add_voucher_to_user(voucher_id: int, account_service: AccountService = Depends(AccountService)):
-    return account_service.add_voucher_to_user(voucher_id)
+@router.post("/addVoucher/{user_id}/{voucher_id}")
+def add_voucher_to_user(user_id: int, voucher_id: int, account_service: AccountService = Depends(AccountService)) -> None:
+    logging.warning("logging")
+    logging.warning(user_id)
+    logging.warning(voucher_id)
+    return account_service.add_voucher_to_user(user_id, voucher_id)
 
 

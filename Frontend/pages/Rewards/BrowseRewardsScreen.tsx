@@ -21,6 +21,7 @@ import VoucherCard from "../../components/LoyaltyRewardCard/VoucherCard";
 import { Modal } from "react-native";
 import { Button } from "react-native";
 import { TouchableWithoutFeedback } from "react-native";
+import { AddVoucherToUser } from "../../api/api";
 
 
 
@@ -78,7 +79,8 @@ function RewardsScreentest({ navigation, route }) {
     company_name: "company_name",
     discount: "discount",
     description: "description",
-    price: "price"
+    price: "price",
+    voucher_id: "voucher_id"
   })
 
   const openModal = (e) => {
@@ -106,8 +108,24 @@ function RewardsScreentest({ navigation, route }) {
 
   const merchantsWithVouchers = merchants.filter(item => item.vouchers.length > 0);
 
-  const getVoucher = () => {
+  const getVoucher = async() => {
     console.log("Get Voucher")
+    console.log(account)
+    console.log(walletPoints)
+    console.log(selectedVoucher)
+
+    if (walletPoints < parseInt(selectedVoucher.price, 10)) {
+
+      try {
+      let result = await AddVoucherToUser(account.account_id, selectedVoucher.voucher_id);
+      } catch (error) {
+        console.error("Add voucher to user  error:", error);
+      }
+
+    } else {
+      console.log("get your money up")
+    }
+
   };
 
   return (

@@ -19,4 +19,4 @@ class User(SQLModel, table=True):
     last_name: str
     account: Account | None = Relationship(back_populates="user")
 
-    vouchers: list["Voucher"] = Relationship(back_populates="Vouchers", link_model=UserVoucherLink)
+    vouchers: list["Voucher"] = Relationship(back_populates="users", link_model=UserVoucherLink)
