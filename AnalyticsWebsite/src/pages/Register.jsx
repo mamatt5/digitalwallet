@@ -15,6 +15,7 @@ const Register = () => {
     const [password, setPassword] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [accountType, setAccountType] = useState('');
+    const [categoryId, setCategoryId] = useState(1);
 
     const validateForm = () => {
         if (!firstName || !lastName || !password) {
@@ -29,13 +30,19 @@ const Register = () => {
         return true;
     }
 
-    const submitHandler = (e) => {
+    const submitHandler = async (e) => {
         e.preventDefault();
 
         if (!validateForm()) 
             return;
 
-        
+        try{
+            const responseData = await registerAccount(email, password, phoneNumber,
+                accountType, companyName, ABN, categoryId, firstName, lastName);
+            navigate("/");
+        } catch(error){
+            alert(responseData);
+        }
     }
 
   return (
