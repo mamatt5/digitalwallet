@@ -10,7 +10,6 @@ import {
 } from "react-native";
 
 import RewardTabs from "../../components/CardFilterTabs/RewardTabs";
-import BrowseRewards from "./BrowseRewards";
 import RewardsScreentest from "./BrowseRewardsScreen";
 import MyRewards from "./MyRewards";
 

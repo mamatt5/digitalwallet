@@ -4,6 +4,7 @@ from sqlmodel import Session, select, update, delete
 from models.vouchers import Voucher
 from database import get_db_session
 from repositories.base_repository import RepositoryBase
+from models.UserVoucherLink import UserVoucherLink
 
 
 class VoucherRepository(RepositoryBase[Voucher]):
@@ -40,9 +41,15 @@ class VoucherRepository(RepositoryBase[Voucher]):
         return voucher
     
     def get_vouchers_for_user(self, user_id: int) ->list[Voucher]:
-        statment = select(Voucher).where(Voucher.merchant_id == merchant_id)
-        vouchers = self.session.exec(statment).all()
-        return vouchers
+        statement = select(UserVoucherLink).where(UserVoucherLink.user_id == user_id)
+        UserVoucherLink = self.session.exec(statement).all()
+        final = []
+        for link in UserVoucherLink:
+            statement = select(Voucher).where(Voucher.voucher_id == link.voucher_id)
+            voucher = self.session.exec(statement).first()
+            final.append(voucher)
+
+        return final
     
   
 
