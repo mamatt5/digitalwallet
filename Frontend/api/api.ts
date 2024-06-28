@@ -180,6 +180,16 @@ export const AddVoucherToUser = async(userId: string, voucherId: string) => {
   }
 }
 
+export const getVouchersForUser = async(userId: string) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/voucher/getVoucherForAccount/${userId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Add voucher error:', error);
+    throw error;
+  }
+}
+
 
 export const getAccount = async (accountId: string) => {
   try {

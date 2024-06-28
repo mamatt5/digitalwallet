@@ -12,6 +12,7 @@ import {
 import RewardTabs from "../../components/CardFilterTabs/RewardTabs";
 import BrowseRewards from "./BrowseRewards";
 import RewardsScreentest from "./BrowseRewardsScreen";
+import MyRewards from "./MyRewards";
 
 const { width, height } = Dimensions.get("window");
 const scale = width / 320;
@@ -47,7 +48,7 @@ function RewardsScreen({navigation, route}) {
             </View>
           ) : (
             <View style={styles.noTransactionsContainer}>
-            <Text style={styles.noCardText}>My rewards</Text> 
+              <MyRewards navigation={navigation} route={route}></MyRewards> 
           </View>
           )}
 

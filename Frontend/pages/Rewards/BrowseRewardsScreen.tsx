@@ -111,13 +111,12 @@ function RewardsScreentest({ navigation, route }) {
   const getVoucher = async() => {
     console.log("Get Voucher")
     console.log(account)
-    console.log(walletPoints)
-    console.log(selectedVoucher)
 
     if (walletPoints < parseInt(selectedVoucher.price, 10)) {
 
       try {
       let result = await AddVoucherToUser(account.account_id, selectedVoucher.voucher_id);
+      setModalVisible(false)
       } catch (error) {
         console.error("Add voucher to user  error:", error);
       }

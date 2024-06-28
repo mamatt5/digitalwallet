@@ -1,6 +1,7 @@
 from models.user import User
 from models.merchant import Merchant
 from models.account import Account
+from models.vouchers import Voucher
 from services.account_service import AccountService
 from fastapi import APIRouter, Depends, Request
 from security import hash_password
@@ -46,9 +47,8 @@ def get_merchant_and_vouchers(account_service: AccountService = Depends(AccountS
 
 @router.post("/addVoucher/{user_id}/{voucher_id}")
 def add_voucher_to_user(user_id: int, voucher_id: int, account_service: AccountService = Depends(AccountService)) -> None:
-    logging.warning("logging")
-    logging.warning(user_id)
-    logging.warning(voucher_id)
     return account_service.add_voucher_to_user(user_id, voucher_id)
+
+
 
 
