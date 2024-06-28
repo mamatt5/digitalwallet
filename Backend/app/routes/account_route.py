@@ -41,3 +41,8 @@ async def update_accout_password(email: str, request: Request, account_service: 
 def get_merchant_and_vouchers(account_service: AccountService = Depends(AccountService)):
     return account_service.get_merchant_and_vouchers()
 
+@router.post("/addVoucher")
+def add_voucher_to_user(voucher_id: int, account_service: AccountService = Depends(AccountService)):
+    return account_service.add_voucher_to_user(voucher_id)
+
+

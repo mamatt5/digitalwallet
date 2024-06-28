@@ -170,6 +170,16 @@ export const getAllMerchantsAndVouchers = async () => {
   }
 };
 
+export const AddVoucherToUser = async() => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/accounts/addVoucher`);
+    return response.data;
+  } catch (error) {
+    console.error('Add voucher error:', error);
+    throw error;
+  }
+}
+
 
 export const getAccount = async (accountId: string) => {
   try {

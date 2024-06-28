@@ -3,6 +3,7 @@ from sqlmodel import Field, Relationship, SQLModel
 
 from models.card import Card
 from models.user import User
+from UserVoucherLink import UserVoucherLink
 
 if TYPE_CHECKING:
     from models.merchant import Merchant
@@ -18,5 +19,6 @@ class Voucher(SQLModel, table=True):
     merchant_id: int = Field(foreign_key="merchant.account_id")
     merchant: Optional["Merchant"] | None = Relationship(back_populates="vouchers")
     
+    users: List[User] = Relationship(back_populates="User", link_model=UserVoucherLink)
 
     
