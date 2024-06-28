@@ -182,7 +182,7 @@ export const AddVoucherToUser = async(userId: string, voucherId: string) => {
 
 export const getVouchersForUser = async(userId: string) => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/voucher/getVoucherForAccount/${userId}`);
+    const response = await axios.get(`${API_BASE_URL}/vouchers/getvouchersforuser/${userId}`);
     return response.data;
   } catch (error) {
     console.error('Add voucher error:', error);
