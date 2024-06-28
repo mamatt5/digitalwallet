@@ -40,7 +40,9 @@ export default function SideMenu() {
         anchor="left"
       >
         <Toolbar sx={{ paddingBottom: '1rem' }}>
+          <Link to='landing'>
             <Box component="img" src={Logo} alt="Logo" sx={{ height: 40, paddingTop: '1.5rem' }} />
+          </Link>
         </Toolbar>
         <List>
           {menuItems.map((item) => (

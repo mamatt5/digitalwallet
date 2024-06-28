@@ -10,6 +10,7 @@ import Login from './pages/Login';
 import Index from './pages/Index';
 import QRCustomization from './pages/QRCustomization';
 import Landing from './pages/Landing';
+import Profile from './pages/Profile';
 
 //////////////////// COMPONENTS ////////////////////////
 import SideMenu from './components/SideMenu/SideMenu';
@@ -30,6 +31,7 @@ function App() {
           <Route path="/transactions" element={<Transactions />} />
           <Route path="/customize" element={<QRCustomization />} />
           <Route path="/landing" element={<Landing />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       </Box>
     </Box>
