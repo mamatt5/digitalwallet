@@ -26,7 +26,7 @@ import { AddVoucherToUser } from "../../api/api";
 
 
 
-function RewardsScreentest({ navigation, route }) {
+function VoucherScreen({ navigation, route }) {
   const [refresh, setRefresh] = useState(false);
   const [merchants, setMerchants] = useState([]);
 
@@ -97,10 +97,6 @@ function RewardsScreentest({ navigation, route }) {
   };
 
   const renderVoucherItem = ({ item }) => (
-    // <View style={[styles.itemContainer, { width: itemWidth }]}>
-    //   <Text style={styles.itemText}>Voucher ID: {item.id}</Text>
-    //   <Text style={styles.itemText}>Price: ${item.price}</Text>
-    // </View>
     <View style={styles.itemContainer}>
       <VoucherCard itemDetails={item} openModal={openModal}></VoucherCard>
     </View>
@@ -135,7 +131,7 @@ function RewardsScreentest({ navigation, route }) {
   return (
     <SafeAreaView style={styles.container}>
 
-
+    
       <View style={styles.headerContainer}>
         <View style={styles.textInputContainer}>
           <Ionicons style={styles.textInputIcon}name="search" size={15} color="#FFFFFF" />
@@ -149,22 +145,24 @@ function RewardsScreentest({ navigation, route }) {
         <View style={styles.loyaltyCardContainer}>
         
  
-
+        <ScrollView>
         {merchantsWithVouchers.map((merchant, index) => (
-                <View key={index} style={styles.companyContainer}>
-                  <Text style={styles.companyName}>{merchant.company_name}</Text>
-                  {merchant.vouchers.length > 0 ? (
-                    <FlatList
-                      data={merchant.vouchers}
-                      renderItem={renderVoucherItem}
-                      numColumns={3}
-                      contentContainerStyle={styles.flatListContainer}
-                      
-                    />) : null }
-                </View>
-
-                
-              ))}
+          <View key={index} style={styles.companyContainer}>
+            <Text style={styles.companyName}>{merchant.company_name}</Text>
+            <ScrollView horizontal>
+              {merchant.vouchers.length > 0 ? (
+                <FlatList
+                  data={merchant.vouchers}
+                  renderItem={renderVoucherItem}
+                  numColumns={3}
+                  keyExtractor={(item, index) => index.toString()}
+                  contentContainerStyle={styles.flatListContainer}
+                />
+              ) : null}
+            </ScrollView>
+          </View>
+        ))}
+      </ScrollView>
 
     
         </View>
@@ -316,4 +314,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default RewardsScreentest;
+export default VoucherScreen;

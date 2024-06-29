@@ -286,6 +286,56 @@ if __name__ == "__main__":
 
         add_voucher_to_merchant(client, voucher_request)
 
+        voucher_request = VoucherRequest(
+            merchant_name = "Lora's Cafe",
+            description = "60% voucher",
+            merchant_id = 13,
+            discount = 60,
+            price = 20
+        )
+
+        add_voucher_to_merchant(client, voucher_request)
+
+        voucher_request = VoucherRequest(
+            merchant_name = "Lora's Cafe",
+            description = "60% voucher",
+            merchant_id = 13,
+            discount = 20,
+            price = 20
+        )
+
+        add_voucher_to_merchant(client, voucher_request)
+
+        voucher_request = VoucherRequest(
+            merchant_name = "Lora's Cafe",
+            description = "60% voucher",
+            merchant_id = 13,
+            discount = 90,
+            price = 20
+        )
+
+        add_voucher_to_merchant(client, voucher_request)
+
+        voucher_request = VoucherRequest(
+            merchant_name = "Lora's Cafe",
+            description = "60% voucher",
+            merchant_id = 13,
+            discount = 20,
+            price = 20
+        )
+
+        add_voucher_to_merchant(client, voucher_request)
+
+        voucher_request = VoucherRequest(
+            merchant_name = "Lora's Cafe",
+            description = "60% voucher",
+            merchant_id = 13,
+            discount = 10,
+            price = 20
+        )
+
+        add_voucher_to_merchant(client, voucher_request)
+
 
  
         add_transaction_data(client, transaction_records, users)

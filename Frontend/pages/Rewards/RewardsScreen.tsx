@@ -10,7 +10,7 @@ import {
 } from "react-native";
 
 import RewardTabs from "../../components/CardFilterTabs/RewardTabs";
-import RewardsScreentest from "./BrowseRewardsScreen";
+import VoucherScreen from "./BrowseRewardsScreen";
 import MyRewards from "./MyRewards";
 
 const { width, height } = Dimensions.get("window");
@@ -42,8 +42,7 @@ function RewardsScreen({navigation, route}) {
         {activeTabIndex === 0 ? (
             <View style={styles.noTransactionsContainer}>
               {/* <Text style={styles.noCardText}>Browse Rewards</Text> */}
-              <RewardsScreentest navigation={navigation} route={route}></RewardsScreentest>
-              
+              <VoucherScreen navigation={navigation} route={route}></VoucherScreen>
             </View>
           ) : (
             <View style={styles.noTransactionsContainer}>
@@ -105,6 +104,7 @@ const styles = StyleSheet.create({
   noTransactionsContainer: {
     alignItems: "center",
     marginTop: 20,
+    minHeight: '80%'
   },
   titleText: {
     color: "#ffffff",
@@ -129,6 +129,10 @@ const styles = StyleSheet.create({
   },
   transactions: {
     flex: 1,
+  },
+  scrollContainer: {
+    flexGrow: 1,
+    padding: 20, // Adjust padding or margins to increase scrollable area
   },
 });
 
