@@ -1,6 +1,14 @@
 import * as React from 'react';
-import { DataGrid, GridToolbar } from '@mui/x-data-grid';
+import { DataGrid, GridToolbarContainer, GridToolbarExport } from '@mui/x-data-grid';
 import './CustomDataGrid.css';
+
+function CustomToolbar() {
+  return (
+    <GridToolbarContainer>
+      <GridToolbarExport />
+    </GridToolbarContainer>
+  );
+}
 
 export default function CustomDataGrid({ rows, columns, loading }) {
   return (
@@ -9,7 +17,9 @@ export default function CustomDataGrid({ rows, columns, loading }) {
           rows={rows} 
           columns={columns} 
           loading={loading} 
-          slots={{ toolbar: GridToolbar }}
+          slots={{
+            toolbar: CustomToolbar,
+          }}
           sx={{ border: 'none', maxWidth: "1000px" }}
         />
     </div>
