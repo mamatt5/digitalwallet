@@ -4,17 +4,19 @@
     border-radius: 10px;
     border: none;
     padding: 1rem;
-    box-sizing: border-box; 
+    box-sizing: border-box;
     overflow: hidden;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1);
-}
-
-.MuiDataGrid-toolbarContainer {
-    display: flex; 
+  }
+  
+  .MuiDataGrid-toolbarContainer {
+    display: flex;
     justify-content: space-between;
     padding: 8px;
-}
-
-.MuiDataGrid-root .MuiDataGrid-toolbarContainer {
-    flex-direction: row !important; 
-}
+    flex-direction: row;
+  }
+  
+  .MuiDataGrid-root .MuiDataGrid-toolbarContainer {
+    flex-direction: row !important;
+  }
+  
