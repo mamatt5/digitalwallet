@@ -23,8 +23,6 @@ const Profile = () => {
   const [open, setOpen] = useState(false);
   const [newPassword, setNewPassword] = useState('');
 
-  console.log(authUser);
-
   const handleClickOpen = () => {
       setOpen(true);
   };
