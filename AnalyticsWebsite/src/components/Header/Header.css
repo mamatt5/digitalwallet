@@ -1,0 +1,25 @@
+.landing-header {
+    width: 65%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.landing-header h1 {
+    color: var(--text);
+}
+
+.landing-header p {
+    color: var(--desat-secondary);
+    align-self: center;
+    width: 65%;
+}
+  
+.landing-header span {
+    margin-left: 10px;
+    background: linear-gradient(to bottom right, var(--secondary), aquamarine); /* Define your gradient */
+    -webkit-background-clip: text; /* Clip the background to the text */
+    -webkit-text-fill-color: transparent; /* Make the text color transparent */
+    background-clip: text; /* Standard property for non-webkit browsers */
+    color: transparent; /* Standard property for non-webkit browsers */
+}
