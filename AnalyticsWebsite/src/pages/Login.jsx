@@ -14,11 +14,16 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      const accessToken = await loginUser(username, password);
-      login(accessToken);
+      const responseData = await loginUser(username, password);
+      
+      if (responseData.account.account_type !== "merchant") {
+        alert("Only merchant accounts are allowed to log in");
+        return;
+      }
+
+      login(responseData.token.access_token, responseData.account);
       navigate("/");
     } catch (error) {
-      console.error("Login error:", error);
       alert("Incorrect username or password");
     }
   };
@@ -36,19 +41,16 @@ export default function Login() {
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      console.error("Login failed response data:", errorData);
       throw new Error('Login failed');
     }
 
     const data = await response.json();
-    console.log("Response Data: ", data);
 
-    if (!data.token || !data.token.access_token) {
+    if (!data.token.access_token) {
       throw new Error('No access token in response');
     }
 
-    return data.token.access_token;
+    return data;
   };
 
   return (
