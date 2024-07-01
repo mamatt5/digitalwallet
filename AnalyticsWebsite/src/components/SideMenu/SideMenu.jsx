@@ -7,6 +7,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import Logo from '../../assets/applogo.png';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
 
 const drawerWidth = 250;
 const menuItems = [
@@ -17,6 +18,8 @@ const menuItems = [
 ];
 
 export default function SideMenu() {
+  const { authToken, logout } = useAuth();
+
   return (
     <Box sx={{ display: 'flex', marginLeft: '2rem' }}>
       <Drawer
@@ -40,7 +43,7 @@ export default function SideMenu() {
         anchor="left"
       >
         <Toolbar sx={{ paddingBottom: '1rem' }}>
-          <Link to='landing'>
+          <Link to='/landing'>
             <Box component="img" src={Logo} alt="Logo" sx={{ height: 40, paddingTop: '1.5rem' }} />
           </Link>
         </Toolbar>
@@ -56,11 +59,28 @@ export default function SideMenu() {
                 }}
               >
                 <Link to={item.value}>
-                    {item.text}
+                  {item.text}
                 </Link>
               </ListItemButton>
             </ListItem>
           ))}
+          {authToken && (
+            <ListItem sx={{ padding: '0 .5rem' }}>
+              <ListItemButton
+                sx={{
+                  '&:hover': {
+                    backgroundColor: 'blue',
+                    color: 'white',
+                  },
+                }}
+                onClick={logout} 
+              >
+                <Link to="/login">
+                  Logout
+                </Link>
+              </ListItemButton>
+            </ListItem>
+          )}
         </List>
       </Drawer>
     </Box>
