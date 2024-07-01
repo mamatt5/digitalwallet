@@ -15,6 +15,7 @@ import Profile from './pages/Profile';
 //////////////////// COMPONENTS ////////////////////////
 import SideMenu from './components/SideMenu/SideMenu';
 import Register from './pages/Register';
+import ProtectedRoute from './contexts/ProtectedRoute';
 
 function App() {
   const location = useLocation(); 
@@ -28,11 +29,11 @@ function App() {
         <Routes>
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/" element={<Index />} />
-          <Route path="/transactions" element={<Transactions />} />
-          <Route path="/customize" element={<QRCustomization />} />
+          <Route path="/" element={<ProtectedRoute><Index /></ProtectedRoute>} />
+          <Route path="/transactions" element={<ProtectedRoute><Transactions /></ProtectedRoute>} />
+          <Route path="/customize" element={<ProtectedRoute><QRCustomization /></ProtectedRoute>} />
           <Route path="/landing" element={<Landing />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
         </Routes>
       </Box>
     </Box>
