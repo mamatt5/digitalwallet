@@ -2,16 +2,20 @@ import React, { useState } from 'react';
 import { QRCode } from '@jackybaby/react-custom-qrcode';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
+import { useAuth } from '../contexts/AuthContext';
 
 const QRCodeGenerator = () => {
   const [url, setUrl] = useState('');
   const [image, setImage] = useState(null);
-  const [imageName, setImageName] = useState(''); // New state for image name
+  const [imageName, setImageName] = useState('');
   const [logoOpacity] = useState(0.55);
+  const { user } = useAuth();
+
+  console.log(user);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    setImageName(file.name); // Set image name
+    setImageName(file.name);
     const reader = new FileReader();
     reader.onload = () => {
       setImage(reader.result);
@@ -20,25 +24,30 @@ const QRCodeGenerator = () => {
   };
 
   const handleSave = async () => {
-    const canvas = document.getElementById('myQRCode');
-    canvas.toBlob(async (blob) => {
-      const formData = new FormData();
-      formData.append('name', imageName); // Use image name
-      formData.append('merchant_id', '13');
-      formData.append('file', blob, 'qrcode.png');
-  
-      const response = await fetch('http://localhost:8000/qr_images/add', {
-        method: 'POST',
-        body: formData,
-      });
-  
-      if (response.ok) {
-        const result = await response.json();
-        console.log('QR Code saved:', result);
-      } else {
-        console.error('Failed to save QR Code');
-      }
+    if (!user) {
+      console.error('User is not authenticated');
+      return;
+    }
+
+    const fileInput = document.getElementById('imageLoader');
+    const file = fileInput.files[0];
+
+    const formData = new FormData();
+    formData.append('name', imageName);
+    formData.append('merchant_id', user.account_id); // Use the user ID from context
+    formData.append('file', file); // Append the file directly
+
+    const response = await fetch('http://localhost:8000/qr_images/add', {
+      method: 'POST',
+      body: formData,
     });
+
+    if (response.ok) {
+      const result = await response.json();
+      console.log('Image saved:', result);
+    } else {
+      console.error('Failed to save image');
+    }
   };
 
   return (
@@ -88,5 +97,6 @@ const QRCodeGenerator = () => {
     </div>
   );
 };
+
 
 export default QRCodeGenerator;

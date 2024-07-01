@@ -12,5 +12,3 @@ const QRCustomization = () => {
 };
 
 export default QRCustomization;
-
-// pass name of image and id of merchant in params
