@@ -10,7 +10,7 @@ export default function CustomDataGrid({ rows, columns, loading }) {
           columns={columns} 
           loading={loading} 
           slots={{ toolbar: GridToolbar }}
-          sx={{ border: 'none' }}
+          sx={{ border: 'none', maxWidth: "1000px" }}
         />
     </div>
   );

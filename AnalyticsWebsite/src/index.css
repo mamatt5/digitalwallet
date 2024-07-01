@@ -12,22 +12,13 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  --primary: hsl(0, 0%, 100%); /* white */ 
-  --secondary: hsl(210, 20%, 98%); /* light grey */
-  --buttons: hsl(86, 78%, 27%); /* leaf green */
-  --text: #000 ; /* black for now */
-  --tags: hsl(80, 89%, 89%); /* lime green */
-  --dark-grey: #dddddd; /* darker grey */
-
   /* PayPath branded colours */
-  --background: hsl(255, 100%, 13%);
+  --primary: hsl(255, 100%, 13%);
+  --secondary: hsl(269, 99%, 48%);
+  --desat-blue: hsl(253, 17%, 45%);
+  --desat-secondary: hsl(264, 26%, 74%);
+  --text: hsl(0, 0%, 100%);
 
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-  margin: 0 auto 1.25rem auto;
 }
 
 #root {
@@ -36,6 +27,9 @@ h1 {
   min-height: 100vh; /* ensure it is at least the height of the viewport */
   /* background-color: var(--primary); */
   /* background-color: var(--secondary); */
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 #root, #__next {
@@ -118,6 +112,12 @@ textarea {
 /* project specific styles */
 /* --------------------------- */
 
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+  margin: 0 auto 1.25rem auto;
+}
+
 p {
   margin: 0;
   padding: 0;
@@ -127,14 +127,42 @@ header {
   margin-bottom: 5em;
 }
 
+.box-styling,
+.box-main-styling,
 main {
-  flex: 1;
+  background-color: var(--primary);
+}
+
+main {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   text-align: center;
   padding: .25rem; 
   overflow: visible;
+}
+
+main h1,
+main h2,
+main h3,
+main p {
+  color: var(--text);
+}
+
+.box-styling {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.box-main-styling {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
 }
 
 .container {
@@ -145,24 +173,22 @@ main {
 }
 
 button {
-  background-color: var(--buttons);
-  color: var(--secondary);
-  transition: opacity 0.3s ease;
+  color: var(--text);
+  
   border: none;
   cursor: pointer;
 }
 
 button:hover {
   opacity: 0.75;
+  transition: opacity 0.3s ease;
 }
-
 
 button,
 input,
 textarea {
   width: 100%;
-  border-radius: 2em;
-  padding: 1rem 1.5rem;
+  padding: 0;
   margin-bottom: 10px;
 }
 
@@ -188,6 +214,7 @@ textarea {
 
 .login-container {
   width: 550px;
+  color: var(--text);
 }
 
 .register-container,
@@ -208,65 +235,20 @@ textarea {
   margin-bottom: 40px;
 }
 
+.login-register-header h2,
+.login-register-header p {
+  color: var(--primary);
+}
+
 .login-register-button {
   margin-top: 20px;
   width: 100%;
   border-radius: 5em;
 }
 
-/* TABLE */
-
-table {
-  width: 100%;
-  font-size: 0.95rem;
-  border-collapse: collapse;
-}
-
-table thead th {
-  font-style: normal;
-  text-align: left;
-  padding: 1rem;
-  background-color: var(--secondary);
-}
-
-table tbody tr {
-  border-bottom: 0.5px solid var(--dark-grey);
-}
-
-table tbody td {
-  padding: 1rem;
-}
-
-table tbody tr:hover {
-  background-color: var(--secondary);
-}
-
-table tbody button {
-  padding: 8px 16px;
-  border-radius: 2rem;
-  margin-right: 10px;
-}
-
-table tbody button.secondary-button {
-  background: none;
-  border: 1px solid var(--buttons);
-  color: var(--buttons);
-  transition: background 0.3s;
-}
-
-table tbody button.secondary-button:hover {
-  background: var(--buttons);
-  color: var(--primary);
-}
-
-.actions-group {
-  display: flex;
-  align-items: center;
-}
-
 input {
   width: 100%;
-  border: 1px solid var(--dark-grey);
+  border: 1px solid var(--desat-secondary);
   background: none;
   color: var(--text);
 }
@@ -283,27 +265,8 @@ input {
   height: 600px;
 }
 
-/* -------- */
-/* MESSAGES */
-/* -------- */
-
-.success-message,
-.error-message,
-.reminder-message {
-  border-radius: 8px;
-  padding: 10px 20px;
-}
-
-.success-message {
-  background-color: var(--green-bean);
-}
-
-.error-message {
-  background-color: var(--blood-orange);
-}
-
-.reminder-message {
-  background-color: var(--berry-blue);
+button, input {
+  border-radius: 2rem;
 }
 
 button {
@@ -313,19 +276,153 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
+  background-color: var(--primary);
 }
+
+button.qrCode {
+  color: var(--primary);
+  background-color: var(--text);
+}
+
 button:hover {
   border-color: #646cff;
 }
+
 button:focus,
 button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  outline: 4px auto aquamarine;
 }
 
 .full-page-container {
   display: flex;
   height: 100vh;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-container {
+  width: 550px;
+  margin-top: 50px;
+  padding: 3em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  background-color: white;
+  box-shadow: 0 2px 3px 1px darkgray;
+}
+
+/* ----------------------- */
+/* LOGIN/LANDING PAGE */
+/* ----------------------- */
+
+.landing-header {
+  width: 65%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.landing-header h1 {
+  color: var(--text);
+}
+
+.landing-header p {
+  color: var(--desat-secondary);
+  align-self: center;
+  width: 65%;
+}
+
+.login-container form input {
+  padding: 10px 0 10px 20px;
+  margin-bottom: 20px;
+}
+
+section {
+  margin-top: 5em;
+}
+
+section h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+section p {
+  color: var(--desat-secondary);
+  margin-bottom: 2rem;
+}
+
+.payment-plans-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.payment-plans-container p {
+  color: var(--text);
+}
+
+.payment-option-container {
+  padding: 50px 30px;
+  border-radius: 20px;
+  width: 30%;
+  text-align: left;
+}
+
+.payment-option-container ul {
+  list-style: disc;
+  padding-left: 2rem;
+}
+
+.payment-option-container h1 {
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.payment-option-container h2,
+.payment-option-container p {
+  margin-bottom: 1rem;
+}
+
+.payment-option-container p.payment-price {
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+.free {
+  background-color: hsl(269, 42%, 38%);
+  margin-right: 30px;
+}
+
+.paid {
+  color: var(--text);
+  background-color: hsl(269, 83%, 61%);
+}
+
+.free h1,
+.free h2, 
+.free h3,
+.free p,
+.free ul {
+  color: hsl(270, 100%, 13%);
+}
+
+.get-mobile-app-section {
+  display: flex;
+  flex-direction: row;
+}
+
+.get-mobile-app-section input {
+  border-color: aqua;
+}
+
+.get-mobile-app-section button {
+  color: var(--primary);
+  background-color: aqua;
+  border-radius: 2rem;
 }

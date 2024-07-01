@@ -33,35 +33,46 @@ export default function SideMenu() {
             boxShadow: '0px 10px 10px rgba(0, 0, 0, 0.1)',
             position: 'fixed',
             top: 0,
-            left: 0,        
+            left: 0, 
+            // display: 'flex',
+            // justifyContent: 'space-between',       
           },
         }}
         variant="permanent"
         anchor="left"
       >
+
         <Toolbar sx={{ paddingBottom: '1rem' }}>
           <Link to='landing'>
             <Box component="img" src={Logo} alt="Logo" sx={{ height: 40, paddingTop: '1.5rem' }} />
           </Link>
         </Toolbar>
+
+        <Box>
+          <List>
+            {menuItems.map((item) => (
+              <ListItem key={item.value} sx={{ padding: '0 .5rem' }}>
+                <ListItemButton
+                  sx={{
+                    '&:hover': {
+                      backgroundColor: 'blue',
+                      color: 'white',
+                    },
+                  }}
+                >
+                  <Link to={item.value}>
+                      {item.text}
+                  </Link>
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        </Box>
+
         <List>
-          {menuItems.map((item) => (
-            <ListItem key={item.value} sx={{ padding: '0 .5rem' }}>
-              <ListItemButton
-                sx={{
-                  '&:hover': {
-                    backgroundColor: 'blue',
-                    color: 'white',
-                  },
-                }}
-              >
-                <Link to={item.value}>
-                    {item.text}
-                </Link>
-              </ListItemButton>
-            </ListItem>
-          ))}
+          Hide menu
         </List>
+
       </Drawer>
     </Box>
   );

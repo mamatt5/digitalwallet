@@ -5,6 +5,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import Header from '../components/Header/Header';
 import { registerAccount } from '../api/api';
 
+import LogoHeader from '../components/LogoHeader/LogoHeader';
+
 const Register = () => {
 
     const [companyName, setCompanyName] = useState('');
@@ -39,13 +41,15 @@ const Register = () => {
     }
 
   return (
-    <main style={{alignItems:"center"}}>
+
+    <>
+        <LogoHeader />
 
         <div className="container">
 
             <Header />
 
-            <div className='register-container'>
+            <div className="register-container">
 
                 <div className="login-register-header">
                     <h2>Register for an account</h2>
@@ -87,10 +91,13 @@ const Register = () => {
 
                     <button type="submit" className="login-register-button">Register</button>
                 </form>
-            </div>
 
+            </div>
+            
         </div>
-    </main>
+
+    </>
+
   )
 }
 
