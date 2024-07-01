@@ -12,3 +12,5 @@ python-jose[cryptography]
 python-dotenv
 pytest
 httpx
+python-magic
+python-magic-bin

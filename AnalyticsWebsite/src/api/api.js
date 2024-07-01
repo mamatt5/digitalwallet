@@ -36,6 +36,7 @@ export const registerAccount = async (
   accountType,
   companyName,
   abn,
+  categoryId,
   firstName,
   lastName,
 ) => {
@@ -44,6 +45,7 @@ export const registerAccount = async (
       .post(`${API_BASE_URL}/auth/register`, {
         company_name: companyName,
         ABN: abn,
+        category_id: categoryId,
         first_name: firstName,
         last_name: lastName,
         email,
