@@ -9,14 +9,16 @@ import LogoHeader from '../components/LogoHeader/LogoHeader';
 
 const Register = () => {
 
-    const [companyName, setCompanyName] = useState('');
-    const [ABN, setABN] = useState('');
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [accountType, setAccountType] = useState('');
+    const [companyName, setCompanyName] = useState('');
+    const [ABN, setABN] = useState('');
+    const [categoryId, setCategoryId] = useState(1);
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+
 
     const validateForm = () => {
         if (!firstName || !lastName || !password) {
@@ -31,74 +33,149 @@ const Register = () => {
         return true;
     }
 
-    const submitHandler = (e) => {
+    const submitHandler = async (e) => {
         e.preventDefault();
 
-        if (!validateForm()) 
+        if (!validateForm())
             return;
 
-        
+        try {
+            const responseData = await registerAccount(email, password, phoneNumber,
+                accountType, companyName, ABN, categoryId, firstName, lastName);
+            navigate("/");
+        } catch (error) {
+            alert(responseData);
+        }
     }
+
+    const handleAccountTypeChange = (event) => {
+        setAccountType(event.target.value);
+    };
 
   return (
 
     <>
         <LogoHeader />
 
-        <div className="container">
+            <div className="container">
 
-            <Header />
+                <Header />
 
-            <div className="register-container">
+                <div className="register-container">
 
-                <div className="login-register-header">
-                    <h2>Register for an account</h2>
-                    <p>Already have an account? <Link to="/login">Login</Link></p>
+                    <div className="login-register-header">
+                        <h2>Register for an account</h2>
+                        <p>Already have an account? <Link to="/login">Login</Link></p>
+                    </div>
+
+                    <form onSubmit={submitHandler}>
+                        <div>
+                            <label>Email:</label>
+                            <input
+                                name="email"
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label>Password:</label>
+                            <input
+                                name="password" 
+                                type="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label>Phone Number:</label>
+                            <input
+                                name="phoneNumber"
+                                type="tel"
+                                value={phoneNumber}
+                                onChange={(e) => setPhoneNumber(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label>Account Type:</label>
+                            <select value={accountType} onChange={handleAccountTypeChange} required>
+                                <option value="">Select</option>
+                                <option value="user">User</option>
+                                <option value="merchant">Merchant</option>
+                            </select>
+                        </div>
+                        {accountType === 'user' && (
+                            <>
+                                <div>
+                                    <label>First Name:</label>
+                                    <input
+                                        name="firstName"
+                                        type="text"
+                                        value={firstName}
+                                        onChange={(e) => setFirstName(e.target.value)}
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label>Last Name:</label>
+                                    <input
+                                        name="lastName"
+                                        type="text"
+                                        value={lastName}
+                                        onChange={(e) => setLastName(e.target.value)}
+                                        required
+                                    />
+                                </div>
+                            </>
+                        )}
+                        {accountType === 'merchant' && (
+                            <>
+                                <div>
+                                    <label>Company Name:</label>
+                                    <input
+                                        name="companyName"
+                                        type="text"
+                                        value={companyName}
+                                        onChange={(e) => setCompanyName(e.target.value)}
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label>ABN:</label>
+                                    <input
+                                        name="abn"
+                                        type="text"
+                                        value={ABN}
+                                        onChange={(e) => setABN(e.target.value)}
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label>Category ID:</label>
+                                    <input
+                                        name="categoryId"
+                                        type="number"
+                                        value={categoryId}
+                                        onChange={(e) => setCategoryId(Number(e.target.value))}
+                                        required
+                                    />
+                                </div>
+                            </>
+                        )}
+
+                        <button type="submit" className="login-register-button">Register</button>
+                    </form>
+
                 </div>
-
-                <form onSubmit={submitHandler}>
-                    <input 
-                        name="firstName" 
-                        type="text" 
-                        value={firstName}
-                        onChange={e => setFirstName(e.target.value)}
-                        placeholder='First Name*'
-                    />
-
-                    <input 
-                        name="lastName" 
-                        type="text"
-                        value={lastName}
-                        onChange={e => setLastName(e.target.value)}
-                        placeholder='Last Name*'
-                    />
-
-                    <input 
-                        name="ABN" 
-                        type="text"
-                        value={ABN}
-                        onChange={e => setABN(e.target.value)}
-                        placeholder='ABN*'
-                    />
-
-                    <input 
-                        type="password"
-                        id="password"
-                        value={password}
-                        onChange={e => setPassword(e.target.value)}
-                        placeholder='Password*'
-                    />
-
-                    <button type="submit" className="login-register-button">Register</button>
-                </form>
-
-            </div>
             
-        </div>
+            </div>
 
-    </>
+        </>
 
-  )
+    )
 }
 
 export default Register

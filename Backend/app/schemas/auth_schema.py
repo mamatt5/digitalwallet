@@ -26,6 +26,7 @@ class RegisterRequest(BaseModel):
 
     ABN: str = Field(..., description="ABN")
     company_name: str = Field(..., description="Company Name")
+    category_id: int = Field(..., description="Business category")
 
 
 class AuthResponse(BaseModel):
