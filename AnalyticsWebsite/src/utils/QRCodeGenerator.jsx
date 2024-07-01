@@ -3,6 +3,7 @@ import { QRCode } from '@jackybaby/react-custom-qrcode';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import { useAuth } from '../contexts/AuthContext';
+import Card from '@mui/material/Card';
 
 const QRCodeGenerator = () => {
   const [url, setUrl] = useState('');
@@ -34,8 +35,8 @@ const QRCodeGenerator = () => {
 
     const formData = new FormData();
     formData.append('name', imageName);
-    formData.append('merchant_id', user.account_id); // Use the user ID from context
-    formData.append('file', file); // Append the file directly
+    formData.append('merchant_id', user.account_id); 
+    formData.append('file', file); 
 
     const response = await fetch('http://localhost:8000/qr_images/add', {
       method: 'POST',
@@ -51,49 +52,51 @@ const QRCodeGenerator = () => {
   };
 
   return (
-    <div style={{ width: '50%', margin: '0 auto', textAlign: 'center' }}>
-      <p>Select a square logo to customise the QR code.</p>
-      <TextField 
-        variant="outlined" 
-        type="file" 
-        id="imageLoader" 
-        name="imageLoader" 
-        onChange={handleImageChange}
-        sx={{ width: '500px', margin: '2rem 0' }}
-      />
-      <TextField 
-        id="outlined-basic" 
-        label="URL" 
-        variant="outlined"
-        type="text"
-        value={url}
-        onChange={(e) => setUrl(e.target.value)} 
-        sx={{ width: '500px', marginBottom: '2rem' }}
-      />
-      <Box 
-        sx={{ 
-          display: 'flex', 
-          justifyContent: 'center', 
-          alignItems: 'center',
-          marginBottom: '2rem' 
-        }}
-      >
-        <QRCode
-          value={url}
-          size={256}
-          bgColor="transparent"
-          fgColor="#000000"
-          logoImage={image}
-          logoWidth={256}
-          logoHeight={256}
-          logoOpacity={logoOpacity}
-          removeQrCodeBehindLogo={false}
-          qrStyle="dots"
-          ecLevel="H"
-          id="myQRCode"
+    <div style={{ width: '550px', margin: '0 auto', textAlign: 'center' }}>
+      <p>Select a square logo to customise the QR code.</p><br/>
+      <Card sx={{padding:'1rem', borderRadius:'8px'}}>
+        <TextField 
+          variant="outlined" 
+          type="file" 
+          id="imageLoader" 
+          name="imageLoader" 
+          onChange={handleImageChange}
+          sx={{ width: '500px', margin: '1rem 0' }}
         />
-      </Box>
-      <button onClick={handleSave}>Save QR Code</button>
+        <TextField 
+          id="outlined-basic" 
+          label="URL" 
+          variant="outlined"
+          type="text"
+          value={url}
+          onChange={(e) => setUrl(e.target.value)} 
+          sx={{ width: '500px', marginBottom: '2rem' }}
+        />
+        <Box 
+          sx={{ 
+            display: 'flex', 
+            justifyContent: 'center', 
+            alignItems: 'center',
+            marginBottom: '2rem' 
+          }}
+        >
+          <QRCode
+            value={url}
+            size={256}
+            bgColor="transparent"
+            fgColor="#000000"
+            logoImage={image}
+            logoWidth={256}
+            logoHeight={256}
+            logoOpacity={logoOpacity}
+            removeQrCodeBehindLogo={false}
+            qrStyle="dots"
+            ecLevel="H"
+            id="myQRCode"
+          />
+        </Box>
+        <button onClick={handleSave}>Save QR Code</button>
+        </Card>
     </div>
   );
 };
