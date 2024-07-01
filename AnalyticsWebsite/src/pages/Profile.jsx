@@ -15,8 +15,6 @@ import Box from '@mui/material/Box';
 import { useAuth } from '../contexts/AuthContext';
 
 const Profile = () => {
-  const containerRef = useRef(null);
-  const cardRef = useRef(null);
   const { user: authUser } = useAuth(); 
   const [account, setAccount] = useState(null);
   const [merchant, setMerchant] = useState(null);
@@ -91,11 +89,15 @@ const Profile = () => {
             <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
               Phone number
             </Typography>
-            <Typography variant="body2">{account && account.phone_number}</Typography>
+            <Typography color="text.primary" variant="body2">
+              {account && account.phone_number}
+              </Typography>
             <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
               Email
             </Typography>
-            <Typography variant="body2">{account && account.email}</Typography>
+            <Typography variant="body2" color="text.primary">
+              {account && account.email}
+              </Typography>
             <Box display="inline-flex" alignItems="center" sx={{ mb: 1 }}>
               <Typography sx={{ fontSize: 14, flexGrow: 1 }} color="text.secondary">
                 Password
@@ -114,7 +116,7 @@ const Profile = () => {
                 <EditIcon fontSize="small" />
               </IconButton>
             </Box>
-            <Typography variant="body2">********************</Typography>
+            <Typography variant="body2" color="text.primary">********************</Typography>
             <Divider sx={{ margin: '1rem 0' }} />
             <Typography sx={{ fontSize: 18 }} color="text.primary" gutterBottom>
               Merchant details
@@ -122,11 +124,11 @@ const Profile = () => {
             <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
               Company Name
             </Typography>
-            <Typography variant="body2">{merchant && merchant.company_name}</Typography>
+            <Typography variant="body2" color="text.primary">{merchant && merchant.company_name}</Typography>
             <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
               ABN
             </Typography>
-            <Typography variant="body2">{merchant && merchant.ABN}</Typography>
+            <Typography variant="body2" color="text.primary">{merchant && merchant.ABN}</Typography>
           </CardContent>
         </Card>
   
