@@ -97,6 +97,7 @@ class AuthService:
         if register_request.account_type == AccountType.MERCHANT:
             merchant = Merchant(**account_data)
             merchant.account_id = account.account_id
+            merchant.category_id = account_data["category_id"]
             self.merchant_repository.create(merchant)
 
         elif register_request.account_type == AccountType.USER:
