@@ -22,9 +22,10 @@ function App() {
   const hideMenuRoutes = ['/register', '/login'];
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    // <Box sx={{ display: 'flex', height: '100vh', width: '100%', backgroundColor: 'red'  }}>
+    <Box className="box-styling">
       {!hideMenuRoutes.includes(location.pathname) && <SideMenu />}
-      <Box component="main" >
+      <Box component="main" className="box-main-styling">
         <Routes>
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
