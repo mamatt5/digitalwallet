@@ -62,8 +62,6 @@ function VoucherScreen({ navigation, route }) {
           console.error("Get All Vouchers error:", error);
         }
 
-      console.log(allMerchantsAndVouchers)
-
   }
 
     useEffect(() => {
@@ -85,8 +83,6 @@ function VoucherScreen({ navigation, route }) {
   })
 
   const openModal = (e) => {
-    console.log("nig")
-    console.log(e)
     setSelectedVoucher(e)
     setModalVisible(true);
     return e
@@ -108,8 +104,6 @@ function VoucherScreen({ navigation, route }) {
   const merchantsWithVouchers = merchants.filter(item => item.vouchers.length > 0);
 
   const getVoucher = async() => {
-    console.log("Get Voucher")
-    console.log(account)
 
     if (walletPoints < parseInt(selectedVoucher.price, 10) && parseInt(selectedVoucher.price, 10) != 2000) {
 
@@ -122,7 +116,6 @@ function VoucherScreen({ navigation, route }) {
       }
 
     } else {
-      console.log("get your money up")
       Alert.alert("Invalid amount of points", "You have don't enough AP Points for this discount")
     }
 
