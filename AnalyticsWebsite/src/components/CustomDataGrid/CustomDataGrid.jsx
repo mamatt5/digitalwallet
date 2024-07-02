@@ -1,17 +1,31 @@
-import * as React from 'react';
-import { DataGrid, GridToolbar } from '@mui/x-data-grid';
+import React from 'react';
+import { DataGrid, GridToolbarContainer, GridToolbarExport, GridToolbar } from '@mui/x-data-grid';
 import './CustomDataGrid.css';
+
+function CustomToolbar() {
+  return (
+    <GridToolbarContainer>
+      <GridToolbarExport />
+    </GridToolbarContainer>
+  );
+}
 
 export default function CustomDataGrid({ rows, columns, loading }) {
   return (
     <div className="customDataGrid">
-        <DataGrid 
-          rows={rows} 
-          columns={columns} 
-          loading={loading} 
-          slots={{ toolbar: GridToolbar }}
-          sx={{ border: 'none', maxWidth: "1000px" }}
-        />
+      <DataGrid 
+        rows={rows} 
+        columns={columns} 
+        loading={loading} 
+        // components={{
+        //   Toolbar: GridToolbar,
+        // }}
+        slots={{ toolbar: CustomToolbar }}
+        sx={{ border: 'none', maxWidth: "1000px", color: 'black' }}
+        pageSizeOptions={[25, 50, 100]} 
+        pagination 
+        autoHeight 
+      />
     </div>
   );
 }

@@ -46,6 +46,7 @@ def create_register_request(account_type: AccountType) -> RegisterRequest:
             company_name="",
             ABN="",
             category_id=1,
+            category_id=1,
         )
 
 
@@ -430,6 +431,7 @@ if __name__ == "__main__":
             first_name="",
             last_name="",
             category_id=1,
+            category_id=1,
         )
         register_account(client, register_request)
 
@@ -442,6 +444,7 @@ if __name__ == "__main__":
             last_name="Chanco",
             company_name="",
             ABN="",
+            category_id=1,
             category_id=1,
         )
         register_account(client, register_request)
@@ -465,6 +468,7 @@ if __name__ == "__main__":
             first_name="",
             last_name="",
             category_id=1,
+            category_id=1,
         )
         register_account(client, register_request)
 
@@ -477,6 +481,7 @@ if __name__ == "__main__":
             ABN=fake.msisdn(),
             first_name="",
             last_name="",
+            category_id=1,
             category_id=1,
         )
         register_account(client, register_request)
