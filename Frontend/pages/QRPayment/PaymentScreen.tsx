@@ -198,6 +198,12 @@ function PaymentScreen({ route, navigation }) {
     </View>
   )
 
+  const handleNoVoucherUse = async () => {
+    setVoucherScreen(false)
+    setConfirmVoucherModalVisible(false)
+    setTransactionConfirmed(true)
+  }
+
   return (
     <SafeAreaView style={styles.screenContainer}>
       <View style={styles.container}>
@@ -274,7 +280,14 @@ function PaymentScreen({ route, navigation }) {
                         
                       />
                   </ScrollView>
-                    
+                  <Button
+                  style={styles.cancelButton}
+                  textColor="white"
+                  mode="outlined"
+                  onPress={handleNoVoucherUse}
+                >
+                  I don't want to use a Voucher
+                </Button>
               </ScrollView>
              
             )}
