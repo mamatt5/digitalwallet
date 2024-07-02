@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { QRCodeSVG } from 'qrcode.react';
+import { QRCode } from '@jackybaby/react-custom-qrcode';
 import axios from 'axios';
 
 const PayPathQRDisplay = () => {
@@ -11,8 +12,11 @@ const PayPathQRDisplay = () => {
 
 
     const ENDPOINT = "http://localhost:8000/transactions/gettransactions";
+    const QR_IMAGE_ENDPOINT = "http://localhost:8000/qr_images/get/merchantId/13";
     const [numTransactions, setNumTransactions] = useState(0)
     const [paymentSuccess, setPaymentSuccess] = useState(false)
+    const [image, setImage] = useState(null);
+    const [logoOpacity] = useState(0.3);
 
     // QR Window launched - get current number of transactions
     useEffect(() => {
@@ -23,7 +27,8 @@ const PayPathQRDisplay = () => {
         ).catch(
             error => console.error(error)
         );
-    })
+        getQRImage();
+    }, [])
 
     // API call
     const getTransactions = async () => {
@@ -33,6 +38,16 @@ const PayPathQRDisplay = () => {
         } catch (error) {
             console.error('Get Transactions error:', error);
             throw error;
+        }
+    };
+
+    const getQRImage = async () => {
+        try {
+            const response = await axios.get(QR_IMAGE_ENDPOINT, { responseType: 'blob' });
+            const blob = URL.createObjectURL(new Blob([response.data], { type: "image/png" }));
+            setImage(blob);
+        } catch (error) {
+            console.error(error);
         }
     };
 
@@ -79,13 +94,13 @@ const PayPathQRDisplay = () => {
 
         window.addEventListener("message", handleMessage);
 
-        
+
 
         return () => {
             window.removeEventListener("message", handleMessage);
         };
     }, [])
-  
+
     // const data = [
     //     {
     //         name: "Wool Blend Wrap Felt Coat in Camel",
@@ -110,43 +125,60 @@ const PayPathQRDisplay = () => {
     // console.log(updatedData)
 
     // const qrData = 
-  
 
-  
+
+
     return (
-    <div style={{"display":"flex", "flexDirection":"column"}}>
-        <h1>Pay with PayPath</h1>
-        <div style={{"display":"flex", "flexDirection":"column"}}>
-            {paymentData ? (
-                <>
-                    <div style={{"display":"flex", "flexDirection":"column", "paddingBottom":"60px"}}>
-                        <h2>{paymentData.merchant_name}</h2>
-                        <h2>Payment Details</h2>
-                        <div>Items: 
-                            {paymentData.items.map((item) => (
-                                <p>{item.name}</p>
-                            ))
-                        }</div>
-                    </div>
-                    <div>
-                        <p>Total: ${updatedData.amount}</p>
-                        <p>Scan this QR code in your PayPath app to confirm:</p>
-                        <QRCodeSVG
-                            value={JSON.stringify(updatedData)}
-                            size={260}
-                        />
-                    </div>
-                </>
-            ) : (
-                <p>Waiting for payment data...</p>
-            )}
-        </div>
-        {/* <div>
+        <div style={{ "display": "flex", "flexDirection": "column" }}>
+            <h1>Pay with PayPath</h1>
+            <div style={{ "display": "flex", "flexDirection": "column" }}>
+                {paymentData ? (
+                    <>
+                        <div style={{ "display": "flex", "flexDirection": "column", "paddingBottom": "60px" }}>
+                            <h2>{paymentData.merchant_name}</h2>
+                            <h2>Payment Details</h2>
+                            <div>Items:
+                                {paymentData.items.map((item) => (
+                                    <p>{item.name}</p>
+                                ))
+                                }</div>
+                        </div>
+                        <div>
+                            <p>Total: ${updatedData.amount}</p>
+                            <p>Scan this QR code in your PayPath app to confirm:</p>
+                            {image ?
+                                <QRCode
+                                    value={JSON.stringify(updatedData)}
+                                    size={260}
+                                    bgColor="transparent"
+                                    fgColor="#000000"
+                                    logoImage={image}
+                                    logoWidth={260}
+                                    logoHeight={260}
+                                    logoOpacity={logoOpacity}
+                                    removeQrCodeBehindLogo={false}
+                                    qrStyle="dots"
+                                    ecLevel="H"
+                                    id="myQRCode"
+                                /> :
+                                <QRCodeSVG
+                                    value={JSON.stringify(updatedData)}
+                                    size={260}
+                                />
+                            }
+
+                        </div>
+                    </>
+                ) : (
+                    <p>Waiting for payment data...</p>
+                )}
+            </div>
+            {/* <div>
             <p>Don't have the app yet? Install here:</p>
             <button>Get PayPath on your mobile</button>
         </div> */}
-    </div>
-  )
+        </div>
+    )
 
 }
 

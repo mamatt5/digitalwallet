@@ -1,8 +1,5 @@
 import React, { useRef, useEffect } from "react";
-import * as d3 from 'd3';
-import * as dc from 'dc';
 import { useState } from "react";
-import { PieChart, RowChart, BubbleChart, BarChart, ChartContext } from 'react-dc-js'
 import crossfilter from 'crossfilter2'
 import axios from 'axios'
 
@@ -80,58 +77,6 @@ export default function Index() {
 
 	return (
 		<div>
-			<h1>Dashboard</h1>
-
-			<ChartContext>
-			<h3>Purchases Made By Each Customer</h3>
-			<div style={{display: "inline-flex"}}>
-			<RowChart 
-				dimension={senderDim} 
-				group={senderDim.group()}
-				elasticX={true}
-				elasticY={true}
-				width={600}
-				height={400}
-				
-			/>
-			<PieChart 
-				dimension={amountDim} 
-				group={amountDim.group()}
-				elasticX={true}
-				elasticY={true}
-				height={400}
-				// x={d3.scaleLinear([0,100])}
-				// xAxis={d3.ticks(100)}
-			/>
-			</div>
-			
-			{/* <button onClick={()=>{cardReset()}}>Reset Row</button> */}
-			{/* <button onClick={()=>{senderReset()}}>Reset Pie</button> */}
-			{/* <h3>Purchases Made By Each Customer</h3>
-			<RowChart 
-				dimension={amountDim} 
-				group={amountDim.group()}
-				elasticX={true}
-				elasticY={true}
-				height={400}
-			/> */}
-
-			{/* <BarChart
-			dimension={moveMonths}
-			group={volumeByMonthGroup}
-			width={990}
-			height={180}
-			radius={80}
-			centerBar={true}
-			gap={1}
-			x={d3
-				.scaleTime()
-				.domain([new Date(2024, 1, 1), new Date(2024, 12, 31)])}
-			round={d3.timeMonth.round}
-			alwaysUseRounding={true}
-			xUnits={d3.timeMonths}
-			/> */}
-			</ChartContext>
 		</div>
 	)
 };

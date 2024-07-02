@@ -11,6 +11,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@jackybaby/react-custom-qrcode": "^2.7.6",
     "axios": "^1.7.2",
     "qrcode.react": "^3.1.0",
     "react": "^18.2.0",
