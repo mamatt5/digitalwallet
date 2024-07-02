@@ -14,6 +14,9 @@ class QRImageService:
 
     def get_qr_image(self, qr_image_id: int) -> QRImage:
         return self.qr_image_repository.get_by_id(qr_image_id)
+    
+    def get_qr_image_by_merchant_id(self, merchant_id: int) -> QRImage:
+        return self.qr_image_repository.get_by_merchant_id(merchant_id)
 
     def get_qr_images(self) -> list[QRImage]:
         return self.qr_image_repository.get_all()

@@ -40,3 +40,8 @@ class QRImageRepository(RepositoryBase[QRImage]):
         statement = select(QRImage).where(QRImage.qrimage_id == qrimage_id)
         qr_image = self.session.exec(statement).first()
         return qr_image
+    
+    def get_by_merchant_id(self, merchant_id: int) -> QRImage | None:
+        statement = select(QRImage).where(QRImage.merchant_id == merchant_id)
+        qr_image = self.session.exec(statement).first()
+        return qr_image

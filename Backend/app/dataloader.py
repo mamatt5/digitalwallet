@@ -1,6 +1,7 @@
 import logging
 import random
 from typing import Dict, List
+from datetime import datetime, timedelta
 
 from faker import Faker
 from fastapi import status
@@ -45,6 +46,7 @@ def create_register_request(account_type: AccountType) -> RegisterRequest:
             company_name="",
             ABN="",
             category_id=1,
+            category_id=1,
         )
 
 
@@ -62,6 +64,15 @@ def register_card(client, card_register_request: CardRegisterRequest) -> None:
     assert response.status_code == status.HTTP_200_OK, f"Card registration failed: {response.text}"
     logger.info("Card registered successfully")
 
+
+def add_transaction_data(client, users: List[int], items: List) -> None:
+    transactions = list()
+    for _ in range(num_transactions):
+        transactions.append(create_transaction_data(users, items))
+    response = client.post("/transactions/addtransactions", json=transactions)
+    assert response.status_code == status.HTTP_200_OK, f"Transactions add failed: {response.text}"
+    logger.info(f"Transactions added successfully")
+    
 
 def create_transaction_data(users: List[int], items: List) -> Dict:
     logger.info("Creating transaction data")
@@ -326,19 +337,16 @@ def create_items() -> List:
             pie, sausage_roll, quiche, soup, arancini, bruschetta, scones,
             cake, pastry, smoothie, milkshake, vegan_bowl, vegetarian_burger,
             gluten_free_cake, dumplings, falafel, mezze_platter]
-
-
-def add_transaction_data(client, num_transactions: int, users: List[int], items: List) -> None:
-    transactions = list()
-    for _ in range(num_transactions):
-        transactions.append(create_transaction_data(users, items))
-    response = client.post("/transactions/addtransactions", json=transactions)
-    assert response.status_code == status.HTTP_200_OK, f"Transactions add failed: {response.text}"
-    logger.info(f"Transactions added successfully")
     
 
 def add_categories(client) -> None:
     response = client.post("/categories/addcategory", json={"category_name": "food"})
+    assert response.status_code == status.HTTP_200_OK, f"Transactions add failed: {response.text}"
+    response = client.post("/categories/addcategory", json={"category_name": "shopping"})
+    assert response.status_code == status.HTTP_200_OK, f"Transactions add failed: {response.text}"
+    response = client.post("/categories/addcategory", json={"category_name": "entertainment"})
+    assert response.status_code == status.HTTP_200_OK, f"Transactions add failed: {response.text}"
+    response = client.post("/categories/addcategory", json={"category_name": "transportation"})
     assert response.status_code == status.HTTP_200_OK, f"Transactions add failed: {response.text}"
     logger.info(f"Categories added successfully")
 
@@ -383,7 +391,6 @@ def load_dummy_data(num_records: int) -> List[int]:
 
 if __name__ == "__main__":
     num_records = 10
-    transaction_records = 100
     users = load_dummy_data(num_records)
     items = create_items()
 
@@ -424,6 +431,7 @@ if __name__ == "__main__":
             first_name="",
             last_name="",
             category_id=1,
+            category_id=1,
         )
         register_account(client, register_request)
 
@@ -436,6 +444,7 @@ if __name__ == "__main__":
             last_name="Chanco",
             company_name="",
             ABN="",
+            category_id=1,
             category_id=1,
         )
         register_account(client, register_request)
@@ -459,6 +468,7 @@ if __name__ == "__main__":
             first_name="",
             last_name="",
             category_id=1,
+            category_id=1,
         )
         register_account(client, register_request)
 
@@ -472,9 +482,10 @@ if __name__ == "__main__":
             first_name="",
             last_name="",
             category_id=1,
+            category_id=1,
         )
         register_account(client, register_request)
 
-        add_transaction_data(client, transaction_records, users, items)
+        add_transaction_data(client, users, items)
         
         add_categories(client)
