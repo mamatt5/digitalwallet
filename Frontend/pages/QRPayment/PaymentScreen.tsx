@@ -195,6 +195,7 @@ function PaymentScreen({ route, navigation }) {
     setDiscount(selectedVoucher.discount / 100.0)
     closeConfirmationModal()
     setTransactionConfirmed(true)
+    deleteVoucher()
   }
 
   const confirmVoucher = async () => {
