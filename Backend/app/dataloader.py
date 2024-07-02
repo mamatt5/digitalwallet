@@ -46,7 +46,6 @@ def create_register_request(account_type: AccountType) -> RegisterRequest:
             company_name="",
             ABN="",
             category_id=1,
-            category_id=1,
         )
 
 
@@ -67,7 +66,7 @@ def register_card(client, card_register_request: CardRegisterRequest) -> None:
 
 def add_transaction_data(client, users: List[int], items: List) -> None:
     transactions = list()
-    for _ in range(num_transactions):
+    for _ in range(100):
         transactions.append(create_transaction_data(users, items))
     response = client.post("/transactions/addtransactions", json=transactions)
     assert response.status_code == status.HTTP_200_OK, f"Transactions add failed: {response.text}"
@@ -431,7 +430,6 @@ if __name__ == "__main__":
             first_name="",
             last_name="",
             category_id=1,
-            category_id=1,
         )
         register_account(client, register_request)
 
@@ -444,7 +442,6 @@ if __name__ == "__main__":
             last_name="Chanco",
             company_name="",
             ABN="",
-            category_id=1,
             category_id=1,
         )
         register_account(client, register_request)
@@ -468,7 +465,6 @@ if __name__ == "__main__":
             first_name="",
             last_name="",
             category_id=1,
-            category_id=1,
         )
         register_account(client, register_request)
 
@@ -481,7 +477,6 @@ if __name__ == "__main__":
             ABN=fake.msisdn(),
             first_name="",
             last_name="",
-            category_id=1,
             category_id=1,
         )
         register_account(client, register_request)
