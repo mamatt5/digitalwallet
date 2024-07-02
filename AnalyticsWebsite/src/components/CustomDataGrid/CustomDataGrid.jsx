@@ -1,5 +1,5 @@
 import React from 'react';
-import { DataGrid, GridToolbarContainer, GridToolbarExport } from '@mui/x-data-grid';
+import { DataGrid, GridToolbarContainer, GridToolbarExport, GridToolbar } from '@mui/x-data-grid';
 import './CustomDataGrid.css';
 
 function CustomToolbar() {
@@ -17,10 +17,11 @@ export default function CustomDataGrid({ rows, columns, loading }) {
         rows={rows} 
         columns={columns} 
         loading={loading} 
-        components={{
-          Toolbar: CustomToolbar,
-        }}
-        sx={{ border: 'none', maxWidth: "1000px", color:'black' }}
+        // components={{
+        //   Toolbar: GridToolbar,
+        // }}
+        slots={{ toolbar: CustomToolbar }}
+        sx={{ border: 'none', maxWidth: "1000px", color: 'black' }}
         pageSizeOptions={[25, 50, 100]} 
         pagination 
         autoHeight 
