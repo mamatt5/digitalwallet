@@ -23,6 +23,6 @@ def delete_voucher_route(voucher_id: int, voucher_service: VoucherService = Depe
     voucher_service.delete_voucher(voucher_id)
 
 
-@router.get("/getvouchersformerchant/{merchant_id}")
-def get_vouchers_route(merchant_id: int, voucher_service: VoucherService = Depends(VoucherService)) -> list[Voucher]:
-    return voucher_service.get_vouchers_for_merchant(merchant_id)
+@router.get("/getvouchersforuser/{user_id}")
+def get_vouchers_route(user_id: int, voucher_service: VoucherService = Depends(VoucherService)) -> list[Voucher]:
+    return voucher_service.get_vouchers_for_user(user_id)

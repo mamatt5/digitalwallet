@@ -227,25 +227,111 @@ if __name__ == "__main__":
         register_account(client, register_request)
 
         voucher_request = VoucherRequest(
-            description = "test1",
-            merchant_id = 2,
+            merchant_name = "coles",
+            description = "40% voucher",
+            merchant_id = 15,
             discount = 40,
+            price = 10,
         )
 
         add_voucher_to_merchant(client, voucher_request)
 
         voucher_request = VoucherRequest(
-            description = "test2",
-            merchant_id = 2,
+            merchant_name = "Coles",
+            description = "50% voucher",
+            merchant_id = 15,
             discount = 50,
+            price = 15
         )
 
         add_voucher_to_merchant(client, voucher_request)
 
         voucher_request = VoucherRequest(
-            description = "test3",
-            merchant_id = 4,
+            merchant_name = "Woolworths",
+            description = "60% voucher",
+            merchant_id = 16,
             discount = 60,
+            price = 20
+        )
+
+        add_voucher_to_merchant(client, voucher_request)
+
+        voucher_request = VoucherRequest(
+            merchant_name = "Woolworths",
+            description = "60% voucher",
+            merchant_id = 16,
+            discount = 60,
+            price = 20
+        )
+
+        add_voucher_to_merchant(client, voucher_request)
+
+        voucher_request = VoucherRequest(
+            merchant_name = "Woolworths",
+            description = "60% voucher",
+            merchant_id = 16,
+            discount = 60,
+            price = 20
+        )
+
+        add_voucher_to_merchant(client, voucher_request)
+
+        voucher_request = VoucherRequest(
+            merchant_name = "Woolworths",
+            description = "60% voucher",
+            merchant_id = 16,
+            discount = 60,
+            price = 2000
+        )
+
+        add_voucher_to_merchant(client, voucher_request)
+
+        voucher_request = VoucherRequest(
+            merchant_name = "Lora's Cafe",
+            description = "60% voucher",
+            merchant_id = 13,
+            discount = 60,
+            price = 20
+        )
+
+        add_voucher_to_merchant(client, voucher_request)
+
+        voucher_request = VoucherRequest(
+            merchant_name = "Lora's Cafe",
+            description = "60% voucher",
+            merchant_id = 13,
+            discount = 20,
+            price = 20
+        )
+
+        add_voucher_to_merchant(client, voucher_request)
+
+        voucher_request = VoucherRequest(
+            merchant_name = "Lora's Cafe",
+            description = "60% voucher",
+            merchant_id = 13,
+            discount = 90,
+            price = 20
+        )
+
+        add_voucher_to_merchant(client, voucher_request)
+
+        voucher_request = VoucherRequest(
+            merchant_name = "Lora's Cafe",
+            description = "60% voucher",
+            merchant_id = 13,
+            discount = 20,
+            price = 20
+        )
+
+        add_voucher_to_merchant(client, voucher_request)
+
+        voucher_request = VoucherRequest(
+            merchant_name = "Lora's Cafe",
+            description = "60% voucher",
+            merchant_id = 13,
+            discount = 10,
+            price = 20
         )
 
         add_voucher_to_merchant(client, voucher_request)

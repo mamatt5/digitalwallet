@@ -13,4 +13,6 @@ class VoucherRequest(BaseModel):
     description: str = Field(..., description="Voucher Description")
     merchant_id: int = Field(..., description="Vendor ID")
     discount: int = Field(..., description="Discount amount")
+    price: int = Field(..., description="Price of Voucher")
+    merchant_name: str = Field(..., description="Vendor Name")
   

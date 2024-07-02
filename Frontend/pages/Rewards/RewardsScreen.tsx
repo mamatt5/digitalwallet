@@ -6,10 +6,12 @@ import {
   Dimensions,
   StyleSheet,
   Alert,
+  KeyboardAvoidingView 
 } from "react-native";
 
 import RewardTabs from "../../components/CardFilterTabs/RewardTabs";
-import BrowseRewards from "./BrowseRewards";
+import VoucherScreen from "./BrowseRewardsScreen";
+import MyRewards from "./MyRewards";
 
 const { width, height } = Dimensions.get("window");
 const scale = width / 320;
@@ -22,7 +24,10 @@ function RewardsScreen({navigation, route}) {
 
     return (
     <SafeAreaView style={styles.container}>
+      
       <View style={styles.centerView}>
+
+        
         <View style={styles.header}>
           <Text style={styles.titleText}>Rewards</Text>
           <View style={styles.profileButton}>
@@ -33,20 +38,25 @@ function RewardsScreen({navigation, route}) {
           activeTabIndex={activeTabIndex}
           setActiveTabIndex={setActiveTabIndex}
         />
-
+        
         {activeTabIndex === 0 ? (
             <View style={styles.noTransactionsContainer}>
               <Text style={styles.noCardText}>Browse Rewards</Text>
-              <BrowseRewards ></BrowseRewards>
+              {/* <BrowseRewards></BrowseRewards>
+              <Text style={styles.noCardText}>Browse Rewards</Text> */}
+              <VoucherScreen navigation={navigation} route={route}></VoucherScreen>
             </View>
           ) : (
             <View style={styles.noTransactionsContainer}>
-            <Text style={styles.noCardText}>My rewards</Text> 
+              <MyRewards navigation={navigation} route={route}></MyRewards> 
           </View>
           )}
 
 
         </View>
+
+
+        
         </SafeAreaView>
     );
 }
@@ -58,6 +68,10 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     marginTop: 30,
+  },
+
+  top: {
+    position: "absolute"
   },
   header: {
     display: "flex",
@@ -92,6 +106,7 @@ const styles = StyleSheet.create({
   noTransactionsContainer: {
     alignItems: "center",
     marginTop: 20,
+    minHeight: '80%'
   },
   titleText: {
     color: "#ffffff",
@@ -116,6 +131,10 @@ const styles = StyleSheet.create({
   },
   transactions: {
     flex: 1,
+  },
+  scrollContainer: {
+    flexGrow: 1,
+    padding: 20, // Adjust padding or margins to increase scrollable area
   },
 });
 

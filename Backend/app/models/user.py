@@ -1,6 +1,7 @@
 from models.account import Account
 from sqlmodel import Field, Relationship, SQLModel
-
+from models.vouchers import Voucher
+from models.UserVoucherLink import UserVoucherLink
 
 class User(SQLModel, table=True):
     """
@@ -17,3 +18,5 @@ class User(SQLModel, table=True):
     first_name: str
     last_name: str
     account: Account | None = Relationship(back_populates="user")
+
+    vouchers: list["Voucher"] = Relationship(back_populates="users", link_model=UserVoucherLink)

@@ -1,11 +1,15 @@
 from models.user import User
 from models.merchant import Merchant
 from models.account import Account
+from models.vouchers import Voucher
 from services.account_service import AccountService
 from fastapi import APIRouter, Depends, Request
 from security import hash_password
 from schemas.merchant_schema import MerchantAndVoucherInfo
 router = APIRouter(prefix="/accounts", tags=["Accounts"])
+
+import logging
+logging.basicConfig(level=logging.INFO, filename="py.log",filemode="w")
 
 
 @router.get("/getuser/{account_id}")
@@ -40,4 +44,11 @@ async def update_accout_password(email: str, request: Request, account_service: 
 @router.get("/getmerchantandvouchers", response_model=list[MerchantAndVoucherInfo])
 def get_merchant_and_vouchers(account_service: AccountService = Depends(AccountService)):
     return account_service.get_merchant_and_vouchers()
+
+@router.post("/addVoucher/{user_id}/{voucher_id}")
+def add_voucher_to_user(user_id: int, voucher_id: int, account_service: AccountService = Depends(AccountService)) -> None:
+    return account_service.add_voucher_to_user(user_id, voucher_id)
+
+
+
 

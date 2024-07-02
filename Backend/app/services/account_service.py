@@ -42,4 +42,8 @@ class AccountService:
     def get_merchant_and_vouchers(self) -> dict:
         return self.merchant_repository.get_merchant_and_vouchers()
     
+    def add_voucher_to_user(self, user_id, voucher_id):
+        return self.user_repository.add_voucher_to_user(user_id, voucher_id)
+
+    
         
