@@ -50,7 +50,7 @@ def create_register_request(account_type: AccountType) -> RegisterRequest:
 def create_card_data() -> Dict:
     logger.info("Creating card data")
     return {
-        "card_number": fake.credit_card_number(),
+        "card_number": fake.pystr_format(string_format="################"),
         "card_expiry": fake.credit_card_expire(),
         "card_cvv": fake.credit_card_security_code(),
     }

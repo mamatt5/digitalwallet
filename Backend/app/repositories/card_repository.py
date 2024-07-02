@@ -44,3 +44,8 @@ class CardRepository(RepositoryBase[Card]):
         statement = select(Card).where(Card.wallet_id == wallet_id)
         cards = self.session.exec(statement).all()
         return cards
+    
+    def check_card_number(self, card_number: str) -> bool:
+        statement = select(Card).where(Card.card_number == card_number)
+        card = self.session.exec(statement).first()
+        return card is not None
