@@ -12,8 +12,14 @@ import {
 import { Button } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/FontAwesome6";
-import { getWalletCards, addTransaction, addAPPoints } from "../../api/api";
+import {
+  getWalletCards,
+  addTransaction,
+  addAPPoints,
+  checkTransaction,
+} from "../../api/api";
 import SmallDebitCard from "../../components/SmallDebitCard";
+import { ScrollView } from "react-native-gesture-handler";
 
 const { width, height } = Dimensions.get("window");
 const scale = width / 320;
@@ -95,10 +101,16 @@ function PaymentScreen({ route, navigation }) {
       recipient: parsedData.wallet_id,
       description: parsedData.description,
       items: parsedData.items,
+      transaction_ref: parsedData.transaction_reference,
     };
 
     try {
-      await saveTransaction(transaction);
+      if (!(await checkTransaction(transaction.transaction_ref))) {
+        await saveTransaction(transaction);
+      } else {
+        Alert.alert("Payment error", "QR code already used");
+        return navigation.navigate("AccountHome", { account });
+      }
     } catch (error) {
       console.error("Save Transaction error:", error.response.data);
       navigation.navigate("AccountHome", { account });
@@ -176,7 +188,7 @@ function PaymentScreen({ route, navigation }) {
           )}
 
           {transactionConfirmed && (
-            <View style={styles.container}>
+            <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
               <Text style={styles.headerText}>Payment Options</Text>
               {cards.length > 0 ? (
                 <FlatList
@@ -199,6 +211,7 @@ function PaymentScreen({ route, navigation }) {
                       </View>
                     </TouchableOpacity>
                   )}
+                scrollEnabled={false}
                 />
               ) : (
                 <Text style={styles.subheaderText}>No cards available</Text>
@@ -227,7 +240,7 @@ function PaymentScreen({ route, navigation }) {
                   </Button>
                 </View>
               )}
-            </View>
+            </ScrollView>
           )}
         </View>
       </View>
@@ -246,7 +259,8 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     alignSelf: "center",
-    marginTop: 40 * scale,
+    marginTop: 20 * scale,
+    marginBottom: 20 * scale,
     width: "80%",
   },
   cancelButton: {
@@ -272,7 +286,6 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   container: {
-    justifyContent: "center",
     width: "90%",
   },
   date: {

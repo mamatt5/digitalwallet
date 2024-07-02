@@ -273,6 +273,16 @@ export const getItems = async (transactionId: string) => {
   }
 }
 
+export const checkTransaction = async (transaction_ref: string) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/transactions/checktransaction/${transaction_ref}`);
+    return response.data;
+  } catch (error) {
+    console.error('Check Transaction error:', error);
+    throw error;
+  }
+}
+
 export const addTransaction = async (transaction) => {
   try {
     const response = await axios.post(`${API_BASE_URL}/transactions/addtransaction`, transaction);
