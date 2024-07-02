@@ -138,7 +138,7 @@ function VoucherScreen({ navigation, route }) {
         <View style={styles.loyaltyCardContainer}>
         
  
-        <ScrollView>
+        <ScrollView contentContainerStyle={{ paddingBottom: 35 }}>
         {merchantsWithVouchers.map((merchant, index) => (
           <View key={index} style={styles.companyContainer}>
             <Text style={styles.companyName}>{merchant.company_name}</Text>
@@ -266,7 +266,7 @@ const styles = StyleSheet.create({
   rewardCardContainer: {
     marginHorizontal: "auto",
     width: '100%', 
-    height: 500,
+    height: 30,
 
     paddingHorizontal: 20,
     paddingVertical: 20,
