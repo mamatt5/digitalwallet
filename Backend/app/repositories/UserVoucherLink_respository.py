@@ -29,8 +29,8 @@ class UserVoucherLinkRepository(RepositoryBase[UserVoucherLink]):
         self.session.refresh(voucher)
         return voucher
 
-    def delete(self, voucher_id: int) -> bool:
-        statement = delete(Voucher).where(Voucher.voucher_id == voucher_id)
+    def delete(self, voucher_id: int, user_id: int) -> bool:
+        statement = delete(UserVoucherLink).where(UserVoucherLink.voucher_id == voucher_id, UserVoucherLink.user_id == user_id)
         result = self.session.exec(statement)
         self.session.commit()
         return result.rowcount > 0
@@ -44,6 +44,7 @@ class UserVoucherLinkRepository(RepositoryBase[UserVoucherLink]):
         statement = select(Voucher).where(Voucher.voucher_id == voucher_id)
         voucher = self.session.exec(statement).first()
         return voucher
+
 
     def get_links_by_user_id(self, user_id: int) ->list[UserVoucherLink]:
         statement = select(UserVoucherLink).where(UserVoucherLink.user_id == user_id)

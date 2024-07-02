@@ -25,6 +25,7 @@ import { getVouchersForUser } from "../../api/api";
 import VoucherCard from "../../components/LoyaltyRewardCard/VoucherCard";
 import { Modal } from "react-native";
 import { TouchableWithoutFeedback } from "react-native";
+import { deleteVoucherForUser } from "../../api/api";
 
 const { width, height } = Dimensions.get("window");
 const scale = width / 320;
@@ -181,6 +182,15 @@ function PaymentScreen({ route, navigation }) {
    
   }
 
+  const deleteVoucher = async () => {
+    try {
+      const response = await deleteVoucherForUser(selectedVoucher.voucher_id, account.account_id);
+      console.log(response);
+      
+    } catch (error) {
+      console.error("Delete Voucher error:", error);
+    }
+  }
   const useVoucher = async () => {
     setDiscount(selectedVoucher.discount / 100.0)
     closeConfirmationModal()
@@ -272,7 +282,6 @@ function PaymentScreen({ route, navigation }) {
               <Text style={styles.headerText}> Select Voucher to Use</Text>
                   <ScrollView horizontal>
                       <FlatList
-                        // data={vouchers}
                         data={userVouchers}
                         renderItem={renderVoucherItem}
                         numColumns={3}
@@ -280,6 +289,7 @@ function PaymentScreen({ route, navigation }) {
                         
                       />
                   </ScrollView>
+
                   <Button
                   style={styles.cancelButton}
                   textColor="white"
