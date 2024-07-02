@@ -192,7 +192,7 @@ export const getVouchersForUser = async(userId: string) => {
 
 export const deleteVoucherForUser = async(voucherId: string, userId: string) => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/vouchers/getvouchersforuser/${userId}`);
+    const response = await axios.delete(`${API_BASE_URL}/vouchers/deletevoucherforuser/${voucherId}/${userId}`);
     return response.data;
   } catch (error) {
     console.error('Add voucher error:', error);

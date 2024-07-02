@@ -160,6 +160,7 @@ function PaymentScreen({ route, navigation }) {
     }
 
     Vibration.vibrate(500);
+    deleteVoucher()
     navigation.navigate("PaymentComplete", {
       parsedData,
       selectedCardData,
@@ -195,7 +196,6 @@ function PaymentScreen({ route, navigation }) {
     setDiscount(selectedVoucher.discount / 100.0)
     closeConfirmationModal()
     setTransactionConfirmed(true)
-    deleteVoucher()
   }
 
   const confirmVoucher = async () => {
