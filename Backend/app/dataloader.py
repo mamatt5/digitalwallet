@@ -67,7 +67,7 @@ def register_card(client, card_register_request: CardRegisterRequest) -> None:
 
 def add_transaction_data(client, users: List[int], items: List) -> None:
     transactions = list()
-    for _ in range(num_transactions):
+    for _ in range(100):
         transactions.append(create_transaction_data(users, items))
     response = client.post("/transactions/addtransactions", json=transactions)
     assert response.status_code == status.HTTP_200_OK, f"Transactions add failed: {response.text}"
