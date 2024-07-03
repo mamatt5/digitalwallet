@@ -35,8 +35,10 @@ function LoginScreen({ navigation }) {
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
       // Clear the text input value when the screen comes into focus
-      setEmail("");
-      setPassword("");
+      setEmail("")
+      setPassword("")
+      setEmailError(false)
+      setPasswordError(false)
     });
     return unsubscribe;
   }, [navigation]);
@@ -66,16 +68,16 @@ function LoginScreen({ navigation }) {
 
   
 
-    let response = false
+    let validAccount = false
     try {
-      response = await authenticateAccount(password, email.toLocaleLowerCase())
+      validAccount = await authenticateAccount(password, email.toLocaleLowerCase())
       // console.log("authenticate")
       // console.log(response)
     } catch (error) {
       console.error("Checking Pass Error")
     }
 
-    if (response) {
+    if (!validAccount) {
       setEmailError(true);
       setPasswordError(true);
       return;

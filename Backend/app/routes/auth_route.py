@@ -31,4 +31,4 @@ def register_route(register_request: RegisterRequest, auth_service: AuthService 
 
 @router.get("/authenticateaccount/{email}/{password}")
 def authenticate_account(password: str, email: str, auth_service :AuthService = Depends(AuthService)) -> bool:
-    return auth_service.authenticate_account(email, password) == None
+    return auth_service.authenticate_account(email, password) != None
