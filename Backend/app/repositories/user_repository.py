@@ -4,6 +4,7 @@ from fastapi import Depends
 from models.user import User
 from repositories.base_repository import RepositoryBase
 from sqlmodel import Session, delete, select, update
+from models.vouchers import Voucher
 
 
 
@@ -39,3 +40,13 @@ class UserRepository(RepositoryBase[User]):
         statement = select(User).where(User.account_id == account_id)
         user = self.session.exec(statement).first()
         return user
+
+    def add_voucher_to_user(self, user_id: int, voucher_id: int):
+        statement = select(Voucher).where(Voucher.voucher_id == voucher_id)
+        voucher = self.session.exec(statement).first()
+        user = self.get_by_id(user_id)
+        user.vouchers.append(voucher)
+        self.session.add(user)
+        self.session.commit()
+
+

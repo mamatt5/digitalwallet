@@ -149,6 +149,48 @@ export const getMerchant = async (accountId: string) => {
   }
 };
 
+export const getAllMerchants = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/accounts/getmerchants`);
+    return response.data;
+  } catch (error) {
+    console.error('Get all Merchants error:', error);
+    throw error;
+  }
+};
+
+
+export const getAllMerchantsAndVouchers = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/accounts/getmerchantandvouchers`);
+    return response.data;
+  } catch (error) {
+    console.error('Get all Vouchers error:', error);
+    throw error;
+  }
+};
+
+export const AddVoucherToUser = async(userId: string, voucherId: string) => {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/accounts/addVoucher/${userId}/${voucherId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Add voucher error:', error);
+    throw error;
+  }
+}
+
+export const getVouchersForUser = async(userId: string) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/vouchers/getvouchersforuser/${userId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Add voucher error:', error);
+    throw error;
+  }
+}
+
+
 export const getAccount = async (accountId: string) => {
   try {
     const response = await axios.get(`${API_BASE_URL}/accounts/getaccount/${accountId}`);

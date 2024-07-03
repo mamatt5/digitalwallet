@@ -84,24 +84,24 @@ REM Start the frontend
 echo Starting frontend development server
 start "Frontend Server" cmd /c "npm run start"
 
-REM ### MOCKPOS ###
+@REM REM ### MOCKPOS ###
 
-cd ../MockPOS
+@REM cd ../MockPOS
 
-REM Start the POS server
-cd app
-start "POS Server" cmd /c "python -m uvicorn server:app --host 0.0.0.0 --reload --port 8001"
+@REM REM Start the POS server
+@REM cd app
+@REM start "POS Server" cmd /c "python -m uvicorn server:app --host 0.0.0.0 --reload --port 8001"
 
-REM Install POS CLI dependencies if package.json exists
-cd ../interface
+@REM REM Install POS CLI dependencies if package.json exists
+@REM cd ../interface
 
-if exist "package.json" (
-    echo Installing POS CLI dependencies
-    call npm install
-    if %errorlevel% neq 0 (
-        echo Failed to install POS CLI dependencies
-        exit /b 1
-    )
-)
+@REM if exist "package.json" (
+@REM     echo Installing POS CLI dependencies
+@REM     call npm install
+@REM     if %errorlevel% neq 0 (
+@REM         echo Failed to install POS CLI dependencies
+@REM         exit /b 1
+@REM     )
+@REM )
 
-start "POS CLI" cmd /c "npm run build && npm run start"
+@REM start "POS CLI" cmd /c "npm run build && npm run start"

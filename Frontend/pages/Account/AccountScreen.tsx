@@ -24,6 +24,7 @@ import {
 } from "../../api/api";
 import CardTabs from "../../components/CardFilterTabs/CardTabs";
 import ProfileButton from "../../components/ProfileButton/ProfileButton";
+import ProfileModal from "../../components/ProfileModal/ProfileModal";
 
 const { width, height } = Dimensions.get("window");
 const scale = width / 320;
@@ -36,14 +37,17 @@ function AccountScreen({ navigation, route }) {
   const [transactions, setTransactions] = useState([]);
   const { account } = route.params;
   const [loggedAccount, setLoggedAccount] = useState("");
+  const [name, setName] = useState("");
   const [refresh, setRefresh] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const fetchAccountInfo = async () => {
     if (account.account_type === "user") {
       try {
         const response = await getUser(account.account_id);
-        setLoggedAccount(response.first_name);
+        setLoggedAccount(response.first_name + " " + response.last_name);
+        setName(response.first_name);
       } catch (error) {
         console.error("Get User error:", error);
       }
@@ -51,6 +55,7 @@ function AccountScreen({ navigation, route }) {
       try {
         const response = await getMerchant(account.account_id);
         setLoggedAccount(response.company_name);
+        setName(response.company_name);
       } catch (error) {
         console.error("Get Merchant error:", error);
       }
@@ -89,10 +94,16 @@ function AccountScreen({ navigation, route }) {
     }
   };
 
+  const handleModal = (modalValue) => {
+    setIsModalOpen(modalValue);
+  };
+
   const _renderItem = ({ item }) => {
     if (activeTabIndex === 0) {
       return (
-        <TouchableOpacity onLongPress={() => handleLongPress(item.card_id, item.card_number)}>
+        <TouchableOpacity
+          onLongPress={() => handleLongPress(item.card_id, item.card_number)}
+        >
           <DebitCard bankCard={item} />
         </TouchableOpacity>
       );
@@ -136,7 +147,7 @@ function AccountScreen({ navigation, route }) {
             deleteCard(cardId);
           },
         },
-      ],
+      ]
     );
   };
 
@@ -176,12 +187,19 @@ function AccountScreen({ navigation, route }) {
 
   return (
     <SafeAreaView style={styles.container}>
+      {isModalOpen && <ProfileModal 
+                        name= {loggedAccount} 
+                        navigation={navigation} 
+                        setModalstate={handleModal} />}
+
       <View style={styles.centerView}>
         <View style={styles.header}>
-          <Text style={styles.titleText}>Welcome, {loggedAccount}!</Text>
-          <View style={styles.profileButton}>
-            <ProfileButton />
-          </View>
+          <Text style={styles.titleText}>Welcome, {name}!</Text>
+        </View>
+        <View style={styles.profileButton}>
+          <TouchableOpacity onPress={() => setIsModalOpen(true)}>
+          <ProfileButton />
+          </TouchableOpacity>
         </View>
 
         <CardTabs
@@ -251,7 +269,9 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   profileButton: {
-    marginLeft: 10 * scale,
+    position: "absolute",
+    top: 5 * scale,
+    right: 20 * scale,
   },
   container: {
     backgroundColor: "#0f003f",

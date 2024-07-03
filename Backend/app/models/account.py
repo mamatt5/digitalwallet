@@ -1,5 +1,6 @@
 from enum import Enum
 from typing import TYPE_CHECKING, Optional
+from typing import List
 
 from sqlmodel import Field, Relationship, SQLModel
 
@@ -8,16 +9,17 @@ if TYPE_CHECKING:
     from models.merchant import Merchant
     from models.user import User
     from models.wallet import Wallet
+    from models.vouchers import Voucher
 
 
 class AccountType(str, Enum):
     """Enum for the type of account"""
     MERCHANT = "merchant"
-    USER = "user"
-
+    USER = "user" 
+ 
 
 class Account(SQLModel, table=True):
-    """
+    """   
     Account in the database
 
     Attributes:
@@ -36,3 +38,5 @@ class Account(SQLModel, table=True):
     merchant: Optional["Merchant"] = Relationship(back_populates="account", sa_relationship_kwargs={"uselist": False})
     user: Optional["User"] = Relationship(back_populates="account", sa_relationship_kwargs={"uselist": False})
     wallet: Optional["Wallet"] | None = Relationship(back_populates="account", sa_relationship_kwargs={"uselist": False})
+
+    

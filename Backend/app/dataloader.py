@@ -10,6 +10,7 @@ from main import app
 from models.account import AccountType
 from schemas.auth_schema import AuthResponse, RegisterRequest
 from schemas.card_schema import CardRegisterRequest
+from schemas.voucher_schema import VoucherRequest
 
 logging.basicConfig(filename='app.log', 
                     filemode='w', 
@@ -52,7 +53,7 @@ def create_register_request(account_type: AccountType) -> RegisterRequest:
 def create_card_data() -> Dict:
     logger.info("Creating card data")
     return {
-        "card_number": fake.credit_card_number(),
+        "card_number": fake.pystr_format(string_format="################"),
         "card_expiry": fake.credit_card_expire(),
         "card_cvv": fake.credit_card_security_code(),
     }
@@ -367,6 +368,9 @@ def add_card_to_wallet(client, auth_response: AuthResponse, card_data: Dict) -> 
     logger.info("Card added to wallet successfully")
 
 
+
+
+
 def generate_dummy_data(client: TestClient, num_records: int) -> List[int]:
     logger.info(f"Generating dummy data for {num_records} records")
     users = list()
@@ -481,6 +485,118 @@ if __name__ == "__main__":
         )
         register_account(client, register_request)
 
+        voucher_request = VoucherRequest(
+            merchant_name = "coles",
+            description = "40% voucher",
+            merchant_id = 15,
+            discount = 40,
+            price = 10,
+        )
+
+        add_voucher_to_merchant(client, voucher_request)
+
+        voucher_request = VoucherRequest(
+            merchant_name = "Coles",
+            description = "50% voucher",
+            merchant_id = 15,
+            discount = 50,
+            price = 15
+        )
+
+        add_voucher_to_merchant(client, voucher_request)
+
+        voucher_request = VoucherRequest(
+            merchant_name = "Woolworths",
+            description = "60% voucher",
+            merchant_id = 16,
+            discount = 60,
+            price = 20
+        )
+
+        add_voucher_to_merchant(client, voucher_request)
+
+        voucher_request = VoucherRequest(
+            merchant_name = "Woolworths",
+            description = "60% voucher",
+            merchant_id = 16,
+            discount = 60,
+            price = 20
+        )
+
+        add_voucher_to_merchant(client, voucher_request)
+
+        voucher_request = VoucherRequest(
+            merchant_name = "Woolworths",
+            description = "60% voucher",
+            merchant_id = 16,
+            discount = 60,
+            price = 20
+        )
+
+        add_voucher_to_merchant(client, voucher_request)
+
+        voucher_request = VoucherRequest(
+            merchant_name = "Woolworths",
+            description = "60% voucher",
+            merchant_id = 16,
+            discount = 60,
+            price = 2000
+        )
+
+        add_voucher_to_merchant(client, voucher_request)
+
+        voucher_request = VoucherRequest(
+            merchant_name = "Lora's Cafe",
+            description = "60% voucher",
+            merchant_id = 13,
+            discount = 60,
+            price = 20
+        )
+
+        add_voucher_to_merchant(client, voucher_request)
+
+        voucher_request = VoucherRequest(
+            merchant_name = "Lora's Cafe",
+            description = "60% voucher",
+            merchant_id = 13,
+            discount = 20,
+            price = 20
+        )
+
+        add_voucher_to_merchant(client, voucher_request)
+
+        voucher_request = VoucherRequest(
+            merchant_name = "Lora's Cafe",
+            description = "60% voucher",
+            merchant_id = 13,
+            discount = 90,
+            price = 20
+        )
+
+        add_voucher_to_merchant(client, voucher_request)
+
+        voucher_request = VoucherRequest(
+            merchant_name = "Lora's Cafe",
+            description = "60% voucher",
+            merchant_id = 13,
+            discount = 20,
+            price = 20
+        )
+
+        add_voucher_to_merchant(client, voucher_request)
+
+        voucher_request = VoucherRequest(
+            merchant_name = "Lora's Cafe",
+            description = "60% voucher",
+            merchant_id = 13,
+            discount = 10,
+            price = 20
+        )
+
+        add_voucher_to_merchant(client, voucher_request)
+
+
+ 
         add_transaction_data(client, users, items)
         
         add_categories(client)

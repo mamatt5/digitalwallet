@@ -3,9 +3,9 @@ from typing import Annotated, List
 from database import get_db_session
 from fastapi import Depends
 from models.merchant import Merchant
+from models.vouchers import Voucher
 from repositories.base_repository import RepositoryBase
 from sqlmodel import Session, delete, select, update
-
 
 
 class MerchantRepository(RepositoryBase[Merchant]):
@@ -40,3 +40,26 @@ class MerchantRepository(RepositoryBase[Merchant]):
         statement = select(Merchant).where(Merchant.account_id == account_id)
         merchant = self.session.exec(statement).first()
         return merchant
+    
+
+    def get_merchant_and_vouchers(self) -> list[dict]:
+        statement = select(Merchant)
+        merchants = self.session.exec(statement).all()
+        merchantsWithVouchers = []
+       
+        for merchant in merchants:
+            vouchers_query = select(Voucher).where(Voucher.merchant_id == merchant.account_id)
+            vouchers = self.session.exec(vouchers_query).all()
+            
+            data = {
+                "company_id": merchant.account_id,
+                "company_name": merchant.company_name,
+                "ABN": merchant.ABN,
+                "vouchers": vouchers
+            }
+            merchantsWithVouchers.append(data)
+            
+        return merchantsWithVouchers
+            
+
+
