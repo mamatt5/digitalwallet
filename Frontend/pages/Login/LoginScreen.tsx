@@ -21,6 +21,7 @@ import APPlogo from "../../assets/APPlogo.png";
 import { Alert } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { getAccountFromEmail } from "../../api/api";
+import { authenticateAccount } from "../../api/api";
 
 function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
@@ -34,8 +35,10 @@ function LoginScreen({ navigation }) {
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
       // Clear the text input value when the screen comes into focus
-      setEmail("");
-      setPassword("");
+      setEmail("")
+      setPassword("")
+      setEmailError(false)
+      setPasswordError(false)
     });
     return unsubscribe;
   }, [navigation]);
@@ -63,9 +66,18 @@ function LoginScreen({ navigation }) {
       return;
     }
 
-    const resp = getAccountFromEmail(email.toLocaleLowerCase());
+  
 
-    if (!(await resp).data) {
+    let validAccount = false
+    try {
+      validAccount = await authenticateAccount(password, email.toLocaleLowerCase())
+      // console.log("authenticate")
+      // console.log(response)
+    } catch (error) {
+      console.error("Checking Pass Error")
+    }
+
+    if (!validAccount) {
       setEmailError(true);
       setPasswordError(true);
       return;

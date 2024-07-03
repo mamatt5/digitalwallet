@@ -75,7 +75,6 @@ function MyRewards({ navigation, route }) {
       try {
       
       let merchant = await getMerchant(e.merchant_id); 
-      console.log(merchant)
       setMerchantName(merchant.company_name)
       } catch (error) {
         console.error("Get Merchant error:", error);

@@ -28,3 +28,7 @@ def register_route(register_request: RegisterRequest, auth_service: AuthService 
     - Raises HTTPException (400) if email or phone number is already registered
     """
     return auth_service.register(register_request)
+
+@router.get("/authenticateaccount/{email}/{password}")
+def authenticate_account(password: str, email: str, auth_service :AuthService = Depends(AuthService)) -> bool:
+    return auth_service.authenticate_account(email, password) != None

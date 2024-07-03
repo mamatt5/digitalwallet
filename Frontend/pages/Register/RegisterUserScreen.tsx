@@ -67,12 +67,13 @@ function RegisterUserScreen({ navigation }) {
     const newFirstNameError = firstName === '' || !/^[a-zA-Z\s]*$/.test(firstName);
     const newLastNameError = lastName === '' || !/^[a-zA-Z\s]*$/.test(lastName);
 
-
+    let doesEmailExist = false
+    let doesMobileExist = false
     if (newEmailError) {
       setEmailError(true);
     } else {
-
-      let doesEmailExist = (await getAccountFromEmail(email.toLocaleLowerCase())).data
+    
+      doesEmailExist = await getAccountFromEmail(email.toLocaleLowerCase())
       
       if (doesEmailExist) {
         setEmailError(true)
@@ -86,7 +87,7 @@ function RegisterUserScreen({ navigation }) {
       setMobileError(true);
     } else {
       
-      let doesMobileExist = (await mobileExist(phoneNumber)).data
+      doesMobileExist = (await mobileExist(phoneNumber)).data
       
       if (doesMobileExist) {
         setMobileError(true)
@@ -99,7 +100,7 @@ function RegisterUserScreen({ navigation }) {
     setFirstNameError(newFirstNameError);
     setLastNameError(newLastNameError);
 
-    if (!newEmailError && !newPhoneNumberError && !newPasswordError && !newFirstNameError && !newLastNameError) {
+    if (!newEmailError && !newPhoneNumberError && !newPasswordError && !newFirstNameError && !newLastNameError && !doesMobileExist && !doesEmailExist) {
       registerAccount(email.toLocaleLowerCase(), password, phoneNumber, 'user', '', '', firstName, lastName)
         .then(navigation.navigate('RegisterSucessful')).catch((error) => console.error('Registration error:', error));
     }
