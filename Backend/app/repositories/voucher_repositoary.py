@@ -5,7 +5,8 @@ from models.vouchers import Voucher
 from database import get_db_session
 from repositories.base_repository import RepositoryBase
 from models.UserVoucherLink import UserVoucherLink
-
+import logging
+logging.basicConfig(level=logging.INFO, filename="py_log.log",filemode="w")
 
 
 class VoucherRepository(RepositoryBase[Voucher]):
@@ -47,9 +48,24 @@ class VoucherRepository(RepositoryBase[Voucher]):
         for link in links:
             statement = select(Voucher).where(Voucher.voucher_id == link.voucher_id)
             voucher = self.session.exec(statement).first()
-            final.append(voucher)
+            if voucher != None:
+                final.append(voucher)
 
         return final
+    
+    def get_vouchers_for_user_and_merchants(self, links: list[UserVoucherLink], merchant_id: int) ->list[Voucher]:
+        logging.info("r u here v2")
+        final = []
+        for link in links:
+            statement = select(Voucher).where(Voucher.voucher_id == link.voucher_id, Voucher.merchant_id == merchant_id)
+            voucher = self.session.exec(statement).first()
+            if voucher != None:
+                final.append(voucher)
+            
+        
+        logging.info(final)
+        return final
+    
     
   
 

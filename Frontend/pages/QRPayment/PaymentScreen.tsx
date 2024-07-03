@@ -26,6 +26,7 @@ import VoucherCard from "../../components/LoyaltyRewardCard/VoucherCard";
 import { Modal } from "react-native";
 import { TouchableWithoutFeedback } from "react-native";
 import { deleteVoucherForUser } from "../../api/api";
+import { getVouchersForUserAndMerchant } from "../../api/api";
 
 const { width, height } = Dimensions.get("window");
 const scale = width / 320;
@@ -64,8 +65,6 @@ function PaymentScreen({ route, navigation }) {
 
   useEffect(() => {
     fetchCards();
-    handleVouchers()
-    console.log(cards);
   }, []);
 
   useEffect(() => {
@@ -80,6 +79,7 @@ function PaymentScreen({ route, navigation }) {
       ) {
         setIsValidQR(true);
         setParsedData(parsed);
+        handleVouchers(parsed.account_id)
       }
     } catch (error) {
       console.error("Error parsing QR data", error);
@@ -160,7 +160,11 @@ function PaymentScreen({ route, navigation }) {
     }
 
     Vibration.vibrate(500);
-    deleteVoucher()
+
+    if (userVouchers.length != 0) {
+      deleteVoucher()
+    }
+    
     navigation.navigate("PaymentComplete", {
       parsedData,
       selectedCardData,
@@ -170,14 +174,16 @@ function PaymentScreen({ route, navigation }) {
     });
   };
 
-  const handleVouchers = async () => {
+  const handleVouchers = async (account_id) => {
     if (account.account_type === "user") {
       try {
-        const response = await getVouchersForUser(account.account_id);
+        console.log(typeof(account_id.toString()))
+        console.log(typeof(account.account_id))
+        const response = await getVouchersForUserAndMerchant(account_id.toString(), account.account_id.toString());
         console.log(response);
         setUserVouchers(response)
       } catch (error) {
-        console.error("Get Cards error:", error);
+        console.error("Get Vouchers belonging to User for a Merchant error:", error);
       }
     }
    

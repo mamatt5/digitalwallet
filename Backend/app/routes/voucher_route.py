@@ -3,6 +3,8 @@ from schemas.voucher_schema import VoucherInfo
 from models.vouchers import Voucher
 from services.voucher_service import VoucherService
 from fastapi import APIRouter, Depends
+import logging
+logging.basicConfig(level=logging.INFO, filename="py_log.log",filemode="w")
 
 router = APIRouter(prefix="/vouchers", tags=["Vouchers"])
 
@@ -30,3 +32,13 @@ def get_vouchers_route(user_id: int, voucher_service: VoucherService = Depends(V
 @router.delete("/deletevoucherforuser/{voucher_id}/{user_id}")
 def delete_voucher_for_user(voucher_id: int, user_id: int, voucher_service: VoucherService = Depends(VoucherService)) -> bool:
     return voucher_service.delete_voucher_for_user(voucher_id, user_id)
+
+@router.get("/getvouchersforuser/{user_id}")
+def get_vouchers_route(user_id: int, voucher_service: VoucherService = Depends(VoucherService)) -> list[Voucher]:
+    return voucher_service.get_vouchers_for_user(user_id)
+
+
+@router.get("/getvouchersforuserandmerchant/{merchant_id}/{user_id}")
+def get_vouchers_route_for_user_and_merchant(merchant_id:int, user_id: int, voucher_service: VoucherService = Depends(VoucherService)) -> list[Voucher]:
+    return voucher_service.get_vouchers_for_user_and_merchant(merchant_id, user_id)
+

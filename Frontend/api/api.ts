@@ -190,6 +190,21 @@ export const getVouchersForUser = async(userId: string) => {
   }
 }
 
+
+
+export const getVouchersForUserAndMerchant = async(merchantId:string, userId: string) => {
+  try {
+    console.log(merchantId)
+    console.log(userId)
+    console.log("bruoo")
+    const response = await axios.get(`${API_BASE_URL}/vouchers/getvouchersforuserandmerchant/${merchantId}/${userId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Get Vouchers belonging to User for a Merchant error:", error);
+    throw error;
+  }
+}
+
 export const deleteVoucherForUser = async(voucherId: string, userId: string) => {
   try {
     const response = await axios.delete(`${API_BASE_URL}/vouchers/deletevoucherforuser/${voucherId}/${userId}`);

@@ -50,3 +50,8 @@ class UserVoucherLinkRepository(RepositoryBase[UserVoucherLink]):
         statement = select(UserVoucherLink).where(UserVoucherLink.user_id == user_id)
         links = self.session.exec(statement).all()
         return links
+    
+    # def get_links_by_user_id_and_merchant_id(self, merchant_id: int, user_id: int) -> list[UserVoucherLink]:
+    #     statement = select(UserVoucherLink).where( UserVoucherLink.user_id == user_id)
+    #     links = self.session.exec(statement).all()
+    #     return links
