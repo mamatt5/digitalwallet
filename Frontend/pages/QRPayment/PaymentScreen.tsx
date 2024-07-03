@@ -32,6 +32,7 @@ const { width, height } = Dimensions.get("window");
 const scale = width / 320;
 
 function PaymentScreen({ route, navigation }) {
+  const [refresh, setRefresh] = useState(false);
   const { data, account } = route.params;
   const [cards, setCards] = useState([]);
   const [transactionConfirmed, setTransactionConfirmed] = useState(false);
@@ -52,6 +53,15 @@ function PaymentScreen({ route, navigation }) {
     price: "price",
     voucher_id: "voucher_id"
   })
+
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      setRefresh((prev) => !prev);
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   const fetchCards = async () => {
     try {
@@ -200,13 +210,13 @@ function PaymentScreen({ route, navigation }) {
   }
   const useVoucher = async () => {
     setDiscount(selectedVoucher.discount / 100.0)
+    setVoucherScreen(false)
     closeConfirmationModal()
     setTransactionConfirmed(true)
   }
 
   const confirmVoucher = async () => {
     setModalVisible(false)
-    setVoucherScreen(false)
     setConfirmVoucherModalVisible(true)
   }
   const renderVoucherItem = ({ item }) => (
@@ -333,7 +343,7 @@ function PaymentScreen({ route, navigation }) {
                         <Text style={styles.titleText}> Voucher Confirmation</Text>
                         
                         <Text style={styles.subheading}>Are you sure you want to use this Voucher</Text>
-                        <Text style={styles.subheading}>Your new total will be </Text>
+                        <Text style={styles.subheading}>Your new total will be {parsedData.amount * discount}</Text>
                         <Text style={styles.subheading}>Once this voucher is used it cannot be used again</Text>
                   
                         
