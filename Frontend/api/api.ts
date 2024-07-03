@@ -57,6 +57,17 @@ export const registerAccount = async (
   }
 };
 
+export const authenticateAccount = async(password: string, email: string) => {
+
+  try {
+    const response = await axios.get(`${API_BASE_URL}/auth/authenticateaccount/${email}/${password}`);
+    return response.data;
+  } catch (error) {
+    console.error('Authenticate Account error:', error);
+    throw error;
+  }
+}
+
 export const getWalletCards = async (walletId: string) => {
   try {
     const response = await axios.get(`${API_BASE_URL}/cards/getcardsfromwallet/${walletId}`);

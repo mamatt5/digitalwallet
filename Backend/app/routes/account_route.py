@@ -29,8 +29,8 @@ def get_account_route(account_id: int, account_service: AccountService = Depends
     return account_service.get_account_with_id(account_id)
 
 @router.get("/getaccountfromemail/{email}")
-def get_account_with_email_route(email: str, account_service: AccountService = Depends(AccountService)) -> bool:
-    return account_service.get_account_with_email(email) != None
+def get_account_with_email_route(email: str, account_service: AccountService = Depends(AccountService)) -> Account:
+    return account_service.get_account_with_email(email)
 
 @router.get("/getaccountfrommobile/{mobileNumber}")
 def get_account_with_email_route(mobileNumber: str, account_service: AccountService = Depends(AccountService)) -> bool:

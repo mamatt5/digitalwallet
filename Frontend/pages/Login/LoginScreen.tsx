@@ -21,6 +21,7 @@ import APPlogo from "../../assets/APPlogo.png";
 import { Alert } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { getAccountFromEmail } from "../../api/api";
+import { authenticateAccount } from "../../api/api";
 
 function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
@@ -63,9 +64,18 @@ function LoginScreen({ navigation }) {
       return;
     }
 
-    const resp = getAccountFromEmail(email.toLocaleLowerCase());
+  
 
-    if (!(await resp).data) {
+    let response = false
+    try {
+      response = await authenticateAccount(password, email.toLocaleLowerCase())
+      // console.log("authenticate")
+      // console.log(response)
+    } catch (error) {
+      console.error("Checking Pass Error")
+    }
+
+    if (response) {
       setEmailError(true);
       setPasswordError(true);
       return;
