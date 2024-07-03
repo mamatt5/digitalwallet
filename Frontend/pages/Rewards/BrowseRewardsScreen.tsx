@@ -85,7 +85,6 @@ function VoucherScreen({ navigation, route }) {
   })
 
   const openModal = (e) => {
-    console.log("nig")
     console.log(e)
     setSelectedVoucher(e)
     setModalVisible(true);

@@ -42,8 +42,6 @@ function RewardsScreen({navigation, route}) {
         {activeTabIndex === 0 ? (
             <View style={styles.noTransactionsContainer}>
               <Text style={styles.noCardText}>Browse Rewards</Text>
-              {/* <BrowseRewards></BrowseRewards>
-              <Text style={styles.noCardText}>Browse Rewards</Text> */}
               <VoucherScreen navigation={navigation} route={route}></VoucherScreen>
             </View>
           ) : (

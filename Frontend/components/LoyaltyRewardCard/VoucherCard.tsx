@@ -2,7 +2,7 @@ import React from 'react';
 import {View, StyleSheet, Text, Pressable, Image, Dimensions, TouchableWithoutFeedback} from 'react-native';
 import ColesLogo from '../../assets/ColesLogo.png';
 import WoolworthsLogo from '../../assets/WoolworthsLogo.png';
-import RedBalloonLogo from '../../assets/RedBalloonLogo.png';
+import LoraLogo from '../../assets/LoraLogo.png';
 import MaccasLogo from '../../assets/MaccasLogo.jpg';
 import KfcLogo from '../../assets/KfcLogo.png';
 import { useState } from 'react';
@@ -18,19 +18,17 @@ type itemDetails = {
 
 
 
-function processLogo(rewardNumber) {
-  
-  switch (rewardNumber) {
-    case 1: 
+function processLogo(companyId) {
+  console.log(companyId);
+  switch (companyId) {
+    case 13: 
+      return LoraLogo
+    case 15: 
       return ColesLogo
-    case 2: 
+    case 16: 
       return WoolworthsLogo
-    case 3: 
-      return MaccasLogo
-    case 4: 
-      return KfcLogo
     default: 
-      return RedBalloonLogo
+      return null
   }
 }
 
@@ -45,8 +43,8 @@ function VoucherCard({itemDetails, openModal}) {
         <View style={styles.container}>
         <TouchableWithoutFeedback onPress={()=>openModal(itemDetails)}>
           <View style={styles.roundedRectangle}>
-            {/* Your content here */}
-            <Text>Voucher</Text>
+            <Image source={processLogo(itemDetails.merchant_id)} style={styles.cardImage}/>
+            <Text>{itemDetails.merchant_name}</Text>
           </View>
         </TouchableWithoutFeedback>
   
@@ -82,9 +80,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
       },
     cardImage: {
-      height: '50%',
-      width: '50%',
-      position: 'absolute'
+      height: '100%',
+      width: '100%',
+      position: 'absolute',
+      zIndex: 1,
+      top:0,
+      left:0,
+      borderRadius: 20
     },
     pointContainer: {
       display: 'flex',
