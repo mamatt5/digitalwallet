@@ -115,6 +115,7 @@ function PaymentScreen({ route, navigation }) {
 
   const openModal = (e) => {
     setSelectedVoucher(e)
+    setDiscount(e.discount / 100.0)
     setModalVisible(true);
     return e
   };
@@ -209,7 +210,6 @@ function PaymentScreen({ route, navigation }) {
     }
   }
   const useVoucher = async () => {
-    setDiscount(selectedVoucher.discount / 100.0)
     setVoucherScreen(false)
     closeConfirmationModal()
     setTransactionConfirmed(true)
