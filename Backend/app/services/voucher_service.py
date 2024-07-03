@@ -29,7 +29,6 @@ class VoucherService:
     
     def get_vouchers_for_user_and_merchant(self, merchant_id: int, user_id: int) -> list[Voucher]:
         links = self.userVoucherLink_Repository.get_links_by_user_id(user_id)
-        logging.info("r u here")
         return self.voucher_repository.get_vouchers_for_user_and_merchants(links, merchant_id)
 
     def delete_voucher_for_user(self, voucher_id: int, user_id: int) -> bool:

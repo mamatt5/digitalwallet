@@ -194,9 +194,6 @@ export const getVouchersForUser = async(userId: string) => {
 
 export const getVouchersForUserAndMerchant = async(merchantId:string, userId: string) => {
   try {
-    console.log(merchantId)
-    console.log(userId)
-    console.log("bruoo")
     const response = await axios.get(`${API_BASE_URL}/vouchers/getvouchersforuserandmerchant/${merchantId}/${userId}`);
     return response.data;
   } catch (error) {

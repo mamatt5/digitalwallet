@@ -3,8 +3,6 @@ from schemas.voucher_schema import VoucherInfo
 from models.vouchers import Voucher
 from services.voucher_service import VoucherService
 from fastapi import APIRouter, Depends
-import logging
-logging.basicConfig(level=logging.INFO, filename="py_log.log",filemode="w")
 
 router = APIRouter(prefix="/vouchers", tags=["Vouchers"])
 

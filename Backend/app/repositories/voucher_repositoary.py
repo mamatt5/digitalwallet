@@ -54,7 +54,6 @@ class VoucherRepository(RepositoryBase[Voucher]):
         return final
     
     def get_vouchers_for_user_and_merchants(self, links: list[UserVoucherLink], merchant_id: int) ->list[Voucher]:
-        logging.info("r u here v2")
         final = []
         for link in links:
             statement = select(Voucher).where(Voucher.voucher_id == link.voucher_id, Voucher.merchant_id == merchant_id)
@@ -62,8 +61,6 @@ class VoucherRepository(RepositoryBase[Voucher]):
             if voucher != None:
                 final.append(voucher)
             
-        
-        logging.info(final)
         return final
     
     
