@@ -12,6 +12,7 @@ import { QRCode as CustomQRCode } from '@jackybaby/react-custom-qrcode';
 import { connectToWebSocket, getMerchant } from "../../api/api";
 import React from "react";
 import axios from "axios";
+import { LOCAL_IP } from '@env';
 
 const { width, height } = Dimensions.get("window");
 const scale = width / 320;
@@ -25,7 +26,8 @@ function QRGenerateMerchantScreen({ route }) {
   const [merchant, setMerchant] = useState("");
   const [image, setImage] = useState(null);
 
-  const QR_IMAGE_ENDPOINT = "http://192.168.6.195:8000/qr_images/get/merchantId/13";
+  const QR_IMAGE_ENDPOINT = `http://${LOCAL_IP}:8000/qr_images/get/merchantId/13`;
+  console.log(QR_IMAGE_ENDPOINT)
   const getQRImage = async () => {
     try {
       const response = await axios.get(QR_IMAGE_ENDPOINT, { responseType: 'blob' });

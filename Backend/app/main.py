@@ -52,5 +52,6 @@ app.include_router(generateQRCode2.router)
 app.include_router(transaction_route.router)
 app.include_router(wallet_route.router)
 app.include_router(qr_image_route.router)
-app.include_router(category_route.router)app.include_router(voucher_route.router)
+app.include_router(category_route.router)
+app.include_router(voucher_route.router)
 
