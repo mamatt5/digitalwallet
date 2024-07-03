@@ -25,7 +25,7 @@ function QRGenerateMerchantScreen({ route }) {
   const [merchant, setMerchant] = useState("");
   const [image, setImage] = useState(null);
 
-  const QR_IMAGE_ENDPOINT = "http://localhost:8000/qr_images/get/merchantId/13";
+  const QR_IMAGE_ENDPOINT = "http://192.168.6.195:8000/qr_images/get/merchantId/13";
   const getQRImage = async () => {
     try {
       const response = await axios.get(QR_IMAGE_ENDPOINT, { responseType: 'blob' });

@@ -3,7 +3,6 @@ from services.qr_image_service import QRImageService
 from fastapi import APIRouter, File, Form, UploadFile, HTTPException, Depends
 from fastapi.responses import StreamingResponse
 from typing import Dict
-# import magic
 import io
 
 router = APIRouter(prefix="/qr_images", tags=["QRImages"])
@@ -18,30 +17,22 @@ async def upload_image_route(name: str = Form(...), merchant_id: int = Form(...)
         raise HTTPException(status_code=400, detail="Image upload failed") from e
 
 
-# @router.get("/get/{qr_image_id}")
-# def get_qr_image_route(qr_image_id: int, qr_image_service: QRImageService = Depends(QRImageService)) -> QRImage:
-#     image = qr_image_service.get_qr_image(qr_image_id)
-#     if image is None:
-#         raise HTTPException(status_code=404, detail="Image not found")
+@router.get("/get/{qr_image_id}")
+def get_qr_image_route(qr_image_id: int, qr_image_service: QRImageService = Depends(QRImageService)) -> QRImage:
+    image = qr_image_service.get_qr_image(qr_image_id)
+    if image is None:
+        raise HTTPException(status_code=404, detail="Image not found")
     
-#     # Use python-magic to detect the MIME type
-#     mime = magic.Magic(mime=True)
-#     mime_type = mime.from_buffer(image.data)
-    
-#     return StreamingResponse(io.BytesIO(image.data), media_type=mime_type)
+    return StreamingResponse(io.BytesIO(image.data), media_type="image/png")
 
 
-# @router.get("/get/merchantId/{merchant_id}")
-# def get_qr_image_route(merchant_id: int, qr_image_service: QRImageService = Depends(QRImageService)) -> QRImage:
-#     image = qr_image_service.get_qr_image_by_merchant_id(merchant_id)
-#     if image is None:
-#         raise HTTPException(status_code=404, detail="Image not found")
+@router.get("/get/merchantId/{merchant_id}")
+def get_qr_image_route(merchant_id: int, qr_image_service: QRImageService = Depends(QRImageService)) -> QRImage:
+    image = qr_image_service.get_qr_image_by_merchant_id(merchant_id)
+    if image is None:
+        raise HTTPException(status_code=404, detail="Image not found")
     
-#     # Use python-magic to detect the MIME type
-#     # mime = magic.Magic(mime=True)
-#     # mime_type = mime.from_buffer(image.data)
-    
-#     return StreamingResponse(io.BytesIO(image.data), media_type=mime_type)
+    return StreamingResponse(io.BytesIO(image.data), media_type="image/png")
 
 
 @router.put("/update")
