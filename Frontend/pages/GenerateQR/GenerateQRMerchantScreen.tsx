@@ -8,8 +8,10 @@ import {
 } from "react-native";
 import { Table, Row, Rows } from "react-native-table-component";
 import QRCode from "react-native-qrcode-svg";
+import { QRCode as CustomQRCode } from '@jackybaby/react-custom-qrcode';
 import { connectToWebSocket, getMerchant } from "../../api/api";
 import React from "react";
+import axios from "axios";
 
 const { width, height } = Dimensions.get("window");
 const scale = width / 320;
@@ -21,6 +23,18 @@ function QRGenerateMerchantScreen({ route }) {
   const [isLoading, setIsLoading] = useState(true);
   const { width } = Dimensions.get("window");
   const [merchant, setMerchant] = useState("");
+  const [image, setImage] = useState(null);
+
+  const QR_IMAGE_ENDPOINT = "http://localhost:8000/qr_images/get/merchantId/13";
+  const getQRImage = async () => {
+    try {
+      const response = await axios.get(QR_IMAGE_ENDPOINT, { responseType: 'blob' });
+      const blob = URL.createObjectURL(new Blob([response.data], { type: "image/png" }));
+      setImage(blob);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const fetchAccountInfo = async (account, setMerchant) => {
     try {
@@ -33,6 +47,7 @@ function QRGenerateMerchantScreen({ route }) {
 
   useEffect(() => {
     fetchAccountInfo(account, setMerchant);
+    getQRImage();
   }, [account]);
 
   useEffect(() => {
@@ -69,10 +84,10 @@ function QRGenerateMerchantScreen({ route }) {
   const tableHead = ["Item", "Quantity", "Price ($)"];
   const tableData = transactionData
     ? transactionData.items.map((item) => [
-        item.name,
-        item.quantity.toString(),
-        `$${formatPrice(item.price)}`,
-      ])
+      item.name,
+      item.quantity.toString(),
+      `$${formatPrice(item.price)}`,
+    ])
     : [];
 
   return (
@@ -106,12 +121,28 @@ function QRGenerateMerchantScreen({ route }) {
             </Text>
           </View>
           <View style={styles.qrCodeContainer}>
-            <QRCode
-              value={qrData}
-              size={0.45 * width}
-              color="white"
-              backgroundColor="#0f003f"
-            />
+            {image ?
+              <CustomQRCode
+                value={qrData}
+                size={260}
+                bgColor="transparent"
+                fgColor="#000000"
+                logoImage={image}
+                logoWidth={260}
+                logoHeight={260}
+                logoOpacity={0.3}
+                removeQrCodeBehindLogo={false}
+                qrStyle="dots"
+                ecLevel="H"
+                id="myQRCode"
+              /> :
+              <QRCode
+                value={qrData}
+                size={0.45 * width}
+                color="white"
+                backgroundColor="#0f003f"
+              />}
+
           </View>
         </View>
       )}

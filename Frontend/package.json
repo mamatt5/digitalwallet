@@ -13,6 +13,7 @@
     "@expo/config": "~9.0.0",
     "@expo/metro-config": "~0.18.1",
     "@expo/metro-runtime": "~3.2.1",
+    "@jackybaby/react-custom-qrcode": "^2.7.6",
     "@kichiyaki/react-native-barcode-generator": "^0.6.7",
     "@react-native-community/checkbox": "^0.5.17",
     "@react-native-picker/picker": "2.7.5",
