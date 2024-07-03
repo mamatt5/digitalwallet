@@ -72,8 +72,8 @@ function RegisterUserScreen({ navigation }) {
     if (newEmailError) {
       setEmailError(true);
     } else {
-
-      doesEmailExist = (await getAccountFromEmail(email.toLocaleLowerCase())).data
+    
+      doesEmailExist = await getAccountFromEmail(email.toLocaleLowerCase())
       
       if (doesEmailExist) {
         setEmailError(true)
