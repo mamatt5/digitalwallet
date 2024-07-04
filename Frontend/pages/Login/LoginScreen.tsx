@@ -204,8 +204,8 @@ const scale = width / 320;
 
 const styles = StyleSheet.create({
   APPlogo: {
-    width: 200 * scale,
-    height: 200 * scale,
+    width: 175 * scale,
+    height: 175 * scale,
     marginLeft: "auto",
     marginRight: "auto",
     marginTop: 50,
