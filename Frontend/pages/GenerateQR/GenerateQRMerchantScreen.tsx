@@ -5,14 +5,14 @@ import {
   ActivityIndicator,
   StyleSheet,
   Dimensions,
+  Image,
 } from "react-native";
 import { Table, Row, Rows } from "react-native-table-component";
 import QRCode from "react-native-qrcode-svg";
-import { QRCode as CustomQRCode } from '@jackybaby/react-custom-qrcode';
 import { connectToWebSocket, getMerchant } from "../../api/api";
 import React from "react";
 import axios from "axios";
-import { LOCAL_IP } from '@env';
+import { LOCAL_IP } from "@env";
 
 const { width, height } = Dimensions.get("window");
 const scale = width / 320;
@@ -26,17 +26,18 @@ function QRGenerateMerchantScreen({ route }) {
   const [merchant, setMerchant] = useState("");
   const [image, setImage] = useState(null);
 
-  const QR_IMAGE_ENDPOINT = `http://${LOCAL_IP}:8000/qr_images/get/merchantId/13`;
-  console.log(QR_IMAGE_ENDPOINT)
-  const getQRImage = async () => {
-    try {
-      const response = await axios.get(QR_IMAGE_ENDPOINT, { responseType: 'blob' });
-      const blob = URL.createObjectURL(new Blob([response.data], { type: "image/png" }));
-      setImage(blob);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const QR_IMAGE_ENDPOINT = `http://${LOCAL_IP}:8000/qr_images/get/merchantId/${account.account_id}`;
+  console.log("QRimage: ", QR_IMAGE_ENDPOINT)
+
+  // const getQRImage = async () => {
+  //   try {
+  //     const response = await axios.get(QR_IMAGE_ENDPOINT, { responseType: 'blob' });
+  //     const blob = URL.createObjectURL(new Blob([response.data], { type: "image/png" }));
+  //     setImage(blob);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   const fetchAccountInfo = async (account, setMerchant) => {
     try {
@@ -49,7 +50,7 @@ function QRGenerateMerchantScreen({ route }) {
 
   useEffect(() => {
     fetchAccountInfo(account, setMerchant);
-    getQRImage();
+    // getQRImage();
   }, [account]);
 
   useEffect(() => {
@@ -86,10 +87,10 @@ function QRGenerateMerchantScreen({ route }) {
   const tableHead = ["Item", "Quantity", "Price ($)"];
   const tableData = transactionData
     ? transactionData.items.map((item) => [
-      item.name,
-      item.quantity.toString(),
-      `$${formatPrice(item.price)}`,
-    ])
+        item.name,
+        item.quantity.toString(),
+        `$${formatPrice(item.price)}`,
+      ])
     : [];
 
   return (
@@ -123,28 +124,15 @@ function QRGenerateMerchantScreen({ route }) {
             </Text>
           </View>
           <View style={styles.qrCodeContainer}>
-            {image ?
-              <CustomQRCode
-                value={qrData}
-                size={260}
-                bgColor="transparent"
-                fgColor="#000000"
-                logoImage={image}
-                logoWidth={260}
-                logoHeight={260}
-                logoOpacity={0.3}
-                removeQrCodeBehindLogo={false}
-                qrStyle="dots"
-                ecLevel="H"
-                id="myQRCode"
-              /> :
               <QRCode
                 value={qrData}
-                size={0.45 * width}
+                size={0.6 * width}
                 color="white"
                 backgroundColor="#0f003f"
-              />}
-
+              />
+              <Image
+                style={styles.overlayImage}
+                source={{ uri: QR_IMAGE_ENDPOINT }} />
           </View>
         </View>
       )}
@@ -196,6 +184,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginBottom: 20,
     marginTop: 20,
+  },
+  overlayImage: {  
+    width: 0.6 * width,
+    height: 0.6 * width,
+    opacity: 0.4,
+    resizeMode: "contain",
+    position: "absolute",
   },
   rows: {
     backgroundColor: "#1e1a52",
