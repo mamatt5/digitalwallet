@@ -1,3 +1,7 @@
 node_modules
 Frontend/.env
 *.pyc
+*.log
+*.env
+AnalyticsWebsite/pages/docs/.vitepress/
+ERD Diagram.png

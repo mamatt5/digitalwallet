@@ -2,13 +2,14 @@ import datetime
 from typing import List, Optional
 from sqlmodel import Field, Relationship, SQLModel
 
-from models.wallet import Wallet
-from models.merchant import Merchant
+from models.loyalty_card import LoyaltyTransaction
 
 
 class Transaction(SQLModel, table=True):
     transaction_id: int | None = Field(default=None, primary_key=True)
+    transaction_ref: str | None = Field(default=None)
     vendor: int = Field(default=None, foreign_key='account.account_id')
+    loyalty_transaction: Optional["LoyaltyTransaction"] = Relationship(back_populates="transaction")
     date: str = Field(default=None)
     time: str = Field(default=None)
     amount: str = Field(default=None)

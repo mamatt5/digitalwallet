@@ -4,7 +4,14 @@ from schemas.auth_schema import AuthResponse, RegisterRequest
 from services.auth_service import AuthService
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
+import logging
 
+logging.basicConfig(filename='app.log', 
+                    filemode='w', 
+                    format='%(asctime)s - %(levelname)s - %(message)s', 
+                    level=logging.DEBUG)
+
+logger = logging.getLogger(__name__)
 
 @router.post("/login", response_model=AuthResponse)
 def login_route(
@@ -27,4 +34,9 @@ def register_route(register_request: RegisterRequest, auth_service: AuthService 
     - Register a new user account and return an access token and account info
     - Raises HTTPException (400) if email or phone number is already registered
     """
+    logging.info(register_request)
     return auth_service.register(register_request)
+
+@router.get("/authenticateaccount/{email}/{password}")
+def authenticate_account(password: str, email: str, auth_service :AuthService = Depends(AuthService)) -> bool:
+    return auth_service.authenticate_account(email, password) != None

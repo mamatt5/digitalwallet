@@ -5,11 +5,16 @@ import {
   ActivityIndicator,
   StyleSheet,
   Dimensions,
+  Image,
 } from "react-native";
 import { Table, Row, Rows } from "react-native-table-component";
 import QRCode from "react-native-qrcode-svg";
-import { connectToWebSocket, getMerchant } from "../../api/api";
+import { QRCode as CustomQRCode } from '@jackybaby/react-custom-qrcode';
+import { connectToWebSocket, getMerchant, API_BASE_URL } from "../../api/api";
 import React from "react";
+import axios from "axios";
+import { LOCAL_IP } from "@env";
+import { ScrollView } from "react-native-gesture-handler";
 
 const { width, height } = Dimensions.get("window");
 const scale = width / 320;
@@ -21,6 +26,18 @@ function QRGenerateMerchantScreen({ route }) {
   const [isLoading, setIsLoading] = useState(true);
   const { width } = Dimensions.get("window");
   const [merchant, setMerchant] = useState("");
+  const [image, setImage] = useState(null);
+
+  const QR_IMAGE_ENDPOINT = `${API_BASE_URL}/qr_images/get/merchantId/13`;
+  const getQRImage = async () => {
+    try {
+      const response = await axios.get(QR_IMAGE_ENDPOINT, { responseType: 'blob' });
+      const blob = URL.createObjectURL(new Blob([response.data], { type: "image/png" }));
+      setImage(blob);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const fetchAccountInfo = async (account, setMerchant) => {
     try {
@@ -33,10 +50,14 @@ function QRGenerateMerchantScreen({ route }) {
 
   useEffect(() => {
     fetchAccountInfo(account, setMerchant);
+    getQRImage();
   }, [account]);
 
   useEffect(() => {
     const ws = connectToWebSocket(`/ws/clients/${clientName}`, (data) => {
+      const salt = Math.random().toString(36).substring(2, 15);
+      const transaction_reference = merchant + salt;
+      console.log("Transaction Reference in POS: " + transaction_reference);
       if (data) {
         const updatedData = {
           ...data,
@@ -45,6 +66,7 @@ function QRGenerateMerchantScreen({ route }) {
           merchant: merchant,
           amount: formatPrice(data.amount),
           description: "POS",
+          transaction_reference: transaction_reference,
         };
         console.log("POS generated:", updatedData);
         setTransactionData(updatedData);
@@ -65,13 +87,14 @@ function QRGenerateMerchantScreen({ route }) {
   const tableHead = ["Item", "Quantity", "Price ($)"];
   const tableData = transactionData
     ? transactionData.items.map((item) => [
-        item.name,
-        item.quantity.toString(),
-        `$${formatPrice(item.price)}`,
-      ])
+      item.name,
+      item.quantity.toString(),
+      `$${formatPrice(item.price)}`,
+    ])
     : [];
 
   return (
+    <ScrollView style={styles.scrollContainer}> 
     <View style={styles.container}>
       {isLoading ? (
         <View style={styles.loadingContainer}>
@@ -98,24 +121,44 @@ function QRGenerateMerchantScreen({ route }) {
               />
             </Table>
             <Text style={styles.totalText}>
-            Total: ${transactionData ? transactionData.amount : "0.00"}
-          </Text>
+              Total: ${transactionData ? transactionData.amount : "0.00"}
+            </Text>
           </View>
           <View style={styles.qrCodeContainer}>
-            <QRCode
-              value={qrData}
-              size={0.45 * width}
-              color="white"
-              backgroundColor="#0f003f"
-            />
+            {image ?
+              <CustomQRCode
+                value={qrData}
+                size={260}
+                bgColor="transparent"
+                fgColor="#000000"
+                logoImage={image}
+                logoWidth={260}
+                logoHeight={260}
+                logoOpacity={0.3}
+                removeQrCodeBehindLogo={false}
+                qrStyle="dots"
+                ecLevel="H"
+                id="myQRCode"
+              /> :
+              <QRCode
+                value={qrData}
+                size={0.45 * width}
+                color="white"
+                backgroundColor="#0f003f"
+              />}
+
           </View>
         </View>
       )}
     </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
+  scrollContainer: {
+    backgroundColor: "#0f003f",
+  },
   container: {
     alignItems: "center",
     backgroundColor: "#0f003f",
@@ -159,6 +202,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginBottom: 20,
     marginTop: 20,
+  },
+  overlayImage: {  
+    width: 0.6 * width,
+    height: 0.6 * width,
+    opacity: 0.4,
+    resizeMode: "contain",
+    position: "absolute",
   },
   rows: {
     backgroundColor: "#1e1a52",

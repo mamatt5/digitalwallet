@@ -1,0 +1,61 @@
+.apexcharts-menu {
+    background-color: var(--text) !important;
+    color: var(--primary);
+    text-align: center;
+}
+
+/* Donut and pie chart legend */
+
+.apexcharts-legend {
+    text-align: left !important;
+    color: white;
+}
+
+.apexcharts-legend text {
+    fill: var(--text) !important;
+}
+
+#chart {
+    width: 100%;
+    height: 0;
+    padding-bottom: 56.25%; /* 16:9 Aspect Ratio (divide 9 by 16 = 0.5625) */
+    position: relative;
+}
+  
+#chart-timeline {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.apexcharts-tooltip {
+    font-size: 0.9rem !important;
+    padding: 0;
+    color: var(--text) !important;
+}
+
+/* Charts menu */
+
+.apexcharts-toolbar {
+    background: transparent !important;
+    border-radius: 5px !important;
+}
+
+/* Increase the size of the toolbar icons */
+.apexcharts-toolbar svg {
+    width: 24px; /* Adjust this value to increase/decrease the size */
+    height: 24px; /* Adjust this value to increase/decrease the size */
+}
+
+/* Optional: Increase the size of the menu buttons in the toolbar */
+.apexcharts-toolbar button {
+    width: 32px; /* Adjust this value to increase/decrease the size */
+    height: 32px; /* Adjust this value to increase/decrease the size */
+}
+
+.apexcharts-toolbar button:hover svg {
+    fill: var(--text) !important;
+    color: var(--text) !important;
+}

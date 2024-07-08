@@ -5,7 +5,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/FontAwesome";
 
 const PaymentComplete = ({ route, navigation }) => {
-  const { parsedData, selectedCardData, date, time } = route.params;
+  const { parsedData, selectedCardData, date, time, amount } = route.params;
 
   return (
     <SafeAreaView style={styles.screenContainer}>
@@ -19,7 +19,7 @@ const PaymentComplete = ({ route, navigation }) => {
 
         <View style={styles.detailsContainer}>
           <Text style={styles.text}>
-            Paid ${parsedData.amount} to {parsedData.merchant} with card ending
+            Paid ${amount.toFixed(2)} to {parsedData.merchant} with card ending
             in ******{selectedCardData.card_number.slice(-4)}
           </Text>
 

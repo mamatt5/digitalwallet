@@ -1,4 +1,5 @@
 from fastapi import Depends
+from typing import List
 
 from models.transaction import Item, Transaction
 from repositories.transaction_repository import TransactionRepository
@@ -9,8 +10,10 @@ class TransactionService:
         self.transaction_repository = transaction_repository
 
     def add_transaction(self, transaction: Transaction) -> None:
-        print(transaction)
         transaction = self.transaction_repository.create(transaction)
+
+    def add_transactions(self, transactions: List[Transaction]) -> None:
+        transactions = self.transaction_repository.create_all(transactions)
 
     def get_transaction(self, transaction_id: int) -> Transaction:
         return self.transaction_repository.get_by_id(transaction_id)
@@ -29,3 +32,6 @@ class TransactionService:
     
     def get_items_by_transaction_id(self, transaction_id: int) -> list[Item]:
         return self.transaction_repository.get_items_by_transaction_id(transaction_id)
+    
+    def check_transaction(self, transaction_ref: str) -> bool:
+        return self.transaction_repository.check_transaction(transaction_ref)

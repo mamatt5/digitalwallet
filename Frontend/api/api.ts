@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { LOCAL_IP } from '@env';
 
-const API_BASE_URL = `http://${LOCAL_IP}:8000`;
+export const API_BASE_URL = `http://${LOCAL_IP}:8000`;
 const WS_BASE_URL = `ws://${LOCAL_IP}:8001`;
 
 export const loginUser = async (email: string, password: string) => {
@@ -14,7 +14,6 @@ export const loginUser = async (email: string, password: string) => {
       client_secret: '',
       scope: '',
     });
-    console.log(requestData)
 
     const response = await axios.post(`${API_BASE_URL}/auth/login`, requestData.toString(), {
       headers: {
@@ -39,7 +38,9 @@ export const registerAccount = async (
   firstName: string,
   lastName: string,
 ) => {
+  
   try {
+    console.log(email + password + phoneNumber + accountType + companyName + abn + firstName + lastName)
     const response = await axios
       .post(`${API_BASE_URL}/auth/register`, {
         company_name: companyName,
@@ -50,6 +51,7 @@ export const registerAccount = async (
         password,
         phone_number: phoneNumber,
         account_type: accountType,
+        category_id : 1
       });
     return response.data;
   } catch (error) {
@@ -57,6 +59,17 @@ export const registerAccount = async (
     throw error;
   }
 };
+
+export const authenticateAccount = async(password: string, email: string) => {
+
+  try {
+    const response = await axios.get(`${API_BASE_URL}/auth/authenticateaccount/${email}/${password}`);
+    return response.data;
+  } catch (error) {
+    console.error('Authenticate Account error:', error);
+    throw error;
+  }
+}
 
 export const getWalletCards = async (walletId: string) => {
   try {
@@ -103,6 +116,16 @@ export const addCard = async (cardNumber: string, expiryDate: string, cardCVV: s
   }
 };
 
+export const deleteCardById = async (cardId: string) => {
+  try {
+    const response = await axios.delete(`${API_BASE_URL}/cards/deletecard/${cardId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Delete Card error:', error);
+    throw error;
+  }
+}
+
 export const addLoyaltyCard = async (cardNumber: string, expiryDate: string, memberName: string, walletId: string) => {
   try {
     const response = await axios.post(`${API_BASE_URL}/loyaltycards/addcard`, {
@@ -140,6 +163,70 @@ export const getMerchant = async (accountId: string) => {
   }
 };
 
+export const getAllMerchants = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/accounts/getmerchants`);
+    return response.data;
+  } catch (error) {
+    console.error('Get all Merchants error:', error);
+    throw error;
+  }
+};
+
+
+export const getAllMerchantsAndVouchers = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/accounts/getmerchantandvouchers`);
+    return response.data;
+  } catch (error) {
+    console.error('Get all Vouchers error:', error);
+    throw error;
+  }
+};
+
+export const AddVoucherToUser = async(userId: string, voucherId: string) => {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/accounts/addVoucher/${userId}/${voucherId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Add voucher error:', error);
+    throw error;
+  }
+}
+
+export const getVouchersForUser = async(userId: string) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/vouchers/getvouchersforuser/${userId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Add voucher error:', error);
+    throw error;
+  }
+}
+
+
+
+export const getVouchersForUserAndMerchant = async(merchantId:string, userId: string) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/vouchers/getvouchersforuserandmerchant/${merchantId}/${userId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Get Vouchers belonging to User for a Merchant error:", error);
+    throw error;
+  }
+}
+
+export const deleteVoucherForUser = async(voucherId: string, userId: string) => {
+  try {
+    const response = await axios.delete(`${API_BASE_URL}/vouchers/deletevoucherforuser/${voucherId}/${userId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Add voucher error:', error);
+    throw error;
+  }
+}
+
+
 export const getAccount = async (accountId: string) => {
   try {
     const response = await axios.get(`${API_BASE_URL}/accounts/getaccount/${accountId}`);
@@ -152,9 +239,9 @@ export const getAccount = async (accountId: string) => {
 
 export const getAccountFromEmail = async (email: string) => {
   try {
-    
+    console.log(email)
     const response = await axios.get(`${API_BASE_URL}/accounts/getaccountfromemail/${email}`);
-    return response
+    return response.data
   } catch (error) {
     console.error('Get Account From Email error:', error);
     throw error;
@@ -187,7 +274,7 @@ export const getTransactions = async (cardId: string) => {
     const response = await axios.get(`${API_BASE_URL}/transactions/gettransactions/${cardId}`);
     return response.data;
   } catch (error) {
-    console.error('Get Transactions error:', error);
+    console.error('Get Transactions by card error:', error);
     throw error;
   }
 };
@@ -197,7 +284,7 @@ export const getTransactionsByWallet = async (walletId: string) => {
     const response = await axios.get(`${API_BASE_URL}/transactions/gettransactions/wallet/${walletId}`);
     return response.data;
   } catch (error) {
-    console.error('Get Transactions error:', error);
+    console.error('Get Transactions by wallet error:', error);
     throw error;
   }
 }
@@ -207,7 +294,7 @@ export const getTransactionsBySender = async (walletId: string) => {
     const response = await axios.get(`${API_BASE_URL}/transactions/gettransactions/sender/${walletId}`);
     return response.data;
   } catch (error) {
-    console.error('Get Transactions error:', error);
+    console.error('Get Transactions by sender error:', error);
     throw error;
   }
 }
@@ -222,6 +309,16 @@ export const getItems = async (transactionId: string) => {
   }
 }
 
+export const checkTransaction = async (transaction_ref: string) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/transactions/checktransaction/${transaction_ref}`);
+    return response.data;
+  } catch (error) {
+    console.error('Check Transaction error:', error);
+    throw error;
+  }
+}
+
 export const addTransaction = async (transaction) => {
   try {
     const response = await axios.post(`${API_BASE_URL}/transactions/addtransaction`, transaction);
@@ -231,6 +328,36 @@ export const addTransaction = async (transaction) => {
     throw error;
   }
 };
+
+export const addAPPoints = async (transaction) => {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/transactions/addpoints`, transaction);
+    return response.data;
+  } catch (error) {
+    console.error('Add AP points error:', error.response.data);
+    throw error;
+  }
+};
+
+export const getAPPoints = async (walletId: string) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/wallets/getpoints/${walletId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Get AP points error:', error);
+    throw error;
+  }
+}
+
+export const updateAPPoints = async(walletId: string, points: string) => {
+  try {
+    const response = await axios.patch(`${API_BASE_URL}/wallets/updatepoints/${walletId}/${points}/`);
+    return response.data;
+  } catch (error) {
+    console.error('Update AP points error', error);
+    throw error;
+  }
+}
 
 export const validateQRCodeData = async (data) => {
   try {

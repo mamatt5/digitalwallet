@@ -64,7 +64,7 @@ const Transaction = ({ transaction, walletId }) => {
           <Text style={styles.date}>{new Date(convertDate(date)).toLocaleDateString(undefined, { year: '2-digit', month: 'short', day: '2-digit' })}</Text>
         </View>
 
-        <Text style={[styles.amount, isSender ? styles.sender : styles.recipient]}>{isSender ? '-' : '+'} ${amount}</Text>
+        <Text style={[styles.amount, isSender ? styles.sender : styles.recipient]}>{isSender ? '-' : '+'} ${parseFloat(amount).toFixed(2)}</Text>
 
       </View>
       
