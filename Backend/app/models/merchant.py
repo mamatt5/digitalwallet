@@ -1,6 +1,13 @@
 from models.account import Account
-from sqlmodel import Field, Relationship, SQLModel
+from models.category import Category
+from models.qr_image import QRImage
+from typing import TYPE_CHECKING, Optional
+from sqlmodel import Field, Relationship, SQLModel 
+from models.vouchers import Voucher
+from typing import List
 
+if TYPE_CHECKING:
+    from models.vouchers import Voucher
 
 class Merchant(SQLModel, table=True):
     """
@@ -17,3 +24,8 @@ class Merchant(SQLModel, table=True):
     company_name: str
     ABN: str
     account: Account | None = Relationship(back_populates="merchant")
+    category_id: Optional[int] = Field(default=None, foreign_key='category.category_id')
+    category: Category | None = Relationship(back_populates="merchants")
+    qr_image: QRImage | None = Relationship(back_populates="merchant")
+
+    vouchers: List[Voucher] = Relationship(back_populates="merchant")

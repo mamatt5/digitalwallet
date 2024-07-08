@@ -1,7 +1,5 @@
 
-/* eslint-disable react/prop-types */
 import React from 'react';
-
 import { View, Text, SafeAreaView, StyleSheet } from 'react-native';
 import { Button } from 'react-native-paper';
 
@@ -11,9 +9,6 @@ function ResetPasswordSuccessfulScreen({ navigation }) {
     navigation.navigate('Login');
   };
 
-  // const registerMerchant = () => {
-  //   navigation.navigate('RegisterMerchant');
-  // };
 
   return (
     <SafeAreaView style={{ backgroundColor: '#0f003f', height: 2000 }}>

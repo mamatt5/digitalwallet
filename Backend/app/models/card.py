@@ -10,5 +10,6 @@ class Card(SQLModel, table=True):
     card_number: str = Field(index=True, unique=True)
     card_expiry: str = Field(index=True)
     card_cvv: str = Field(index=True)
+    
     wallet_id: int = Field(foreign_key="wallet.wallet_id")
     wallet: Optional["Wallet"] | None = Relationship(back_populates="cards")

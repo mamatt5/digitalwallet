@@ -1,45 +1,63 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import {
-  SafeAreaView, View, Text, Dimensions, StyleSheet,
-} from 'react-native';
-import Carousel from 'react-native-snap-carousel';
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import DebitCard from '../../components/DebitCard';
-import LoyaltyCard from '../../components/LoyaltyCard';
-import Transaction from '../../components/Transaction';
+  SafeAreaView,
+  View,
+  Text,
+  Dimensions,
+  StyleSheet,
+  Alert,
+} from "react-native";
+import Carousel from "react-native-snap-carousel";
+import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
+import Icon from "react-native-vector-icons/FontAwesome";
+import DebitCard from "../../components/DebitCard";
+import LoyaltyCard from "../../components/LoyaltyCard";
+import Transaction from "../../components/Transaction";
 import {
-  getWalletCards, getMerchant, getUser, getTransactionsByWallet, fetchLoyaltyCards,
-} from '../../api/api';
-import CardTabs from '../../components/CardFilterTabs/CardTabs';
+  getWalletCards,
+  getMerchant,
+  getUser,
+  getTransactionsByWallet,
+  fetchLoyaltyCards,
+  getAPPoints,
+  deleteCardById,
+} from "../../api/api";
+import CardTabs from "../../components/CardFilterTabs/CardTabs";
+import ProfileButton from "../../components/ProfileButton/ProfileButton";
+import ProfileModal from "../../components/ProfileModal/ProfileModal";
 
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get("window");
 const scale = width / 320;
 
 function AccountScreen({ navigation, route }) {
   const [bankCards, setBankCards] = useState([]);
   const [loyaltyCards, setLoyaltyCards] = useState([]);
+  const [walletPoints, setWalletPoints] = useState(0);
   const [activeTabIndex, setActiveTabIndex] = useState(0);
   const [transactions, setTransactions] = useState([]);
   const { account } = route.params;
-  const [loggedAccount, setLoggedAccount] = useState('');
+  const [loggedAccount, setLoggedAccount] = useState("");
+  const [name, setName] = useState("");
   const [refresh, setRefresh] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const fetchAccountInfo = async () => {
-    if (account.account_type === 'user') {
+    if (account.account_type === "user") {
       try {
         const response = await getUser(account.account_id);
-        setLoggedAccount(response.first_name);
+        setLoggedAccount(response.first_name + " " + response.last_name);
+        setName(response.first_name);
       } catch (error) {
-        console.error('Get User error:', error);
+        console.error("Get User error:", error);
       }
-    } else if (account.account_type === 'merchant') {
+    } else if (account.account_type === "merchant") {
       try {
         const response = await getMerchant(account.account_id);
         setLoggedAccount(response.company_name);
+        setName(response.company_name);
       } catch (error) {
-        console.error('Get Merchant error:', error);
+        console.error("Get Merchant error:", error);
       }
     }
   };
@@ -51,23 +69,44 @@ function AccountScreen({ navigation, route }) {
       setBankCards(bankCards);
       setLoyaltyCards(loyaltyCards);
     } catch (error) {
-      console.error('Get Cards error:', error);
+      console.error("Get Cards error:", error);
     }
   };
 
   const fetchTransactions = async () => {
     try {
       const response = await getTransactionsByWallet(account.wallet.wallet_id);
-      const sortedResponse = response.sort((a, b) => b.transaction_id - a.transaction_id);
+      const sortedResponse = response.sort(
+        (a, b) => b.transaction_id - a.transaction_id
+      );
       setTransactions(sortedResponse);
     } catch (error) {
-      console.error('Get Transactions error:', error);
+      console.error("Get Transactions on account screen error:", error);
     }
+  };
+
+  const fetchWalletPoints = async () => {
+    try {
+      const response = await getAPPoints(account.wallet.wallet_id);
+      setWalletPoints(response);
+    } catch (error) {
+      console.error("Get Wallet Points error:", error);
+    }
+  };
+
+  const handleModal = (modalValue) => {
+    setIsModalOpen(modalValue);
   };
 
   const _renderItem = ({ item }) => {
     if (activeTabIndex === 0) {
-      return <DebitCard bankCard={item} />;
+      return (
+        <TouchableOpacity
+          onLongPress={() => handleLongPress(item.card_id, item.card_number)}
+        >
+          <DebitCard bankCard={item} />
+        </TouchableOpacity>
+      );
     }
     return <LoyaltyCard loyaltyCard={item} />;
   };
@@ -75,13 +114,17 @@ function AccountScreen({ navigation, route }) {
   const renderCards = () => {
     const activeCards = activeTabIndex === 0 ? bankCards : loyaltyCards;
     if (activeCards.length === 0) {
-      return <View style={styles.noCardContainer}><Text style={styles.noCardText}>No cards found</Text></View>;
+      return (
+        <View style={styles.noCardContainer}>
+          <Text style={styles.noCardText}>No cards found</Text>
+        </View>
+      );
     }
     return (
       <Carousel
         layout="default"
         data={activeCards}
-        sliderWidth={Dimensions.get('window').width}
+        sliderWidth={Dimensions.get("window").width}
         itemWidth={300}
         renderItem={_renderItem}
         onSnapToItem={(index) => setActiveIndex(index)}
@@ -89,29 +132,53 @@ function AccountScreen({ navigation, route }) {
     );
   };
 
+  const handleLongPress = (cardId, cardNumber) => {
+    Alert.alert(
+      `Deleting card ending in **${cardNumber.slice(-4)}`,
+      "Are you sure you want to delete card?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Delete",
+          onPress: () => {
+            deleteCard(cardId);
+          },
+        },
+      ]
+    );
+  };
+
+  const deleteCard = async (cardId) => {
+    try {
+      await deleteCardById(cardId);
+      setRefresh((prev) => !prev);
+    } catch (error) {
+      console.error("Delete Card error:", error);
+    }
+  };
+
   useEffect(() => {
     fetchCards();
     fetchAccountInfo();
     fetchTransactions();
+    fetchWalletPoints();
   }, [refresh]);
 
   useEffect(() => {
-
     if (bankCards.length > 0) {
-
       // If statment is here as fetchTransactions for loyalty cards isn't implmeted yet and throws an error
       // When implemented the if condition can be removed.
       if (activeTabIndex == 0) {
         fetchTransactions();
       }
-      
-      
-      
     }
   }, [bankCards, activeIndex, refresh]);
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
+    const unsubscribe = navigation.addListener("focus", () => {
       setRefresh((prev) => !prev);
     });
 
@@ -120,24 +187,35 @@ function AccountScreen({ navigation, route }) {
 
   return (
     <SafeAreaView style={styles.container}>
+      {isModalOpen && <ProfileModal 
+                        name= {loggedAccount} 
+                        navigation={navigation} 
+                        setModalstate={handleModal} />}
+
       <View style={styles.centerView}>
-        <Text style={styles.titleText}>
-          Welcome,
-          {' '}
-          {loggedAccount}
-          !
-        </Text>
-        <CardTabs activeTabIndex={activeTabIndex} setActiveTabIndex={setActiveTabIndex} />
+        <View style={styles.header}>
+          <Text style={styles.titleText}>Welcome, {name}!</Text>
+        </View>
+        <View style={styles.profileButton}>
+          <TouchableOpacity onPress={() => setIsModalOpen(true)}>
+          <ProfileButton />
+          </TouchableOpacity>
+        </View>
+
+        <CardTabs
+          activeTabIndex={activeTabIndex}
+          setActiveTabIndex={setActiveTabIndex}
+        />
         {renderCards()}
         <View style={styles.iconContainer}>
           <TouchableOpacity
-                    onPress={() => {
-                      if (activeTabIndex === 0) {
-                        navigation.navigate('AddCard', { account, refresh });
-                      } else {
-                        navigation.navigate('AddLoyaltyCard', { account, refresh });
-                      }
-                    }}
+            onPress={() => {
+              if (activeTabIndex === 0) {
+                navigation.navigate("AddCard", { account, refresh });
+              } else {
+                navigation.navigate("AddLoyaltyCard", { account, refresh });
+              }
+            }}
           >
             <Icon name="plus-square-o" size={40} color="#fff" />
           </TouchableOpacity>
@@ -145,12 +223,16 @@ function AccountScreen({ navigation, route }) {
       </View>
 
       <View style={styles.transactionContainer}>
-        <View>
-          <Text style={styles.titleText}>Wallet transactions</Text>
+        <View style={styles.header}>
+          <Text style={styles.titleText}>Transactions</Text>
+
+          <View style={styles.pointsContainer}>
+            <Text style={styles.pointsText}>{walletPoints} </Text>
+            <Icon name="star" size={15 * scale} color="#fff" />
+          </View>
         </View>
 
         <ScrollView style={styles.transactions}>
-
           {/* activeTabIndex === 1 is used as a place holder as fethcing transactions for loyalty cards doesn't work yet
           once it works it can be removed*/}
           {transactions.length === 0 || activeTabIndex === 1 ? (
@@ -160,56 +242,78 @@ function AccountScreen({ navigation, route }) {
           ) : (
             transactions.map((transaction, index) => (
               <View key={index}>
-                <Transaction transaction={transaction} walletId={account.wallet.wallet_id} />
+                <Transaction
+                  transaction={transaction}
+                  walletId={account.wallet.wallet_id}
+                />
               </View>
             ))
           )}
         </ScrollView>
-
       </View>
     </SafeAreaView>
   );
 }
 
-const screenWidth = Dimensions.get('window').width;
-
 const styles = StyleSheet.create({
   centerView: {
-    alignItems: 'center',
-    display: 'flex',
-    justifyContent: 'center',
-    marginTop: 10,
+    alignItems: "center",
+    display: "flex",
+    justifyContent: "center",
+    marginTop: 30,
+  },
+  header: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  profileButton: {
+    position: "absolute",
+    top: 5 * scale,
+    right: 20 * scale,
   },
   container: {
-    backgroundColor: '#0f003f',
+    backgroundColor: "#0f003f",
     flex: 1,
   },
   iconContainer: {
     marginTop: 10,
   },
   noCardContainer: {
-    alignItems: 'center',
-    borderColor: '#fff',
+    alignItems: "center",
+    borderColor: "#fff",
     borderRadius: 10,
-    borderStyle: 'dashed',
+    borderStyle: "dashed",
     borderWidth: 2,
     height: 150,
-    justifyContent: 'center',
+    justifyContent: "center",
     width: 250,
   },
   noCardText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 20,
   },
   noTransactionsContainer: {
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 20,
   },
   titleText: {
-    color: '#ffffff',
+    color: "#ffffff",
     fontSize: 20 * scale,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginVertical: 10,
+  },
+  pointsContainer: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  pointsText: {
+    color: "#ffffff",
+    fontSize: 20 * scale,
+    fontWeight: "bold",
+    marginLeft: 10,
   },
   transactionContainer: {
     flex: 1,

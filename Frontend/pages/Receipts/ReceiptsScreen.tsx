@@ -1,52 +1,65 @@
-import React, { useEffect, useState } from 'react';
-import {SafeAreaView, ScrollView, View, Text, StyleSheet, TextInput, Pressable} from 'react-native';
-import TransactionSearch from '../../components/TransactionSearch/TransactionSearch';
-import ProfileButton from '../../components/ProfileButton/ProfileButton';
-import ProfileModal from '../../components/ProfileModal/ProfileModal';
-import { getTransactionsBySender, getMerchant } from '../../api/api';
+import React, { useEffect, useState } from "react";
+import {
+  SafeAreaView,
+  ScrollView,
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  RefreshControl,
+} from "react-native";
+import TransactionSearch from "../../components/TransactionSearch/TransactionSearch";
+import { getTransactionsBySender } from "../../api/api";
 
 function ReceiptsScreen({ navigation, route }) {
-  const { account } = route.params
+  const { account } = route.params;
 
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [transactions, setTransactions] = useState([]);
-
-  function handleModal(modalValue) {
-    setIsModalOpen(modalValue);
-  };
+  const [refreshing, setRefreshing] = useState(false);
 
   const fetchTransactionsBySender = async () => {
+    setRefreshing(true);
     try {
-      const transactions = await getTransactionsBySender(account.wallet.wallet_id);
-      const sortedTransactions = transactions.sort((a, b) => b.transaction_id - a.transaction_id);
+      const transactions = await getTransactionsBySender(
+        account.wallet.wallet_id
+      );
+      const sortedTransactions = transactions.sort(
+        (a, b) => b.transaction_id - a.transaction_id
+      );
       setTransactions(sortedTransactions);
     } catch (error) {
-      console.error('Get Transactions error:', error);
+      console.error("Get Transactions on receipts screen error:", error);
     }
-  }
+    setRefreshing(false);
+  };
 
   useEffect(() => {
     fetchTransactionsBySender();
-  }, [])
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
-        {isModalOpen && (
-          <ProfileModal setModalstate={handleModal}></ProfileModal>
-      )}
 
       <View style={styles.headerContainer}>
         <Text style={styles.titleText}>Receipts</Text>
-        <Pressable onPress={() => setIsModalOpen(true)} style={styles.profileContainer}>
-          <ProfileButton></ProfileButton>
-        </Pressable>
       </View>
-      <ScrollView>
+      <ScrollView
+      contentContainerStyle={{ flexGrow: 1 }}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={fetchTransactionsBySender}
+          />
+        }
+      >
         <View style={styles.bodyContainer}>
           <Text style={styles.searchbarTitle}>Recent Activity</Text>
         </View>
-        <TransactionSearch navigation={navigation} transactions={transactions} account={account} />
+        <TransactionSearch
+          navigation={navigation}
+          transactions={transactions}
+          account={account}
+        />
       </ScrollView>
     </SafeAreaView>
   );
@@ -57,38 +70,38 @@ const styles = StyleSheet.create({
     marginHorizontal: 30,
   },
   container: {
-    backgroundColor: '#0f003f',
+    backgroundColor: "#0f003f",
     height: 2000,
   },
   searchbarTitle: {
-    color: '#ffffff',
+    color: "#ffffff",
     fontSize: 30,
   },
   headerContainer: {
-    alignContent: 'center',
-    display: 'flex',
-    flexDirection: 'row',
+    alignContent: "center",
+    display: "flex",
+    flexDirection: "row",
     marginHorizontal: 30,
     marginVertical: 10,
-  },  
+  },
   titleText: {
-    color: '#ffffff',
+    color: "#ffffff",
     fontSize: 40,
   },
   profileContainer: {
-    position: 'absolute',
+    position: "absolute",
     right: 0,
-    alignItems: 'center',
-    alignSelf: 'center',
-    borderColor: 'white',
+    alignItems: "center",
+    alignSelf: "center",
+    borderColor: "white",
     borderRadius: 100,
     borderWidth: 1,
-    display: 'flex',
+    display: "flex",
     height: 30,
-    justifyContent: 'center',
-    overflow: 'hidden',
+    justifyContent: "center",
+    overflow: "hidden",
     width: 30,
-  }
+  },
 });
 
 export default ReceiptsScreen;
