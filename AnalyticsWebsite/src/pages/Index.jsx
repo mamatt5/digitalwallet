@@ -127,7 +127,7 @@ export default function Index() {
 
                 processingData.forEach((d) => {
                     if (d.time.includes("M")) {
-                        d.date = "0"+d.date.split("/")[1]+"/0"+d.date.split("/")[0]+"/24"
+                        d.date = ""+d.date.split("/")[1]+"/"+d.date.split("/")[0]+"/24"
                     }
                     
                     d.dd = new Date(dateFormatParser(d.date).setFullYear(dateFormatParser(d.date).getFullYear() + 2000))

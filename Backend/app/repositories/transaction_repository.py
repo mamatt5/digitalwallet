@@ -89,12 +89,19 @@ class TransactionRepository(RepositoryBase[Transaction]):
         return transactions
     
     def get_by_wallet_id(self, wallet_id: int) -> List[Transaction]:
-        statement = select(Transaction).where(or_(Transaction.sender == wallet_id, Transaction.recipient == wallet_id)).limit(100)
+        statement = select(Transaction)\
+            .where(or_(Transaction.sender == wallet_id, Transaction.recipient == wallet_id))\
+            .order_by(Transaction.transaction_id.desc())\
+            .limit(100)
         transactions = self.session.exec(statement).all()
         return transactions
     
     def get_by_sender(self, wallet_id: int) -> List[Transaction]:
-        statement = select(Transaction).join(Item, Transaction.transaction_id == Item.transaction_id).where(Transaction.sender == wallet_id).distinct()
+        statement = select(Transaction)\
+            .join(Item, Transaction.transaction_id == Item.transaction_id)\
+            .where(Transaction.sender == wallet_id).distinct()\
+            .order_by(Transaction.transaction_id.desc())\
+            .limit(100)
         transactions = self.session.exec(statement).all()
         return transactions
     
