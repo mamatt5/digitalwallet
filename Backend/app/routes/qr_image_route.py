@@ -42,7 +42,7 @@ def get_qr_image_route(qr_image_id: int, qr_image_service: QRImageService = Depe
 def get_qr_image_route(merchant_id: int, qr_image_service: QRImageService = Depends(QRImageService)) -> QRImage:
     image = qr_image_service.get_qr_image_by_merchant_id(merchant_id)
     if image is None:
-        raise HTTPException(status_code=404, detail="Image not found")
+        return None
     
     return StreamingResponse(io.BytesIO(image.data), media_type="image/png")
 

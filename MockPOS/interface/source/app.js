@@ -31,14 +31,18 @@ function App() {
 		};
 	}, []);
 
-	useEffect(() => {
-		const getActiveClients = async () => {
-			const clients = await fetchActiveClients();
+	const getActiveClients = async () => {
+		const clients = await fetchActiveClients();
+
+		if (clients.length > 0) {
 			setActiveClients(clients);
-		};
+		}
+	};
+
+	useEffect(() => {
 
 		getActiveClients();
-		const interval = setInterval(getActiveClients, 5000);
+		const interval = setInterval(getActiveClients, 1000);
 
 		return () => {
 			clearInterval(interval);
