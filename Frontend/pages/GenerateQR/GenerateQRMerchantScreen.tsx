@@ -29,15 +29,19 @@ function QRGenerateMerchantScreen({ route }) {
   const [image, setImage] = useState(null);
 
   const QR_IMAGE_ENDPOINT = `${API_BASE_URL}/qr_images/get/merchantId/13`;
-  const getQRImage = async () => {
-    try {
-      const response = await axios.get(QR_IMAGE_ENDPOINT, { responseType: 'blob' });
-      const blob = URL.createObjectURL(new Blob([response.data], { type: "image/png" }));
-      setImage(blob);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  // const getQRImage = async () => {
+  //   try {
+  //     const response = await axios.get(QR_IMAGE_ENDPOINT, { responseType: 'blob' });
+
+  //     if (!response) {
+  //       const blob = URL.createObjectURL(new Blob([response.data], { type: "image/png" }));
+  //       setImage(blob);
+  //     }
+
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   const fetchAccountInfo = async (account, setMerchant) => {
     try {
@@ -50,7 +54,7 @@ function QRGenerateMerchantScreen({ route }) {
 
   useEffect(() => {
     fetchAccountInfo(account, setMerchant);
-    getQRImage();
+    // getQRImage();
   }, [account]);
 
   useEffect(() => {
@@ -125,27 +129,16 @@ function QRGenerateMerchantScreen({ route }) {
             </Text>
           </View>
           <View style={styles.qrCodeContainer}>
-            {image ?
-              <CustomQRCode
-                value={qrData}
-                size={260}
-                bgColor="transparent"
-                fgColor="#000000"
-                logoImage={image}
-                logoWidth={260}
-                logoHeight={260}
-                logoOpacity={0.3}
-                removeQrCodeBehindLogo={false}
-                qrStyle="dots"
-                ecLevel="H"
-                id="myQRCode"
-              /> :
               <QRCode
                 value={qrData}
-                size={0.45 * width}
+                size={0.6 * width}
                 color="white"
                 backgroundColor="#0f003f"
-              />}
+              />
+              <Image
+                source={{uri: QR_IMAGE_ENDPOINT}}
+                style={styles.overlayImage}
+                />
 
           </View>
         </View>

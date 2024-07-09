@@ -161,11 +161,12 @@ if exist "package.json" (
 
 start "POS CLI" cmd /c "npm run build && npm run start"
 
-@REM REM ## ANALYTICS ##
+REM ## ANALYTICS ##
 
-@REM cd ../../AnalyticsWebsite
+cd ../../AnalyticsWebsite
+call npm install
 
-@REM REM Start the React Vite
-@REM start "Analytics Website" cmd /c "npm run dev"
-@REM timeout /t 5
-@REM start http://localhost:5173/
+REM Start the React Vite
+start "Analytics Website" cmd /c "npm run dev"
+timeout /t 5
+start http://localhost:5173/
