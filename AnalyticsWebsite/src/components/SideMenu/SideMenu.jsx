@@ -7,7 +7,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import IconButton from '@mui/material/IconButton';
-import { CurrencyExchange, Logout, QrCode, ManageAccounts, SsidChart, Menu, Visibility } from '@mui/icons-material';
+import { CurrencyExchange, Logout, QrCode, ManageAccounts, SsidChart, Menu, Visibility, OpenInNew } from '@mui/icons-material';
 
 import PayPathLogo from '../../assets/PayPath_logo_edited.png'
 
@@ -25,7 +25,6 @@ const menuItems = [
   { text: 'Transactions', value: 'transactions', icon: CurrencyExchange },
   { text: 'QR Customisation', value: 'customize', icon: QrCode },
   { text: 'Profile', value: 'profile', icon: ManageAccounts },
-  { text: 'PayPath API', value: 'api', icon: QrCode },
 ];
 
 export default function SideMenu() {
@@ -115,6 +114,24 @@ export default function SideMenu() {
                 </Link>
               </ListItem>
             ))}
+            <ListItem key="api" sx={{ padding: '0 .5rem', width: '100%' }}>
+
+              <a href="https://paypath-2024.web.app/" target="_blank" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', width: '100%' }}>
+                <ListItemButton
+                  sx={{
+                    '&:hover': {
+                      backgroundColor: 'var(--secondary)',
+                      color: 'var(--text)',
+                    },
+                    justifyContent: collapsed ? 'center' : 'flex-start',
+                    width: '100%',
+                  }}
+                >
+                  <OpenInNew sx={{ fontSize: 24 }} />
+                  {!collapsed && <span style={{ marginLeft: '10px' }}>PayPath API Documentation</span>}
+                </ListItemButton>
+              </a>
+            </ListItem>
 
             {authToken && (
               <ListItem sx={{ padding: '0 .5rem', width: '100%' }}>
