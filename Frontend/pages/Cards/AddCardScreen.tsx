@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
-   Button, Dimensions, Image, SafeAreaView, Text, TextInput, View, StyleSheet, Keyboard, TouchableWithoutFeedback,
+   Dimensions, Image, SafeAreaView, Text, TextInput, View, StyleSheet, Keyboard, TouchableWithoutFeedback,
   TouchableOpacity,
   Alert,
 } from 'react-native';
@@ -108,6 +108,7 @@ function AddCardScreen({ navigation, route }) {
       })
       .catch((error) => {
         console.error('Add Card error:', error);
+        Alert.alert('Error', 'Card is already registered. Please try again with a different card.');
       });
   };
 
@@ -380,7 +381,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   errorOutline: {
-    borderColor: 'red', // Change border color to red when error occurs
+    borderColor: 'red', 
     borderWidth: 2
   },
   errorIcon: {

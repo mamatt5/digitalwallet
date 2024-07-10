@@ -67,12 +67,13 @@ function RegisterUserScreen({ navigation }) {
     const newFirstNameError = firstName === '' || !/^[a-zA-Z\s]*$/.test(firstName);
     const newLastNameError = lastName === '' || !/^[a-zA-Z\s]*$/.test(lastName);
 
-
+    let doesEmailExist = false
+    let doesMobileExist = false
     if (newEmailError) {
       setEmailError(true);
     } else {
-
-      let doesEmailExist = (await getAccountFromEmail(email.toLocaleLowerCase())).data
+    
+      doesEmailExist = await getAccountFromEmail(email.toLocaleLowerCase())
       
       if (doesEmailExist) {
         setEmailError(true)
@@ -86,7 +87,7 @@ function RegisterUserScreen({ navigation }) {
       setMobileError(true);
     } else {
       
-      let doesMobileExist = (await mobileExist(phoneNumber)).data
+      doesMobileExist = (await mobileExist(phoneNumber)).data
       
       if (doesMobileExist) {
         setMobileError(true)
@@ -98,8 +99,14 @@ function RegisterUserScreen({ navigation }) {
     setPasswordError(newPasswordError);
     setFirstNameError(newFirstNameError);
     setLastNameError(newLastNameError);
-
-    if (!newEmailError && !newPhoneNumberError && !newPasswordError && !newFirstNameError && !newLastNameError) {
+    console.log(" ----")
+    console.log(email)
+    console.log(password)
+    console.log(phoneNumber)
+    console.log(firstName)
+    console.log(lastName)
+    console.log(" ----")
+    if (!newEmailError && !newPhoneNumberError && !newPasswordError && !newFirstNameError && !newLastNameError && !doesMobileExist && !doesEmailExist) {
       registerAccount(email.toLocaleLowerCase(), password, phoneNumber, 'user', '', '', firstName, lastName)
         .then(navigation.navigate('RegisterSucessful')).catch((error) => console.error('Registration error:', error));
     }
@@ -260,18 +267,18 @@ function RegisterUserScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row', // Arrange children horizontally
-    alignItems: 'center', // Align items vertically
-    position: 'relative', // Required for absolute positioning
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    position: 'relative', 
   },
 
   errorIcon: {
-    position: 'absolute', // Position the icon absolutely
-    right: -20, // Adjust the position as needed
+    position: 'absolute', 
+    right: -20, 
   },
   eyeIcon: {
-    position: 'absolute', // Position the icon absolutely
-    right: 20, // Adjust the position as needed
+    position: 'absolute', 
+    right: 20, 
     opacity: 0.6,
 
   },

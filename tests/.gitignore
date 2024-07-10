@@ -1,0 +1,12 @@
+# Ignore Python virtual environment
+venv/
+
+# Ignore other common files and directories
+__pycache__/
+*.py[cod]
+*.sqlite3
+*.log
+
+# Ignore IDE and editor specific files
+.vscode/
+.idea/

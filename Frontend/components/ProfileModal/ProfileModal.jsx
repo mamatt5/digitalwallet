@@ -1,11 +1,14 @@
 /* eslint-disable react/require-default-props */
 /* eslint-disable react/destructuring-assignment */
-import React from 'react';
-import {View, StyleSheet, Text, Pressable, Modal} from 'react-native';
+import React, { useEffect } from 'react';
+import {View, StyleSheet, Text, Pressable, Modal, Dimensions} from 'react-native';
 import AwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Button } from 'react-native-paper';
 import UserMenuCard from '../UserMenuCard/UserMenuCard';
+
+const { width, height } = Dimensions.get("window");
+const scale = width / 320;
 
 const styles = StyleSheet.create({
     modalOverlay: {
@@ -14,15 +17,15 @@ const styles = StyleSheet.create({
     },
     modalHeader: {
         backgroundColor: '#696087',
-        height: 200,
+        height: 200 * scale,
         zIndex: 2,
         borderBottomStartRadius: 20,
         borderBottomEndRadius: 20,
-        marginBottom: 15
+        marginBottom: 15 * scale
     },
     modalHeaderButtonContainer: {
-        marginHorizontal: 15,
-        marginTop: 15,
+        marginHorizontal: 15 * scale,
+        marginTop: 15 * scale,
     },
     headerButtonContainer: {
         display: 'flex',
@@ -41,8 +44,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderWidth: 2,
         borderColor: '#ffffff',
-        height: 80,
-        width: 80,
+        height: 80 * scale,
+        width: 80 * scale,
         borderRadius: 50,
         overflow: 'hidden'
     },
@@ -54,8 +57,8 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: '#00A28E',
         backgroundColor: '#00A28E',
-        height: 20,
-        width: 20,
+        height: 20 * scale,
+        width: 20 * scale,
         borderRadius: 50,
         overflow: 'hidden',
         position: 'absolute',
@@ -63,47 +66,47 @@ const styles = StyleSheet.create({
         right: 0
     },
     userProfilebuttons: {
-        height: 80,
-        width: 80,
+        height: 80 * scale,
+        width: 80 * scale,
     },
     userNameContainer: {
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 10
+        marginTop: 10 * scale
     },
     userNameText: {
         color: '#ffffff',
-        fontSize: 25
+        fontSize: 25 * scale
     },
     signOutButton: {
         backgroundColor: "#ffffff",
-        height: 35,
+        height: 35 * scale,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         position: 'absolute',
-        right: 0
+        right: 0 * scale
     },
     categoryContainer: {
-        margin: 15,
+        margin: 15 * scale,
         backgroundColor: '#696087',
         zIndex: 2,
         borderRadius: 2
     },
     categoryMargin: {
-        marginHorizontal: 15
+        marginHorizontal: 15 * scale
     },
     categoryHeader: {
         color: '#ffffff',
-        fontSize: 15,
+        fontSize: 15 * scale,
         fontWeight: 'bold',
-        paddingVertical: 5
+        paddingVertical: 5 * scale
     }
 });
 
-function ProfileModal({setModalstate}) {
+function ProfileModal({ setModalstate, navigation , name}) {
 
     function closeModal() {
         setModalstate(false);
@@ -146,7 +149,7 @@ function ProfileModal({setModalstate}) {
                     </View>
                     <View style={styles.userNameContainer}>
                     <Text style={styles.userNameText}>
-                        John Smith
+                        {name}
                     </Text>
                     </View>
                 </View>

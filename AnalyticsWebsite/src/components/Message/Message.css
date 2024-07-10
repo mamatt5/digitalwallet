@@ -1,0 +1,21 @@
+.message {
+    width: 100%;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.error {
+    background-color: rgba(255, 0, 0, 0.1);
+    color: red;
+}
+
+.confirmation {
+    background-color: rgba(0, 255, 0, 0.1);
+    color: green;
+}
+
+.reminder {
+    background-color: rgba(255, 255, 0, 0.1);
+    color: rgb(190, 177, 0);
+}

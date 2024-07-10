@@ -6,8 +6,6 @@ from models.account import Account
 from repositories.base_repository import RepositoryBase
 from sqlmodel import Session, delete, select, update
 
-import logging
-
 class AccountRepository(RepositoryBase[Account]):
     def __init__(self, session: Annotated[Session, Depends(get_db_session)]):
         super().__init__(session)

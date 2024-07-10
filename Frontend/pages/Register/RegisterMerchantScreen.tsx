@@ -222,17 +222,17 @@ function RegisterMerchantScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row', // Arrange children horizontally
-    alignItems: 'center', // Align items vertically
-    position: 'relative', // Required for absolute positioning
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    position: 'relative', 
   },
   errorIcon: {
-    position: 'absolute', // Position the icon absolutely
-    right: -20, // Adjust the position as needed
+    position: 'absolute', 
+    right: -20, 
   },
   eyeIcon: {
-    position: 'absolute', // Position the icon absolutely
-    right: 20, // Adjust the position as needed
+    position: 'absolute', 
+    right: 20, 
     opacity: 0.6,
 
   },

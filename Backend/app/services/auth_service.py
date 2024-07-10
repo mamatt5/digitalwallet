@@ -1,5 +1,8 @@
+import random
+import string
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
+from models.card import Card
 from models.account import Account, AccountType
 from models.merchant import Merchant
 from models.user import User
@@ -8,6 +11,7 @@ from repositories.account_repository import AccountRepository
 from repositories.merchant_repository import MerchantRepository
 from repositories.user_repository import UserRepository
 from repositories.wallet_repository import WalletRepository
+from repositories.card_repository import CardRepository
 from schemas.auth_schema import AuthResponse, RegisterRequest, Token
 from security import create_access_token, hash_password, verify_password
 
@@ -19,11 +23,13 @@ class AuthService:
         merchant_repository: MerchantRepository = Depends(MerchantRepository),
         user_repository: UserRepository = Depends(UserRepository),
         wallet_repository: WalletRepository = Depends(WalletRepository),
+        card_repository: CardRepository = Depends(CardRepository),
     ):
         self.account_repository = account_repository
         self.merchant_repository = merchant_repository
         self.user_repository = user_repository
         self.wallet_repository = wallet_repository
+        self.card_repository = card_repository
 
     def authenticate_account(self, email: str, password: str) -> Account | None:
         """
@@ -87,6 +93,10 @@ class AuthService:
         account = Account(**account_data)
         account = self.account_repository.create(account)
         wallet = Wallet(account_id=account.account_id)
+        
+        # for demo purposes only, can remove when actually deploying
+        wallet.ap_points = 30
+        
         wallet = self.wallet_repository.create(wallet)
         account.wallet = wallet
         wallet.account = account
@@ -97,11 +107,25 @@ class AuthService:
         if register_request.account_type == AccountType.MERCHANT:
             merchant = Merchant(**account_data)
             merchant.account_id = account.account_id
+            merchant.category_id = account_data["category_id"]
             self.merchant_repository.create(merchant)
 
         elif register_request.account_type == AccountType.USER:
             user = User(**account_data)
             user.account_id = account.account_id
             self.user_repository.create(user)
+
+            card_number_available = False
+            while not card_number_available:
+                card_number = "".join(random.choices(string.digits, k=16))
+                card_number_available = not self.card_repository.check_card_number(card_number)
+
+            card = Card(
+                card_number=card_number,
+                card_expiry="12/27",
+                card_cvv="123",
+                wallet_id=wallet.wallet_id,)
+            card.wallet = wallet
+            self.card_repository.create(card)
 
         return AuthResponse(token=token, account=account)

@@ -10,21 +10,11 @@ function QRScanScreen({ navigation, route }) {
   const isFocused = useIsFocused();
   const [permission, requestPermission] = useCameraPermissions();
   const { account } = route.params;
-  // const [scanned, setScanned] = useState(false);
-  // const [text, setText] = useState('Not yet scanned');
 
   const handleBarcodeScanned = ({ data }) => {
-    // setScanned(true);
-    // setText(`Scanned QR Code Details:\n\nType: ${type}\n\nData: ${data}`);
     navigation.navigate("QRPayment", { data, account });
   };
 
-  // useEffect(() => {
-  //   if (!isFocused) {
-  //     // setScanned(false);
-  //     setText('Not yet scanned');
-  //   }
-  // }, [isFocused]);
 
   if (!permission) {
     return <Text>Requesting for camera permission</Text>;

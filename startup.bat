@@ -1,9 +1,9 @@
-@echo off
+@echo on
 
 REM ### BACKEND ###
 
 REM Change to the backend directory
-cd backend
+cd Backend
 
 REM Check for a virtual environment
 if exist "venv" (
@@ -52,6 +52,8 @@ if %errorlevel% equ 0 (
 
 REM Populate database with dataloader
 echo Populating database with dataloader
+python dataloader.py
+python dataloader.py
 if exist "dataloader.py" (
     python dataloader.py
 ) else (
@@ -59,9 +61,59 @@ if exist "dataloader.py" (
 )
 
 
-REM ### FRONTEND ###
+@REM REM ### ANALYTICS WEBSITE ###
 
-cd ../../frontend
+cd ../../AnalyticsWebsite
+
+REM Install dependencies if package.json exists
+if exist "package.json" (
+    echo Installing frontend dependencies
+    where pnpm
+    if %errorlevel% neq 0 (
+        call npm install
+        if %errorlevel% neq 0 (
+            echo Failed to install frontend dependencies
+            exit /b 1
+        )
+        start "PayPath Companion" cmd /c "npm run dev"
+    ) else (
+        call pnpm install
+        if %errorlevel% neq 0 (
+            echo Failed to install frontend dependencies
+            exit /b 1
+        )
+        start "PayPath Companion" cmd /c "pnpm run dev"
+    )
+)
+
+@REM REM ### ECOMMERCE WEBSITE ###
+
+cd ../EcommerceDemoQRCode
+
+REM Install dependencies if package.json exists
+if exist "package.json" (
+    echo Installing frontend dependencies
+    where pnpm
+    if %errorlevel% neq 0 (
+        call npm install
+        if %errorlevel% neq 0 (
+            echo Failed to install frontend dependencies
+            exit /b 1
+        )
+        start "Lora's Cafe Specialty Store" cmd /c "npm run dev"
+    ) else (
+        call pnpm install
+        if %errorlevel% neq 0 (
+            echo Failed to install frontend dependencies
+            exit /b 1
+        )
+        start "Lora's Cafe Specialty Store" cmd /c "pnpm run dev"
+    )
+)
+
+@REM REM ### MOBILE APP FRONTEND ###
+
+cd ../frontend
 
 REM Check if Node.js is installed
 where node
@@ -84,6 +136,37 @@ REM Start the frontend
 echo Starting frontend development server
 start "Frontend Server" cmd /c "npm run start"
 
+REM ### MOCKPOS ###
 
-REM ### POS ###
-REM todo
+
+REM ### MOCKPOS ###
+
+cd ../MockPOS
+
+REM Start the POS server
+cd app
+start "POS Server" cmd /c "python -m uvicorn server:app --host 0.0.0.0 --reload --port 8001"
+
+REM Install POS CLI dependencies if package.json exists
+cd ../interface
+
+if exist "package.json" (
+    echo Installing POS CLI dependencies
+    call npm install
+    if %errorlevel% neq 0 (
+        echo Failed to install POS CLI dependencies
+        exit /b 1
+    )
+)
+
+start "POS CLI" cmd /c "npm run build && npm run start"
+
+REM ## ANALYTICS ##
+
+cd ../../AnalyticsWebsite
+call npm install
+
+REM Start the React Vite
+start "Analytics Website" cmd /c "npm run dev"
+timeout /t 5
+start http://localhost:5173/

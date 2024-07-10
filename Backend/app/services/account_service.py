@@ -36,4 +36,14 @@ class AccountService:
     def update_account_password(self, email: str, password: str) -> bool:
         return self.account_repository.update_password(email, password)
     
+    def get_all_merchants(self) -> list[Merchant]:
+        return self.merchant_repository.get_all()
+    
+    def get_merchant_and_vouchers(self) -> dict:
+        return self.merchant_repository.get_merchant_and_vouchers()
+    
+    def add_voucher_to_user(self, user_id, voucher_id):
+        return self.user_repository.add_voucher_to_user(user_id, voucher_id)
+
+    
         

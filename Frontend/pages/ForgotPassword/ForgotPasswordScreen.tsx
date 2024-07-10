@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row', 
     alignItems: 'center', 
-    position: 'relative'
+    position: 'relative', 
   },
   centerView: {
     display: 'flex',
@@ -135,8 +135,8 @@ const styles = StyleSheet.create({
     marginBottom: 40
   },
   errorIcon: {
-    position: 'absolute',
-    right: -20
+    position: 'absolute', 
+    right: -20, 
   },
 });
 
