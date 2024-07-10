@@ -152,7 +152,7 @@ function VoucherScreen({ navigation, route }) {
 
     
       <View style={styles.contentContainer}>
-        <Text style={styles.pointsContainer}>PayPath Points: {walletPoints} <Icon name="star" size={15 * scale} color="#fff" /> </Text>
+        <Text style={styles.pointsContainer}>PayPath Points: {walletPoints.toFixed(0)} <Icon name="star" size={15 * scale} color="#fff" /> </Text>
    
   
         <View style={styles.loyaltyCardContainer}>

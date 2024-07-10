@@ -227,7 +227,7 @@ function AccountScreen({ navigation, route }) {
           <Text style={styles.titleText}>Transactions</Text>
 
           <View style={styles.pointsContainer}>
-            <Text style={styles.pointsText}>{walletPoints} </Text>
+            <Text style={styles.pointsText}>{walletPoints.toFixed(0)} </Text>
             <Icon name="star" size={15 * scale} color="#fff" />
           </View>
         </View>

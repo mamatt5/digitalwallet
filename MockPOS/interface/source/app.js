@@ -78,6 +78,9 @@ function App() {
 		{name: 'Croissant', price: 5.00},
 		{name: 'Brownie', price: 4.00},
 		{name: 'Egg roll', price: 8.00},
+		{name: 'Muffin', price: 5.00},
+		{name: 'Cookie', price: 2.00},
+		{name: 'Fruit Bowl',price: 6.00}
 	];
 
 	const handleArrowNavigation = key => {

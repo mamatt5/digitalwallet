@@ -170,3 +170,13 @@ REM Start the React Vite
 start "Analytics Website" cmd /c "npm run dev"
 timeout /t 5
 start http://localhost:5173/
+
+REM ## ANALYTICS ##
+
+cd ../EcommerceDemoQRCode
+call npm install
+
+REM Start the React Vite
+start "Analytics Website" cmd /c "npm run dev"
+timeout /t 5
+start http://localhost:5174/
