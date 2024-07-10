@@ -326,7 +326,10 @@ function PaymentScreen({ route, navigation }) {
                         <Text style={styles.subheading}>Description: {selectedVoucher.description}</Text>
                         
                         <TouchableWithoutFeedback onPress={confirmVoucher}>
-                          <Text style={styles.getVoucher}>Use Voucher</Text>
+                          <View style={styles.getVoucher}>
+                          <Text style={styles.useVoucher}>Use Voucher</Text>
+                          </View>
+                          
                         </TouchableWithoutFeedback>
                       </View>
                     </View>
@@ -346,7 +349,9 @@ function PaymentScreen({ route, navigation }) {
                   
                         
                         <TouchableWithoutFeedback onPress={useVoucher}>
-                          <Text style={styles.getVoucher}>Use Voucher</Text>
+                        <View style={styles.getVoucher}>
+                          <Text style={styles.useVoucher}>Confirm Voucher</Text>
+                          </View>
                         </TouchableWithoutFeedback>
                       </View>
                     </View>
@@ -424,6 +429,10 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 15 * scale,
   },
+  useVoucher: {
+    fontSize: 20,
+    fontWeight: 'bold'
+  },
   buttonContainer: {
     alignSelf: "center",
     marginTop: 20 * scale,
@@ -437,8 +446,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   getVoucher: {
-    marginTop: 20
+    marginTop: 2,
+    padding: 15,
+    borderTopWidth: 1,
     
+    borderTopColor: '#FFFFFF',
+    alignContent:'center',
+    justifyContent: 'center'
   },
   itemContainer: {
   
@@ -500,7 +514,7 @@ const styles = StyleSheet.create({
   },
   subheading: {
     fontSize: 18,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
     marginTop: 5,
   },
 

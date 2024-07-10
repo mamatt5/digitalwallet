@@ -8,12 +8,6 @@ from security import hash_password
 from schemas.merchant_schema import MerchantAndVoucherInfo
 router = APIRouter(prefix="/accounts", tags=["Accounts"])
 
-<<<<<<< HEAD
-router = APIRouter(prefix="/accounts", tags=["Accounts"])
-=======
-import logging
-logging.basicConfig(level=logging.INFO, filename="py.log",filemode="w")
->>>>>>> 9d2e64eef3b23ade111904f46b9907ffd704a2c0
 
 @router.get("/getuser/{account_id}")
 def get_user_route(account_id: int, account_service: AccountService = Depends(AccountService)) -> User:
@@ -33,7 +27,6 @@ def get_account_route(account_id: int, account_service: AccountService = Depends
 
 @router.get("/getaccountfromemail/{email}")
 def get_account_with_email_route(email: str, account_service: AccountService = Depends(AccountService)) -> bool:
-    logging.info(account_service.get_account_with_email(email)) 
     return account_service.get_account_with_email(email) != None
 
 @router.get("/getaccountfrommobile/{mobileNumber}")

@@ -61,6 +61,7 @@ function LoginScreen({ navigation }) {
       password === "" || !/(?=.*[0-9])(?=.*[A-Z]).+/.test(password);
 
     if (newEmailError || newPasswordError) {
+      
       setEmailError(true);
       setPasswordError(true);
       return;
@@ -71,13 +72,14 @@ function LoginScreen({ navigation }) {
     let validAccount = false
     try {
       validAccount = await authenticateAccount(password, email.toLocaleLowerCase())
-      // console.log("authenticate")
-      // console.log(response)
+      console.log("authenticate")
+     
     } catch (error) {
       console.error("Checking Pass Error")
     }
 
     if (!validAccount) {
+      
       setEmailError(true);
       setPasswordError(true);
       return;
@@ -86,8 +88,9 @@ function LoginScreen({ navigation }) {
     try {
       const response = await loginUser(email.toLocaleLowerCase(), password);
       const { account } = response;
-
+      
       if (account) {
+
         navigation.navigate("Main", { account });
       } else {
         console.error("Account object is missing in response");
