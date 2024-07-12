@@ -126,7 +126,7 @@ export default function Index() {
                 let itemHolder = crossfilter();
 
                 processingData.forEach((d) => {
-                    if (d.time.includes("M")) {
+                    if (d.time.includes("M") || d.time.includes("m")) {
                         d.date = ""+d.date.split("/")[1]+"/"+d.date.split("/")[0]+"/24"
                     }
                     
